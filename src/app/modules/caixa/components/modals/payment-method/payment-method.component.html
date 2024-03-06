@@ -1,0 +1,10 @@
+<ng-template dialog-header><span class="p-dialog-title">Tipo de pagamento</span></ng-template>
+<div class="flex flex-1 flex-column w-full gap-2" appFocus *ngIf="paymentMethodService.listEntities$()">
+    <p-button
+        *ngFor="let item of paymentMethodService.listEntities$(); let i= index"
+        class="flex-1"
+        (click)="selectPaymentMethod(item)"
+        styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center p-button-sm">
+        <span class="text-xl">{{ i + 1 }}-{{ item.description }}</span>
+    </p-button>
+</div>

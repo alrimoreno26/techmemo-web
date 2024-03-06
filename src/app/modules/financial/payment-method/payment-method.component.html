@@ -1,0 +1,39 @@
+<div class="card m-3">
+    <c-data-table [action]="true" [exportBtn]="false"
+                  [headers]="headersTable" [service]="service" [showCreate]="true">
+        <ng-template let-data tableRow="enable">
+            <ng-template [ngIf]="data.enable" [ngIfElse]="notEnable">
+                <i class="pi pi-check-circle text-2xl text-green-700"></i>
+            </ng-template>
+            <ng-template #notEnable>
+                <i class="pi pi-times-circle text-2xl text-red-700-700"></i>
+            </ng-template>
+        </ng-template>
+        <ng-template let-data tableRow="allowsChange">
+            <ng-template [ngIf]="data.allowsChange" [ngIfElse]="notEnable">
+                <i class="pi pi-check-circle text-2xl text-green-700"></i>
+            </ng-template>
+            <ng-template #notEnable>
+                <i class="pi pi-times-circle text-2xl text-red-700"></i>
+            </ng-template>
+        </ng-template>
+        <ng-template let-data tableRow="mandatorySendCfe">
+            <ng-template [ngIf]="data.mandatorySendCfe" [ngIfElse]="notEnable">
+                <i class="pi pi-check-circle text-2xl text-green-700"></i>
+            </ng-template>
+            <ng-template #notEnable>
+                <i class="pi pi-times-circle text-2xl text-red-700"></i>
+            </ng-template>
+        </ng-template>
+        <ng-template let-data tableRow="requestAgreementInformation">
+            <ng-template [ngIf]="data.requestAgreementInformation" [ngIfElse]="notEnable">
+                <i class="pi pi-check-circle text-2xl text-green-700"></i>
+            </ng-template>
+            <ng-template #notEnable>
+                <i class="pi pi-times-circle text-2xl text-red-700"></i>
+            </ng-template>
+        </ng-template>
+    </c-data-table>
+    <p-confirmDialog [autoZIndex]="true" [style]="{width: '30rem'}" appendTo="body" confirmTranslate/>
+</div>
+

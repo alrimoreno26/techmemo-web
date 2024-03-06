@@ -1,0 +1,23 @@
+<ng-template dialog-header><span class="p-dialog-title">Cancel Products</span></ng-template>
+
+<div class="mt-4">
+    <span class="p-float-label pb-3">
+        <input pInputText id="username" class="w-full"/>
+        <label for="username">Username</label>
+    </span>
+    <span class="p-float-label mt-4">
+        <input id="password1" type="password" placeholder="Password" pInputText class="w-full">
+        <label for="password1" class="block text-900 font-medium mb-2">Password</label>
+    </span>
+    <p-divider></p-divider>
+    <textarea rows="5" cols="30" [autoResize]="true" pInputTextarea></textarea>
+</div>
+
+
+
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Cancelar" (click)="ref.close()"
+            icon="pi pi-fw pi-trash"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Save"
+            icon="pi pi-fw pi-check"></button>
+</ng-template>

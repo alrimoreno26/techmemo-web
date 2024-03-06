@@ -1,0 +1,497 @@
+<ng-template dialog-header>
+    <ng-container [ngSwitch]="typeProduct">
+        <ng-container *ngSwitchCase="productType.COMBO">
+            Create Combo
+        </ng-container>
+        <ng-container *ngSwitchDefault>
+            Create Product
+        </ng-container>
+    </ng-container>
+</ng-template>
+<form [formGroup]="form">
+    <div formResponsive width="950px">
+        <p-tabView styleClass="tabview-custom">
+            <p-tabPanel>
+                <ng-template pTemplate="header">
+                    <i class="pi pi-shopping-bag mr-2"></i>
+                    <span>Producto</span>
+                </ng-template>
+                <div class="grid p-fluid">
+                    <ng-template [ngIf]="typeProduct !== productType.SIMPLE">
+                        <div class="col-12 lg:col-8">
+                            <div class="grid formgrid">
+                                <div class="col-8 field">
+                                    <input pInputText type="text" placeholder="Product Name"
+                                           formControlName="name" formFieldValidation>
+                                </div>
+                                <div class="col-4 field">
+                                    <input pInputText type="text" placeholder="Código de barras"
+                                           formControlName="barCode">
+                                </div>
+                                <div class="col-12">
+                                    <p-divider layout="horizontal" align="center">
+                                        <span class="p-tag">Financeiro</span>
+                                    </p-divider>
+                                </div>
+
+                                <div class="col-12 lg:col-4 field">
+                                    <p-inputNumber placeholder="Price Costo"
+                                                   [maxFractionDigits]="2" currency="BRL" formControlName="costPrice"
+                                                   formFieldValidation
+                                                   id="costPriceCombo" locale="pt-BR" mode="currency"></p-inputNumber>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <p-inputNumber placeholder="Precio Venda"
+                                                   [maxFractionDigits]="2" currency="BRL"
+                                                   id="unitPriceCombo" locale="pt-BR" mode="currency"
+                                                   formControlName="salePrice" formFieldValidation></p-inputNumber>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="Product Code"
+                                           formControlName="code" formFieldValidation>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="CFOP"
+                                           formControlName="cfop" formFieldValidation>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="NCM"
+                                           formControlName="ncm" formFieldValidation>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="CST"
+                                           formControlName="cst" formFieldValidation>
+                                </div>
+                                <div class="col-12">
+                                    <p-divider layout="horizontal"></p-divider>
+                                </div>
+                                <div class="col-12 field" *ngIf="typeProduct === productType.COMBO">
+                                    <h4>Listagem de Productos</h4>
+                                    <p-table [value]="products"
+                                             [paginator]="true"
+                                             [rows]="10"
+                                             currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+                                             [rowsPerPageOptions]="[5, 10, 20]"
+                                             [(selection)]="selectedAdditional"
+                                             (onRowSelect)="rowActions($event)"
+                                             (onRowUnselect)="rowActions($event)"
+                                             (onHeaderCheckboxToggle)="rowActions($event)"
+                                             dataKey="id">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th style="width: 4rem">
+                                                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                                                </th>
+                                                <th>Code</th>
+                                                <th>Name</th>
+                                                <th>Price</th>
+                                                <th>Quantity</th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-product let-editing="editing">
+                                            <tr>
+                                                <td>
+                                                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                                                </td>
+                                                <td style="width:100px">{{ product.code }}</td>
+                                                <td>{{ product.name }}</td>
+                                                <td>{{ product.salePrice | currency }}</td>
+                                                <td style="width:100px" [pEditableColumn]="product.amount"
+                                                    pEditableColumnField="unitValue">
+                                                    <p-cellEditor>
+                                                        <ng-template pTemplate="input">
+                                                            <input pInputText [(ngModel)]="product.amount"
+                                                                   (ngModelChange)="changeValueQuantity()"
+                                                                   [ngModelOptions]="{standalone: true}"/>
+                                                        </ng-template>
+                                                        <ng-template pTemplate="output">
+                                                            {{ product.amount }}
+                                                        </ng-template>
+                                                    </p-cellEditor>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </div>
+                                <div class="col-12 field">
+                                    <h5>Description</h5>
+                                    <p-editor formControlName="description" [style]="{'height':'200px'}"></p-editor>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
+                            <div class="border-1 surface-border border-round mt-3">
+                                <p class=" mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span>Vendido por unidades</span>
+                                    <p-inputSwitch class="flex" formControlName="soldPerUnits"></p-inputSwitch>
+                                </p>
+                                <div class="px-3 py-1">
+                                    <p *ngIf="!form.controls['soldPerUnits'].value"
+                                       class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                        <span>Unidade</span>
+                                        <p-dropdown [options]="unitService.listEntities$()"
+                                                    formControlName="unitMeasurementId"
+                                                    optionValue="id"
+                                                    optionLabel="name"
+                                                    placeholder="Selecione a unidade"></p-dropdown>
+                                    </p>
+                                    <div class="px-3 py-1">
+                                        <p-inputNumber placeholder="Valor en Kg"
+                                                       formControlName="valuePerUnits"></p-inputNumber>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span class="w-10">Quantidade</span>
+                                    <p-inputNumber formControlName="stockAmount"></p-inputNumber>
+                                </p>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span class="w-10">Alert Inventory</span>
+                                    <p-inputNumber formControlName="quantityStockAlert"></p-inputNumber>
+                                </p>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <span
+                                    class="text-900 font-bold border-bottom-1 surface-border px-3 py-1 flex align-items-center"
+                                    style="height: 45px">Category</span>
+                                <div class="px-3 py-1">
+                                    <p-dropdown [options]="categoryService.subCategory$()"
+                                                formControlName="categoryId"
+                                                optionValue="id"
+                                                optionLabel="name"
+                                                placeholder="Select a category"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <span
+                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Fornecedor</span>
+                                <div class="flex align-items-center">
+                                    <div class="px-3 flex-1 py-1">
+                                        <p-multiSelect [options]="supplierService.listEntities$()"
+                                                       formControlName="supplierIds"
+                                                       formFieldValidation
+                                                       appendTo="body"
+                                                       optionLabel="document"
+                                                       optionValue="id"
+                                                       placeholder="Select a Fornecedor">
+                                            <ng-template let-value pTemplate="selectedItems">
+                                                <ng-template [ngIf]="value === null || value.length === 0">
+                                                    <span>Select a Fornecedor</span>
+                                                </ng-template>
+                                                <ng-template [ngIf]="value !== null">
+                                                    <div *ngFor="let option of value">
+                                                    <span
+                                                        *ngIf="supplier(option).type === 'PERSON'">{{ supplier(option).name }} {{ supplier(option).lastName }}</span>
+                                                        <span
+                                                            *ngIf="supplier(option).type !== 'PERSON'">{{ supplier(option).fantasyName | wrapText: 25 }}</span>
+                                                    </div>
+                                                </ng-template>
+
+                                            </ng-template>
+                                            <ng-template let-supplier pTemplate="item">
+                                                <div class="flex align-items-center gap-2"
+                                                     *ngIf="supplier.type === 'PERSON'">
+                                                    <div>{{ supplier.name }} {{ supplier.lastName }}</div>
+                                                </div>
+                                                <div class="flex align-items-center gap-2"
+                                                     *ngIf="supplier.type !== 'PERSON'">
+                                                    <div>{{ supplier.fantasyName }}</div>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </div>
+                                    <p-button icon="pi pi-plus" class="mr-2" styleClass="p-button-success"
+                                              (onClick)="addFornecedor()"></p-button>
+                                </div>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template [ngIf]="typeProduct === productType.SIMPLE">
+                        <div class="col-12 lg:col-8">
+                            <div class="grid formgrid">
+                                <div class="col-8 field">
+                                    <input pInputText type="text" placeholder="Product Name"
+                                           formControlName="name" formFieldValidation>
+                                </div>
+                                <div class="col-4 field">
+                                    <input pInputText type="text" placeholder="Código de barras"
+                                           formControlName="barCode">
+                                </div>
+                                <div class="col-12">
+                                    <p-divider layout="horizontal" align="center">
+                                        <span class="p-tag">Financeiro</span>
+                                    </p-divider>
+                                </div>
+
+                                <div class="col-12 lg:col-4 field">
+                                    <p-inputNumber placeholder="Price Costo"
+                                                   [maxFractionDigits]="2" currency="BRL" formControlName="costPrice"
+                                                   formFieldValidation
+                                                   id="costPrice" locale="pt-BR" mode="currency"></p-inputNumber>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <p-inputNumber placeholder="Precio Venda"
+                                                   [maxFractionDigits]="2" currency="BRL"
+                                                   id="salePrice" locale="pt-BR" mode="currency"
+                                                   formControlName="salePrice" formFieldValidation></p-inputNumber>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="Product Code"
+                                           formControlName="code" formFieldValidation>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="CFOP"
+                                           formControlName="cfop" formFieldValidation>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="NCM"
+                                           formControlName="ncm" formFieldValidation>
+                                </div>
+                                <div class="col-12 lg:col-4 field">
+                                    <input pInputText type="text" placeholder="CST"
+                                           formControlName="cst" formFieldValidation>
+                                </div>
+                                <div class="col-12">
+                                    <p-divider layout="horizontal"></p-divider>
+                                </div>
+
+
+                                <div class="col-12 lg:col-6 field">
+                                    <p-editor formControlName="description" [style]="{'height':'200px'}"></p-editor>
+                                </div>
+                                <div class="col-12 lg:col-6 field">
+                                    <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                        <span>Images</span>
+                                    </p>
+                                    <!--                            <p-fileUpload #fileUploader name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"-->
+                                    <!--                                          [customUpload]="true" [multiple]="true" (onSelect)="onUpload($event)"-->
+                                    <!--                                          accept="image/*" [showUploadButton]="true" [showCancelButton]="false"-->
+                                    <!--                                          [auto]="true">-->
+                                    <!--                                <ng-template pTemplate="content">-->
+                                    <!--                                    <div class="h-6rem overflow-y-auto py-3 border-round" style="cursor: copy"-->
+                                    <!--                                         (click)="fileUploader.advancedFileInput.nativeElement.click()">-->
+                                    <!--                                        <div *ngIf="!product.images.length"-->
+                                    <!--                                             class="flex flex-column w-full h-full justify-content-center align-items-center">-->
+                                    <!--                                            <i class="pi pi-file text-4xl text-primary"></i>-->
+                                    <!--                                            <span-->
+                                    <!--                                                class="block font-semibold text-900 text-lg mt-3">Drop or select images</span>-->
+                                    <!--                                        </div>-->
+                                    <!--                                        <div class="flex flex-wrap gap-3 border-round" *ngIf="product.images.length">-->
+                                    <!--                                            <div *ngFor="let file of product.images; let i = index;"-->
+                                    <!--                                                 class="h-full relative w-7rem h-7rem border-3 border-transparent border-round hover:bg-primary transition-duration-100 cursor-auto"-->
+                                    <!--                                                 (mouseenter)="onImageMouseOver(file)"-->
+                                    <!--                                                 (mouseleave)="onImageMouseLeave(file)" style="padding: 1px;">-->
+                                    <!--                                                <img [src]="file.objectURL" class="w-full h-full border-round shadow-2"-->
+                                    <!--                                                     [alt]="file.name">-->
+                                    <!--                                                <button [id]="file.name" #buttonEl pButton pRipple type="button"-->
+                                    <!--                                                        icon="pi pi-times"-->
+                                    <!--                                                        class="p-button-rounded p-button-primary text-sm absolute justify-content-center align-items-center cursor-pointer w-2rem h-2rem"-->
+                                    <!--                                                        style="top: -10px; right: -10px; display: none;"-->
+                                    <!--                                                        (click)="$event.stopPropagation(); removeImage(file)"></button>-->
+                                    <!--                                            </div>-->
+                                    <!--                                        </div>-->
+                                    <!--                                    </div>-->
+                                    <!--                                </ng-template>-->
+                                    <!--                            </p-fileUpload>-->
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="w-full lg:w-3 xl:w-4 flex flex-column row-gap-3 pt-3">
+                            <div class="border-1 surface-border border-round">
+                                <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span>Active</span>
+                                    <p-inputSwitch class="flex" formControlName="enable"></p-inputSwitch>
+                                </p>
+                            </div>
+
+                            <div class="border-1 surface-border border-round">
+                                <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span>Mostrar no cardápio</span>
+                                    <p-inputSwitch class="flex" formControlName="showInMenu"></p-inputSwitch>
+                                </p>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span>Permite adicionais</span>
+                                    <p-inputSwitch class="flex" formControlName="allowsAdditional"></p-inputSwitch>
+                                </p>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <p class=" mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span>Vendido por unidades</span>
+                                    <p-inputSwitch class="flex" formControlName="soldPerUnits"></p-inputSwitch>
+                                </p>
+                                <div class="px-3 py-1">
+                                    <p *ngIf="!form.controls['soldPerUnits'].value"
+                                       class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                        <span>Unidade</span>
+                                        <p-dropdown [options]="unitService.listEntities$()"
+                                                    formControlName="unitMeasurementId"
+                                                    optionValue="id"
+                                                    optionLabel="name"
+                                                    placeholder="Selecione a unidade"></p-dropdown>
+                                    </p>
+                                    <div class="px-3 py-1">
+                                        <p-inputNumber placeholder="Valor en Kg"
+                                                       formControlName="valuePerUnits"></p-inputNumber>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <span
+                                    class="text-900 font-bold border-bottom-1 surface-border px-3 py-1 flex align-items-center"
+                                    style="height: 45px">Category</span>
+                                <div class="px-3 py-1">
+                                    <p-dropdown [options]="categoryService.subCategory$()"
+                                                formControlName="categoryId"
+                                                optionValue="id"
+                                                optionLabel="name"
+                                                placeholder="Select a category"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span class="w-10">Quantidade</span>
+                                    <p-inputNumber formControlName="stockAmount"></p-inputNumber>
+                                </p>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span class="w-10">Alert Inventory</span>
+                                    <p-inputNumber formControlName="quantityStockAlert"></p-inputNumber>
+                                </p>
+                            </div>
+                            <div class="border-1 surface-border border-round">
+                                <span
+                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Fornecedor</span>
+                                <div class="flex align-items-center">
+                                    <div class="px-3 flex-1 py-1">
+                                        <p-multiSelect [options]="supplierService.listEntities$()"
+                                                       formControlName="supplierIds"
+                                                       formFieldValidation
+                                                       appendTo="body"
+                                                       optionLabel="document"
+                                                       optionValue="id"
+                                                       placeholder="Select a Fornecedor">
+                                            <ng-template let-value pTemplate="selectedItems">
+                                                <ng-template [ngIf]="value === null || value.length === 0">
+                                                    <span>Select a Fornecedor</span>
+                                                </ng-template>
+                                                <ng-template [ngIf]="value !== null">
+                                                    <div *ngFor="let option of value">
+                                                    <span
+                                                        *ngIf="supplier(option).type === 'PERSON'">{{ supplier(option).name }} {{ supplier(option).lastName }}</span>
+                                                        <span
+                                                            *ngIf="supplier(option).type !== 'PERSON'">{{ supplier(option).fantasyName | wrapText: 25 }}</span>
+                                                    </div>
+                                                </ng-template>
+
+                                            </ng-template>
+                                            <ng-template let-supplier pTemplate="item">
+                                                <div class="flex align-items-center gap-2"
+                                                     *ngIf="supplier.type === 'PERSON'">
+                                                    <div>{{ supplier.name }} {{ supplier.lastName }}</div>
+                                                </div>
+                                                <div class="flex align-items-center gap-2"
+                                                     *ngIf="supplier.type !== 'PERSON'">
+                                                    <div>{{ supplier.fantasyName }}</div>
+                                                </div>
+                                            </ng-template>
+                                        </p-multiSelect>
+                                    </div>
+                                    <p-button icon="pi pi-plus" class="mr-2" styleClass="p-button-success"
+                                              (onClick)="addFornecedor()"></p-button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </ng-template>
+
+                </div>
+            </p-tabPanel>
+            <p-tabPanel *ngIf="typeProduct === productType.SIMPLE">
+                <ng-template pTemplate="header">
+                    <i class="pi pi-tags mr-2"></i>
+                    <span>Ficha Técnica</span>
+                </ng-template>
+                <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+                    <div class="col-12 lg:col-12">
+                        <div class="grid formgrid">
+                            <div class="col-12 field">
+                                <h5>Procurar produtos</h5>
+                                <div class="flex gap-2">
+                                    <p-autoComplete styleClass="w-full" appFocus #input
+                                                    inputStyleClass="w-full"
+                                                    class="w-full"
+                                                    appendTo="body"
+                                                    (completeMethod)="search($event)"
+                                                    (input)="searchProducts($event)"
+                                                    field="name"
+                                                    [(ngModel)]="selectedItem"
+                                                    [ngModelOptions]="{standalone: true}"
+                                                    [suggestions]="suggestions"></p-autoComplete>
+
+                                    <div>
+                                        <p-button
+                                            class="flex-1 px-3"
+                                            (onClick)="addProductAutocomplete()"
+                                            icon="pi pi-plus"
+                                            styleClass="w-full p-button-outlined flex-1">
+
+                                        </p-button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 lg:col-12">
+                        <p-table [value]="technicalSheetProducts"
+                                 dataKey="id">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Unidade</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product let-editing="editing">
+                                <tr>
+                                    <td>{{ product.name }}</td>
+                                    <td>{{ product.unitMeasurementName }}</td>
+                                    <td style="width:100px" [pEditableColumn]="product.amount"
+                                        pEditableColumnField="unitValue">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <input pInputText [(ngModel)]="product.amount"
+                                                       [ngModelOptions]="{standalone: true}"/>
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{ product.amount }}
+                                            </ng-template>
+                                        </p-cellEditor>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </p-tabPanel>
+        </p-tabView>
+
+    </div>
+</form>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
+            icon="pi pi-fw pi-times"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Save" [disabled]="form.invalid"
+            (click)="save()" icon="pi pi-fw pi-check"></button>
+</ng-template>

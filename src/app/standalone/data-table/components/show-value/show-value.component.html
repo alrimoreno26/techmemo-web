@@ -1,0 +1,45 @@
+<ng-container *ngIf="data?.pipe">
+    <ng-container [ngTemplateOutletContext]="{data:data}" [ngTemplateOutlet]="pipes"></ng-container>
+</ng-container>
+<ng-container *ngIf="!data?.pipe">
+    {{data.value ? (data.value) : "-" }}
+</ng-container>
+
+<ng-template #pipes let-data='data'>
+    <ng-template [ngIf]="data?.pipe === 'number'">
+        {{data.value | number}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'cpfCnpj'">
+        {{data.value | cpfCnpj}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'tel'">
+        <a [href]="'tel:' + data.value">{{data.value | cellPhone}}</a>
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'date'">
+        {{data.value | date:'dd/MM/YYYY' : '+0'}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'cep'">
+        {{data.value | cep}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'currency'">
+        {{data.value !== '-' ? (data.value | currency) : '-'}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'email'">
+        <a [href]="'mailto:' + data.value">{{data.value}}</a>
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'shortMoney'">
+        {{data.value | shortMoney}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'accountant'">
+        {{data.value | accountant}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'deep'">
+        {{data | deep}}
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'sanitizeHtml'">
+        <div [innerHTML]="data | sanitizeHtml"></div>
+    </ng-template>
+    <ng-template [ngIf]="data?.pipe === 'wrapText'">
+        {{data.value | wrapText : data?.extraVal ? data?.extraVal : 60}}
+    </ng-template>
+</ng-template>

@@ -1,0 +1,8 @@
+version: '3.7'
+
+services:
+    techzilla:
+        image: armoreno2626/techzilla:v0.01
+        container_name: techzilla
+        ports:
+            - "8080:82"

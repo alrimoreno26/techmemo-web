@@ -1,0 +1,142 @@
+$gutter: 1rem; //for primeflex grid system
+
+/* Layout */
+@import "assets/layout/styles/layout/layout.scss";
+
+/* PrimeNG */
+@import "../node_modules/primeng/resources/primeng.min.css";
+@import "../node_modules/primeflex/primeflex.scss";
+@import "../node_modules/primeicons/primeicons.css";
+
+/* Quill Text Editor for p-editor */
+@import "../node_modules/quill/dist/quill.core.css";
+@import "../node_modules/quill/dist/quill.snow.css";
+
+/* Demos */
+@import "assets/demo/styles/flags/flags.css";
+@import "assets/demo/styles/badges.scss";
+@import "assets/demo/styles/code.scss";
+
+:host::ng-deep {
+    .layout-topbar-full{
+        width: 100%!important;
+    }
+    .p-column-filter-buttonbar {
+        display: none;
+    }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 100px 100px 100px 100px / 75px 75px 75px 75px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+.payment_succesfull {
+    background: rgb(0 108 0);
+    color: white !important;
+}
+.payment_pending {
+    background: rgb(141 12 0);
+    color: white !important;
+}
+.payment_discount {
+    background: rgb(255 138 60);
+    color: white !important;
+}
+.payment_troca {
+    background: rgb(1 7 134);
+    color: white !important;
+}
+
+.severity_successfull_text {
+    color: rgb(0 108 0);
+    width: 2rem !important;
+    padding: 0.3rem 0 !important;
+}
+.severity_pending_text {
+    color: rgb(141 12 0);
+    width: 2rem !important;
+    padding: 0.3rem 0 !important;
+}
+.severity_discount_text {
+    color: rgb(255 138 60);
+    width: 2rem !important;
+    padding: 0.3rem 0 !important;
+}
+.severity_troca_text {
+    color: rgb(1 7 134);
+    width: 2rem !important;
+    padding: 0.3rem 0 !important;
+}
+
+.severity_successfull {
+    color: #22C55E;
+    background: rgba(141, 252, 174, 0.51);
+    border: 1px solid rgba(141, 252, 174, 0.51);
+    width: 2rem !important;
+    padding: 0.3rem 10px !important;
+}
+
+.severity_danger {
+    color: #ff0000;
+    background: #ffe5e5;
+    border: 1px solid #ffe5e5;
+    width: 2rem !important;
+    padding: 0.3rem 10px !important;
+}
+
+.severity_info {
+    color: #ffffff;
+    background: #0ea5e9;
+    border: 1px solid #0ea5e9;
+    width: 2rem !important;
+    padding: 0.3rem 0 !important;
+}
+
+.custom-input-number {
+    width: 35px !important;
+    text-align: center;
+    padding: 0;
+    font-size: 12px
+}
+
+.p-input-icon-right > .p-icon-wrapper {
+    right: 10px
+}
+
+app-print-nfe {
+    /* hide the printing component from @media screen */
+    display: none;
+}
+
+.user-caixa {
+    margin-left: 0 !important;
+}
+
+@media print {
+
+    app-print-nfe {
+        display: block;
+    }
+
+    app-topbar, app-sidebar, .main_pos {
+        display: none;
+    }
+}

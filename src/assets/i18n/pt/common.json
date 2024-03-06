@@ -1,0 +1,115 @@
+{
+    "SIMPLE": "Produto",
+    "ADDITIONAL": "Adicional",
+    "COMBO": "Combinação",
+    "networkError": {
+        "code0": "Erro Desconhecido",
+        "code400": "Solicitação inválida, formulário incorreto",
+        "code401": "Sua sessão expirou. Você deve fazer o login novamente",
+        "code403": "Acesso negado",
+        "code405": "Método não permitido",
+        "code415": "Tipo de mídia não suportado",
+        "code422": "Entidade não processável",
+        "code500": "Ocorreu um erro inesperado. Por favor, tente novamente mais tarde",
+        "code503": "Serviço indisponível. Por favor, tente novamente mais tarde"
+    },
+    "formError": {
+        "required": "Este campo é obrigatório",
+        "cnpj": "CNPJ é Inválido",
+        "email": "Email é Inválido",
+        "cpf": "CPF é Inválido",
+        "cep": "CEP é Inválido",
+        "rg": "RG é Inválido",
+        "telefone": "O número de telefone é inválido",
+        "mustMatch": "As senhas não correspondem",
+        "minlength": "Mínimo requerido {{value}}",
+        "maxlength": "Máximo requerido {{value}}",
+        "strongPasswordPattern": "Pelo menos 2 número, 3 caractere, 2 letra maiúscula, 1 caractere especial (! @ # $ & *)",
+        "conditionsError": "O último conector não pode ser 'e'",
+        "conditionsRule": "Essa regra é inválida",
+        "gracePeriodInvalid": "A carência deve ser menor que o prazo"
+    },
+    "common": {
+        "back": "Voltar",
+        "yes": "Sim",
+        "no": "Não",
+        "edit": "Editar",
+        "update": "Atualizar",
+        "confirm": "Confirme",
+        "save": "Salvar",
+        "file": "File",
+        "review": "Ir a Revisão",
+        "cancel": "Cancelar",
+        "action": "Ações",
+        "create": "Novo",
+        "approve": "Aprovar",
+        "decline": "Recusar",
+        "delete": "Excluir",
+        "discard": "Descartado",
+        "download": "Baixar",
+        "add": "Adicionar",
+        "close": "Fechar",
+        "end": "Terminar",
+        "total": "Total",
+        "blankSearch": "Nenhum dado corresponde ao filtro: '{{value}}'",
+        "blankData": "Não há informações",
+        "search": "Pesquisar...",
+        "textConfirmDelete": "Você tem certeza?\nVocê não poderá reverter isso!",
+        "paginator": "Mostrando de {{first}} a {{rows}} de {{total}} entradas",
+        "print": "Imprimir",
+        "available": "Disponível",
+        "selected": "Selecionado",
+        "confirmation": "Confirmação",
+        "send": "Enviar",
+        "subject": "Asunto",
+        "tooltip": {
+            "refresh": "Atualizar dados da tabela",
+            "print": "Imprimir dados da tabela",
+            "create": "Criar um novo {{value}}",
+            "edit": "Editar {{value}}",
+            "delete": "Excluir {{value}}"
+        }
+    },
+    "login": {
+        "email": "Email",
+        "password": "Senha",
+        "singIn": "Conecte-se",
+        "titleLogin": "Bem-vindo",
+        "subtitleLogin": "Juros que fazem sentido.",
+        "privacy": "Privacidade",
+        "termsConditions": "Termos e Condições"
+    },
+    "static": {
+        "access": {
+            "title": "Acesso negado",
+            "subTitle": "Você não tem as permissões necessárias. Entre em contato com os administradores."
+        },
+        "error": {
+            "title": "Ocorreu um erro",
+            "subTitle": "O recurso solicitado não está disponível."
+        },
+        "notFound": {
+            "title": "Parece que você está perdido",
+            "subTitle": "O recurso solicitado não está disponível."
+        },
+        "common": {
+            "goTo": "Voltar para a página inicial",
+            "version": "Nova versão da plataforma encontrada"
+        }
+    },
+    "notify": {
+        "title": "Notificações",
+        "trash": "notificação",
+        "allRead": "Marcar todas como lidas",
+        "deleteAllRead": "Excluir todas as notificações que foram lidas",
+        "groups": {
+            "all": "Todas",
+            "register": "Cadastro",
+            "document": "Documentos",
+            "credit": "Crédito",
+            "identification": "Identificação",
+            "auth": "Autorização",
+            "error": "Error"
+        }
+    }
+}

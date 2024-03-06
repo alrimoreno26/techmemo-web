@@ -1,0 +1,142 @@
+<ng-template dialog-header>Create Fornecedor</ng-template>
+<form [formGroup]="form">
+    <div formResponsive width="850px">
+        <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+            <div class="col-12 lg:col-8">
+                <div class="border-1 surface-border border-round">
+                    <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
+                        <span>Dados Cadastrais</span>
+                    </p>
+                    <div class="grid formgrid p-2">
+                        <div class="col-12">
+                            <p-divider align="center">
+                                <p-selectButton [options]="fornecedorTypes"
+                                                formControlName="type"
+                                                styleClass="w-20rem"
+                                                optionValue="value"></p-selectButton>
+                            </p-divider>
+                        </div>
+                        <ng-template [ngIf]="showCompany" [ngIfElse]="isPerson">
+                            <div class="col-8 field">
+                                <input pInputText type="text" formControlName="socialReason" placeholder="Razon Social">
+                            </div>
+                            <div class="col-4 field">
+                            <span class="p-input-icon-right">
+                                <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCNPJ"></i>
+                               <p-inputMask id="cnpj"
+                                            formControlName="document"
+                                            placeholder="CNPJ" mask="99.999.999/9999-99" (keyup)="verifyCNPJ($event)">
+                                                    </p-inputMask>
+                            </span>
+                            </div>
+                            <div class="col-12 field">
+                                <input pInputText type="text" formControlName="fantasyName"
+                                       placeholder="Fantasy Name">
+                            </div>
+                        </ng-template>
+                        <ng-template #isPerson>
+                            <div class="col-6 field">
+                                <p-inputMask id="cpf" mask="999.999.999-99" formControlName="document"
+                                             placeholder="CPF"></p-inputMask>
+                            </div>
+                            <div class="col-6 field">
+                                <input pInputText type="date" placeholder="Fecha Nacimento" formControlName="birthdate">
+                            </div>
+                            <div class="col-6 field">
+                                <input pInputText type="text" formControlName="name" placeholder="Nome">
+                            </div>
+                            <div class="col-6 field">
+                                <input pInputText type="text" formControlName="lastName" placeholder="Sobre Nome">
+                            </div>
+                        </ng-template>
+                        <div class="col-6 field">
+                            <input pInputText type="text" formControlName="email" placeholder="E-mail">
+                        </div>
+                        <div class="col-6 field">
+                            <p-inputMask type="text" id="phone" mask="(99) 99999-9999" placeholder="Telefone"
+                                         formControlName="phone"></p-inputMask>
+                        </div>
+                        <div class="col-12">
+                            <p-divider align="center"></p-divider>
+                        </div>
+                        <div class="col-12">
+                            <h4>Listagem de Productos</h4>
+                            <div class="h-20rem overflow-auto">
+<!--                                <p-dataView #dv [value]="supplier?.products">-->
+<!--                                    <ng-template let-product pTemplate="listItem">-->
+<!--                                        <div class="col-12">-->
+<!--                                            <div class="flex flex-column xl:flex-row xl:align-items-center p-4 gap-4">-->
+<!--                                                <img-->
+<!--                                                        class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"-->
+<!--                                                        [src]="'https://primefaces.org/cdn/primeng/images/demo/product/' + product.image"-->
+<!--                                                        [alt]="product.name"/>-->
+<!--                                                <div-->
+<!--                                                        class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4">-->
+<!--                                                    <div-->
+<!--                                                            class="flex flex-column align-items-center sm:align-items-start gap-3">-->
+<!--                                                        <div-->
+<!--                                                                class="text-xl font-bold text-900">{{ product.name }}</div>-->
+<!--                                                        <div class="flex align-items-center gap-3">-->
+<!--                                                    <span class="flex align-items-center gap-2">-->
+<!--                                                        <i class="pi pi-tag"></i>-->
+<!--                                                        <span class="font-semibold">{{ product.type }}</span>-->
+<!--                                                    </span>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div-->
+<!--                                                            class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2">-->
+<!--                                                    <span-->
+<!--                                                            class="text-2xl font-semibold">{{ product.price | currency}}</span>-->
+<!--                                                    </div>-->
+<!--                                                </div>-->
+<!--                                            </div>-->
+<!--                                        </div>-->
+<!--                                    </ng-template>-->
+<!--                                </p-dataView>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
+                <div class="border-1 surface-border border-round" formGroupName="address">
+                    <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
+                        <span>Endereco</span>
+                    </p>
+                    <div class="p-1">
+                        <span class="p-input-icon-right">
+                        <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCEP"></i>
+                        <p-inputMask id="cep" placeholder="CEP" mask="99.999-999" formControlName="cep"
+                                     (keyup)="verifyCEP($event)"></p-inputMask>
+                    </span>
+                    </div>
+                    <div class="p-1">
+                        <input pInputText type="text" formControlName="street" placeholder="Endereco">
+                    </div>
+                    <div class="p-1">
+                        <input pInputText type="text" placeholder="Numero" formControlName="number">
+                    </div>
+                    <div class="p-1">
+                        <input pInputText type="text" placeholder="Complemento" formControlName="complement">
+                    </div>
+                    <div class="p-1">
+                        <input pInputText type="text" placeholder="Barrio" formControlName="neighborhood">
+                    </div>
+                    <div class="p-1">
+                        <input pInputText type="text" placeholder="Cidade" formControlName="city">
+                    </div>
+                    <div class="p-1">
+                        <input pInputText type="text" placeholder="UF" formControlName="uf">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+            icon="pi pi-fw pi-times" (click)="ref.close('Cancel')"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" [disabled]="form.invalid" label="Save"
+            (click)="save()"
+            icon="pi pi-fw pi-check"></button>
+</ng-template>

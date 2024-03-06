@@ -1,0 +1,73 @@
+:host::ng-deep{
+    p-autocomplete{
+        width: 100%;
+    }
+}
+.main_pos {
+    overflow: auto;
+    height: calc(100vh - 60px);
+    background-color: aliceblue;
+
+    .container_products {
+        overflow-x: hidden;
+        overflow-y: auto;
+        border-radius: 0.8rem;
+        height: calc(100vh - 195px);
+        padding-right: 16px;
+        padding-left: 16px;
+
+        .img-fluid {
+            border-top-left-radius: 0.8rem;
+            border-top-right-radius: 0.8rem;
+            height: 150px;
+            width: 100%;
+            object-fit: cover;
+            border-bottom: 1px solid var(--grayLight-color);
+        }
+    }
+
+    .search-container{
+        border-radius: 0 !important;
+    }
+
+    .comanda_list{
+        width: 100%;
+        height: calc(100vh - 420px);
+        overflow: auto;
+    }
+
+    .list_products {
+        display: table;
+        border-collapse: collapse;
+        border-spacing: 0px;
+    }
+
+    .custom-th {
+        font-weight: 500;
+        font-size: 0.875rem;
+        line-height: 1.5rem;
+        letter-spacing: 0.01071em;
+        display: table-cell;
+        vertical-align: inherit;
+        border-bottom: 1px solid rgb(224, 224, 224);
+        text-align: left;
+        padding: 6px 16px;
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+    .custom-td{
+        font-weight: 400;
+        font-size: 0.875rem;
+        line-height: 1.43;
+        letter-spacing: 0.01071em;
+        display: table-cell;
+        vertical-align: inherit;
+        border-bottom: 1px solid rgb(224, 224, 224);
+        text-align: left;
+        padding: 6px 16px;
+        color: rgba(0, 0, 0, 0.87);
+    }
+
+}
+
+

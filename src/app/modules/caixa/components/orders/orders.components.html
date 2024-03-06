@@ -1,0 +1,109 @@
+<div class="px-4 py-5 md:px-6 lg:px-8">
+    <div class="grid">
+        <div class="col-12 px-2 py-0">
+            <p-toolbar>
+                <div class="p-toolbar-group-start" *ngIf="service.listEntities$()">
+                    <p class="mb-0 font-medium text-2xl">Mesas Libre: <span class="font-bold"
+                                                                            style="color: green">{{ free }}</span></p>
+                    <p-divider layout="vertical"></p-divider>
+                    <p class="mb-0 font-medium text-2xl">Mesas Ocupadas: <span class="font-bold"
+                                                                               style="color: red">{{ busy }}</span></p>
+                </div>
+                <div class="p-toolbar-group-end">
+                    <button (click)="loadComanda()" pButton icon="pi pi-list" class="mr-2"
+                            [pTooltip]="'Mostrar Comandas'"></button>
+                    <button (click)="loadMesas()" pButton icon="mdi mdi-table-furniture mdi-18px" class="mr-2"
+                            [pTooltip]="'Mostrar Mesas'"></button>
+                    <button [disabled]="table_union.length === 0" (click)="juntarMesas()" pButton
+                            icon="mdi mdi-vector-union mdi-18px" class="mr-2" [pTooltip]="'Juntar Mesas'"></button>
+                </div>
+            </p-toolbar>
+        </div>
+        <!--         (click)="goOrder(item)"-->
+        <ng-template [ngIf]="!isTable" [ngIfElse]="tables">
+            <div class="col-12 lg:col-3 p-2 cursor-pointer"
+                 (click)="openOrder(item.id)"
+                 *ngFor="let item of service.listEntities$(); let i=index">
+                <p-panel #pnl>
+                    <ng-template pTemplate="header">
+                        <div class="flex align-items-center gap-2">
+                            <span class="font-bold">{{getTitleComanda(item)}}</span>
+                        </div>
+                    </ng-template>
+                    <div>
+                        <div class="flex align-items-start">
+                            <div class="bg-blue-100 border-round inline-flex align-items-center justify-content-center"
+                                 style="width: 52px; height: 52px;"><img
+                                src="assets/layout/images/comanda.svg" width="38" height="38"></div>
+                            <div class="ml-3 flex-1">
+                                <div class="flex align-items-center justify-content-between">
+                                    <span class="text-700">Cliente:</span>
+                                    <span
+                                        class="font-bold text-700">{{ item.clientName === null ? '-' : item.clientName }}</span>
+                                </div>
+                                <div class="flex align-items-center justify-content-between">
+                                    <span class="text-700">Total:</span>
+                                    <span class="font-bold text-700">{{ item.valueToPaid | currency }}</span>
+                                </div>
+                                <div class="flex align-items-center justify-content-between">
+                                    <span class="text-700">Aberto às:</span>
+                                    <span class="font-bold text-700">{{ transformDate(item.created) }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </p-panel>
+            </div>
+            <div class="col-12 lg:col-3 p-2">
+                <div class="w-full h-full flex">
+                    <p-button pRipple label="Nova Comanda"
+                              (onClick)="addNewComanda()"
+                              icon="pi pi-plus text-3xl font-semibold"
+                              class="p-element text-3xl p-ripple py-3 justify-content-center font-semibold w-full border-round p-button p-component"
+                    >
+                    </p-button>
+                </div>
+            </div>
+        </ng-template>
+        <ng-template #tables>
+            <div *ngFor="let raw of tableService.auth$()" class="group-container"
+                 [ngClass]="{'group-border': (raw.items.length >= 1 && raw.tables !== 'null'),'m-2': raw.tables !== 'null'}">
+                <div *ngFor="let item of raw.items" class="p-2 cursor-pointer"
+                     (click)="addOrOpenTable($event, item)"
+                     [ngClass]="{'col-12 lg:col-2': raw.tables === 'null'}">
+                    <p-panel #pnl>
+                        <ng-template pTemplate="header">
+                            <div class="flex align-items-center gap-2 w-full justify-content-between">
+                                <span class="font-bold">Mesa numero {{ item.number }}</span>
+                                <p-checkbox label="" name="" value="{{item.id}}" [(ngModel)]="table_union"></p-checkbox>
+                            </div>
+                        </ng-template>
+                        <div>
+                            <div class="flex align-items-start">
+                                <div
+                                    class="bg-blue-100 border-round inline-flex align-items-center justify-content-center"
+                                    style="width: 52px; height: 52px;">
+                                    <ng-template [ngIf]="item.state === tableState.BUSY || item.state === tableState.BUSY_WITH_UNION" [ngIfElse]="free">
+                                        <img src="assets/layout/images/tables_busy.svg" width="38" height="38">
+                                    </ng-template>
+                                    <ng-template #free>
+                                        <img src="assets/layout/images/tables_free.svg" width="38" height="38">
+                                    </ng-template>
+                                </div>
+
+                                <div class="flex ml-3 flex-1 h-3rem">
+                                    <div class="flex flex-column align-items-center justify-content-between w-full">
+                                        <span class="text-700 text-2xl">Total:</span>
+                                        <span
+                                            class="font-bold text-700 text-2xl">{{ item.totalValue | currency }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </p-panel>
+                </div>
+            </div>
+        </ng-template>
+    </div>
+</div>
+

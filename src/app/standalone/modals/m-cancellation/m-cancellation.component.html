@@ -1,0 +1,37 @@
+<p-dialog [(visible)]="cancellation" [modal]="true" [style]="{ width: '25vw' }" [draggable]="false" [resizable]="false">
+    <ng-template pTemplate="header"><span class="p-dialog-title">Cancelamento</span></ng-template>
+    <div>
+        <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+            <div class="col-12 lg:col-12">
+                <div class="grid formgrid">
+                    <div class="col-12 field">
+                        <span class="p-input-icon-left w-full">
+                            <i class="pi pi-user"></i>
+                            <input id="username" type="text" pInputText class="w-full" placeholder="Username">
+                        </span>
+                    </div>
+                    <div class="col-12 field">
+                        <span class="p-input-icon-left w-full">
+                            <i class="pi pi-lock z-2"></i>
+                            <p-password id="password" placeholder="Password" styleClass="w-full"
+                                        [inputStyle]="{paddingLeft: '2.5rem'}" inputStyleClass="w-full md:w-25rem"
+                                        [toggleMask]="true"></p-password>
+                        </span>
+                    </div>
+                    <div class="col-12 field" *ngIf="auth">
+                        <textarea rows="5" cols="30" pInputTextarea></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Cancelar" (click)="close()"
+                icon="pi pi-fw pi-trash"></button>
+        <button pButton pRipple class="p-button-primary flex-1 border-round" label="Autenticar" icon="pi pi-fw pi-check"
+                *ngIf="!auth"></button>
+        <button pButton pRipple class="p-button-primary flex-1 border-round" label="Save" icon="pi pi-fw pi-check"
+                *ngIf="auth"></button>
+    </ng-template>
+
+</p-dialog>

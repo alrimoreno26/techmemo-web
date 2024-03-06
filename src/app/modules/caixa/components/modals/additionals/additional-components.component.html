@@ -1,0 +1,146 @@
+<!--<p-dialog [(visible)]="showAdditional" [modal]="true" [style]="{ width: '60vw', height:'60vw' }" [draggable]="false"-->
+<!--          [resizable]="false">-->
+    <ng-template dialog-header><span class="p-dialog-title">Detalhes do Producto</span></ng-template>
+    <div class="flex h-full">
+        <div class="flex-1">
+            <p-tabView>
+                <p-tabPanel class="p-1" header="Adicional">
+                    <div class="flex">
+                        <p-table #dt1 [value]="additionals.content" sortField="categoryName" sortMode="single"
+                                 [scrollable]="true" scrollHeight="400px"
+                                 rowGroupMode="subheader"
+                                 selectionMode="single"
+                                 [styleClass]="'p-datatable-sm'"
+                                 [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+                                 groupRowsBy="categoryName" [tableStyle]="{'min-width': '30rem'}">
+                            <ng-template pTemplate="caption">
+                                <div class="flex">
+                                    <span class="p-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <input pInputText type="text"
+                                               (input)="dt1.filterGlobal($event.target, 'contains')"
+                                               placeholder="Producto"/>
+                                    </span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Descrição do Producto</th>
+                                    <th>Valor</th>
+                                    <th></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="groupheader" let-additionals>
+                                <tr pRowGroupHeader>
+                                    <td class="bg-blue-50" colspan="3">
+                                        <span class="font-bold">{{ additionals.categoryName }}</span>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                                <tr (click)="addElement($event,item)">
+                                    <td>
+                                        {{ item.name }}
+                                    </td>
+                                    <td>
+                                        {{ item.salePrice | currency }}
+                                    </td>
+                                    <td>
+                                        <div class="p-inputgroup h-2rem">
+                                            <button type="button" pButton icon="pi pi-plus"
+                                                    (click)="addElementClick($event,item)"
+                                                    class="p-button-success p-button-sm"></button>
+                                            <button type="button" pButton icon="pi pi-minus"
+                                                    (click)="removeElementbyId($event,item)"
+                                                    class="p-button-danger"></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </p-tabPanel>
+                <p-tabPanel header="Combinaciones">
+                    <p-table #dt2 [value]="combos.content" sortField="categoryName" sortMode="single"
+                             [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader"
+                             [styleClass]="'p-datatable-sm'"
+                             [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
+                             groupRowsBy="categoryName" [tableStyle]="{'min-width': '30rem'}">
+                        <ng-template pTemplate="caption">
+                            <div class="flex">
+                                    <span class="p-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <input pInputText type="text"
+                                               (input)="dt1.filterGlobal($event.target, 'contains')"
+                                               placeholder="Producto"/>
+                                    </span>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th>Descrição do Producto</th>
+                                <th>Valor</th>
+                                <th></th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="groupheader" let-combos>
+                            <tr pRowGroupHeader>
+                                <td class="bg-blue-50" colspan="3">
+                                    <span class="font-bold">{{ combos.categoryName }}</span>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                            <tr (click)="addElement($event,item)">
+                                <td>
+                                    {{ item.name }}
+                                </td>
+                                <td>
+                                    {{ item.salePrice | currency }}
+                                </td>
+                                <td>
+                                    <div class="p-inputgroup h-2rem">
+                                        <button type="button" pButton icon="pi pi-plus"
+                                                (click)="addElementClick($event,item)"
+                                                class="p-button-success p-button-sm"></button>
+                                        <button type="button" pButton icon="pi pi-minus"
+                                                (click)="removeElementbyId($event,item)"
+                                                class="p-button-danger"></button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </p-tabPanel>
+            </p-tabView>
+        </div>
+        <div class="bg-yellow-100 flex flex-1 flex-column p-2">
+            <div class="flex justify-content-between mb-4">
+                <p class="mb-0 font-bold uppercase">{{ product.name }}</p>
+                <p class="mb-0  font-bold uppercase">{{ product.salePrice | currency }}</p>
+            </div>
+            <div class="flex flex-column gap-3 flex-1 mb-4">
+                <div class="flex justify-content-between w-full" *ngFor="let item of additionalSelected; let i = index">
+                    <p class="mb-0 font-bold">{{ item.name }}</p>
+                    <div class="align-items-center flex gap-2">
+                        <p class="mb-0  font-bold uppercase">{{ item.salePrice | currency }}</p>
+                        <p-button icon="pi pi-minus" class="mr-2" styleClass="p-button-danger p-button-sm"
+                                  (click)="removeElement($event, i)"
+                        ></p-button>
+                    </div>
+                </div>
+            </div>
+            <div class="flex align-self-end">
+                <p class="mb-0  font-bold uppercase">Total: <span>{{ totalAdditionals() | currency }}</span></p>
+            </div>
+        </div>
+    </div>
+
+    <ng-template dialog-footer>
+        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
+                icon="pi pi-fw pi-times"></button>
+        <button pButton pRipple class="p-button-primary flex-1 border-round" label="Adicionar"
+                (click)="addManyAdditionalProduct()"
+                icon="pi pi-fw pi-plus"></button>
+    </ng-template>
+<!--</p-dialog>-->

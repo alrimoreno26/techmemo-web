@@ -1,0 +1,23 @@
+<ng-template dialog-header>Create Unidade</ng-template>
+<form [formGroup]="form">
+    <div formResponsive width="450px">
+        <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+            <div class="col-12 lg:col-12">
+                <div class="grid formgrid">
+                    <div class="col-8 field">
+                        <input formControlName="name" formFieldValidation pInputText type="text" placeholder="Nome Unidade">
+                    </div>
+                    <div class="col-4 field">
+                        <input formControlName="code" formFieldValidation pInputText type="text" placeholder="Acrônimo">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+            icon="pi pi-fw pi-times" (click)="ref.close('Cancel')"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" [disabled]="form.invalid" label="Save" (click)="save()"
+            icon="pi pi-fw pi-check"></button>
+</ng-template>

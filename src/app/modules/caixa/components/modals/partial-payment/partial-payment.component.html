@@ -1,0 +1,55 @@
+<ng-template dialog-header><span class="p-dialog-title">Pagamento Parcial</span></ng-template>
+<div class="flex">
+    <p-table #dt1 [value]="listProducts"
+             [scrollable]="true" scrollHeight="400px"
+             rowGroupMode="subheader"
+             selectionMode="single"
+             [styleClass]="'p-datatable-sm'"
+             [(selection)]="selectedProducts"
+             groupRowsBy="orderId" [tableStyle]="{'min-width': '30rem'}">
+        <ng-template pTemplate="header">
+            <tr>
+                <th style="width: 4rem">
+                    <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                </th>
+                <th class="custom-th font-bold">Item Name</th>
+                <th class="custom-th font-bold">Unit</th>
+                <th class="custom-th font-bold">Quantia</th>
+                <th class="custom-th font-bold">Price</th>
+                <th class="custom-th font-bold">Valor Adicional</th>
+                <th class="custom-th font-bold" alignFrozen="right" pFrozenColumn>Price Total
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="groupheader" let-orders>
+            <tr pRowGroupHeader>
+                <td class="bg-blue-50" colspan="7">
+                    <span class="font-bold">{{ orders.clientName |clientName:orders.tableNumber }}</span>
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-product let-rowIndex="rowIndex">
+            <tr>
+                <td>
+                    <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                </td>
+                <td class="custom-td" style="min-width: 220px">{{ product.name | wrapText: 30 }}
+                </td>
+                <td class="custom-td">
+                    {{ product.amount }}
+                </td>
+                <td class="custom-td">{{ product.unit === 'KILO' ? product.peso_liquido : ('-') }}</td>
+                <td class="custom-td">{{ product.salePrice| currency }}</td>
+                <td class="custom-td">{{ product.totalAdditionalsValue| currency }}</td>
+                <td class="custom-td font-bold" alignFrozen="right"
+                    pFrozenColumn>{{ product.soldPerUnits ? ((product.salePrice + product.totalAdditionalsValue) * product.amount | currency) : (product.salePrice | currency) }}
+                </td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Pagar"
+            [disabled]="selectedProducts.length ===0"
+            (click)="ref.close(selectedProducts)"
+            icon="pi pi-fw pi-check"></button>
+</ng-template>

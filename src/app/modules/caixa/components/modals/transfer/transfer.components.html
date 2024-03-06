@@ -1,0 +1,67 @@
+<ng-template dialog-header><span class="p-dialog-title">Transferencia item do pedido</span></ng-template>
+<div class="flex flex-column" *ngIf="targetProducts.length > 0">
+    <div>
+        <p class="mb-0 font-bold">{{ config.data.clientName |clientName:config.data.tableNumber }}</p>
+    </div>
+    <div class="flex gap-3 align-items-center">
+        <div class="w-3">
+            <p class="mb-0 font-bold">Comanda Destino: </p>
+        </div>
+        <div class="flex gap-3 justify-content-between w-full">
+            <p-dropdown styleClass="w-full" [(ngModel)]="selectedOrder" appendTo="body" optionValue="id"
+                        [options]="orders" placeholder="Listagem do orders activa">
+                <ng-template pTemplate="selectedItem">
+                    <span>Mesa numero {{ selectedOrder.tableNumber }}</span>
+                </ng-template>
+                <ng-template let-option pTemplate="item">
+                    <ng-template [ngIf]="option.clientName" [ngIfElse]="byTable">
+                        <span>Order do -->{{ option.clientName }} -->Mesa numero {{ option.tableNumber }}</span>
+                    </ng-template>
+                    <ng-template #byTable>
+                        <span>Mesa numero {{ option.tableNumber }}</span>
+                    </ng-template>
+
+                </ng-template>
+            </p-dropdown>
+            <p-button label="Nova Comanda" icon="pi pi-plus"></p-button>
+        </div>
+    </div>
+    <div class="pt-3">
+        <p-table [value]="targetProducts" [(selection)]="selectedProducts" dataKey="customId" [tableStyle]="{'min-width': '50rem'}">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="width: 4rem">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </th>
+                    <th>Code</th>
+                    <th>Producto</th>
+                    <th>Qtde</th>
+                    <th>Valor Unitario</th>
+                    <th>Valor Adicional</th>
+                    <th>Valor Total</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td>
+                        <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                    </td>
+                    <td>{{product.code}}</td>
+                    <td>{{product.name}}</td>
+                    <td>{{ product.amount }}</td>
+                    <td>{{ product.salePrice| currency }}</td>
+                    <td>{{ product.totalAdditionalsValue| currency }}</td>
+                    <td>{{ product.soldPerUnits ? ((product.salePrice + product.totalAdditionalsValue) * product.amount | currency) : (product.salePrice | currency) }}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+    </div>
+</div>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Cancelar" (click)="ref.close()"
+            icon="pi pi-fw pi-trash"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Transferir"
+            [disabled]="!this.selectedOrder"
+            (click)="transferProduct()"
+            icon="pi pi-fw pi-check"></button>
+</ng-template>

@@ -1,0 +1,13 @@
+<c-spinner/>
+<div class="layout-wrapper" [ngClass]="containerClass" [class]="sidebarClass">
+    <div class="layout-content-wrapper">
+        <app-topbar [showMenu]="!user"></app-topbar>
+        <div class="layout-content">
+            <app-breadcrumb></app-breadcrumb>
+            <p-toast toastTranslate/>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <app-config></app-config>
+    <app-rightmenu></app-rightmenu>
+</div>

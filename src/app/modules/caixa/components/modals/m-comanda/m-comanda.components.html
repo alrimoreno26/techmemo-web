@@ -1,0 +1,22 @@
+<ng-template dialog-header><span class="p-dialog-title">Comenzar pedido</span></ng-template>
+<div class="grid">
+    <div class="col-12 field pb-0">
+        <input class="w-full" type="text" [(ngModel)]="clientName" pInputText placeholder="Nome do Cliente"/>
+    </div>
+    <div class="col-12 field pb-0" *ngIf="!this.config.data">
+        <p-dropdown styleClass="w-full" [(ngModel)]="selectedTable" appendTo="body"
+                    [options]="tables.listEntities$()" placeholder="Mesa da Orden">
+            <ng-template pTemplate="selectedItem">
+                <span>Mesa numero {{ selectedTable.number }}</span>
+            </ng-template>
+            <ng-template let-option pTemplate="item">
+                <span>Mesa numero {{ option.number }}</span>
+            </ng-template>
+        </p-dropdown>
+    </div>
+</div>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Criar"
+            (click)="criarComanda()"
+            icon="pi pi-fw pi-check"></button>
+</ng-template>
