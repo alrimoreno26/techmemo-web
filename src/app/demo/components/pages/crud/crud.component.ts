@@ -37,7 +37,7 @@ export class CrudComponent implements OnInit {
 
         this.cols = [
             { field: 'product', header: 'Product' },
-            { field: 'price', header: 'Price' },
+            { field: 'price', header: 'Preço' },
             { field: 'category', header: 'Category' },
             { field: 'rating', header: 'Reviews' },
             { field: 'inventoryStatus', header: 'Status' }

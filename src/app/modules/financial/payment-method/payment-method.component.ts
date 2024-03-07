@@ -15,7 +15,7 @@ export class PaymentMethodComponent extends BaseComponentDirective implements On
 
     override headersTable: HeadersTable[] = [
         {header: 'Nome', field: 'description', sort: true, class: 'text-center', visible: true, export: true},
-        {header: 'Activo', field: 'enable', sort: true, class: 'text-center', visible: true, export: true},
+        {header: 'Ativo', field: 'enable', sort: true, class: 'text-center', visible: true, export: true},
         {
             header: 'Permitir Troco',
             field: 'allowsChange',
@@ -40,7 +40,7 @@ export class PaymentMethodComponent extends BaseComponentDirective implements On
             visible: true,
             export: true
         },
-        {header: 'Actions', field: 'action', class: 'text-center', visible: true, export: false}
+        {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];
 
     constructor(public service: PaymentMethodService) {

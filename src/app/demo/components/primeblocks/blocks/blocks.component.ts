@@ -12,7 +12,7 @@ export class BlocksComponent{
             <span class="block text-6xl font-bold mb-1">Create the screens</span>
             <div class="text-6xl text-primary font-bold mb-3">your visitors deserve to see</div>
             <p class="mt-0 mb-4 text-700 line-height-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            
+
             <button pButton pRipple label="Learn More" type="button" class="mr-3 p-button-raised"></button>
             <button pButton pRipple label="Live Demo" type="button" class="p-button-outlined"></button>
         </section>
@@ -249,7 +249,7 @@ export class BlocksComponent{
         </div>
         <div class="mt-3 lg:mt-0">
             <button pButton pRipple label="Add" class="p-button-outlined mr-2" icon="pi pi-user-plus"></button>
-            <button pButton pRipple label="Save" icon="pi pi-check"></button>
+            <button pButton pRipple label="Salvar" icon="pi pi-check"></button>
         </div>
     </div>
 </div>`;
@@ -403,5 +403,5 @@ export class BlocksComponent{
     <div class="font-medium text-500 mb-3">Vivamus id nisl interdum, blandit augue sit amet, eleifend mi.</div>
     <div style="height: 150px" class="border-2 border-dashed surface-border"></div>
 </div>`;
-    
+
 }

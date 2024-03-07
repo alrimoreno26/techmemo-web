@@ -11,41 +11,41 @@ export class AppMenuComponent implements OnInit {
 
     ngOnInit() {
         this.model = [
+            // {
+            //     label: 'Dashboards',
+            //     icon: 'pi pi-home',
+            //     items: [
+            //         {
+            //             label: 'E-Commerce',
+            //             icon: 'pi pi-fw pi-home',
+            //             routerLink: ['/dashboard-commerce']
+            //         },
+            //         {
+            //             label: 'Banking',
+            //             icon: 'pi pi-fw pi-image',
+            //             routerLink: ['/dashboard-banking']
+            //         }
+            //     ]
+            // },
+            // { separator: true },
             {
-                label: 'Dashboards',
-                icon: 'pi pi-home',
-                items: [
-                    {
-                        label: 'E-Commerce',
-                        icon: 'pi pi-fw pi-home',
-                        routerLink: ['/dashboard-commerce']
-                    },
-                    {
-                        label: 'Banking',
-                        icon: 'pi pi-fw pi-image',
-                        routerLink: ['/dashboard-banking']
-                    }
-                ]
-            },
-            { separator: true },
-            {
-                label: 'Inventory',
+                label: 'Inventário',
                 icon: 'pi pi-fw pi-wallet',
                 items: [
                     {
-                        label: 'Product List',
+                        label: 'Productos',
                         icon: 'pi pi-fw pi-list',
                         routerLink: ['inventory/product']
                     },
                     {
-                        label: 'Category',
+                        label: 'Categorias',
                         icon: 'pi pi-fw pi-sitemap',
                         routerLink: ['inventory/category']
                     },
                     {
-                        label: 'Fornecedores',
+                        label: 'Proveedores',
                         icon: 'pi pi-fw pi-cart-plus',
-                        routerLink: ['inventory/fornecedores']
+                        routerLink: ['inventory/proveedores']
                     },
                 ]
             },
@@ -69,7 +69,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Vendas',
                         icon: 'mdi mdi-cash-check mdi-24px',
-                        routerLink: ['vendas']
+                        routerLink: ['vendas/histórico']
                     }
                 ]
             },

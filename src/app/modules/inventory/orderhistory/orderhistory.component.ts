@@ -12,7 +12,7 @@ export class OrderHistoryComponent {
             amount: '$123.00',
             products: [
                 {
-                    name: 'Product Name Placeholder A Little Bit Long One',
+                    name: 'Nome do Produto Placeholder A Little Bit Long One',
                     color: 'White',
                     size: 'Small',
                     price: '$50',
@@ -20,7 +20,7 @@ export class OrderHistoryComponent {
                     image: 'assets/demo/images/ecommerce/order-history/orderhistory-1.png'
                 },
                 {
-                    name: 'Product Name Placeholder A Little Bit Long One',
+                    name: 'Nome do Produto Placeholder A Little Bit Long One',
                     color: 'White',
                     size: 'Small',
                     price: '$50',
@@ -28,7 +28,7 @@ export class OrderHistoryComponent {
                     image: 'assets/demo/images/ecommerce/order-history/orderhistory-2.png'
                 },
                 {
-                    name: 'Product Name Placeholder A Little Bit Long One',
+                    name: 'Nome do Produto Placeholder A Little Bit Long One',
                     color: 'White',
                     size: 'Small',
                     price: '$63',
@@ -43,7 +43,7 @@ export class OrderHistoryComponent {
             amount: '$250.00',
             products: [
                 {
-                    name: 'Product Name Placeholder A Little Bit Long One',
+                    name: 'Nome do Produto Placeholder A Little Bit Long One',
                     color: 'White',
                     size: 'Small',
                     price: '$80',
@@ -51,7 +51,7 @@ export class OrderHistoryComponent {
                     image: 'assets/demo/images/ecommerce/order-history/orderhistory-4.png'
                 },
                 {
-                    name: 'Product Name Placeholder A Little Bit Long One',
+                    name: 'Nome do Produto Placeholder A Little Bit Long One',
                     color: 'White',
                     size: 'Small',
                     price: '$20',
@@ -59,7 +59,7 @@ export class OrderHistoryComponent {
                     image: 'assets/demo/images/ecommerce/order-history/orderhistory-5.png'
                 },
                 {
-                    name: 'Product Name Placeholder A Little Bit Long One',
+                    name: 'Nome do Produto Placeholder A Little Bit Long One',
                     color: 'White',
                     size: 'Small',
                     price: '$150',

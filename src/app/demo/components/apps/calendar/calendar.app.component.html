@@ -7,7 +7,7 @@
         </ng-template>
         <ng-template pTemplate="content">
             <div *ngIf="view === 'display'">
-                <span class="text-900 font-semibold block mb-2">Description</span>
+                <span class="text-900 font-semibold block mb-2">Descrição</span>
                 <span class="block mb-3">{{changedEvent.description}}</span>
 
                 <div class="grid">
@@ -93,7 +93,7 @@
 
         <ng-template pTemplate="footer">
             <button pButton *ngIf="view === 'display'" label="Edit" icon="pi pi-pencil" (click)="onEditClick()"></button>
-            <button pButton *ngIf="view === 'new' || view === 'edit'" label="Save" icon="pi pi-check" (click)="handleSave()" [disabled]="!changedEvent.start || !changedEvent.end"></button>
+            <button pButton *ngIf="view === 'new' || view === 'edit'" label="Salvar" icon="pi pi-check" (click)="handleSave()" [disabled]="!changedEvent.start || !changedEvent.end"></button>
         </ng-template>
     </p-dialog>
 </div>

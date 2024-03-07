@@ -4,7 +4,12 @@ import {VendasComponent} from "./vendas.component";
 
 const routes: Routes = [
     {
-        path: '', component: VendasComponent
+        path: '', component: VendasComponent, children: [
+            {
+                path: 'historico',
+                component: VendasComponent
+            }
+        ]
     }
 
 ];
