@@ -20,5 +20,7 @@ jobs:
 
     - name: Build the Docker image
       run: docker build -t techzilla-web .
+    - name: Create tag for build
+      run: docker tag -t techzilla-web:latest armoreno2626/techzilla-web:latest .
     - name: Push the Docker image
-      run: docker push armoreno2606/techzilla-web:latest
+      run: docker push armoreno2626/techzilla-web:latest
