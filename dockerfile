@@ -1,11 +1,12 @@
+# Builder Stage
+FROM node:latest as node
+WORKDIR /app
+COPY . .
+RUN npm install --force
+RUN npm run build --production
+
 # Use an official Nginx image as the base image
 FROM nginx
-
-# Copy the built Angular app to the appropriate location in the container
-COPY dist/techzilla /usr/share/nginx/html
-
-# Expose port 80 for the Nginx server
+COPY --from=node /app/dist/techzilla-web /usr/share/nginx/html
 EXPOSE 9080
-
-# Start the Nginx server when the container starts
 CMD ["nginx", "-g", "daemon off;"]
