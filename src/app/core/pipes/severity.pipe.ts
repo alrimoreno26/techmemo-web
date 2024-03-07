@@ -14,9 +14,10 @@ export class SeverityPipe implements PipeTransform {
   transform(value: string): 'success' | 'warning' | 'danger' | 'info' {
     switch (value) {
         case productType.SIMPLE:
-        case 'ACTIVE':
+        case 'PAID':
         return 'success';
       case productType.COMBO:
+      case 'IN_PAYMENT':
         return 'warning';
         case 'CLOSED':
             return 'danger';

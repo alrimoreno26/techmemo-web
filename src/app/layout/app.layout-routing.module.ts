@@ -41,6 +41,11 @@ const routes: Routes = [
                 data: {breadcrumb: 'Comandas'},
                 loadChildren: () => import('./../modules/caixa/caixa.module').then(m => m.CaixaModule)
             },
+            {
+                path: 'security',
+                data: {breadcrumb: 'Comandas'},
+                loadChildren: () => import('./../modules/security/security.module').then(m => m.SecurityModule)
+            },
         ]
     }
 ]

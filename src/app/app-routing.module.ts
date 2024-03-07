@@ -1,6 +1,5 @@
 import {NgModule} from '@angular/core';
 import {ExtraOptions, RouterModule, Routes} from '@angular/router';
-import {AppLayoutComponent} from './layout/app.layout.component';
 
 const routerOptions: ExtraOptions = {
     anchorScrolling: 'enabled'
@@ -13,9 +12,13 @@ const routes: Routes = [
         data: {breadcrumb: 'Auth'},
         loadChildren: () => import('./demo/components/auth/auth.module').then(m => m.AuthModule)
     },
+    // {
+    //     path: 'landing',
+    //     loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule)
+    // },
     {
-        path: 'landing',
-        loadChildren: () => import('./demo/components/landing/landing.module').then(m => m.LandingModule)
+        path: ':name',
+        loadChildren: () => import('./modules/shops/market/market.module').then(c => c.MarketModule)
     },
     {
         path: 'notfound',

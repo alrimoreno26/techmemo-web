@@ -8,6 +8,10 @@ const routes: Routes = [
             {
                 path: 'configuration',
                 loadChildren: () => import('./configuration/shops-configuration.module').then(c => c.ShopsConfigurationModule)
+            },
+            {
+                path: ':name',
+                loadChildren: () => import('./market/market.module').then(c => c.MarketModule)
             }
         ]
     }

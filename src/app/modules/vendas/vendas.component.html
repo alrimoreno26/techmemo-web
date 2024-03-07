@@ -1,4 +1,26 @@
 <div class="card m-3">
+    <div class="grid">
+        <div class="col-12 md:col-4" *ngFor="let metric of metrics">
+            <div class="card flex w-full relative h-14rem overflow-hidden" (mouseenter)="show(btn)"
+                 (mouseleave)="hide(btn)">
+                <div class="flex w-full justify-content-between p-1">
+                    <div>
+                        <span class="block white-space-nowrap font-semibold text-2xl">{{ metric.title }}</span>
+                    </div>
+                    <div class="text-right">
+                            <span class="block font-semibold text-xl white-space-nowrap text-3xl">
+                                {{metric.value | currency}}
+                            </span>
+                    </div>
+                </div>
+                <img [src]="'assets/demo/images/dashboard/' + metric.image +'.svg'"
+                     class="absolute w-full bottom-0 left-0">
+                <button #btn pButton pRipple type="button" label="View Details" icon="pi pi-eye font-semibold"
+                        iconPos="right" class="p-button-rounded p-button-secondary font-semibold absolute hidden"
+                        style="border-radius: 50px; left: 36%; bottom: 10%;"></button>
+            </div>
+        </div>
+    </div>
     <p-table
         #dtOrders
         [value]="storeServices.listEntities$()"
@@ -38,10 +60,13 @@
                                 </div>
                             </ng-template>
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-calendar [(ngModel)]="rangeDates" selectionMode="range" [readonlyInput]="true"></p-calendar>
+                                <p-calendar [(ngModel)]="rangeDates" selectionMode="range"
+                                            [readonlyInput]="true"></p-calendar>
                                 <div class="flex pt-3 justify-content-between gap-5">
-                                    <button pButton pRipple class="w-7 p-button-danger p-button-outlined" label="Limpar"></button>
-                                    <button pButton pRipple class="w-7 p-button-primary p-button-outlined" label="Aplicar" (click)="applyFilter('created')"></button>
+                                    <button pButton pRipple class="w-7 p-button-danger p-button-outlined"
+                                            label="Limpar"></button>
+                                    <button pButton pRipple class="w-7 p-button-primary p-button-outlined"
+                                            label="Aplicar" (click)="applyFilter('created')"></button>
                                 </div>
                             </ng-template>
 
@@ -57,7 +82,32 @@
                 <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Usuario
                     Criacao
                 </th>
-                <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Estado
+                <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                    <div class="flex align-items-center">
+                        Estado
+                        <p-columnFilter field="state" display="menu"
+                                        [showMatchModes]="false"
+                                        [showClearButton]="false"
+                                        [showApplyButton]="false"
+                                        [showButtons]="false"
+                                        [showOperator]="false"
+                                        [showAddButton]="false">
+                            <ng-template pTemplate="header">
+                                <div class="px-3 pt-3 pb-0">
+                                    <span class="font-bold">Estado</span>
+                                </div>
+                            </ng-template>
+                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
+                                            placeholder="Selecione">
+                                    <ng-template let-option pTemplate="item">
+                                        <p-tag [value]="option.label |translate"
+                                               [severity]="option.value | severity"></p-tag>
+                                    </ng-template>
+                                </p-dropdown>
+                            </ng-template>
+                        </p-columnFilter>
+                    </div>
                 </th>
                 <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                 </th>
@@ -93,7 +143,7 @@
                     -
                 </td>
                 <td class="text-center">
-                    <p-badge [value]="order.state" [severity]="order.state | severity"></p-badge>
+                    <p-badge [value]="order.state | translate" [severity]="order.state | severity"></p-badge>
                 </td>
                 <td class="text-center">
                     <p-button icon="mdi mdi-eye-circle-outline mdi-24px"
@@ -108,7 +158,8 @@
 <p-sidebar [(visible)]="storeServices.showSidebar" position="right"
            (onHide)="closeSidebar()"
            [style]="{'width': '650px'}">
-    <ng-template pTemplate="header">Detalhes do pedido Nº: <span class="mb-0 font-bold"> {{storeServices.details$().code}}</span></ng-template>
+    <ng-template pTemplate="header">Detalhes do pedido Nº: <span
+        class="mb-0 font-bold"> {{ storeServices.details$().code }}</span></ng-template>
     <ng-template pTemplate="content">
         <p-table [value]="storeServices.details$().products|| []" [scrollable]="true"
                  [styleClass]="'p-datatable-sm'">
@@ -181,6 +232,5 @@
             </ng-template>
         </p-table>
     </ng-template>
-    <ng-template pTemplate="footer">Footer Content</ng-template>
-
+    <!--    <ng-template pTemplate="footer">Footer Content</ng-template>-->
 </p-sidebar>

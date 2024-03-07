@@ -7,8 +7,6 @@ import {MPaymentMethodComponent} from "../modals/payment-method/payment-method.c
 import {PaymentStructureTO} from "../../../../core/models/financial";
 import {MPartialPaymentComponent} from "../modals/partial-payment/partial-payment.component";
 import {CreatePaymentTransactionTO} from "../../../../core/models/orders";
-import {values} from "lodash";
-
 @Component({
     selector: 'app-keypad',
     templateUrl: './keypad.components.html'

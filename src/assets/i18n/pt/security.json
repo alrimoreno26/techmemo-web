@@ -1,0 +1,97 @@
+{
+  "security": {
+    "role": {
+      "labels": {
+        "name": "Nome",
+        "description": "Descricão",
+        "permission": "Autoridade",
+        "read": "Leitura",
+        "write": "Escrita",
+        "modify": "Modificar",
+        "delete": "Deletar",
+        "operationArea": "Área de Operação"
+      },
+      "select": {
+        "BACKOFFICE": "Backoffice",
+        "CLIENT": "Cliente",
+        "ENTREPRENEUR": "Empreendedor",
+        "PARTNER": "Parceiro",
+        "SECURITY": "Segurança",
+        "CURATOR": "Curador"
+      }
+    },
+    "user": {
+      "labels": {
+        "email": "Email",
+        "name": "Nome",
+        "phone": "Telefone",
+        "created": "Criado",
+        "state": "Estado",
+        "cpf": "CPF",
+        "role": "Autoridade",
+        "codeCountryPhone": "Código País",
+        "reset": "Reiniciar Classificação",
+        "change": "Mudar",
+        "generatePassword": "Alterar a senha",
+        "newPassword": "Nova Senha",
+        "oldPassword": "Senha Antiga",
+        "repeatPassword": "Repita a senha"
+      },
+      "tooltip": {
+        "state": "Ativar ou desativar o usuário",
+        "changePassword": "Gerar senha",
+        "reloadUser": "Funcionalidade para reiniciar o usuário usado em apresentações"
+      },
+      "messages": {
+        "enabled": "Usuário habilitado",
+        "disabled": "Usuário desabilitado",
+        "confirmation": "Confirmação",
+        "message": "Tem certeza de que deseja prosseguir?",
+        "reset": "Todas as classificações foram reiniciadas",
+        "generatePassword": "A nova senha foi gerada"
+      }
+    },
+    "identification": {
+      "labels": {
+        "name": "Nome",
+        "email": "Correio",
+        "role": "Autoridade",
+        "intensity": "Intenção",
+        "enabled": "Estado",
+        "documentType": "Tipo de documento",
+        "state": "Estado",
+        "approved": "Aprovado",
+        "rejected": "Rejeitado",
+        "created": "Criado"
+      },
+      "tooltip": {
+        "search": "Analise os dados"
+      },
+      "messages": {
+        "userApproved": "O usuário foi aprovado com sucesso"
+      }
+    },
+    "profile": {
+      "tabs": {
+        "personal": "Dados pessoais",
+        "security": "Seguridad",
+        "bank": "Dados bancário",
+        "contact": "Contactos"
+      },
+      "labels": {
+        "email": "Email",
+        "name": "Nome",
+        "phone": "Telefone",
+        "state": "Estado",
+        "cpf": "CPF",
+        "address1": "Endereço",
+        "address2": "Complemento",
+        "municipality": "Cidade",
+        "number": "Número",
+        "uf": "Estado",
+        "zip": "CEP",
+        "neighborhood": "Barrio"
+      }
+    }
+  }
+}
