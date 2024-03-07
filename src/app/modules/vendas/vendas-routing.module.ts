@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '', component: VendasComponent, children: [
             {
                 path: 'historico',
-                component: VendasComponent
+                loadChildren: () => import('./components/historico-vendas.module').then(c => c.HistoricoVendasModule)
             }
         ]
     }

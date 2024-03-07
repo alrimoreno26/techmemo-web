@@ -69,7 +69,7 @@ export class AppMenuComponent implements OnInit {
                     {
                         label: 'Vendas',
                         icon: 'mdi mdi-cash-check mdi-24px',
-                        routerLink: ['vendas/histórico']
+                        routerLink: ['vendas/historico']
                     }
                 ]
             },

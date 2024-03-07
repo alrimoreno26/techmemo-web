@@ -2,6 +2,12 @@
     "SIMPLE": "Produto",
     "ADDITIONAL": "Adicional",
     "COMBO": "Combinação",
+    "PAID": "Pago",
+    "IN_PAYMENT": "En Pagamento",
+    "ACTIVE": "Ativa",
+    "CANCELLED": "Cancelado",
+    "CLOSED": "Fechado",
+    "FINISHED": "Terminada",
     "networkError": {
         "code0": "Erro Desconhecido",
         "code400": "Solicitação inválida, formulário incorreto",
