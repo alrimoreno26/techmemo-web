@@ -4,7 +4,12 @@ import {VendasComponent} from "./vendas.component";
 
 const routes: Routes = [
     {
-        path: '', component: VendasComponent
+        path: '', component: VendasComponent, children: [
+            {
+                path: 'historico',
+                loadChildren: () => import('./components/historico-vendas.module').then(c => c.HistoricoVendasModule)
+            }
+        ]
     }
 
 ];

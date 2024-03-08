@@ -15,8 +15,8 @@ export class FornecedoresComponent extends BaseComponentDirective {
         {header: 'Document', field: 'document', pipe: 'cpfCnpj', class: 'text-center', visible: true, export: true},
         {header: 'Nome', field: 'identification', class: 'text-center', visible: true, export: true},
         {header: 'E-mail', field: 'email', class: 'text-center', visible: true, export: true},
-        {header: 'Phone', field: 'phone', pipe: 'tel', class: 'text-center', visible: true, export: true},
-        {header: 'Actions', field: 'action', class: 'text-center', visible: true, export: false}
+        {header: 'Teléfono', field: 'phone', pipe: 'tel', class: 'text-center', visible: true, export: true},
+        {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];
 
     constructor(public categoryService: SupplierService) {

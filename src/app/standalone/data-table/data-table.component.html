@@ -1,18 +1,18 @@
 <div [ngClass]="{'justify-content-between': showCreate, 'justify-content-end': !showCreate}"
      class="sm:flex align-items-center mb-3">
     <button (click)="createItem()" *ngIf="showCreate && !itemsSplit?.length"
-            class="p-button-outlined" icon="mdi {{iconCreate}}" label="Create"
+            class="p-button-outlined" icon="mdi {{iconCreate}}" label="Criar"
             pButton
             type="button"></button>
     <p-splitButton (onClick)="createItem()" *ngIf="showCreate && itemsSplit?.length"
-                   [model]="itemsSplit" appendTo="body" icon="mdi {{iconCreate}}" label="Create"
+                   [model]="itemsSplit" appendTo="body" icon="mdi {{iconCreate}}" label="Criar"
                    styleClass="p-button-outlined"
     ></p-splitButton>
     <div>
     <span class="p-input-icon-left">
       <i class="pi pi-search"></i>
       <input #inputSearch (input)="setGlobalFilter($event, dt)" pInputText
-             placeholder="Search" type="text"/>
+             placeholder="Vamos pesquisar" type="text"/>
     </span>
         <button (click)="refreshContentData(dt)" *ngIf="refreshBtn"
                 class="ml-2 p-button-rounded p-button-text" icon="pi pi-replay" pButton
@@ -42,7 +42,7 @@
                                 </div>
                             </ng-template>
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-dropdown [(ngModel)]="selectedType" [options]="[productType.ADDITIONAL,productType.COMBO,productType.SIMPLE]" placeholder="Tipo de produto" [filter]="false"
+                                <p-dropdown [(ngModel)]="selectedType" [options]="[productType.ADDITIONAL,productType.COMBO,productType.SIMPLE]" placeholder="Classificação de produto" [filter]="false"
                                                (onChange)="filter($event.value)">
                                     <ng-template pTemplate="selectedItem">
                                         <div class="inline-block vertical-align-middle">

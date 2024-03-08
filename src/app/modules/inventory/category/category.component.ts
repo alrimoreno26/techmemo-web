@@ -18,7 +18,7 @@ export class CategoryComponent extends BaseComponentDirective {
     override headersTable: HeadersTable[] = [
         {header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true, export: true},
         {
-            header: 'Description',
+            header: 'Descrição',
             field: 'description',
             pipe: 'sanitizeHtml',
             sort: true,
@@ -26,7 +26,7 @@ export class CategoryComponent extends BaseComponentDirective {
             visible: true,
             export: true
         },
-        {header: 'Actions', field: 'action', class: 'text-center', visible: true, export: false}
+        {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];
 
     constructor(public categoryService: StoreCategoryService, private http: HttpClient,) {

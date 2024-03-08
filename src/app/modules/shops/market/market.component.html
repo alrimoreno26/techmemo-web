@@ -1,0 +1,67 @@
+<div class="service-box wow fadeInUp top-margin-all"
+     style="visibility: visible; animation-name: fadeInUp;">
+    <div class="align-items-center justify-content-center flex">
+        <div class="promo-item">
+            <div class="grid">
+                <div class="md:col-3 service-item sm:col-6 text-center">
+                    <div class="service">
+                        <div class="icon-shipping service-icon-foor">
+                            <i class="mdi mdi-moped-electric-outline mdi-48px"></i>
+                        </div>
+                        <div class="service-content"><h5
+                            class="mb-0 promo-title"
+                        >Free shipping</h5><span class="promo-desc">On order over $150</span></div>
+                    </div>
+                </div>
+                <div class="md:col-3 service-item sm:col-6 text-center">
+                    <div class="service">
+                        <div class="icon-wallet service-icon-foor">
+                            <i class="mdi mdi-cash-sync mdi-48px"></i>
+                        </div>
+                        <div class="service-content"><h5
+                            class="mb-0 promo-title"
+                        >Cash On
+                            Delivery</h5><span
+                            class="promo-desc">100% money back guarantee</span></div>
+                    </div>
+                </div>
+                <div class="md:col-3 service-item sm:col-6 text-center">
+                    <div class="service">
+                        <div class="icon-gift service-icon-foor">
+                            <i class="mdi mdi-gift-open-outline mdi-48px"></i>
+                        </div>
+                        <div class="service-content"><h5
+                            class="mb-0 promo-title"
+                        >Special Gift
+                            Card</h5><span class="promo-desc">Offer special bonuses with gift</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-3 service-item sm:col-6 text-center">
+                    <div class="service">
+                        <div class="icon-customer-service service-icon-foor">
+                            <i class="mdi mdi-face-agent mdi-48px"></i>
+                        </div>
+                        <div class="service-content"><h5
+                            class="mb-0 promo-title"
+                        >24/7 customer
+                            service</h5><span class="promo-desc">Call us 24/7 at 123-456-789</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="flex justify-content-center gap-4 pt-5">
+    <div class="flex align-items-center bg-green-100" style="border-radius: 50px;"
+         *ngFor="let cat of storeCategoryService.listEntities$()">
+        <div
+            class="bg-green-500 inline-flex align-items-center justify-content-center mr-3 h-3rem w-3rem border-circle">
+            <i class="pi pi-refresh text-white text-2xl"></i>
+        </div>
+        <span class="text-green-900 text-lg font-medium"> {{ cat.name }}</span></div>
+</div>
+
+

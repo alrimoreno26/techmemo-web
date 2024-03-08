@@ -1,4 +1,4 @@
-import {Component, effect, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, effect, OnInit} from "@angular/core";
 import {CaixaService} from "../../../services/caixa.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 

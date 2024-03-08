@@ -23,18 +23,18 @@ export class ProductComponent extends BaseComponentDirective {
             sort: true, class: 'text-center', visible: true, export: true, width: 210
         },
         {
-            header: 'Tipo', field: 'type', filter:true,
+            header: 'Classificação', field: 'type', filter:true,
             sort: false, class: 'text-center', visible: true, export: true, width: 210
         },
         {
-            header: 'Price', field: 'costPrice', pipe: 'currency',
+            header: 'Preço', field: 'costPrice', pipe: 'currency',
             sort: true, class: 'text-center', visible: true, export: true, width: 210
         },
         {
             header: 'CFOP', sort: true, field: 'cfop',
             class: 'text-center', visible: true, export: true
         },
-        {header: 'Actions', field: 'action', class: 'text-center', visible: true, export: false}
+        {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];
 
     itemsSplit: MenuItem[] = [

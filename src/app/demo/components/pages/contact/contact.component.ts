@@ -5,7 +5,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
     templateUrl: './contact.component.html'
 })
 export class ContactComponent {
-    
+
     options: any;
 
     overlays: any[] = [];
@@ -27,7 +27,7 @@ export class ContactComponent {
     message: string = '';
 
     content: any[] = [
-        {icon: 'pi pi-fw pi-phone', title: 'Phone', info:'1 (833) 597-7538'},
+        {icon: 'pi pi-fw pi-phone', title: 'teléfono', info:'1 (833) 597-7538'},
         {icon: 'pi pi-fw pi-map-marker', title: 'Our Head Office', info:'Churchill-laan 16 II, 1052 CD, Amsterdam'},
         {icon: 'pi pi-fw pi-print', title: 'Fax', info:'3 (833) 297-1548'}
     ];

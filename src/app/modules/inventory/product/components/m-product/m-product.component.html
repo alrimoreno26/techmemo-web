@@ -21,7 +21,7 @@
                         <div class="col-12 lg:col-8">
                             <div class="grid formgrid">
                                 <div class="col-8 field">
-                                    <input pInputText type="text" placeholder="Product Name"
+                                    <input pInputText type="text" placeholder="Nome do Produto"
                                            formControlName="name" formFieldValidation>
                                 </div>
                                 <div class="col-4 field">
@@ -35,13 +35,13 @@
                                 </div>
 
                                 <div class="col-12 lg:col-4 field">
-                                    <p-inputNumber placeholder="Price Costo"
+                                    <p-inputNumber placeholder="Preço Costo"
                                                    [maxFractionDigits]="2" currency="BRL" formControlName="costPrice"
                                                    formFieldValidation
                                                    id="costPriceCombo" locale="pt-BR" mode="currency"></p-inputNumber>
                                 </div>
                                 <div class="col-12 lg:col-4 field">
-                                    <p-inputNumber placeholder="Precio Venda"
+                                    <p-inputNumber placeholder="Preço Venda"
                                                    [maxFractionDigits]="2" currency="BRL"
                                                    id="unitPriceCombo" locale="pt-BR" mode="currency"
                                                    formControlName="salePrice" formFieldValidation></p-inputNumber>
@@ -84,7 +84,7 @@
                                                 </th>
                                                 <th>Code</th>
                                                 <th>Name</th>
-                                                <th>Price</th>
+                                                <th>Preço</th>
                                                 <th>Quantity</th>
                                             </tr>
                                         </ng-template>
@@ -114,7 +114,7 @@
                                     </p-table>
                                 </div>
                                 <div class="col-12 field">
-                                    <h5>Description</h5>
+                                    <h5>Descrição</h5>
                                     <p-editor formControlName="description" [style]="{'height':'200px'}"></p-editor>
                                 </div>
 
@@ -169,7 +169,7 @@
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <span
-                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Fornecedor</span>
+                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Provedor</span>
                                 <div class="flex align-items-center">
                                     <div class="px-3 flex-1 py-1">
                                         <p-multiSelect [options]="supplierService.listEntities$()"
@@ -178,10 +178,10 @@
                                                        appendTo="body"
                                                        optionLabel="document"
                                                        optionValue="id"
-                                                       placeholder="Select a Fornecedor">
+                                                       placeholder="Selecione um provedor">
                                             <ng-template let-value pTemplate="selectedItems">
                                                 <ng-template [ngIf]="value === null || value.length === 0">
-                                                    <span>Select a Fornecedor</span>
+                                                    <span>Selecione um provedor</span>
                                                 </ng-template>
                                                 <ng-template [ngIf]="value !== null">
                                                     <div *ngFor="let option of value">
@@ -215,7 +215,7 @@
                         <div class="col-12 lg:col-8">
                             <div class="grid formgrid">
                                 <div class="col-8 field">
-                                    <input pInputText type="text" placeholder="Product Name"
+                                    <input pInputText type="text" placeholder="Nome do Produto"
                                            formControlName="name" formFieldValidation>
                                 </div>
                                 <div class="col-4 field">
@@ -229,7 +229,7 @@
                                 </div>
 
                                 <div class="col-12 lg:col-4 field">
-                                    <p-inputNumber placeholder="Price Costo"
+                                    <p-inputNumber placeholder="Preço Costo"
                                                    [maxFractionDigits]="2" currency="BRL" formControlName="costPrice"
                                                    formFieldValidation
                                                    id="costPrice" locale="pt-BR" mode="currency"></p-inputNumber>
@@ -306,7 +306,7 @@
                         <div class="w-full lg:w-3 xl:w-4 flex flex-column row-gap-3 pt-3">
                             <div class="border-1 surface-border border-round">
                                 <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                    <span>Active</span>
+                                    <span>Ativo</span>
                                     <p-inputSwitch class="flex" formControlName="enable"></p-inputSwitch>
                                 </p>
                             </div>
@@ -348,13 +348,13 @@
                             <div class="border-1 surface-border border-round">
                                 <span
                                     class="text-900 font-bold border-bottom-1 surface-border px-3 py-1 flex align-items-center"
-                                    style="height: 45px">Category</span>
+                                    style="height: 45px">Categoria</span>
                                 <div class="px-3 py-1">
                                     <p-dropdown [options]="categoryService.subCategory$()"
                                                 formControlName="categoryId"
                                                 optionValue="id"
                                                 optionLabel="name"
-                                                placeholder="Select a category"></p-dropdown>
+                                                placeholder="Selecione uma categoria"></p-dropdown>
                                 </div>
                             </div>
                             <div class="border-1 surface-border border-round">
@@ -365,13 +365,13 @@
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                    <span class="w-10">Alert Inventory</span>
+                                    <span class="w-10">Alerta de inventário</span>
                                     <p-inputNumber formControlName="quantityStockAlert"></p-inputNumber>
                                 </p>
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <span
-                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Fornecedor</span>
+                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Provedor</span>
                                 <div class="flex align-items-center">
                                     <div class="px-3 flex-1 py-1">
                                         <p-multiSelect [options]="supplierService.listEntities$()"
@@ -380,10 +380,10 @@
                                                        appendTo="body"
                                                        optionLabel="document"
                                                        optionValue="id"
-                                                       placeholder="Select a Fornecedor">
+                                                       placeholder="Selecione um provedor">
                                             <ng-template let-value pTemplate="selectedItems">
                                                 <ng-template [ngIf]="value === null || value.length === 0">
-                                                    <span>Select a Fornecedor</span>
+                                                    <span>Selecione um provedor</span>
                                                 </ng-template>
                                                 <ng-template [ngIf]="value !== null">
                                                     <div *ngFor="let option of value">
@@ -492,6 +492,6 @@
 <ng-template dialog-footer>
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
             icon="pi pi-fw pi-times"></button>
-    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Save" [disabled]="form.invalid"
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Salvar" [disabled]="form.invalid"
             (click)="save()" icon="pi pi-fw pi-check"></button>
 </ng-template>

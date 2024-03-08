@@ -7,35 +7,9 @@ import {StoreVendasServices} from "./service/store.vendas.services";
     templateUrl: './vendas.component.html',
     styleUrls: ['./vendas.component.scss']
 })
-export class VendasComponent extends BaseComponentDirective implements OnInit {
+export class VendasComponent {
 
-    rangeDates: Date[] | undefined;
-
-    constructor(public storeServices: StoreVendasServices) {
-        super()
-        this.storeServices.loadAll({lazy: {page: 0, count: 25}})
-        effect(() => {
-            console.log(this.storeServices.listEntities$())
-        });
-    }
-
-    ngOnInit() {
-    }
-    showDetails(order:any){
-        console.log(order)
-        this.storeServices.getDetails(order)
-        this.storeServices.hideShow(true);
-    }
-    closeSidebar(){
+    constructor() {
 
     }
-
-    applyFilter(type:string){
-        switch (type) {
-            case 'created':{
-                console.log(this.rangeDates)
-            }
-        }
-    }
-
 }

@@ -7,9 +7,9 @@ import {Subscription} from "rxjs";
 import {ShopsService} from "../service/shops.service";
 import {HttpClient} from "@angular/common/http";
 import * as XLSX from "xlsx";
-import {CategoryDto} from "../../../core/models";
 import {productType} from "../../../core/enums/product";
 import {ProductService} from "../../inventory/product/services/product.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -21,7 +21,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     enableQuantity: boolean
     searchingCEP: boolean = false;
     protected subscriptions: Subscription[] = [];
-
+    nome = 'alejandro';
     form: FormGroup;
 
     constructor(private fb: FormBuilder,
@@ -29,6 +29,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 private productService: ProductService,
                 private http: HttpClient,
                 private shopsServices: ShopsService,
+                private router: Router,
                 private cdRef: ChangeDetectorRef,) {
         super();
     }
@@ -152,5 +153,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         return response;
     }
 
-
+    goto() {
+        this.router.navigate(['loja', this.nome]);
+    }
 }

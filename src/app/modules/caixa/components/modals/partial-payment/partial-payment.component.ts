@@ -1,7 +1,5 @@
-import {Component, effect, HostListener, OnInit} from "@angular/core";
+import {Component, effect, OnInit} from "@angular/core";
 import {CaixaService} from "../../../services/caixa.service";
-import {map} from "rxjs";
-import {flatMap} from "lodash";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 
 @Component({
