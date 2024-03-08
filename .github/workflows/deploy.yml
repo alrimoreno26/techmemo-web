@@ -34,8 +34,8 @@ jobs:
                       sudo yum update -y
                       sudo yum install git -y
                       sudo yum install docker -y
-                      sudo usermod -a -G docker ssm-user
-                      id ssm-user
+                      sudo usermod -a -G docker ${{ secrets.EC2_USERNAME }}
+                      id ${{ secrets.EC2_USERNAME }}
                       sudo newgrp docker
                         
                       #Ativar docker
