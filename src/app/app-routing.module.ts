@@ -6,10 +6,10 @@ const routerOptions: ExtraOptions = {
 };
 
 const routes: Routes = [
-    {
-        path: ':name',
-        loadChildren: () => import('./modules/shops/market/market.module').then(c => c.MarketModule)
-    },
+    // {
+    //     path: ':name',
+    //     loadChildren: () => import('./modules/shops/market/market.module').then(c => c.MarketModule)
+    // },
     {
         path: 'notfound',
         loadChildren: () => import('./demo/components/notfound/notfound.module').then(m => m.NotfoundModule)

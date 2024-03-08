@@ -23,3 +23,17 @@ jobs:
       run: docker tag techzilla-web:latest armoreno2626/techzilla-web:latest
     - name: Push the Docker image
       run: docker push armoreno2626/techzilla-web:latest
+    - name: Deploy EC2 instance
+      uses: appleboy/ssh-action
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        script: |
+          docker stop techzilla-web || true
+          docker rm techzilla-web || true
+          docker pull armoreno2626/techzilla-web:latest
+          docker run -d -p 80:80 --name techzilla-web armoreno2626/techzilla-web:latest
+
+
+
