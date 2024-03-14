@@ -10,7 +10,7 @@ import {FormAuth, RefreshTokenTO, UserAuthenticated} from "../models/user";
 })
 export class AuthServices {
 
-  private basePath = buildUsersURL('');
+  private basePath = buildUsersURL('/v1');
 
   constructor(private httpClient: HttpClient) {
   }
