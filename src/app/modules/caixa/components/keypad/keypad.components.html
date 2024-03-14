@@ -16,8 +16,8 @@
                 <span class="text-xl">(F7) <br> Pagamento</span>
             </p-button>
             <p-button
-                (click)="voltarAtras()"
-                [disabled]="!disableAllFields"
+                (onClick)="voltarAtras()"
+                [disabled]="!disableAllFields || tableOrderClosed"
                 class="flex-1"
                 styleClass="w-full p-button-danger p-button-outlined flex-1 flex-column flex justify-content-center">
                 <i class="pi pi-times text-5xl"></i>

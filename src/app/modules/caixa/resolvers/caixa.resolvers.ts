@@ -14,7 +14,7 @@ export const caixaResolvers: ResolveFn<boolean> = () => {
             if (!loaded) {
                 store.dispatch(fromOrdersListActions.loadOrdersList({
                     lazy: {
-                        page: 0, count: 50, state: 'ACTIVE'
+                        page: 0, count: 50, state: ['ACTIVE', 'IN_PAYMENT', 'PAID', 'CLOSED']
                     }
                 }));
             }

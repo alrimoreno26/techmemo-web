@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card mt-3">
     <c-data-table [action]="true" [exportBtn]="false" [itemsSplit]="itemsSplit" (edit)="customEdit($event)"
                   [headers]="headersTable" [service]="productService" [showCreate]="true">
         <ng-template let-data let-i="rowIndex" tableRow="type">

@@ -25,9 +25,11 @@ export class StoreTablesServices extends StoreComponentService<TableTO> {
         this.patchState({raw: modify, finalize: false})
     }
 
-    finalizeOrder(orderId: string) {
-        this.tableService.finalizeOrder(orderId).subscribe(() => {
-            this.patchState({finalize: true})
+    changeStateTable(orderId: string,stateOrder:string) {
+        this.tableService.changeStateTable(orderId,stateOrder).subscribe(() => {
+            if(stateOrder === 'FREE'){
+                this.patchState({finalize: true})
+            }
         })
     }
 }

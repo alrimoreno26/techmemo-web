@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {of} from "rxjs";
 import {
-    addProductsOrders,
+    addProductsOrders, changeFieldStateOrders,
     createInTableOrders,
     createInTableOrdersSuccess,
     deleteProductsOrders,
@@ -61,6 +61,22 @@ export class CaixaEffects {
                         return of(
                             fromOrdersListActions.createInTableOrdersSuccess(data),
                             fromOrdersListActions.getByID({path: ['by-table'], id: {tableId: entity.tableId}})
+                        )
+                    }),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
+    changeFieldStateOrders$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.changeFieldStateOrders),
+            switchMap(({id, params}) =>
+                this.service.changeFieldState(id, params).pipe(
+                    switchMap((data) => {
+                        return of(
+                            fromOrdersListActions.getByID({path: [], id})
                         )
                     }),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))

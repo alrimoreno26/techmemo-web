@@ -50,4 +50,8 @@ export class OrdersService extends AbstractService<any> {
     payments(params: CreatePaymentTransactionTO[]) {
         return this.httpClient.post<any>(`${this.basePath}/payments`, params)
     }
+
+    changeFieldState(id: string, params: any) {
+        return this.httpClient.patch<any>(`${this.basePath}/${id}`, params)
+    }
 }

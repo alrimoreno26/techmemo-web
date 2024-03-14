@@ -2,6 +2,7 @@ import {environment} from "../../../environments/environment";
 
 const APIUrl: string = environment.apiURL;
 const APIOrdersUrl: string = environment.apiOrders;
+const APIUsersUrl: string = environment.apiUsers;
 
 /**
  * Retrieve the base URL associated
@@ -15,6 +16,10 @@ export const buildURL = (serviceUrl: string): string => {
 };
 export const buildOrderURL = (serviceUrl: string): string => {
     return `${APIOrdersUrl + serviceUrl}`;
+};
+
+export const buildUsersURL = (serviceUrl: string): string => {
+    return `${APIUsersUrl + serviceUrl}`;
 };
 
 export const onlyDigits = (value: string) => value.replace(/[^0-9]/g, '');
@@ -54,3 +59,14 @@ export function getErrorMessage(
     }
     return fallbackMessage;
 }
+export const getCookie = (value: string): string => {
+    const cookie = document.cookie.split('; ').find(f => f.startsWith(value + '='));
+    return cookie ? cookie.split('=')[1] : '';
+};
+
+export const setCookie = (key: string, value: string, maxAge: number = 7200) => {
+    const domain =  'localhost';
+    environment.production ?
+        document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; SameSite=None; Secure; Path=/;` :
+        document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`;
+};

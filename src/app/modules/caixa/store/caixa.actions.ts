@@ -41,6 +41,9 @@ export enum EntityActionTypes {
     MakePaymentsOrders = '[Orders] Make Payments Orders',
     MakePaymentsOrdersSuccess = '[Orders] Make Payments Orders Success',
 
+    ChangeFieldStateOrders = '[Orders] Change Field State Orders',
+    ChangeFieldStateOrdersSuccess = '[Orders] Change Field State Orders Success',
+
     OpenAddOrEdit = '[Orders] Open Add Or Edit Dialog',
 
 }
@@ -92,6 +95,8 @@ export const openAddOrEdit = createAction(EntityActionTypes.OpenAddOrEdit);
 export const loadNewProductsOrders = createAction(EntityActionTypes.LoadNewProductsOrders, props<{ pos: number }>());
 export const makePaymentsOrders = createAction(EntityActionTypes.MakePaymentsOrders, props<{ params: CreatePaymentTransactionTO[] }>());
 export const makePaymentsOrdersSuccess = createAction(EntityActionTypes.MakePaymentsOrdersSuccess, props<{ entity: any[] }>());
+export const changeFieldStateOrders = createAction(EntityActionTypes.ChangeFieldStateOrders, props<{ id: string, params: any }>());
+export const changeFieldStateOrdersSuccess = createAction(EntityActionTypes.ChangeFieldStateOrdersSuccess, props<{ entity: any[] }>());
 
 export const fromOrdersListActions = {
     loadOrdersList,
@@ -121,5 +126,7 @@ export const fromOrdersListActions = {
     transferProductsOrdersSuccess,
     makePaymentsOrders,
     makePaymentsOrdersSuccess,
+    changeFieldStateOrders,
+    changeFieldStateOrdersSuccess,
     loadNewProductsOrders
 };

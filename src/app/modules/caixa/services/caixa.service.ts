@@ -112,4 +112,8 @@ export class CaixaService extends BaseStoreServices<any> {
         this.store.dispatch(fromOrdersListActions.makePaymentsOrders({params}))
     }
 
+    changeFieldStateOrders(id:string, params: any){
+        this.store.dispatch(fromOrdersListActions.changeFieldStateOrders({id,params}))
+    }
+
 }

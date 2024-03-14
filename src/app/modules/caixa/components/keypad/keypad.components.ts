@@ -13,6 +13,7 @@ import {CreatePaymentTransactionTO} from "../../../../core/models/orders";
 })
 export class KeypadComponents implements OnInit {
     @Input() totalPayment: number = 0;
+    @Input() tableOrderClosed: boolean;
     @Output() confirmSell: EventEmitter<boolean> = new EventEmitter<boolean>()
     @Output() goBack: EventEmitter<boolean> = new EventEmitter<boolean>()
 

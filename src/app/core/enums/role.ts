@@ -1,3 +1,5 @@
+export const ACCESS_TOKEN = 'secure_access';
+export const REFRESH_TOKEN = 'secure_refresh';
 export enum domainEnum {
   ALL = 'ALL',
   ALERT = 'ALERT',
@@ -49,14 +51,4 @@ export enum permissionAuthorityTOEnum {
   WRITE = 'WRITE',
   MODIFY = 'MODIFY',
   DELETE = 'DELETE',
-}
-
-export enum featureSaasPkgEnum {
-  BigData = 'BigData',
-  SCR = 'SCR',
-  SPED = 'SPED',
-  SPED_PDF = 'SPED_PDF',
-  IRPF = 'IRPF',
-  Digital_Certificate = 'Digital_Certificate',
-  METHOD_K = 'METHOD_K'
 }

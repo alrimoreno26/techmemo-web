@@ -1,6 +1,6 @@
 <div class="grid">
 	<div class="col-12">
-		<div class="card">
+		<div class="card mt-3">
 			<h5>Filter Menu</h5>
 			<p-table #dt1 [value]="customers1" dataKey="id" [rows]="10" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll">
 				<ng-template pTemplate="caption">
@@ -142,7 +142,7 @@
 	</div>
 
 	<div class="col-12">
-		<div class="card">
+		<div class="card mt-3">
 			<h5>Frozen Columns</h5>
 			<p-toggleButton [(ngModel)]="idFrozen" [onIcon]="'pi pi-lock'" offIcon="pi pi-lock-open" [onLabel]="'Unfreeze Id'" offLabel="Freeze Id" [style]="{'width': '12rem'}"></p-toggleButton>
 
@@ -186,7 +186,7 @@
 	</div>
 
 	<div class="col-12">
-		<div class="card">
+		<div class="card mt-3">
 			<h5>Row Expand</h5>
 			<p-toast></p-toast>
 			<p-table [value]="products" dataKey="name" [expandedRowKeys]="expandedRows" responsiveLayout="scroll">
@@ -259,7 +259,7 @@
 	</div>
 
 	<div class="col-12">
-		<div class="card">
+		<div class="card mt-3">
 			<h5>Subheader Grouping</h5>
 			<p-table [value]="customers3" rowGroupMode="subheader" groupRowsBy="representative.name" sortField="representative.name" sortMode="single" (onSort)="onSort()" responsiveLayout="scroll" [scrollable]="true" scrollHeight="400px">
 				<ng-template pTemplate="header">

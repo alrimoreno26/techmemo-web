@@ -57,7 +57,7 @@ export interface LazyLoadData {
     count: number;
     first?: number;
     filter?: string;
-    state?: string;
+    state?: string[];
     sort?: string;
     direction?: any;
     type?: any;
