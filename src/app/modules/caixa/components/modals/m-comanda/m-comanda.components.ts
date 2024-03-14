@@ -34,9 +34,9 @@ export class MComandaComponents extends BaseModalComponentDirective implements O
         const param = {
             clientDocument: '',
             clientName: this.clientName,
-            tableId: this.config.data ? this.config.data.id : this.selectedTable.id
+            tableId: this.config.data ? this.config.data.id : this.selectedTable ? this.selectedTable.id : null
         }
-        this.config.data.inside ? this.caixaService.createInTableOrders(param) : this.caixaService.create(param);
+        this.config.data?.inside ? this.caixaService.createInTableOrders(param) : this.caixaService.create(param);
 
     }
 }

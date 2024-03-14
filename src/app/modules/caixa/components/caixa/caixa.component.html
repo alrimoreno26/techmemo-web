@@ -1,37 +1,37 @@
 <!--<app-print-nfe [product]="orders" [total]="comandaTotal()"></app-print-nfe>-->
-<main class="main_pos p-4 pb-0">
+<main class="main_pos p-4 pb-0" appFocus>
     <div class="grid">
         <div class="col-12 shadow-6">
             <div class="flex flex-1 w-full gap-3" style="width: 220px">
                 <p-button class="flex-1"
                           styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-print text-4xl"></i>
-                    <span class="text-lg">(F6) NFC-e</span>
+                    <span class="text-lg">(F4) NFC-e</span>
                 </p-button>
                 <p-button class="flex-1"
                           (onClick)="refreshOrders()"
                           styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-refresh text-4xl"></i>
-                    <span class="text-lg">(F6) Atualizar</span>
+                    <span class="text-lg">(F5) Atualizar</span>
                 </p-button>
                 <p-button
                     class="flex-1"
                     (onClick)="deleteAll()"
                     styleClass="w-full p-button-outlined p-button-danger flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-minus-circle text-4xl"></i>
-                    <span class="text-lg">(F7) Apagar</span>
+                    <span class="text-lg">(F6) Apagar</span>
                 </p-button>
                 <p-button
                     class="flex-1"
                     styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-print text-4xl"></i>
-                    <span class="text-lg">(F8) Cozinha</span>
+                    <span class="text-lg">(F7) Cozinha</span>
                 </p-button>
                 <p-button
                     class="flex-1"
                     styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-print text-4xl"></i>
-                    <span class="text-lg">(F9) Imprimir</span>
+                    <span class="text-lg">(F8) Imprimir</span>
                 </p-button>
                 <p-button
                     class="flex-1"
@@ -44,9 +44,10 @@
                 <p-button
                     class="flex-1"
                     (onClick)="transferOrders()"
+                    [disabled]="pagamento"
                     styleClass="w-full p-button-outlined p-button-warning flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-arrow-right-arrow-left text-4xl"></i>
-                    <span class="text-lg">(F9) Enviar</span>
+                    <span class="text-lg">(F10) Enviar</span>
                 </p-button>
                 <p-divider [layout]="'vertical'"></p-divider>
                 <p-button
@@ -54,7 +55,7 @@
                     class="flex-1"
                     styleClass="w-full p-button-outlined p-button-danger flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-times-circle text-4xl"></i>
-                    <span class="text-xl">(F9) Fechar</span>
+                    <span class="text-xl">(ESC) Fechar</span>
                 </p-button>
             </div>
         </div>
@@ -147,11 +148,24 @@
                             Orders:</h6>
                         <h6 class="text-4xl text-primary m-0">{{ comandaTotal() | currency }}</h6>
                     </div>
-                    <p-button styleClass="w-full flex align-items-center justify-content-center"
-                              (onClick)="goToPayment()"
-                              [disabled]="pagamento || comandaTotal() === 0">
-                        <span class="text-3xl">(F10) Efectuar Pagemento</span>
-                    </p-button>
+                    <div class="flex gap-3">
+                        <div class="flex-1">
+                            <p-button styleClass="w-full flex align-items-center justify-content-center p-button-danger p-button-raised"
+                                      (onClick)="fecharConta()"
+                                      [disabled]="pagamento">
+                                <span class="text-3xl">(F11) Fechar Conta</span>
+                            </p-button>
+                        </div>
+                        <div class="flex-1">
+                            <p-button styleClass="w-full flex align-items-center justify-content-center p-button-raised"
+                                      (onClick)="goToPayment()"
+                                      [disabled]="pagamento || comandaTotal() === 0">
+                                <span class="text-3xl">(F12) Efectuar Pagemento</span>
+                            </p-button>
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
 
@@ -172,8 +186,8 @@
                                                 class="text-900 font-medium text-xl">{{ selectedItem.name }}</span>
                                         </div>
                                         <span
-                                            class="text-primary text-xl font-bold">{{ selectedItem.unit_cost | currency }}
-                                            {{ selectedItem.soldPerUnits ? "Unit" : " / Kg" }}</span>
+                                            class="text-primary text-xl font-bold">{{ selectedItem.salePrice | currency }}
+                                            {{ selectedItem.soldPerUnits ? "Unit" : " / " + selectedItem.unitMeasurementName+"("+selectedItem.unitMeasurementCode+")" }}</span>
                                     </div>
                                 </div>
                             </ng-template>
@@ -185,23 +199,31 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="pagamento">
-                <app-keypad [totalPayment]="comandaTotal()" (confirmSell)="sellConfirmed($event)" (goBack)="goBack($event)"></app-keypad>
+                <app-keypad [totalPayment]="comandaTotal()" (confirmSell)="sellConfirmed($event)"
+                            [tableOrderClosed]="oneClosed"
+                            (goBack)="goBack($event)"></app-keypad>
             </ng-container>
         </div>
     </div>
 </main>
-<p-dialog header="Confirm Weight Balanca" [(visible)]="visible" [modal]="true" [style]="{ width: '25vw' }"
+<p-dialog header="Confirmar Peso de Balanço" [(visible)]="visible" [modal]="true" [style]="{ width: '25vw' }"
           [draggable]="false" [resizable]="false">
-    <div class="text-center">
-        <p class="border-round font-bold mb-0 shadow-4 text-7xl text-red-500">
-            {{ weightScale }}
-        </p>
+    <div class="flex justify-content-center mb-3">
+        <p-selectButton [options]="weightOptions" [(ngModel)]="value" optionLabel="label"
+                        optionValue="value"></p-selectButton>
+    </div>
+    <div class="text-center flex flex-column justify-content-center align-items-center">
+        <p-inputNumber
+            inputStyleClass="w-1 border-0 text-7xl text-red-500 font-bold shadow-4 text-center"
+            [disabled]="setDisabled()"
+            [(ngModel)]="weightScale" inputId="locale-user" [minFractionDigits]="3"></p-inputNumber>
         <small>Peso Kg</small>
     </div>
     <ng-template pTemplate="footer">
-        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Discard"
-                icon="pi pi-fw pi-trash"></button>
-        <button (click)="confirmWeight()" pButton pRipple class="p-button-primary flex-1 border-round" label="Salvar"
+        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+                icon="pi pi-fw pi-times"></button>
+        <button (click)="confirmWeight()" [disabled]="weightScale === null" pButton pRipple
+                class="p-button-primary flex-1 border-round" label="Salvar"
                 icon="pi pi-fw pi-check"></button>
     </ng-template>
 </p-dialog>
@@ -212,9 +234,9 @@
             <label for="username">Nome do Cliente</label>
         </span>
     <ng-template pTemplate="footer">
-        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Discard"
+        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
                 (click)="discardNameClient()"
-                icon="pi pi-fw pi-trash"></button>
+                icon="pi pi-fw pi-times"></button>
         <button (click)="confirmNameClient()" pButton pRipple class="p-button-primary flex-1 border-round"
                 label="Adicionar"
                 icon="pi pi-fw pi-check"></button>

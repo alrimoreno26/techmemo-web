@@ -11,7 +11,7 @@ export class TablesService extends AbstractService<any> {
         super(httpClient, buildOrderURL('/v1/orders/tables'));
     }
 
-    finalizeOrder(orderId:string){
-        return this.httpClient.patch<any>(this.basePath + '/' + orderId, {state: 'FREE'})
+    changeStateTable(orderId:string, stateOrder: string){
+        return this.httpClient.patch<any>(this.basePath + '/' + orderId, {state: stateOrder})
     }
 }

@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="col-12 md:col-5 xl:col-3">
-        <div class="card">
+        <div class="card mt-3">
             <div class="text-900 text-xl font-semibold mb-3">Account Storage</div>
             <p-chart type="doughnut" [plugins]="chartPlugins" id="country-chart" [data]="fileChart" [options]="fileChartOptions" [style]="{'width': '75%'}"></p-chart>
             <div class="mt-5 flex gap-3">
@@ -29,7 +29,7 @@
             </div>
         </div>
 
-        <div class="card">
+        <div class="card mt-3">
             <div class="text-900 text-xl font-semibold mb-3">Categories</div>
             <ul class="list-none p-0 m-0">
                 <li class="p-3 mb-3 flex align-items-center justify-content-between cursor-pointer border-round bg-indigo-50 text-indigo-900">
@@ -55,13 +55,13 @@
                 </li>
             </ul>
         </div>
-        
+
         <div class="card p-0">
             <app-file-uploader></app-file-uploader>
         </div>
     </div>
     <div class="col-12 md:col-7 xl:col-9">
-        <div class="card">
+        <div class="card mt-3">
             <div class="text-900 text-xl font-semibold mb-3">Folders</div>
             <div class="grid">
                 <div *ngFor="let folder of folders" class="col-12 md:col-6 xl:col-4">
@@ -75,7 +75,7 @@
                 </div>
             </div>
         </div>
-        <div class="card">
+        <div class="card mt-3">
             <div class="text-900 text-xl font-semibold mb-3">Recent Uploads</div>
             <p-table responsiveLayout="scroll" #dt [value]="files" [rows]="8" [paginator]="true">
                 <ng-template pTemplate="header">

@@ -56,6 +56,7 @@ import {PaymentMethodService} from "../financial/service/payment-method.service"
 import {MPartialPaymentComponent} from "./components/modals/partial-payment/partial-payment.component";
 import {MCancelProductsComponents} from "./components/modals/cancel_products/cancel-products.components";
 import {ToastModule} from "primeng/toast";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
     imports: [
@@ -95,6 +96,7 @@ import {ToastModule} from "primeng/toast";
         CheckboxModule,
         DropdownModule,
         ToastModule,
+        TranslateModule,
     ],
     declarations: [
         CaixaComponent,

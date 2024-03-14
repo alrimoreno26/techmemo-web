@@ -26,8 +26,9 @@
                  *ngFor="let item of service.listEntities$(); let i=index">
                 <p-panel #pnl>
                     <ng-template pTemplate="header">
-                        <div class="flex align-items-center gap-2">
+                        <div class="flex align-items-center w-full  justify-content-between gap-2">
                             <span class="font-bold">{{getTitleComanda(item)}}</span>
+                            <p-tag value="{{item.state | translate}}" [severity]="item.state | severity"></p-tag>
                         </div>
                     </ng-template>
                     <div>
@@ -83,7 +84,7 @@
                                 <div
                                     class="bg-blue-100 border-round inline-flex align-items-center justify-content-center"
                                     style="width: 52px; height: 52px;">
-                                    <ng-template [ngIf]="item.state === tableState.BUSY || item.state === tableState.BUSY_WITH_UNION" [ngIfElse]="free">
+                                    <ng-template [ngIf]="item.state === tableState.CLOSED || item.state === tableState.BUSY || item.state === tableState.BUSY_WITH_UNION" [ngIfElse]="free">
                                         <img src="assets/layout/images/tables_busy.svg" width="38" height="38">
                                     </ng-template>
                                     <ng-template #free>

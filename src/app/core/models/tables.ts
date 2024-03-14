@@ -1,6 +1,7 @@
 export enum tableState {
     FREE = 'FREE',
     BUSY = 'BUSY',
+    CLOSED = 'CLOSED',
     BUSY_WITH_UNION = 'BUSY_WITH_UNION'
 }
 

@@ -38,11 +38,11 @@ jobs:
                       sudo usermod -a -G docker ${{ secrets.EC2_USERNAME }}
                       id ${{ secrets.EC2_USERNAME }}
                       sudo newgrp docker
-                        
+
                       #Ativar docker
                       sudo systemctl enable docker.service
                       sudo systemctl start docker.service
                       docker stop techzilla-web || true
                       docker rm techzilla-web || true
-                      docker pull armoreno2626/techzilla-web:latest
-                      docker run -d -p 80:80 --name techzilla-web armoreno2626/techzilla-web:latest
+                      docker pull ${{ secrets.DOCKER_USERNAME }}/techzilla-web:latest
+                      docker run -d -p 80:80 --name techzilla-web ${{ secrets.DOCKER_USERNAME }}/techzilla-web:latest

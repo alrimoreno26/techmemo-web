@@ -1,6 +1,6 @@
 <div class="grid">
     <div class="col-12 md:col-6">
-        <div class="card">
+        <div class="card mt-3">
             <h5>Left Align</h5>
             <p-timeline [value]="events1">
                 <ng-template pTemplate="content" let-event>
@@ -10,7 +10,7 @@
         </div>
     </div>
     <div class="col-12 md:col-6">
-        <div class="card">
+        <div class="card mt-3">
             <h5>Right Align</h5>
             <p-timeline [value]="events1" align="right">
                 <ng-template pTemplate="content" let-event>
@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="col-12 md:col-6">
-        <div class="card">
+        <div class="card mt-3">
             <h5>Alternate Align</h5>
             <p-timeline [value]="events1" align="alternate">
                 <ng-template pTemplate="content" let-event>
@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="col-12 md:col-6">
-        <div class="card">
+        <div class="card mt-3">
             <h5>Opposite Content</h5>
             <p-timeline [value]="events1">
                 <ng-template pTemplate="content" let-event>
@@ -44,7 +44,7 @@
     </div>
 </div>
 
-<div class="card">
+<div class="card mt-3">
     <h5>Customized</h5>
     <p-timeline [value]="events1" align="alternate" styleClass="customized-timeline">
         <ng-template pTemplate="marker" let-event>
@@ -63,7 +63,7 @@
     </p-timeline>
 </div>
 
-<div class="card">
+<div class="card mt-3">
     <h5>Horizontal</h5>
     <h6>Top Align</h6>
     <p-timeline [value]="events2" layout="horizontal" align="top">

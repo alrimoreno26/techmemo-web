@@ -26,6 +26,7 @@ export class CaixaComponent implements OnInit {
     orders: any[] = []
 
     pagamento = false;
+    oneClosed = false;
     cancellation = false;
     cpfNota = false;
 
@@ -38,8 +39,11 @@ export class CaixaComponent implements OnInit {
 
     //Show or Hide WeightScale
     visible: boolean = false;
-    weightScale = "0.000"
+    weightScale = 0
     searchText: string;
+    weightOptions: any[] = [{label: 'Manual', value: 'off'}, {label: 'Automático', value: 'on'}];
+
+    value: string = 'off';
 
     activeOrder = 0;
 
@@ -47,6 +51,8 @@ export class CaixaComponent implements OnInit {
     clientName = '';
 
     canFinalize$: boolean;
+    activeRoute: string;
+    activeRouteOrder: string;
 
     constructor(public notify: NotifyService,
                 private http: HttpClient,
@@ -57,8 +63,8 @@ export class CaixaComponent implements OnInit {
                 private router: Router,
                 public service: CaixaService) {
         this.notify.weightScale$.subscribe(weight => {
-            if (weight !== "") {
-                this.weightScale = weight
+            if (weight !== "" && this.value === 'on') {
+                this.weightScale = parseFloat(weight)
             }
         })
         effect(() => {
@@ -66,10 +72,14 @@ export class CaixaComponent implements OnInit {
                 this.suggestions = this.productService.listEntities$() ?? []
             }
             if (this.service.selectedEntity$()) {
-                this.orders = this.service.selectedEntity$().filter((f: any) => (f.state === 'ACTIVE' || f.state === 'IN_PAYMENT' || f.state === 'PAID'));
+                this.orders = this.service.selectedEntity$().filter((f: any) => (f.state !== 'CANCELLED' || f.state !== 'FINISHED'));
                 const allOrdersPaid = this.orders.every((x: any) => (x.valueToPaid === x.valuePaid && x.valueToPaid !== 0));
+                this.oneClosed = this.orders.some((x: any) => (x.state === 'CLOSED'));
                 if (allOrdersPaid) {
                     this.service.setFinalizeValue(true);
+                }
+                if (this.oneClosed) {
+                    this.pagamento = true;
                 }
 
                 this.ordersProducts = cloneDeep(this.service.selectedEntity$().products)
@@ -90,17 +100,70 @@ export class CaixaComponent implements OnInit {
         });
     }
 
-    finalizeOrder() {
-        // if (this.storeTablesServices.finalize$()) {
-        const order = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[1];
-        const rute = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[0];
-        switch (rute) {
-            case 'table':
-                this.storeTablesServices.finalizeOrder(order)
+    @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+        switch (event.key) {
+            case 'F5':
+                this.refreshOrders();
+                //this.updateOrders();
+                break;
+            case 'F9':
+                this.finalizeOrder()
+                break;
+            case 'F10':
+                this.transferOrders()
+                break;
+            case 'F12':
+                this.pagamento = true;
+                break;
+            case 'Escape':
+                this.closeOrders();
+                break;
+            case 'Enter':
+                if (this.selectedItem !== undefined) {
+                    if (this.selectedItem.allowsAdditional) {
+                        this.dialogService.open(AdditionalComponents, {
+                            data: {
+                                product: this.selectedItem,
+                                activeOrder: this.activeOrder,
+                                amount: this.selectedItemAmount,
+                            },
+                            modal: true,
+                            style: {'width': '60vw', 'height': '60vw'},
+                            draggable: false,
+                            resizable: false
+                        }).onClose.subscribe(() => {
+                            this.resetAllValues();
+                        })
+                    }
+                    if (this.selectedItem.soldPerUnits) {
+                        this.visible = true;
+                    } else {
+                        this.addElementComanda({count: 1, ...this.selectedItem});
+                    }
+                } else {
+                    if (this.pagamento) {
+                        const url = `http://127.0.0.1:8020/api/notifications/print`;
+                        const headers = new HttpHeaders({
+                            'Content-Type': 'application/json',
+                        });
+                        this.http.post(url, {data: this.ordersProducts}, {headers}).subscribe();
+                    }
+                }
                 break;
 
+        }
+
+    }
+
+
+    finalizeOrder() {
+        switch (this.activeRoute) {
+            case 'table':
+                this.storeTablesServices.changeStateTable(this.activeRouteOrder, 'FREE')
+                break;
             default:
-                this.service.getById([], order)
+                this.service.getById([], this.activeRouteOrder)
         }
         // }
     }
@@ -111,12 +174,10 @@ export class CaixaComponent implements OnInit {
 
     addNewOrderTable() {
         this.service.openModalAddOrEdit();
-        const order = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[1];
-        const rute = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[0];
-        if (rute === 'table') {
+        if (this.activeRoute === 'table') {
             this.dialogService.open(MComandaComponents, {
                 data: {
-                    id: order,
+                    id: this.activeRouteOrder,
                     inside: true
                 },
                 width: '350px',
@@ -125,17 +186,17 @@ export class CaixaComponent implements OnInit {
     }
 
     getOrders() {
-        const order = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[1];
-        const rute = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[0];
-        switch (rute) {
+        this.activeRouteOrder = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[1];
+        this.activeRoute = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[0];
+        switch (this.activeRoute) {
             case 'table':
-                this.service.getById(['by-table'], {tableId: order})
+                this.service.getById(['by-table'], {tableId: this.activeRouteOrder})
                 break;
             case 'table-union':
-                this.service.getById(['by-union-table'], {unionTableId: order})
+                this.service.getById(['by-union-table'], {unionTableId: this.activeRouteOrder})
                 break;
             default:
-                this.service.getById([], order)
+                this.service.getById([], this.activeRouteOrder)
         }
     }
 
@@ -162,57 +223,6 @@ export class CaixaComponent implements OnInit {
         this.dialogNameCliente = true
     }
 
-    @HostListener('document:keydown', ['$event'])
-    handleKeyboardEvent(event: KeyboardEvent) {
-        switch (event.key) {
-            case 'F10':
-                this.pagamento = true;
-                break;
-            case 'F9':
-                this.closeOrders();
-                break;
-            case 'F6':
-                this.updateOrders();
-                break;
-            case 'Enter':
-                if (this.selectedItem !== undefined) {
-                    if (this.selectedItem.allowsAdditional) {
-                        this.dialogService.open(AdditionalComponents, {
-                            data: {
-                                product: this.selectedItem,
-                                activeOrder: this.activeOrder,
-                                amount: this.selectedItemAmount,
-                            },
-                            modal: true,
-                            style: {'width': '60vw', 'height': '60vw'},
-                            draggable: false,
-                            resizable: false
-                        }).onClose.subscribe(() => {
-                            this.resetAllValues();
-                        })
-                    } else {
-                        if (this.selectedItem.unit === 'KILO') {
-                            this.visible = true;
-                        } else {
-                            this.addElementComanda({count: 1, ...this.selectedItem});
-                        }
-                    }
-
-                } else {
-                    if (this.pagamento) {
-                        const url = `http://127.0.0.1:8020/api/notifications/print`;
-                        const headers = new HttpHeaders({
-                            'Content-Type': 'application/json',
-                        });
-                        this.http.post(url, {data: this.ordersProducts}, {headers}).subscribe();
-                    }
-                }
-                break;
-
-        }
-
-    }
-
     comandaTotal(): number {
         return this.orders?.reduce((sumaTotal: any, item: any) =>
                 sumaTotal + (item.valueToPaid - item.valuePaid),
@@ -225,6 +235,19 @@ export class CaixaComponent implements OnInit {
         const position = Math.round(scrollTop / (scrollHeight - clientHeight) * 100);
         if (position >= 98) {
             console.log('hacer petecion mas 1 pagina')
+        }
+    }
+
+    fecharConta() {
+        switch (this.activeRoute) {
+            case 'table':
+                this.storeTablesServices.changeStateTable(this.activeRouteOrder, 'CLOSED')
+                break;
+            case 'table-union':
+
+                break;
+            default:
+                this.service.changeFieldStateOrders(this.activeRouteOrder, {state: "CLOSED"})
         }
     }
 
@@ -302,16 +325,12 @@ export class CaixaComponent implements OnInit {
     sellConfirmed(data: any) {
         console.log(data)
     }
+
     goBack(data: any) {
         this.pagamento = false
     }
 
     closeModalCancellation(evt: any) {
-        if (evt) {
-        }
-    }
-
-    closeModalTransfer(evt: any) {
         if (evt) {
         }
     }
@@ -346,8 +365,12 @@ export class CaixaComponent implements OnInit {
     resetAllValues() {
         this.itemFinded = undefined;
         this.selectedItem = null;
-        this.weightScale = "0.000"
+        this.weightScale = 0
         this.selectedItemAmount = 1
+    }
+
+    setDisabled() {
+        return this.value === 'on';
     }
 
     protected readonly isObject = isObject;

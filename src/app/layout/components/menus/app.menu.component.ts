@@ -30,21 +30,21 @@ export class AppMenuComponent implements OnInit {
             // { separator: true },
             {
                 label: 'Inventário',
-                icon: 'pi pi-fw pi-wallet',
+                icon: 'mdi mdi-alpha-i-box-outline mdi-24px',
                 items: [
                     {
                         label: 'Productos',
-                        icon: 'pi pi-fw pi-list',
+                        icon: 'mdi mdi-list-box-outline mdi-24px',
                         routerLink: ['inventory/product']
                     },
                     {
                         label: 'Categorias',
-                        icon: 'pi pi-fw pi-sitemap',
+                        icon: 'mdi mdi-sitemap-outline mdi-24px',
                         routerLink: ['inventory/category']
                     },
                     {
                         label: 'Proveedores',
-                        icon: 'pi pi-fw pi-cart-plus',
+                        icon: 'mdi mdi-card-account-details-outline mdi-24px',
                         routerLink: ['inventory/proveedores']
                     },
                 ]
@@ -52,11 +52,11 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Financeiro',
-                icon: 'pi pi-fw pi-credit-card',
+                icon: 'mdi mdi-cash-register mdi-24px',
                 items: [
                     {
                         label: 'Meios de pagamento',
-                        icon: 'pi pi-fw pi-credit-card',
+                        icon: 'mdi mdi-cash-plus mdi-24px',
                         routerLink: ['financial/payment-method']
                     }
                 ]
@@ -76,11 +76,11 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Loja',
-                icon: 'pi pi-fw pi-building',
+                icon: 'mdi mdi-office-building-outline mdi-24px',
                 items: [
                     {
                         label: 'Configurações',
-                        icon: 'pi pi-fw pi-cog',
+                        icon: 'mdi mdi-office-building-cog-outline mdi-24px',
                         routerLink: ['loja/configuration']
                     }
                 ]
@@ -88,21 +88,16 @@ export class AppMenuComponent implements OnInit {
             { separator: true },
             {
                 label: 'Configurações',
-                icon: 'pi pi-fw pi-cog',
+                icon: 'mdi mdi-cog-outline mdi-24px',
                 items: [
                     {
-                        label: 'Usuarios',
-                        icon: 'pi pi-fw pi-user-edit',
-                        routerLink: ['configurations/fornecedores']
-                    },
-                    {
                         label: 'Unidade Medida',
-                        icon: 'pi pi-fw pi-filter-fill',
+                        icon: 'mdi mdi-filter-cog-outline mdi-24px',
                         routerLink: ['configurations/unidade']
                     },
                     {
                         label: 'Impresion',
-                        icon: 'pi pi-fw pi-print',
+                        icon: 'mdi mdi-printer-outline mdi-24px',
                         routerLink: ['configurations/category']
                     },
                 ]
