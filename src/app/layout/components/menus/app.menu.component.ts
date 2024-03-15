@@ -116,6 +116,11 @@ export class AppMenuComponent implements OnInit {
                         label: 'Roles',
                         icon: 'mdi mdi-shield-account mdi-24px',
                         routerLink: ['security/role']
+                    },
+                    {
+                        label: 'Domínios',
+                        icon: 'mdi mdi-account-key mdi-24px',
+                        routerLink: ['security/domains']
                     }
                 ]
             },

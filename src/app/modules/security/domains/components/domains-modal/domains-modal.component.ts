@@ -1,20 +1,20 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {UserService} from '../../services/user.service';
 import {onlyDigits} from '../../../../../core/util';
 import {cellPhone} from '../../../../../core/validators/cell.validator';
 import {BaseModalComponentDirective} from '../../../../../standalone/data-table/directives/base.modal.component.directive';
 import {cpf} from "../../../../../core/validators/cpf.validator";
+import {DomainsService} from "../../services/domains.service";
 
 @Component({
   selector: 'm-domains-modal',
-  templateUrl: './user-modal.component.html',
-  styleUrls: ['./user-modal.component.scss']
+  templateUrl: './domains-modal.component.html',
+  styleUrls: ['./domains-modal.component.scss']
 })
-export class UserModalComponent extends BaseModalComponentDirective implements OnInit {
+export class DomainsModalComponent extends BaseModalComponentDirective implements OnInit {
 
-  constructor(public userService: UserService) {
-    super(userService);
+  constructor(public domainsService: DomainsService) {
+    super(domainsService);
   }
 
   ngOnInit(): void {

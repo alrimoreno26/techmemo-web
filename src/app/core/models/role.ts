@@ -29,3 +29,8 @@ export interface AuthMap {
   type: domainEnum;
   value: boolean;
 }
+export interface Domains {
+    id: number;
+    description: string;
+    DomainType: domainEnum;
+}

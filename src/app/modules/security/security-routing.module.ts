@@ -21,6 +21,12 @@ const routes: Routes = [
                 data: {breadcrumb: 'Roles',roles: [domainEnum.ROLES]},
                 loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)
             },
+            {
+                path: 'domains',
+                canActivate: [canActivateControlGuard],
+                data: {breadcrumb: 'Domínios',roles: [domainEnum.ROLES]},
+                loadChildren: () => import('./domains/domains.module').then(m => m.DomainsModule)
+            },
             {path: '', redirectTo: 'role', pathMatch: 'full'},
             {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
         ]

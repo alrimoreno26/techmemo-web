@@ -1,0 +1,44 @@
+<ng-template dialog-header>
+    Edição de usuário de aplicativo
+</ng-template>
+<form class="overflow-hidden" [formGroup]="form">
+    <div class="grid" formResponsive>
+        <div class="col-12 md:col-6">
+            <div class="field p-fluid">
+                <label class="required block" for="name">
+                    {{ 'security.user.labels.name' | translate }}
+                </label>
+                <input formControlName="name" formFieldValidation id="name" pInputText type="text">
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="phone">
+                    {{ 'security.user.labels.phone' | translate }}
+                </label>
+                <p-inputMask formControlName="phone" formFieldValidation id="phone"
+                             mask="(99) 99999-9999"></p-inputMask>
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="cpf">
+                    {{ 'security.user.labels.cpf' | translate }}
+                </label>
+                <p-inputMask formControlName="cpf" formFieldValidation id="cpf" mask="999.999.999-99"></p-inputMask>
+            </div>
+        </div>
+        <div class="col-12 md:col-6">
+            <div class="field p-fluid">
+                <label class="required block" for="email">
+                    {{ 'security.user.labels.email' | translate }}
+                </label>
+                <input formControlName="email" formFieldValidation id="email" pInputText type="text">
+            </div>
+        </div>
+    </div>
+</form>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="{{'common.cancel' | translate}}"
+            (click)="ref.close('Cancel')"
+            icon="pi pi-fw pi-times"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="{{'common.save' | translate}}"
+            [disabled]="form.invalid"
+            (click)="save()" icon="pi pi-fw pi-check"></button>
+</ng-template>
