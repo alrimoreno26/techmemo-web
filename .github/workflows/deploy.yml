@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  notifyTelegramInitDeploy:    
+  InitDeploy:    
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -25,6 +25,7 @@ jobs:
           message: |
             The deployment of the web application begin at ${{ steps.datetime.outputs.datetime }}.
   build:
+    needs: InitDeploy
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -45,7 +46,7 @@ jobs:
       - name: Push the Docker image
         run: docker push armoreno2626/techzilla-web:latest
 
-  notifyTelegramEndDeploy:
+  EndDeploy:
     needs: build
     runs-on: ubuntu-latest
     steps:
