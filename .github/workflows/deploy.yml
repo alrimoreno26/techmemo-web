@@ -1,25 +1,43 @@
 name: Docker Image CI with Multi-Stage Build
 
 on:
-    push:
-        branches: [ "main" ]
+  push:
+    branches: [ "main" ]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Login DockerHub
-              env:
-                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-                  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-              run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            - name: Build the Docker image
-              run: docker build -t techzilla-web .
-            - name: Create tag for build
-              run: docker tag techzilla-web:latest armoreno2626/techzilla-web:latest
-            - name: Push the Docker image
-              run: docker push armoreno2626/techzilla-web:latest
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Build the Docker image
+        run: docker build -t techzilla-web .
+
+      - name: Create tag for build
+        run: docker tag techzilla-web:latest armoreno2626/techzilla-web:latest
+
+      - name: Push the Docker image
+        run: docker push armoreno2626/techzilla-web:latest
+
+  notifyTelegram:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send custom message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            The ${{ github.event_name }} event triggered final step.
+            echo This event is a pull request that had an assignee removed.
+
 
 #    deploy:  # Separate deploy job (CD)
 #        runs-on: ubuntu-latest
