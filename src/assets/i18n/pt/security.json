@@ -12,12 +12,11 @@
         "operationArea": "Área de Operação"
       },
       "select": {
-        "BACKOFFICE": "Backoffice",
-        "CLIENT": "Cliente",
-        "ENTREPRENEUR": "Empreendedor",
-        "PARTNER": "Parceiro",
-        "SECURITY": "Segurança",
-        "CURATOR": "Curador"
+        "FACTORY": "Fabrica",
+        "LOJA": "Dono da loja",
+        "COMPRADOR": "Comprador",
+        "CAIXA": "Caixas",
+        "ATENDENTE": "Garçom"
       }
     },
     "user": {

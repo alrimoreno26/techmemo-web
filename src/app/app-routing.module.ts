@@ -1,11 +1,8 @@
 import {NgModule} from '@angular/core';
-import {ExtraOptions, RouterModule, Routes} from '@angular/router';
+import {RouterModule, Routes} from '@angular/router';
 import {canActivateNotAuthGuard} from "./core/guards/not.auth.guard";
 import {canActivateAuthGuard, canMatchAuthGuard} from "./core/guards/auth.guard";
 
-const routerOptions: ExtraOptions = {
-    anchorScrolling: 'enabled'
-};
 
 const routes: Routes = [
     // {
@@ -18,14 +15,27 @@ const routes: Routes = [
         canActivate: [canActivateNotAuthGuard]
     },
     {
+        path: 'static',
+        loadChildren: () => import('./modules/static/static.module').then(m => m.StaticModule),
+        canMatch: [canMatchAuthGuard]
+    },
+    {
         path: '', loadChildren: () => import('./layout/app.layout.module').then((m) => m.AppLayoutModule),
         canActivate: [canActivateAuthGuard], canMatch: [canMatchAuthGuard]
     },
-    {path: '**', redirectTo: '/notfound'}
+    {path: '**', redirectTo: '/static/not-found', pathMatch: 'full'}
 ];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes, routerOptions)],
+    imports: [RouterModule.forRoot(routes,{
+        scrollPositionRestoration: 'top',
+        onSameUrlNavigation: 'reload',
+        anchorScrolling: 'disabled',
+        useHash: false,
+        scrollOffset: [0, 80],
+        enableTracing: false,
+        bindToComponentInputs: true
+    })],
     exports: [RouterModule]
 })
 export class AppRoutingModule {

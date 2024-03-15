@@ -11,7 +11,7 @@ import {GeneratePassword, User} from "../models";
 export class UserAdminServices extends AbstractService<User> {
 
   constructor(private httpClient: HttpClient) {
-    super(httpClient, buildUsersURL('/users'));
+    super(httpClient, buildUsersURL('/v1/users'));
   }
 
   /**

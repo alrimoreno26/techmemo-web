@@ -5,6 +5,9 @@ import {TranslateService} from '@ngx-translate/core';
 import {BehaviorSubject, finalize, Observable, switchMap, throwError} from 'rxjs';
 import {catchError, filter, take} from 'rxjs/operators';
 import {MessageServices} from '../injects/message.services';
+import {SessionServices} from "../injects/session.services";
+import {AuthServices} from "../services/auth.services";
+import {RefreshTokenTO} from "../models/user";
 
 @Injectable()
 export class ErrorInterceptor implements HttpInterceptor {
@@ -17,6 +20,8 @@ export class ErrorInterceptor implements HttpInterceptor {
 
   constructor(private router: Router,
               private readonly injector: Injector,
+              private sessionService: SessionServices,
+              private authServices: AuthServices,
               private messageService: MessageServices) {
   }
 
@@ -41,58 +46,58 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.getErrorFromApi('networkError.code400', error?.error?.message);
               break;
             case 401:
-              // if (this.refreshTokenInProgress) {
-              //   if (error.url?.includes('refresh_token')) {
-              //     this.refreshTokenInProgress = false;
-              //     this.sessionService.clearSession();
-              //     this.getErrorFromApi('networkError.code401');
-              //     return throwError(error.message);
-              //   }
-              //   return this.refreshTokenSubject.pipe(
-              //     filter((result) => result !== null),
-              //     take(1),
-              //     switchMap(() => next.handle(this.addAuthToken(request)))
-              //   );
-              // } else {
-              //   this.refreshTokenInProgress = true;
-              //   this.refreshTokenSubject.next(null);
-              //   this.sessionService.setAccessToken(null);
-              //   /**
-              //    * Send to refresh token when error code is 401
-              //    */
-              //   return this.authServices.refreshToken(this.sessionService.getRefreshToken())
-              //     .pipe(
-              //       switchMap((resp: RefreshTokenTO) => {
-              //         /**
-              //          * Set isRefreshing in false
-              //          * Set sessionService token and refreshToken
-              //          * Set the new token to hold request and fail
-              //          */
-              //         this.refreshTokenSubject.next(resp.token);
-              //         this.sessionService.setAccessToken(resp.token);
-              //         this.sessionService.setRefreshToken(resp.refreshToken);
-              //         return next.handle(request.clone({
-              //           setHeaders: {
-              //             Authorization: `Bearer ${resp.token}`
-              //           }
-              //         }));
-              //       }),
-              //       finalize(() => (this.refreshTokenInProgress = false)),
-              //       catchError((err) => {
-              //         /**
-              //          * This method dispatch when refreshToken is expired
-              //          * Set isRefreshing in false
-              //          * Clear the sessionService and redirect to the login page
-              //          */
-              //         this.refreshTokenInProgress = false;
-              //         this.sessionService.clearSession();
-              //         this.getErrorFromApi('networkError.code401');
-              //         return throwError(err.message);
-              //       })
-              //     );
-              // }
+              if (this.refreshTokenInProgress) {    // If the refresh token is in progress, wait for the new token
+                if (error.url?.includes('refresh_token')) {
+                  this.refreshTokenInProgress = false;
+                  this.sessionService.clearSession();
+                  this.getErrorFromApi('networkError.code401');
+                  return throwError(error.message);
+                }
+                return this.refreshTokenSubject.pipe(
+                  filter((result) => result !== null),
+                  take(1),
+                  switchMap(() => next.handle(this.addAuthToken(request)))
+                );
+              } else {
+                this.refreshTokenInProgress = true;
+                this.refreshTokenSubject.next(null);
+                this.sessionService.setAccessToken(null);
+                /**
+                 * Send to refresh token when error code is 401
+                 */
+                return this.authServices.refreshToken(this.sessionService.getRefreshToken())
+                  .pipe(
+                    switchMap((resp: RefreshTokenTO) => {
+                      /**
+                       * Set isRefreshing in false
+                       * Set sessionService token and refreshToken
+                       * Set the new token to hold request and fail
+                       */
+                      this.refreshTokenSubject.next(resp.token);
+                      this.sessionService.setAccessToken(resp.token);
+                      this.sessionService.setRefreshToken(resp.refreshToken);
+                      return next.handle(request.clone({
+                        setHeaders: {
+                          Authorization: `Bearer ${resp.token}`
+                        }
+                      }));
+                    }),
+                    finalize(() => (this.refreshTokenInProgress = false)),
+                    catchError((err) => {
+                      /**
+                       * This method dispatch when refreshToken is expired
+                       * Set isRefreshing in false
+                       * Clear the sessionService and redirect to the login page
+                       */
+                      this.refreshTokenInProgress = false;
+                      this.sessionService.clearSession();
+                      this.getErrorFromApi('networkError.code401');
+                      return throwError(err.message);
+                    })
+                  );
+              }
             case 403:
-              this.router.navigate(['/static/access']).then();
+              this.router.navigate(['/static/access-denied']).then();
               this.getErrorFromApi('networkError.code403');
               break;
             case 405:
@@ -105,19 +110,18 @@ export class ErrorInterceptor implements HttpInterceptor {
               this.getErrorFromApi('networkError.code422', error?.error?.details[0]);
               break;
             case 500:
-              // this.router.navigate(['/static/error']).then();
+              this.router.navigate(['/static/error']).then();
               this.getErrorFromApi('networkError.code500');
               break;
             case 503:
-              // this.router.navigate(['/static/error']).then();
+              this.router.navigate(['/static/error']).then();
               this.getErrorFromApi('networkError.code503', error?.error?.message);
               break;
             default:
               /**
                * Prints the unknown error for further treatment
                */
-              console.error(error);
-              // this.getErrorFromApi('networkError.code0');
+              this.getErrorFromApi('networkError.code0');
               break;
           }
         }

@@ -5,6 +5,7 @@ import {flatMap, groupBy, map} from 'lodash';
 import {AuthMap, AuthorityTO, Options} from '../../../../../core/models';
 import {BaseModalComponentDirective} from '../../../../../standalone/data-table/directives/base.modal.component.directive';
 import {domainEnum, operationAreaRoleEnum, permissionAuthorityTOEnum} from "../../../../../core/enums/role";
+import {productType} from "../../../../../core/enums/product";
 
 @Component({
   selector: 'm-role-modal',
@@ -14,12 +15,11 @@ export class RoleModalComponent extends BaseModalComponentDirective implements O
 
   authorities: FormArray;
   operationArea: Options[] = [
-    {value: 'BACKOFFICE', name: 'BACKOFFICE'},
-    {value: 'CLIENT', name: 'CLIENT'},
-    {value: 'ENTREPRENEUR', name: 'ENTREPRENEUR'},
-    {value: 'PARTNER', name: 'PARTNER'},
-    {value: 'SECURITY', name: 'SECURITY'},
-    {value: 'CURATOR', name: 'CURATOR'}
+    {value: 'FACTORY', name: 'FACTORY'},
+    {value: 'LOJA', name: 'LOJA'},
+    {value: 'COMPRADOR', name: 'COMPRADOR'},
+    {value: 'CAIXA', name: 'CAIXA'},
+    {value: 'ATENDENTE', name: 'ATENDENTE'}
   ];
 
   constructor(private roleService: RoleService) {
@@ -82,4 +82,6 @@ export class RoleModalComponent extends BaseModalComponentDirective implements O
       this.service.create({...this.form.value, authorities}) :
       this.service.update({id: this.config.data.id, ...this.form.value, authorities});
   }
+
+    protected readonly productType = productType;
 }

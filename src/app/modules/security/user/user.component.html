@@ -1,15 +1,14 @@
-<c-data-table [headers]="headersTable" [itemsSplit]="itemsSplit" [service]="service">
-    <ng-template let-data tableRow="action">
-        <p-inputSwitch (onChange)="service.enableUser(data)" [inputId]="data.id" [ngModel]="data.enabled"
-                       pTooltip="{{'security.user.tooltip.state' | translate}}" styleClass="mb-1"
-                       tooltipPosition="top"/>
+<div class="card m-3">
+    <c-data-table [headers]="headersTable"  [service]="service">
+        <ng-template let-data tableRow="action">
+            <p-inputSwitch (onChange)="service.enableUser(data)" [inputId]="data.id" [ngModel]="data.enabled"
+                           pTooltip="{{'security.user.tooltip.state' | translate}}" styleClass="mb-1"
+                           tooltipPosition="top"/>
 
-        <button (click)="generatePassword(data)" type="button"
-                class="p-button-rounded p-button-text" icon="mdi mdi-key-variant mdi-flip-h" pButton
-                pTooltip="{{'security.user.tooltip.changePassword' | translate}}" tooltipPosition="top"></button>
+            <button (click)="generatePassword(data)" type="button"
+                    class="p-button-rounded p-button-text" icon="mdi mdi-key-variant mdi-flip-h text-4xl" pButton
+                    pTooltip="{{'security.user.tooltip.changePassword' | translate}}" tooltipPosition="top"></button>
 
-        <button (click)="resetUserCompany(data)" type="button"
-                class="p-button-rounded p-button-text" icon="mdi mdi-reload-alert text-4xl" pButton
-                pTooltip="{{'security.user.tooltip.reloadUser' | translate}}" tooltipPosition="top"></button>
-    </ng-template>
-</c-data-table>
+        </ng-template>
+    </c-data-table>
+</div>

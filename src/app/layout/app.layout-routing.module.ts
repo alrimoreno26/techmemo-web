@@ -47,6 +47,7 @@ const routes: Routes = [
                 loadChildren: () => import('./../modules/security/security.module').then(m => m.SecurityModule)
             },
             {path: '', redirectTo: '/inventory/product', pathMatch: 'full'},
+            {path: '**', redirectTo: 'not-found', pathMatch: 'full'}
         ]
     }
 ]

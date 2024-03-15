@@ -18,7 +18,7 @@ import {RouterModule} from '@angular/router';
             data: {breadcrumb: 'Fornecedores'},
             loadChildren: () => import('./forncedores/fornecedores.module').then(m => m.FornecedoresModule)
         },
-        {path: '**', redirectTo: '/notfound'}
+        {path: '**', redirectTo: '/not-found'}
     ])],
     exports: [RouterModule]
 })

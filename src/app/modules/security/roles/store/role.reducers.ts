@@ -3,7 +3,7 @@ import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
 import {fromRoleActions} from './role.actions';
 import {Role} from 'src/app/core/models';
-import {AuthMap} from '../../../../core/models/role';
+import {AuthMap} from '../../../../core/models';
 
 export const ENTITY_FEATURE_KEY = 'role';
 

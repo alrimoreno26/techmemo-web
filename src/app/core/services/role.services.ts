@@ -10,11 +10,11 @@ import {buildURL, buildUsersURL} from '../util';
 })
 export class RoleServices extends AbstractService<Role> {
   constructor(private httpClient: HttpClient) {
-    super(httpClient, buildUsersURL('/api/roles'));
+    super(httpClient, buildUsersURL('/v1/roles'));
   }
 
   getAllAuthority(): Observable<AuthorityTO[]> {
-    return this.client.get<AuthorityTO[]>(buildUsersURL('/authorities'));
+    return this.client.get<AuthorityTO[]>(buildUsersURL('/v1/authorities'));
   }
 }
 

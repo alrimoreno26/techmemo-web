@@ -108,20 +108,15 @@ export class AppMenuComponent implements OnInit {
                 icon: 'mdi mdi-security mdi-24px',
                 items: [
                     {
-                        label: 'Autoridade',
-                        icon: 'mdi mdi-shield-account mdi-24px',
-                        routerLink: ['configurations/fornecedores']
-                    },
-                    {
-                        label: 'Modules',
-                        icon: 'mdi mdi-server-security mdi-24px',
-                        routerLink: ['configurations/fornecedores']
-                    },
-                    {
                         label: 'Usuario',
                         icon: 'mdi mdi-account-edit mdi-24px',
                         routerLink: ['security/user']
                     },
+                    {
+                        label: 'Roles',
+                        icon: 'mdi mdi-shield-account mdi-24px',
+                        routerLink: ['security/role']
+                    }
                 ]
             },
             // { separator: true },

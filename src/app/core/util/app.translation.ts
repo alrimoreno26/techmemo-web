@@ -28,7 +28,7 @@ export function appInitializerFactory(translate: TranslateService, injector: Inj
   providedIn: 'root'
 })
 export class HttpTranslateLoader implements TranslateLoader {
-  resources: Array<string> = ['common'];
+  resources: Array<string> = ['common','security'];
 
   constructor(private http: HttpClient) {
   }

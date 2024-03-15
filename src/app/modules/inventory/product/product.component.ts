@@ -40,11 +40,11 @@ export class ProductComponent extends BaseComponentDirective {
     itemsSplit: MenuItem[] = [
         {
             label: this.translateService.instant('Adicional'),
-            icon: 'mdi mdi-refresh', command: () => this.openAditional()
+            icon: 'mdi mdi-tag-plus mdi-24px', command: () => this.openAditional()
         },
         {
             label: this.translateService.instant('Combo'),
-            icon: 'mdi mdi-refresh', command: () => this.openCombo()
+            icon: 'mdi mdi-food-outline mdi-24px', command: () => this.openCombo()
         }
     ];
 

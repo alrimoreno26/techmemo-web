@@ -23,6 +23,7 @@ import {InputMaskModule} from 'primeng/inputmask';
 import {GeneratePasswordModalComponent} from './components/generate-password-modal/generate-password-modal.component';
 import {PasswordModule} from 'primeng/password';
 import {DataTableModule} from '../../../standalone/data-table/data-table.module';
+import {RippleModule} from "primeng/ripple";
 
 @NgModule({
   declarations: [
@@ -30,25 +31,26 @@ import {DataTableModule} from '../../../standalone/data-table/data-table.module'
     UserModalComponent,
     GeneratePasswordModalComponent
   ],
-  imports: [
-    CommonModule,
-    UserRoutingModule,
-    FormsModule,
-    ReactiveFormsModule,
-    TranslateModule,
-    ButtonModule,
-    DialogModule,
-    InputTextModule,
-    DropdownModule,
-    InputSwitchModule,
-    StoreModule.forFeature('user', reducer),
-    StoreDevtoolsModule.instrument({}),
-    EffectsModule.forFeature([UserEffects]),
-    TooltipModule,
-    InputMaskModule,
-    PasswordModule,
-    DataTableModule
-  ],
+    imports: [
+        CommonModule,
+        UserRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        TranslateModule,
+        ButtonModule,
+        DialogModule,
+        InputTextModule,
+        DropdownModule,
+        InputSwitchModule,
+        StoreModule.forFeature('user', reducer),
+        StoreDevtoolsModule.instrument({}),
+        EffectsModule.forFeature([UserEffects]),
+        TooltipModule,
+        InputMaskModule,
+        PasswordModule,
+        DataTableModule,
+        RippleModule
+    ],
   providers: [
     UserService, DialogService
   ]

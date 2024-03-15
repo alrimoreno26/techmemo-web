@@ -27,10 +27,6 @@ export class UserComponent extends BaseComponentDirective {
     {header: 'security.user.labels.created', field: 'created', sort: true, pipe: 'date', width: 110, visible: true, export: true},
     {header: 'common.action', field: 'action', class: 'text-center', visible: true, export: false}
   ];
-  itemsSplit: MenuItem[] = [{
-    label: this.translateService.instant('security.user.labels.reset'),
-    icon: 'mdi mdi-refresh', command: () => this.resetRating()
-  }];
 
   constructor(public service: UserService,
               private confirmationService: ConfirmServices,

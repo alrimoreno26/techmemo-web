@@ -184,7 +184,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
             let value = $event?.filters?.type[0]?.value
             this.service.loadAll({
                 page: first as number / (rows as number),
-                size: rows ? rows : 25,
+                count: rows ? rows : 25,
                 filter: globalFilter ? globalFilter as string : '',
                 type: value ? value : '',
                 sort: sortField as string,
@@ -194,7 +194,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
         } else{
             this.service.loadAll({
                 page: first as number / (rows as number),
-                size: rows ? rows : 25,
+                count: rows ? rows : 25,
                 filter: globalFilter ? globalFilter as string : '',
                 sort: sortField as string,
                 direction: sortField ? sortOrder === 1 ? 'ASC' : 'DESC' : sortField,
@@ -273,7 +273,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
      */
     refreshContentData(dt: Table): void {
         this.service.serverSide ?
-            this.service.loadAll({page: 0, size: dt.rows, filter: undefined, sort: undefined, direction: undefined}) :
+            this.service.loadAll({page: 0, count: dt.rows}) :
             this.service.loadAll(undefined);
         this.input.nativeElement.value = '';
         dt.filters = {};
