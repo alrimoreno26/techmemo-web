@@ -1,25 +1,73 @@
 name: Docker Image CI with Multi-Stage Build
 
 on:
-    push:
-        branches: [ "main" ]
+  push:
+    branches: [ "main" ]
 
 jobs:
-    build:
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/checkout@v3
-            - name: Login DockerHub
-              env:
-                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-                  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-              run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
-            - name: Build the Docker image
-              run: docker build -t techzilla-web .
-            - name: Create tag for build
-              run: docker tag techzilla-web:latest armoreno2626/techzilla-web:latest
-            - name: Push the Docker image
-              run: docker push armoreno2626/techzilla-web:latest
+  InitDeploy:    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Get current date and time
+        id: datetime
+        run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
+        
+      - name: Send custom message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            The deployment of the web application begin at ${{ steps.datetime.outputs.datetime }}.
+  build:
+    needs: InitDeploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Login to DockerHub
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+      - name: Build the Docker image
+        run: docker build -t techzilla-web .
+
+      - name: Create tag for build
+        run: docker tag techzilla-web:latest armoreno2626/techzilla-web:latest
+
+      - name: Push the Docker image
+        run: docker push armoreno2626/techzilla-web:latest
+
+  EndDeploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Get current date and time
+        id: datetime
+        run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
+        
+      - name: Send custom message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            The deployment of the web application finished at ${{ steps.datetime.outputs.datetime }}.
+            For download docker image use docker pull armoreno2626/techzilla-web:latest
+
 
 #    deploy:  # Separate deploy job (CD)
 #        runs-on: ubuntu-latest
