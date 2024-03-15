@@ -5,6 +5,25 @@ on:
     branches: [ "main" ]
 
 jobs:
+  notifyTelegramInitDeploy:    
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Get current date and time
+        id: datetime
+        run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
+        
+      - name: Send custom message
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_TO }}
+          token: ${{ secrets.TELEGRAM_TOKEN }}
+          message: |
+            The deployment of the web application begin at ${{ steps.datetime.outputs.datetime }}.
   build:
     runs-on: ubuntu-latest
     steps:
@@ -26,17 +45,27 @@ jobs:
       - name: Push the Docker image
         run: docker push armoreno2626/techzilla-web:latest
 
-  notifyTelegram:
+  notifyTelegramEndDeploy:
+    needs: build
     runs-on: ubuntu-latest
     steps:
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.x'
+
+      - name: Get current date and time
+        id: datetime
+        run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
+        
       - name: Send custom message
         uses: appleboy/telegram-action@master
         with:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
-            The ${{ github.event_name }} event triggered final step.
-            echo This event is a pull request that had an assignee removed.
+            The deployment of the web application finished at ${{ steps.datetime.outputs.datetime }}.
+            For download docker image use docker pull armoreno2626/techzilla-web:latest
 
 
 #    deploy:  # Separate deploy job (CD)
