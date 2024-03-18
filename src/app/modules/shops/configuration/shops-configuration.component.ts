@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import {productType} from "../../../core/enums/product";
 import {ProductService} from "../../inventory/product/services/product.service";
 import {Router} from "@angular/router";
+import {CNPJService} from "../../../core/services/cnpj-validate.service";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -24,10 +25,11 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     nome = 'alejandro';
     form: FormGroup;
 
+    searchingCNPJ: boolean = false;
+
     constructor(private fb: FormBuilder,
                 private cepValidateService: CepValidateService,
-                private productService: ProductService,
-                private http: HttpClient,
+                private cnpjService: CNPJService,
                 private shopsServices: ShopsService,
                 private router: Router,
                 private cdRef: ChangeDetectorRef,) {
@@ -46,6 +48,11 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 uf: [{value: '', disabled: true}, Validators.required],
             }),
             name: new FormControl<string>(''),
+            document: new FormControl<string>('', Validators.required),
+            socialReason: new FormControl<string>({
+                value: '',
+                disabled: true
+            }, Validators.required),
             quantityTables: new FormControl<number>(0),
         })
         this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
@@ -93,67 +100,29 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.shopsServices.createTable(params);
     }
 
-    importExcel() {
-        const workbook = 'assets/products.xlsx';
-        // Obtiene la primera hoja del archivo (puedes ajustar esto según tu caso)
-        return this.http.get(workbook, {responseType: 'arraybuffer'})
-            .subscribe(
-                (data) => {
-                    const send = this.processExcelDataProduct(data);
-                    console.log(send)
-                    send.forEach(x => {
-                        setTimeout(() => {
-                            console.log(x)
-                            this.productService.create(x)
-                            console.log("¡La función se ejecutó después de 2000 milisegundos (3 segundos)!");
-                        }, 3000);
-
-                    })
-                },
-                (error) => {
-                    console.error('Error loading Excel file:', error);
-                }
-            );
-    }
-
-    private processExcelDataProduct(data: ArrayBuffer) {
-        const workbook = XLSX.read(new Uint8Array(data), {type: 'array'});
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-
-        let response: any[] = [];
-
-        jsonData.forEach((el: any) => {
-            response.push({
-                allowsAdditional: null,
-                additionalProducts: [],
-                barCode: el[5].toString(),
-                categoryId: el[2].toString(),
-                cfop: el[7].toString(),
-                code: el[7].toString(),
-                costPrice: el[4],
-                cst: el[8].toString(),
-                description: null,
-                enable: true,
-                name: el[0].toString(),
-                ncm: el[9].toString(),
-                quantityStockAlert: 10,
-                stockAmount: 300,
-                salePrice: el[4],
-                showInMenu: true,
-                soldPerUnits: true,
-                supplierIds: ['43cc42f5-dc17-401c-b49e-1e3c5af7d81e'],
-                valuePerUnits: 1,
-                unitMeasurementId: null,
-                type: productType.SIMPLE,
-            })
-        })
-
-        return response;
-    }
 
     goto() {
         this.router.navigate(['loja', this.nome]);
+    }
+
+    verifyCNPJ(event: any): void {
+        const cnpj: string = event.target.value.replace(/\D/g, '');
+        if (cnpj.length === 14) {
+            this.searchingCNPJ = true;
+            this.subscriptions.push(
+                this.cnpjService.findCNPJ(cnpj.replace(/\D/g, '')).subscribe({
+                    next: (cnpjInformation: any) => {
+                        this.searchingCNPJ = false;
+                        this.fillCNPJInformation(cnpjInformation);
+                    },
+                    error: () => console.log('error cnpj')
+                })
+            );
+        }
+    }
+
+    fillCNPJInformation(cnpjInformation: any) {
+        this.form.get('fantasyName')?.patchValue(cnpjInformation.nome_fantasia);
+        this.form.get('socialReason')?.patchValue(cnpjInformation.razao_social);
     }
 }

@@ -17,15 +17,19 @@
                     {{ 'security.role.labels.operationArea' | translate }}
                 </label>
                 <p-dropdown [options]="operationArea" appendTo="body" formControlName="operationArea"
+                            [group]="true"
                             formFieldValidation
-                            id="operationArea" optionLabel="name" optionValue="value">
+                            id="operationArea">
                     <ng-template let-selected pTemplate="selectedItem">
                         <ng-template [ngIf]="selected">
-                            {{ ('security.role.select.' + selected.name) | translate }}
+                            {{ ('security.role.select.' + selected.label) | translate }}
                         </ng-template>
                     </ng-template>
-                    <ng-template let-area pTemplate="item">
-                        <div>{{ ('security.role.select.' + area.name) | translate }}</div>
+                    <ng-template let-group pTemplate="group">
+                        <div class="font-bold">{{ ('security.role.select.' + group.label) | translate }}</div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                        <div class="pl-3">{{ ('security.role.select.' + item.label) | translate }}</div>
                     </ng-template>
                 </p-dropdown>
             </div>
@@ -54,7 +58,8 @@
                         <td>
                             {{ authority.get('description')?.value }}
                             <i class="mdi mdi-information-outline text-blue-500"
-                               pTooltip="{{authority.get('type')?.value}}" tooltipPosition="top"></i>
+                               pTooltip="{{('security.role.select.')+authority.get('type')?.value | translate}}"
+                               tooltipPosition="top"></i>
                         </td>
                         <td class="text-center">
                             <input formControlName="read" formFieldValidation type="checkbox">

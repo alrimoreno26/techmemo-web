@@ -1,10 +1,10 @@
-<a style="cursor: pointer" class="layout-config-button" (click)="onConfigButtonClick()">
-    <i class="pi pi-cog"></i>
-</a>
+<!--<a style="cursor: pointer" class="layout-config-button" (click)="onConfigButtonClick()">-->
+<!--    <i class="pi pi-cog"></i>-->
+<!--</a>-->
 
-<p-sidebar [(visible)]="visible" position="right" [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'" styleClass="w-full sm:w-18rem">
+<!--<p-sidebar [(visible)]="visible" position="right" [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'" styleClass="w-full sm:w-18rem">-->
     <div class="px-2">
-        <h5>Color Scheme</h5>
+        <h5>Esquema de cores</h5>
         <div class="flex">
             <div class="field-radiobutton flex-auto">
                 <p-radioButton name="colorScheme" value="light" [(ngModel)]="colorScheme" inputId="mode-light"></p-radioButton>
@@ -23,7 +23,7 @@
         <hr />
 
         <ng-container *ngIf="!minimal">
-            <h5>Menu Type</h5>
+            <h5>Tipo de Menu</h5>
             <div class="flex flex-wrap row-gap-3">
                 <div class="flex align-items-center gap-2 w-6">
                     <p-radioButton name="menuMode" value="static" [(ngModel)]="menuMode" inputId="mode1"></p-radioButton>
@@ -58,7 +58,7 @@
         </ng-container>
 
         <ng-container *ngIf="!minimal">
-            <h5>Menu Theme</h5>
+            <h5>Tema da Loja</h5>
             <div class="flex flex-wrap gap-3" *ngIf="layoutService.config.colorScheme === 'light'">
                 <a *ngFor="let theme of menuThemes" role="button" type="button" pRipple  (click)="changeMenuTheme(theme)"  [ngStyle]="{'background-color': theme.color}" class="w-2rem h-2rem cursor-pointer hover:shadow-4 border-round transition-duration-150 flex align-items-center justify-content-center">
                     <i *ngIf="theme.name == this.layoutService.config.menuTheme " [class]="theme.name=='white'?'pi pi-check text-gray-900 ':'pi pi-check text-white'"></i>
@@ -71,7 +71,7 @@
         </ng-container>
 
 
-        <h5>Component Themes</h5>
+        <h5>Tema de componentes da loja</h5>
         <div class="flex flex-wrap gap-3">
             <a *ngFor="let theme of componentThemes" role="button" type="button" pRipple (click)="changeComponentTheme(theme.name)" [ngStyle]="{'background-color': theme.color}" class="w-2rem h-2rem cursor-pointer hover:shadow-4 border-round transition-duration-150 flex align-items-center justify-content-center">
                 <i *ngIf="theme.name == this.layoutService.config.theme " class="pi pi-check text-white"></i>
@@ -80,7 +80,7 @@
 
         <hr />
 
-        <h5>Scale</h5>
+        <h5>Escala</h5>
         <div class="flex align-items-center">
             <button icon="pi pi-minus" type="button" pButton (click)="decrementScale()" class="p-button-text p-button-rounded w-2rem h-2rem mr-2" [disabled]="scale === scales[0]"></button>
             <div class="flex gap-3 align-items-center">
@@ -91,23 +91,23 @@
 
         <hr />
 
-        <ng-container *ngIf="!minimal">
-            <h5>Input Style</h5>
-            <div class="flex">
-                <div class="field-radiobutton flex-1">
-                    <p-radioButton name="inputStyle" value="outlined" [(ngModel)]="inputStyle" inputId="outlined_input"></p-radioButton>
-                    <label for="outlined_input">Outlined</label>
-                </div>
-                <div class="field-radiobutton flex-1">
-                    <p-radioButton name="inputStyle" value="filled" [(ngModel)]="inputStyle" inputId="filled_input"></p-radioButton>
-                    <label for="filled_input">Filled</label>
-                </div>
-            </div>
-        <hr />
-        </ng-container>
+<!--        <ng-container *ngIf="!minimal">-->
+<!--            <h5>Input Style</h5>-->
+<!--            <div class="flex">-->
+<!--                <div class="field-radiobutton flex-1">-->
+<!--                    <p-radioButton name="inputStyle" value="outlined" [(ngModel)]="inputStyle" inputId="outlined_input"></p-radioButton>-->
+<!--                    <label for="outlined_input">Outlined</label>-->
+<!--                </div>-->
+<!--                <div class="field-radiobutton flex-1">-->
+<!--                    <p-radioButton name="inputStyle" value="filled" [(ngModel)]="inputStyle" inputId="filled_input"></p-radioButton>-->
+<!--                    <label for="filled_input">Filled</label>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        <hr />-->
+<!--        </ng-container>-->
 
-        <h5>Ripple Effect</h5>
-        <p-inputSwitch [(ngModel)]="ripple"></p-inputSwitch>
+<!--        <h5>Ripple Effect</h5>-->
+<!--        <p-inputSwitch [(ngModel)]="ripple"></p-inputSwitch>-->
     </div>
 
-</p-sidebar>
+<!--</p-sidebar>-->

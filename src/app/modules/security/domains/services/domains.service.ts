@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {ActionsSubject, Store} from '@ngrx/store';
+import {Store} from '@ngrx/store';
 import {fromDomainsActions} from '../store/domains.actions';
 import {BaseStoreServices} from '../../../../standalone/data-table/class/base.store.services';
 import {LazyLoadData} from '../../../../standalone/data-table/models';
@@ -34,7 +34,6 @@ export class DomainsService extends BaseStoreServices<Domains> {
     }
 
     override loadAll(data: LazyLoadData): void {
-        debugger
         this.store.dispatch(fromDomainsActions.loadDomains({lazy: data}));
         super.loadAll(data);
     }

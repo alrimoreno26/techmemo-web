@@ -81,7 +81,6 @@ export class UserService extends BaseStoreServices<User> {
     }
 
     override loadAll(data: LazyLoadData): void {
-        debugger
         this.store.dispatch(fromUserActions.loadUser({lazy: data}));
         super.loadAll(data);
     }

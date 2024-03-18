@@ -1,35 +1,33 @@
 <ng-template dialog-header>
-    Edição de usuário de aplicativo
+    Edição de domínios de aplicativo
 </ng-template>
 <form class="overflow-hidden" [formGroup]="form">
     <div class="grid" formResponsive>
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-8">
             <div class="field p-fluid">
-                <label class="required block" for="name">
-                    {{ 'security.user.labels.name' | translate }}
+                <label class="required block" for="description">
+                    {{ 'security.user.labels.description' | translate }}
                 </label>
-                <input formControlName="name" formFieldValidation id="name" pInputText type="text">
-            </div>
-            <div class="field p-fluid">
-                <label class="required block" for="phone">
-                    {{ 'security.user.labels.phone' | translate }}
-                </label>
-                <p-inputMask formControlName="phone" formFieldValidation id="phone"
-                             mask="(99) 99999-9999"></p-inputMask>
-            </div>
-            <div class="field p-fluid">
-                <label class="required block" for="cpf">
-                    {{ 'security.user.labels.cpf' | translate }}
-                </label>
-                <p-inputMask formControlName="cpf" formFieldValidation id="cpf" mask="999.999.999-99"></p-inputMask>
+                <input formControlName="description" formFieldValidation id="description" pInputText type="text">
             </div>
         </div>
-        <div class="col-12 md:col-6">
+        <div class="col-12 md:col-4">
             <div class="field p-fluid">
-                <label class="required block" for="email">
-                    {{ 'security.user.labels.email' | translate }}
+                <label class="required block" for="domainType">
+                    {{ 'security.role.labels.domainType' | translate }}
                 </label>
-                <input formControlName="email" formFieldValidation id="email" pInputText type="text">
+                <p-dropdown [options]="domainArray" appendTo="body" formControlName="type"
+                            formFieldValidation
+                            id="domainType">
+                    <ng-template let-selected pTemplate="selectedItem">
+                        <ng-template [ngIf]="selected">
+                            {{ ('security.role.select.' + selected) | translate }}
+                        </ng-template>
+                    </ng-template>
+                    <ng-template let-area pTemplate="item">
+                        <div>{{ ('security.role.select.' + area) | translate }}</div>
+                    </ng-template>
+                </p-dropdown>
             </div>
         </div>
     </div>

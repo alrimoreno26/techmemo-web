@@ -16,7 +16,7 @@ export class UserEffects {
       switchMap(({lazy}) =>
         forkJoin([
           this.userAdminServices.findAllPaginate(lazy),
-          this.roleService.findAll()
+          this.roleService.findAllPaginate({page: 0, count: 50}),
         ]).pipe(
           map(([data, role]) => fromUserActions.loadResolverSuccess({data, role})),
           catchError(error => of(fromUserActions.userFailRequest({error})))
@@ -50,7 +50,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(fromUserActions.updateUser),
       switchMap(({entity}) =>
-        this.userAdminServices.update(entity).pipe(
+        this.userAdminServices.update(entity,'id').pipe(
           map((data) => fromUserActions.updateUserSuccess({entity: data})),
           catchError(error => of(fromUserActions.userFailRequest({error})))
         )

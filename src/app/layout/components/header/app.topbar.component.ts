@@ -2,6 +2,7 @@ import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
 import {SessionServices} from "../../../core/injects/session.services";
+import {domainEnum} from "../../../core/enums/role";
 
 @Component({
     selector: 'app-topbar',
@@ -14,7 +15,13 @@ export class AppTopbarComponent {
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
     @Input() showMenu: boolean = true;
-
+    lojas = [
+        { name: 'Fabrica', code: 'FACTORY' },
+        { name: 'Loja1', code: 'LOJA1' },
+        { name: 'Loja2', code: 'LOJA2' },
+        { name: 'Loja3', code: 'LOJA3' }
+    ];
+    selectedCity: any | undefined = { name: 'Fabrica', code: 'FACTORY' };
     constructor(public layoutService: LayoutService, public el: ElementRef, public session: SessionServices) { }
 
 
@@ -39,4 +46,5 @@ export class AppTopbarComponent {
         return logo;
     }
 
+    protected readonly domainEnum = domainEnum;
 }

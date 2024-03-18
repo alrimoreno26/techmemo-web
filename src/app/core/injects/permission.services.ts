@@ -49,7 +49,7 @@ export class PermissionServices {
    * @return An boolean value
    */
   hasPermission(domain: domainEnum, permission: permissionAuthorityTOEnum): boolean {
-    return !!this.authority.find(auth => auth.permission === permission && auth.domainDetail.domain === domain);
+    return !!this.authority.find(auth => auth.permission === permission && auth.domain.type === domain);
   }
 
   /**
@@ -58,7 +58,7 @@ export class PermissionServices {
    * @return An boolean value
    */
   hasDomain(domain: domainEnum): boolean {
-    return !!this.authority.find(auth => auth.domainDetail.domain === domain);
+    return !!this.authority.find(auth => auth.domain.type === domain);
   }
 
   /**
@@ -77,9 +77,9 @@ export class PermissionServices {
       this.update = true;
       this.delete = true;
     } else {
-      this.create = !!authority.find(f => f.permission === permissionAuthorityTOEnum.WRITE && f.domainDetail.domain === domain);
-      this.update = !!authority.find(f => f.permission === permissionAuthorityTOEnum.MODIFY && f.domainDetail.domain === domain);
-      this.delete = !!authority.find(f => f.permission === permissionAuthorityTOEnum.DELETE && f.domainDetail.domain === domain);
+      this.create = !!authority.find(f => f.permission === permissionAuthorityTOEnum.WRITE && f.domain.type === domain);
+      this.update = !!authority.find(f => f.permission === permissionAuthorityTOEnum.MODIFY && f.domain.type === domain);
+      this.delete = !!authority.find(f => f.permission === permissionAuthorityTOEnum.DELETE && f.domain.type === domain);
     }
     if (!environment.production) {
       console.log(domain, this.create, this.update, this.delete);

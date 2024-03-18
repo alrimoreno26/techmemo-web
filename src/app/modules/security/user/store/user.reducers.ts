@@ -37,7 +37,7 @@ export const initialState: State = adapter.getInitialState({
 export const userReducer = createReducer<State>(
   initialState,
   on(fromUserActions.loadResolverSuccess, (state, {data, role}) => {
-    return adapter.setAll(data.content, {...state, loaded: true, roleList: role, total: data.totalElements});
+    return adapter.setAll(data.content, {...state, loaded: true, roleList: role.content, total: data.totalElements});
   }),
   on(fromUserActions.loadUserSuccess, (state, {data}) => {
     return adapter.setAll(data.content, {...state, total: data.totalElements});

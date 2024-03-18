@@ -15,8 +15,11 @@ export class RolesComponent extends BaseComponentDirective {
         {header: 'security.role.labels.name', field: 'name', sort: true, visible: true, export: true},
         {header: 'security.role.labels.description', field: 'description', sort: true, visible: true, export: true},
         {
-            header: 'security.role.labels.operationArea', field: 'operationArea', sort: true, pipe: 'concat',
-            extraVal: 'security.role.select.', visible: true, export: true
+            header: 'security.role.labels.operationArea',
+            field: 'operationArea',
+            sort: true,
+            visible: true,
+            export: true
         },
         {header: 'common.action', field: 'action', class: 'text-center', visible: true, export: false}
     ];

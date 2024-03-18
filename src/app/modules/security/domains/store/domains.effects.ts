@@ -49,7 +49,7 @@ export class DomainsEffects {
         this.actions$.pipe(
             ofType(fromDomainsActions.updateDomains),
             switchMap(({entity}) =>
-                this.domainsServices.update(entity).pipe(
+                this.domainsServices.update(entity,'id').pipe(
                     map((data) => fromDomainsActions.updateDomainsSuccess({entity: data})),
                     catchError(error => of(fromDomainsActions.domainsFailRequest({error})))
                 )
@@ -71,8 +71,7 @@ export class DomainsEffects {
     constructor(
         private actions$: Actions,
         private domainsServices: DomainsService,
-        private roleService: RoleServices,
-        private companyAdminServices: CompanyAdminServices
+        private roleService: RoleServices
     ) {
     }
 }

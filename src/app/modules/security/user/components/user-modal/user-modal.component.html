@@ -21,7 +21,7 @@
                 <label class="required block" for="cpf">
                     {{ 'security.user.labels.cpf' | translate }}
                 </label>
-                <p-inputMask formControlName="cpf" formFieldValidation id="cpf" mask="999.999.999-99"></p-inputMask>
+                <p-inputMask formControlName="cpf" id="cpf" mask="999.999.999-99"></p-inputMask>
             </div>
         </div>
         <div class="col-12 md:col-6">
@@ -35,10 +35,10 @@
                 <label class="required block" for="roleId">
                     {{ 'security.user.labels.role' | translate }}
                 </label>
-                <ng-template *ngIf="userService.roleList$ | async as roleList">
+<!--                <ng-template *ngIf="userService.roleList$ | async as roleList">-->
                     <p-dropdown [options]="roleList" [showClear]="true" appendTo="body" formControlName="roleId"
                                 formFieldValidation id="roleId" optionLabel="name" optionValue="id"/>
-                </ng-template>
+<!--                </ng-template>-->
 
             </div>
         </div>

@@ -38,7 +38,7 @@ export enum EntityActionTypes {
 }
 
 export const loadResolver = createAction(EntityActionTypes.LoadResolver, props<{ lazy: LazyLoadData }>());
-export const loadResolverSuccess = createAction(EntityActionTypes.LoadResolverSuccess, props<{ data: LazyResultData<User>, role: Role[] }>());
+export const loadResolverSuccess = createAction(EntityActionTypes.LoadResolverSuccess, props<{ data: LazyResultData<User>, role: LazyResultData<Role> }>());
 
 export const loadUser = createAction(EntityActionTypes.LoadUser, props<{ lazy: LazyLoadData }>());
 export const loadUserSuccess = createAction(EntityActionTypes.LoadUserSuccess, props<{ data: LazyResultData<User> }>());

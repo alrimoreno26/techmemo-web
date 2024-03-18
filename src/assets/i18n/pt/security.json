@@ -1,96 +1,128 @@
 {
-  "security": {
-    "role": {
-      "labels": {
-        "name": "Nome",
-        "description": "Descricão",
-        "permission": "Autoridade",
-        "read": "Leitura",
-        "write": "Escrita",
-        "modify": "Modificar",
-        "delete": "Deletar",
-        "operationArea": "Área de Operação"
-      },
-      "select": {
-        "FACTORY": "Fabrica",
-        "LOJA": "Dono da loja",
-        "COMPRADOR": "Comprador",
-        "CAIXA": "Caixas",
-        "ATENDENTE": "Garçom"
-      }
-    },
-    "user": {
-      "labels": {
-        "email": "Email",
-        "name": "Nome",
-        "phone": "Telefone",
-        "created": "Criado",
-        "state": "Estado",
-        "cpf": "CPF",
-        "role": "Autoridade",
-        "codeCountryPhone": "Código País",
-        "reset": "Reiniciar Classificação",
-        "change": "Mudar",
-        "generatePassword": "Alterar a senha",
-        "newPassword": "Nova Senha",
-        "oldPassword": "Senha Antiga",
-        "repeatPassword": "Repita a senha"
-      },
-      "tooltip": {
-        "state": "Ativar ou desativar o usuário",
-        "changePassword": "Gerar senha",
-        "reloadUser": "Funcionalidade para reiniciar o usuário usado em apresentações"
-      },
-      "messages": {
-        "enabled": "Usuário habilitado",
-        "disabled": "Usuário desabilitado",
-        "confirmation": "Confirmação",
-        "message": "Tem certeza de que deseja prosseguir?",
-        "reset": "Todas as classificações foram reiniciadas",
-        "generatePassword": "A nova senha foi gerada"
-      }
-    },
-    "identification": {
-      "labels": {
-        "name": "Nome",
-        "email": "Correio",
-        "role": "Autoridade",
-        "intensity": "Intenção",
-        "enabled": "Estado",
-        "documentType": "Tipo de documento",
-        "state": "Estado",
-        "approved": "Aprovado",
-        "rejected": "Rejeitado",
-        "created": "Criado"
-      },
-      "tooltip": {
-        "search": "Analise os dados"
-      },
-      "messages": {
-        "userApproved": "O usuário foi aprovado com sucesso"
-      }
-    },
-    "profile": {
-      "tabs": {
-        "personal": "Dados pessoais",
-        "security": "Seguridad",
-        "bank": "Dados bancário",
-        "contact": "Contactos"
-      },
-      "labels": {
-        "email": "Email",
-        "name": "Nome",
-        "phone": "Telefone",
-        "state": "Estado",
-        "cpf": "CPF",
-        "address1": "Endereço",
-        "address2": "Complemento",
-        "municipality": "Cidade",
-        "number": "Número",
-        "uf": "Estado",
-        "zip": "CEP",
-        "neighborhood": "Barrio"
-      }
+    "security": {
+        "role": {
+            "labels": {
+                "name": "Nome",
+                "description": "Descricão",
+                "permission": "Autoridade",
+                "read": "Leitura",
+                "write": "Escrita",
+                "modify": "Modificar",
+                "delete": "Deletar",
+                "operationArea": "Área de Operação",
+                "domainType": "Tipo de domínio"
+            },
+            "select": {
+                "FACTORY_ADMINISTRATOR": "Administrador de Fábrica",
+                "STORE_ADMINISTRATOR": "Administrador da Loja",
+                "ADMINISTRATIVE_MANAGER": "Gerente Administrativo",
+                "PRODUCTION_MANAGER": "Gerente de Produção",
+                "SALES_MANAGER": "Gerente de Vendas",
+                "EXPEDITION_MANAGER": "Gerente de Expedição",
+                "ADMINISTRATOR": "Gerente de Expedição",
+                "ACCOUNTS_TO_PAY": "Contas a Pagar",
+                "ACCOUNTS_TO_RECEIVE": "Contas a Receber",
+                "PERSONAL_DEPARTMENT": "Departamento Pessoal",
+                "PRODUCTION": "Produção",
+                "INVENTORY": "Estoque",
+                "BUYER": "Compras",
+                "SALES": "Ventas",
+                "EXPEDITION": "Expedição",
+                "LOGISTICS": "Logística",
+                "ADMINISTRATOR_STORE": "Administrador de Loja",
+                "POINT_OF_SALE": "Caixa",
+                "ATTENDANT": "Atendente",
+                "GARCOM": "Garçom",
+                "ALL": "Todos",
+                "USER": "Usuário",
+                "ROLES": "Autoridades",
+                "STORAGE": "Armazenamento",
+                "CONFIGURATION": "Configuração",
+                "ACCOUNT_PLAN": "Plano de Conta",
+                "CATEGORY": "Categoria",
+                "PRODUCT": "Produto",
+                "SUPPLIER": "Fornecedor",
+                "UNIT_MEASUREMENT": "Unidade de Medida",
+                "ORDER": "Pedido",
+                "POS": "Ponto de Venda",
+                "PAYMENT": "Pagamento",
+                "REPORT": "Relatórios"
+            }
+        },
+        "user": {
+            "labels": {
+                "email": "Email",
+                "name": "Nome",
+                "phone": "Telefone",
+                "description": "Descricão",
+                "created": "Criado",
+                "state": "Estado",
+                "cpf": "CPF",
+                "role": "Autoridade",
+                "codeCountryPhone": "Código País",
+                "reset": "Reiniciar Classificação",
+                "change": "Mudar",
+                "generatePassword": "Alterar a senha",
+                "newPassword": "Nova Senha",
+                "oldPassword": "Senha Antiga",
+                "repeatPassword": "Repita a senha",
+                "domainType": "Tipo de domínio"
+            },
+            "tooltip": {
+                "state": "Ativar ou desativar o usuário",
+                "changePassword": "Gerar senha",
+                "reloadUser": "Funcionalidade para reiniciar o usuário usado em apresentações"
+            },
+            "messages": {
+                "enabled": "Usuário habilitado",
+                "disabled": "Usuário desabilitado",
+                "confirmation": "Confirmação",
+                "message": "Tem certeza de que deseja prosseguir?",
+                "reset": "Todas as classificações foram reiniciadas",
+                "generatePassword": "A nova senha foi gerada"
+            }
+        },
+        "identification": {
+            "labels": {
+                "name": "Nome",
+                "email": "Correio",
+                "role": "Autoridade",
+                "intensity": "Intenção",
+                "enabled": "Estado",
+                "documentType": "Tipo de documento",
+                "state": "Estado",
+                "approved": "Aprovado",
+                "rejected": "Rejeitado",
+                "created": "Criado"
+            },
+            "tooltip": {
+                "search": "Analise os dados"
+            },
+            "messages": {
+                "userApproved": "O usuário foi aprovado com sucesso"
+            }
+        },
+        "profile": {
+            "tabs": {
+                "personal": "Dados pessoais",
+                "security": "Seguridad",
+                "bank": "Dados bancário",
+                "contact": "Contactos"
+            },
+            "labels": {
+                "email": "Email",
+                "name": "Nome",
+                "phone": "Telefone",
+                "state": "Estado",
+                "cpf": "CPF",
+                "address1": "Endereço",
+                "address2": "Complemento",
+                "municipality": "Cidade",
+                "number": "Número",
+                "uf": "Estado",
+                "zip": "CEP",
+                "neighborhood": "Barrio"
+            }
+        }
     }
-  }
 }

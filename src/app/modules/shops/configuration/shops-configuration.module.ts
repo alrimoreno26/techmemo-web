@@ -12,6 +12,7 @@ import {ProductService} from "../../inventory/product/services/product.service";
 import {UnidadeService} from "../../configuracion/unidade/services/unidade.service";
 import {StoreCategoryService} from "../../inventory/category/services/store.category.service";
 import {SupplierService} from "../../inventory/forncedores/services/supplier.service";
+import {AppConfigModule} from "../../../layout/config/app.config.module";
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import {SupplierService} from "../../inventory/forncedores/services/supplier.ser
         InputMaskModule,
         ReactiveFormsModule,
         InputNumberModule,
+        AppConfigModule,
     ],
     providers:[
         ProductService,

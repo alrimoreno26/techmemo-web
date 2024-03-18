@@ -57,6 +57,8 @@ export interface LazyLoadData {
     count: number;
     first?: number;
     filter?: string;
+    pageNumber?: number;
+    pageSize?: number;
     state?: string[];
     sort?: string;
     direction?: any;

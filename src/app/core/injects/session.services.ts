@@ -111,8 +111,7 @@ export class SessionServices {
      * @return An boolean value
      */
     roleAccess(roles: Array<domainEnum> = []): boolean {
-        return true;
-        const list = flatMap(roles.map(r => this.userLogged?.role.authorities.filter(f => f.domainDetail.domain === r)));
+        const list = flatMap(roles.map(r => this.userLogged?.role.authorities.filter(f => f.domain.type === r)));
         this.permissionServices.setAuthorityList(list, roles[0]);
 
         /**

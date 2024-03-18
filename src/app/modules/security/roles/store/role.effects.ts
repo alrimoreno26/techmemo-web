@@ -15,10 +15,10 @@ export class RoleEffects {
             switchMap(() =>
                 forkJoin([
                     this.service.findAll(),
-                    this.service.getAllAuthority()
+                    this.service.getAllAuthority({pageNumber:0, pageSize: 1000})
                 ]).pipe(
                     map((data: any) => {
-                        return fromRoleActions.loadRoleSuccess({data: {roleList: data[0].content, authorityList: data[1]}});
+                        return fromRoleActions.loadRoleSuccess({data: {roleList: data[0].content, authorityList: data[1].content}});
                     }),
                     catchError(error => of(fromRoleActions.roleFailRequest({error})))
                 )

@@ -10,6 +10,6 @@ import {buildUsersURL} from "../util";
 export class DomainsService extends AbstractService<Domains> {
 
     constructor(private httpClient: HttpClient) {
-        super(httpClient, buildUsersURL('/v1/'));
+        super(httpClient, buildUsersURL('/v1/domains'));
     }
 }

@@ -12,19 +12,19 @@ const routes: Routes = [
             {
                 path: 'user',
                 canActivate: [canActivateControlGuard],
-                data: {breadcrumb: 'Usuários', roles: [domainEnum.USER_ADMIN]},
+                data: {breadcrumb: 'Usuários', roles: [domainEnum.SECURITY]},
                 loadChildren: () => import('./user/user.module').then(m => m.UserModule)
             },
             {
                 path: 'role',
                 canActivate: [canActivateControlGuard],
-                data: {breadcrumb: 'Roles',roles: [domainEnum.ROLES]},
+                data: {breadcrumb: 'Roles',roles: [domainEnum.SECURITY]},
                 loadChildren: () => import('./roles/roles.module').then(m => m.RolesModule)
             },
             {
                 path: 'domains',
                 canActivate: [canActivateControlGuard],
-                data: {breadcrumb: 'Domínios',roles: [domainEnum.ROLES]},
+                data: {breadcrumb: 'Domínios',roles: [domainEnum.SECURITY]},
                 loadChildren: () => import('./domains/domains.module').then(m => m.DomainsModule)
             },
             {path: '', redirectTo: 'role', pathMatch: 'full'},

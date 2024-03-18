@@ -23,6 +23,8 @@ import {DomainsEffects} from "./store/domains.effects";
 import {DomainsService} from "./services/domains.service";
 import {DomainsComponent} from "./domains.component";
 import {DomainsModalComponent} from "./components/domains-modal/domains-modal.component";
+import {BadgeModule} from "primeng/badge";
+import {ConfirmDialogModule} from "primeng/confirmdialog";
 
 @NgModule({
   declarations: [
@@ -47,7 +49,9 @@ import {DomainsModalComponent} from "./components/domains-modal/domains-modal.co
         InputMaskModule,
         PasswordModule,
         DataTableModule,
-        RippleModule
+        RippleModule,
+        BadgeModule,
+        ConfirmDialogModule
     ],
   providers: [
       DomainsService, DialogService

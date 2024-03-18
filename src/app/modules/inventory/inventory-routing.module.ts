@@ -18,6 +18,11 @@ import {RouterModule} from '@angular/router';
             data: {breadcrumb: 'Fornecedores'},
             loadChildren: () => import('./forncedores/fornecedores.module').then(m => m.FornecedoresModule)
         },
+        {
+            path: 'transfer',
+            data: {breadcrumb: 'Transferência de estoque'},
+            loadChildren: () => import('./stock_transfer/stock_transfer.module').then(m => m.Stock_transferModule)
+        },
         {path: '**', redirectTo: '/not-found'}
     ])],
     exports: [RouterModule]
