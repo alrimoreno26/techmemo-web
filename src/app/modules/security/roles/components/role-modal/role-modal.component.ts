@@ -18,6 +18,9 @@ export class RoleModalComponent extends BaseModalComponentDirective implements O
 
     authorities: FormArray;
     operationArea: SelectItemGroup[] = [
+        { value: 'SUPER_ADMIN', label: 'SUPER_ADMIN', items: [
+                {value: 'SUPER_ADMIN', label: 'SUPER_ADMIN'},
+            ]},
         {
             value: 'FACTORY_ADMINISTRATOR', label: 'FACTORY_ADMINISTRATOR', items: [
                 {value: 'FACTORY_ADMINISTRATOR', label: 'ADMINISTRATOR'},
@@ -91,7 +94,7 @@ export class RoleModalComponent extends BaseModalComponentDirective implements O
         this.form = new FormGroup({
             name: new FormControl<string>(data?.name, Validators.required),
             description: new FormControl<string>(data?.description, Validators.required),
-            operationArea: new FormControl<operationAreaRoleEnum>(data?.operationArea, Validators.required),
+            operationArea: new FormControl<string>(data?.operationArea, Validators.required),
             authorities: this.authorities
         });
     }

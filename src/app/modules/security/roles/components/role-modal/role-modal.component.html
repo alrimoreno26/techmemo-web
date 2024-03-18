@@ -62,16 +62,16 @@
                                tooltipPosition="top"></i>
                         </td>
                         <td class="text-center">
-                            <input formControlName="read" formFieldValidation type="checkbox">
+                            <p-checkbox formControlName="read" [binary]="true" formFieldValidation></p-checkbox>
                         </td>
                         <td class="text-center">
-                            <input formControlName="write" formFieldValidation type="checkbox">
+                            <p-checkbox formControlName="write" [binary]="true" formFieldValidation></p-checkbox>
                         </td>
                         <td class="text-center">
-                            <input formControlName="modify" formFieldValidation type="checkbox">
+                            <p-checkbox formControlName="modify" [binary]="true" formFieldValidation></p-checkbox>
                         </td>
                         <td class="text-center">
-                            <input formControlName="delete" formFieldValidation type="checkbox">
+                            <p-checkbox formControlName="delete" [binary]="true" formFieldValidation></p-checkbox>
                         </td>
                     </tr>
                 </ng-template>

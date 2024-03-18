@@ -13,6 +13,7 @@
                 "domainType": "Tipo de domínio"
             },
             "select": {
+                "SUPER_ADMIN": "Super Admin",
                 "FACTORY_ADMINISTRATOR": "Administrador de Fábrica",
                 "STORE_ADMINISTRATOR": "Administrador da Loja",
                 "ADMINISTRATIVE_MANAGER": "Gerente Administrativo",

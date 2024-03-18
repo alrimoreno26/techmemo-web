@@ -19,6 +19,7 @@ import {TableModule} from 'primeng/table';
 import {TooltipModule} from 'primeng/tooltip';
 import {DataTableModule} from '../../../standalone/data-table/data-table.module';
 import {RippleModule} from "primeng/ripple";
+import {CheckboxModule} from "primeng/checkbox";
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import {RippleModule} from "primeng/ripple";
         TableModule,
         TooltipModule,
         DataTableModule,
-        RippleModule
+        RippleModule,
+        CheckboxModule
     ],
   providers: [
     RoleService, DialogService
