@@ -3,6 +3,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthServices} from "../../../core/services/auth.services";
 import {SessionServices} from "../../../core/injects/session.services";
+import {SecurityModel, UserAuthenticated} from "../../../core/models/user";
 
 @Component({
     selector: 'app-login',
@@ -57,7 +58,7 @@ export class LoginComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         const {returnUrl} = this.route.snapshot.queryParams;
-        this.returnUrl = returnUrl || '/inventory/product';
+        this.returnUrl = returnUrl || '/vendas/historico';
     }
 
     /**
@@ -66,9 +67,12 @@ export class LoginComponent implements OnInit {
      */
     login(): void {
         this.ngZone.run(() => this.service.login(this.form.value).subscribe(
-            res => {
+            (res: SecurityModel) => {
                 this.sessionService.setUserLogged(res);
-                this.router.navigateByUrl(this.returnUrl).then();
+                this.service.profile().subscribe((user: UserAuthenticated) => {
+                    this.sessionService.addBasicInfo(user);
+                    this.router.navigateByUrl(this.returnUrl).then();
+                })
             },
             () => {
             }));

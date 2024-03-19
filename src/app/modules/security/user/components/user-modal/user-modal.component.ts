@@ -29,6 +29,7 @@ export class UserModalComponent extends BaseModalComponentDirective implements O
         const {data} = this.config;
         this.form = new FormGroup({
             name: new FormControl<string>(data?.name, Validators.required),
+            password: new FormControl<string>(data?.password, Validators.required),
             phone: new FormControl<string>(this.cleanPhone(data?.phone), [Validators.required, cellPhone]),
             roleId: new FormControl<number>(data?.role?.id, Validators.required),
             cpf: new FormControl<string>(data?.cpf, [Validators.required, cpf]),

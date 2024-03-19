@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  InitDeploy:    
+  InitDeploy:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Python
@@ -16,7 +16,7 @@ jobs:
       - name: Get current date and time
         id: datetime
         run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
-        
+
       - name: Send custom message
         uses: appleboy/telegram-action@master
         with:
@@ -38,13 +38,13 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Build the Docker image
-        run: docker build -t techzilla-web .
+        run: docker build -t techmemo-web .
 
       - name: Create tag for build
-        run: docker tag techzilla-web:latest armoreno2626/techzilla-web:latest
+        run: docker tag techmemo-web:latest armoreno2626/techmemo-web:latest
 
       - name: Push the Docker image
-        run: docker push armoreno2626/techzilla-web:latest
+        run: docker push armoreno2626/techmemo-web:latest
 
   EndDeploy:
     needs: build
@@ -58,7 +58,7 @@ jobs:
       - name: Get current date and time
         id: datetime
         run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
-        
+
       - name: Send custom message
         uses: appleboy/telegram-action@master
         with:
@@ -66,7 +66,7 @@ jobs:
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: |
             The deployment of the web application finished at ${{ steps.datetime.outputs.datetime }}.
-            For download docker image use docker pull armoreno2626/techzilla-web:latest
+            For download docker image use docker pull armoreno2626/techmemo-web:latest
 
 
 #    deploy:  # Separate deploy job (CD)
@@ -90,7 +90,7 @@ jobs:
 #                      #Ativar docker
 #                      sudo systemctl enable docker.service
 #                      sudo systemctl start docker.service
-#                      docker stop techzilla-web || true
-#                      docker rm techzilla-web || true
-#                      docker pull ${{ secrets.DOCKER_USERNAME }}/techzilla-web:latest
-#                      docker run -d -p 80:80 --name techzilla-web ${{ secrets.DOCKER_USERNAME }}/techzilla-web:latest
+#                      docker stop techmemo-web || true
+#                      docker rm techmemo-web || true
+#                      docker pull ${{ secrets.DOCKER_USERNAME }}/techmemo-web:latest
+#                      docker run -d -p 80:80 --name techmemo-web ${{ secrets.DOCKER_USERNAME }}/techmemo-web:latest

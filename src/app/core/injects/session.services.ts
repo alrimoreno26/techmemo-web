@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {flatMap} from 'lodash';
 import {environment} from 'src/environments/environment';
 import {getCookie, setCookie} from '../util';
-import {RefreshTokenTO, UserAuthenticated} from "../models/user";
+import {RefreshTokenTO, SecurityModel, UserAuthenticated} from "../models/user";
 import {ACCESS_TOKEN, domainEnum, REFRESH_TOKEN} from "../enums/role";
 import {PermissionServices} from "./permission.services";
 import {AuthServices} from "../services/auth.services";
@@ -74,14 +74,14 @@ export class SessionServices {
 
     /**
      * Method set user value from auth
+     * @param security {@link SecurityModel}
      * @param user {@link UserAuthenticated}
      * @return void
      */
-    setUserLogged(user: UserAuthenticated): void {
+    setUserLogged(security: SecurityModel): void {
         this.isLoggedIn = true;
-        this.setAccessToken(user.token);
-        this.setRefreshToken(user.refreshToken);
-        this.addBasicInfo(user);
+        this.setAccessToken(security.token);
+        this.setRefreshToken(security.refreshToken);
     }
 
     /**
@@ -147,15 +147,15 @@ export class SessionServices {
         );
     }
 
-  logout(): void {
-    this.service.logout().subscribe(() => this.clearSession());
-}
+    logout(): void {
+        this.service.logout().subscribe(() => this.clearSession());
+    }
 
     /**
      *  Set Basic Info for Permission use
      * @param user {@link UserAuthenticated}
      */
-    private addBasicInfo(user: UserAuthenticated): void {
+    addBasicInfo(user: UserAuthenticated): void {
         this.loggedUser$.next(user);
         this.permissionServices.setUser({
             id: user.id,

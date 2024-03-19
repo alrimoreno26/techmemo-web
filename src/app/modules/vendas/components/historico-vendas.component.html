@@ -21,6 +21,7 @@
             </div>
         </div>
     </div>
+
     <p-table
         #dtOrders
         [value]="storeServices.listEntities$()"
@@ -146,6 +147,10 @@
                     <p-badge [value]="order.state | translate" [severity]="order.state | severity"></p-badge>
                 </td>
                 <td class="text-center">
+                    <p-button icon="mdi mdi-printer mdi-24px"
+                              [pTooltip]="'Imprimir Nf-e'"
+                              styleClass="p-button-rounded p-button-text p-button-icon-only">
+                    </p-button>
                     <p-button icon="mdi mdi-eye-circle-outline mdi-24px"
                               (click)="showDetails(order)"
                               styleClass="p-button-rounded p-button-text p-button-icon-only">

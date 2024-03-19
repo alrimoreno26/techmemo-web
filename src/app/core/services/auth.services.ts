@@ -29,7 +29,7 @@ export class AuthServices {
    * @return An Observable {@link UserAuthenticated}
    */
   profile(): Observable<UserAuthenticated> {
-    return this.httpClient.get<UserAuthenticated>(buildURL('/users/authenticated'));
+    return this.httpClient.get<UserAuthenticated>(buildUsersURL('/v1/users/authenticated'));
   }
 
   /**

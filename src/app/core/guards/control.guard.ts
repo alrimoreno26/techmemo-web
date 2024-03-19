@@ -24,12 +24,11 @@ export class ControlGuard {
    * @return An boolean value
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-      return true
     const {roles} = route?.data;
     if (this.sessionService.roleAccess(roles)) {
       return true;
     } else {
-      this.router.navigate(['/static/access']).then();
+      this.router.navigate(['/static/access-denied']).then();
     }
     return false;
   }

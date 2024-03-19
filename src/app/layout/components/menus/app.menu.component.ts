@@ -33,6 +33,7 @@ export class AppMenuComponent implements OnInit {
         });
     }
     private menuAccess(roles: Array<domainEnum> = []): boolean {
+        if(this.sessionService.userLogged.role.operationArea === 'SUPER_ADMIN') return true;
         const authorities: Array<AuthorityTO> = this.sessionService.userLogged.role.authorities;
         return roles[0] === domainEnum.ALL ? true : flatMap(roles.map(r => authorities.filter(f => f.domain.type === r)))?.length > 0;
     }

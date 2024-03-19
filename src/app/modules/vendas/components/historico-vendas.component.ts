@@ -40,9 +40,6 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
     constructor(public storeServices: StoreVendasServices) {
         super()
         this.storeServices.loadAll({lazy: {page: 0, count: 25}})
-        effect(() => {
-            console.log(this.storeServices.listEntities$())
-        });
     }
 
     ngOnInit() {

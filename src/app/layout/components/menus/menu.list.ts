@@ -82,12 +82,12 @@ export const menuList: any[] = [
     {
         label: 'Loja',
         icon: 'mdi mdi-office-building-outline mdi-24px',
-        roles: [domainEnum.STORE],
+        roles: [domainEnum.CONFIGURATION],
         items: [
             {
                 label: 'Configurações',
                 icon: 'mdi mdi-storefront-edit-outline mdi-24px',
-                roles: [domainEnum.STORE],
+                roles: [domainEnum.CONFIGURATION],
                 routerLink: ['loja/configuration']
             }
         ]
@@ -116,24 +116,24 @@ export const menuList: any[] = [
     {
         label: 'Segurança',
         icon: 'mdi mdi-security mdi-24px',
-        roles: [domainEnum.SECURITY],
+        roles: [domainEnum.ROLES],
         items: [
             {
                 label: 'Usuario',
                 icon: 'mdi mdi-account-edit mdi-24px',
-                roles: [domainEnum.SECURITY],
+                roles: [domainEnum.ROLES],
                 routerLink: ['security/user']
             },
             {
                 label: 'Roles',
                 icon: 'mdi mdi-shield-account mdi-24px',
-                roles: [domainEnum.SECURITY],
+                roles: [domainEnum.ROLES],
                 routerLink: ['security/role']
             },
             {
                 label: 'Domínios',
                 icon: 'mdi mdi-account-key mdi-24px',
-                roles: [domainEnum.SECURITY],
+                roles: [domainEnum.ROLES],
                 routerLink: ['security/domains']
             }
         ]

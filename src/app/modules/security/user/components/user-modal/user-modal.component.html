@@ -11,6 +11,28 @@
                 <input formControlName="name" formFieldValidation id="name" pInputText type="text">
             </div>
             <div class="field p-fluid">
+                <label class="required block" for="password">
+                    {{ 'security.user.labels.newPassword' | translate }}
+                </label>
+                <p-password [toggleMask]="true" formControlName="password" formFieldValidation
+                            id="password" styleClass="p-input-icon-right"></p-password>
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="roleId">
+                    {{ 'security.user.labels.role' | translate }}
+                </label>
+                <p-dropdown [options]="roleList" [showClear]="true" appendTo="body" formControlName="roleId"
+                            formFieldValidation id="roleId" optionLabel="name" optionValue="id"/>
+            </div>
+        </div>
+        <div class="col-12 md:col-6">
+            <div class="field p-fluid">
+                <label class="required block" for="email">
+                    {{ 'security.user.labels.email' | translate }}
+                </label>
+                <input formControlName="email" formFieldValidation id="email" pInputText type="text">
+            </div>
+            <div class="field p-fluid">
                 <label class="required block" for="phone">
                     {{ 'security.user.labels.phone' | translate }}
                 </label>
@@ -22,24 +44,6 @@
                     {{ 'security.user.labels.cpf' | translate }}
                 </label>
                 <p-inputMask formControlName="cpf" id="cpf" mask="999.999.999-99"></p-inputMask>
-            </div>
-        </div>
-        <div class="col-12 md:col-6">
-            <div class="field p-fluid">
-                <label class="required block" for="email">
-                    {{ 'security.user.labels.email' | translate }}
-                </label>
-                <input formControlName="email" formFieldValidation id="email" pInputText type="text">
-            </div>
-            <div class="field p-fluid">
-                <label class="required block" for="roleId">
-                    {{ 'security.user.labels.role' | translate }}
-                </label>
-<!--                <ng-template *ngIf="userService.roleList$ | async as roleList">-->
-                    <p-dropdown [options]="roleList" [showClear]="true" appendTo="body" formControlName="roleId"
-                                formFieldValidation id="roleId" optionLabel="name" optionValue="id"/>
-<!--                </ng-template>-->
-
             </div>
         </div>
     </div>

@@ -3,7 +3,7 @@
     "version": 1,
     "newProjectRoot": "projects",
     "projects": {
-        "techzilla": {
+        "techmemo": {
             "projectType": "application",
             "schematics": {
                 "@schematics/angular:component": {
@@ -17,7 +17,7 @@
                 "build": {
                     "builder": "@angular-devkit/build-angular:browser",
                     "options": {
-                        "outputPath": "dist/techzilla-web",
+                        "outputPath": "dist/techmemo-web",
                         "index": "src/index.html",
                         "main": "src/main.ts",
                         "polyfills": [
@@ -74,10 +74,10 @@
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
                         "production": {
-                            "browserTarget": "techzilla:build:production"
+                            "browserTarget": "techmemo:build:production"
                         },
                         "development": {
-                            "browserTarget": "techzilla:build:development"
+                            "browserTarget": "techmemo:build:development"
                         }
                     },
                     "defaultConfiguration": "development"
@@ -85,7 +85,7 @@
                 "extract-i18n": {
                     "builder": "@angular-devkit/build-angular:extract-i18n",
                     "options": {
-                        "browserTarget": "techzilla:build"
+                        "browserTarget": "techmemo:build"
                     }
                 },
                 "test": {

@@ -1,8 +1,8 @@
 version: '3.7'
 
 services:
-    techzilla:
-        image: armoreno2626/techzilla-web:latest
-        container_name: techzilla
+    techmemo:
+        image: armoreno2626/techmemo-web:latest
+        container_name: techmemo
         ports:
             - "8080:80"

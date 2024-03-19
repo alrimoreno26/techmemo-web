@@ -15,6 +15,7 @@ import {TableModule} from "primeng/table";
 import {TagModule} from "primeng/tag";
 import {TranslateModule} from "@ngx-translate/core";
 import {FormsModule} from "@angular/forms";
+import {TooltipModule} from "primeng/tooltip";
 
 @NgModule({
     declarations: [
@@ -35,7 +36,8 @@ import {FormsModule} from "@angular/forms";
         TableModule,
         TagModule,
         TranslateModule,
-        FormsModule
+        FormsModule,
+        TooltipModule
     ],
     providers:[
     ],

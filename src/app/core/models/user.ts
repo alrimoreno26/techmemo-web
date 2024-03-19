@@ -4,6 +4,13 @@ export interface FormAuth {
     email: string;
     password: string;
 }
+
+export interface SecurityModel{
+    token: string;
+    refreshToken: string;
+    expirationDate?: string;
+    refreshTokenExpirationDate?: string;
+}
 export interface UserAuthenticated {
     address?: AddressTO;
     completedQuestionnaire: boolean;
