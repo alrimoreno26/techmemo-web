@@ -20,7 +20,6 @@ export class AppMenuComponent implements OnInit {
 
     ngOnInit() {
         menuList.forEach((m: any) => {
-            console.log(this.sessionService.userLogged.role.authorities)
             const item = this.menuAccess(m.roles);
             if (item && m?.items?.length) {
                 const children = m.items.filter((c:any) => this.menuAccess(c.roles));

@@ -18,12 +18,18 @@ $gutter: 1rem; //for primeflex grid system
 @import "assets/demo/styles/code.scss";
 
 :host::ng-deep {
-    .layout-topbar-full{
-        width: 100%!important;
+    .layout-topbar-full {
+        width: 100% !important;
     }
+
     .p-column-filter-buttonbar {
         display: none;
     }
+
+    .p-dialog-content {
+        overflow: hidden !important;
+    }
+
 }
 
 /* width */
@@ -52,14 +58,17 @@ $gutter: 1rem; //for primeflex grid system
     background: rgb(0 108 0);
     color: white !important;
 }
+
 .payment_pending {
     background: rgb(141 12 0);
     color: white !important;
 }
+
 .payment_discount {
     background: rgb(255 138 60);
     color: white !important;
 }
+
 .payment_troca {
     background: rgb(1 7 134);
     color: white !important;
@@ -70,16 +79,19 @@ $gutter: 1rem; //for primeflex grid system
     width: 2rem !important;
     padding: 0.3rem 0 !important;
 }
+
 .severity_pending_text {
     color: rgb(141 12 0);
     width: 2rem !important;
     padding: 0.3rem 0 !important;
 }
+
 .severity_discount_text {
     color: rgb(255 138 60);
     width: 2rem !important;
     padding: 0.3rem 0 !important;
 }
+
 .severity_troca_text {
     color: rgb(1 7 134);
     width: 2rem !important;

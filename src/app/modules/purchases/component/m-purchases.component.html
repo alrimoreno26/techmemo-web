@@ -1,0 +1,140 @@
+<ng-template dialog-header>
+    Nova Compra
+</ng-template>
+<div formResponsive width="750px">
+    <div class="grid p-fluid">
+        <div class="col-12 pb-0 ">
+            <div class="flex w-full">
+                <span class="flex-auto pl-2 text-2xl flex align-items-center"
+                      style="border-left: 5px double var(--primary-color);">Detalhes da transferência</span>
+                <button pButton pRipple class="w-3 p-button-outlined" label="Novo Producto"
+                        icon="mdi mdi-plus mdi-24px"></button>
+            </div>
+            <div class="search-container px-0 py-3 shadow-none w-full">
+                <i class="pi pi-search"></i>
+                <p-autoComplete class="w-full" styleClass="w-full" appFocus #input (completeMethod)="search($event)"
+                                inputStyleClass="w-full"
+                                placeholder="Pesquise por nome ou código de barras"
+                                (input)="searchProducts($event)"
+                                field="name"
+                                [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
+                                [suggestions]="suggestions"></p-autoComplete>
+            </div>
+        </div>
+        <div class="col-12">
+            <p-table [value]="[]" [scrollable]="true"
+                     [styleClass]="'p-datatable-sm'">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th class="custom-th font-bold">Nome do Produto</th>
+                        <th class="custom-th font-bold">Unit</th>
+                        <th class="custom-th font-bold">Quantia</th>
+                        <th class="custom-th font-bold">Preço</th>
+                        <th class="custom-th font-bold">Sub-Total</th>
+                        <th class="custom-th font-bold">Ações</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td class="custom-td" style="min-width: 220px">{{ product.name | wrapText: 25 }}
+                        </td>
+                        <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" }}</td>
+                        <td class="custom-td">
+                            {{ product.amount }}
+                        </td>
+                        <td class="custom-td">{{ product.salePrice| currency }}</td>
+                        <td class="flex gap-2" pFrozenColumn>
+                            <p-button styleClass="border-round-3xl severity_danger small"
+                                      icon="pi pi-times">
+                            </p-button>
+
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="footer">
+                    <tr>
+                        <td colspan="4" class="text-right font-bold">Totais de Compra</td>
+                        <td class="font-bold">{{ '12' | currency }}</td>
+                        <td></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+        <div class="col-12">
+            <div class="grid grid-cols-2 gap-2">
+                <div class="col-12">
+                    <div class="grid grid-cols-2">
+                        <div class="col-6">
+                            <div class="flex align-items-center">
+                                <div class="pr-3 flex-1">
+                                    <p-multiSelect [options]="supplierService.listEntities$()"
+                                                   formFieldValidation
+                                                   appendTo="body"
+                                                   [(ngModel)]="suggestions"
+                                                   optionLabel="document"
+                                                   optionValue="id"
+                                                   placeholder="Selecione um provedor">
+                                        <ng-template let-value pTemplate="selectedItems">
+                                            <ng-template [ngIf]="value === null || value.length === 0">
+                                                <span>Selecione um provedor</span>
+                                            </ng-template>
+                                            <ng-template [ngIf]="value !== null">
+                                                <div *ngFor="let option of value">
+                                                    <span
+                                                        *ngIf="supplier(option).type === 'PERSON'">{{ supplier(option).name }} {{ supplier(option).lastName }}</span>
+                                                    <span
+                                                        *ngIf="supplier(option).type !== 'PERSON'">{{ supplier(option).fantasyName | wrapText: 25 }}</span>
+                                                </div>
+                                            </ng-template>
+
+                                        </ng-template>
+                                        <ng-template let-supplier pTemplate="item">
+                                            <div class="flex align-items-center gap-2"
+                                                 *ngIf="supplier.type === 'PERSON'">
+                                                <div>{{ supplier.name }} {{ supplier.lastName }}</div>
+                                            </div>
+                                            <div class="flex align-items-center gap-2"
+                                                 *ngIf="supplier.type !== 'PERSON'">
+                                                <div>{{ supplier.fantasyName }}</div>
+                                            </div>
+                                        </ng-template>
+                                    </p-multiSelect>
+                                </div>
+                                <p-button icon="pi pi-plus" class="mr-2" styleClass="p-button-success"
+                                          (onClick)="addFornecedor()"></p-button>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <p-calendar appendTo="body" dateFormat="yy-mm-dd" [showTime]="false" inputId="end"
+                                        placeholder="Data de Compra"></p-calendar>
+                        </div>
+                        <div class="col-3">
+                            <p-dropdown appendTo="body" [options]="paymentMethodService.listEntities$()"
+                                        [(ngModel)]="selectedPayment" optionLabel="description" [showClear]="true"
+                                        placeholder="Metodo de Pagamento"></p-dropdown>
+                        </div>
+                        <div class="col-3">
+                            <p-inputNumber placeholder="Pagemento Feito" inputId="integeronly"
+                                           [(ngModel)]="selectedPayment" mode="currency" locale="pt-BR"
+                                           currency="BRL"></p-inputNumber>
+                        </div>
+                        <div class="col-3">
+                            <p-inputNumber placeholder="% de Desconto" [(ngModel)]="selectedPayment" inputId="percent"
+                                           prefix="%"></p-inputNumber>
+                        </div>
+                        <div class="col-6">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+            icon="pi pi-fw pi-times"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Comprar"
+            icon="pi pi-fw pi-check"></button>
+</ng-template>
+

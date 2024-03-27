@@ -1,4 +1,5 @@
 import {Role} from './role';
+import {domainEnum, operationAreaRoleEnum} from "../enums/role";
 
 export interface FormAuth {
     email: string;

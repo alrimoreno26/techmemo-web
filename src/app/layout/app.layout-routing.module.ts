@@ -27,7 +27,7 @@ const routes: Routes = [
             },
             {
                 path: 'loja',
-                data: {breadcrumb: 'Loja'},
+                data: {breadcrumb: 'Loja', roles: [domainEnum.ALL]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/shops/shops.module').then(m => m.ShopsModule)
             },
@@ -36,6 +36,12 @@ const routes: Routes = [
                 data: {breadcrumb: 'Vendas', roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PAYMENT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/vendas/vendas.module').then(m => m.VendasModule)
+            },
+            {
+                path: 'compras',
+                data: {breadcrumb: 'Compras', roles: [domainEnum.ALL]},
+                canActivate: [canActivateControlGuard],
+                loadChildren: () => import('../modules/purchases/purchases.module').then(m => m.PurchasesModule)
             },
             {
                 path: 'financial',

@@ -43,19 +43,19 @@ registerLocaleData(localePt, 'pt');
 })
 export class CoreModule {
     constructor(ws: WebSocketServices) {
-        timer(2000).pipe(
-            tap(() => {
-                const state = ws.state.getValue();
-                const tok = 'aaaa';
-                if (tok === null && state !== SocketClientState.DISCONNECTED) {
-                    ws.socketDisconnect();
-                } else if (state === SocketClientState.CONNECTED) {
-                    ws.socketDisconnect();
-                    ws.onConnection(tok);
-                } else if (tok) {
-                    ws.onConnection(tok);
-                }
-            })
-    ).subscribe();
+        // timer(2000).pipe(
+        //     tap(() => {
+        //         const state = ws.state.getValue();
+        //         const tok = 'aaaa';
+        //         if (tok === null && state !== SocketClientState.DISCONNECTED) {
+        //             ws.socketDisconnect();
+        //         } else if (state === SocketClientState.CONNECTED) {
+        //             ws.socketDisconnect();
+        //             ws.onConnection(tok);
+        //         } else if (tok) {
+        //             ws.onConnection(tok);
+        //         }
+        //     })
+        // ).subscribe();
     }
 }

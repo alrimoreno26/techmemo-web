@@ -34,7 +34,7 @@ import {BaseModalStoreComponentDirective} from "./base.modal.store.component.dir
         DialogFooterDirective,
         DialogHeaderDirective,
         ConfirmTranslateDirective,
-        ToastTranslateDirective
+        ToastTranslateDirective,
     ]
 })
 export class DirectivesModule {

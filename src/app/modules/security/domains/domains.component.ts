@@ -15,9 +15,9 @@ export class DomainsComponent extends BaseComponentDirective {
 
   override modalContent = DomainsModalComponent;
   override headersTable: HeadersTable[] = [
-    {header: 'security.user.labels.description', field: 'description', sort: true, visible: true, export: true},
-    {header: 'security.user.labels.domainType', field: 'type', sort: true, visible: true, export: true},
-    {header: 'security.user.labels.created', field: 'created', sort: true, pipe: 'date', width: 110, visible: true, export: true},
+    {header: 'security.user.labels.description', field: 'description', sort: true, visible: true},
+    {header: 'security.user.labels.domainType', field: 'type', sort: true, visible: true},
+    {header: 'security.user.labels.created', field: 'created', sort: true, pipe: 'date', width: 110, visible: true},
     {header: 'common.action', field: 'action', class: 'text-center', visible: true, export: false}
   ];
 

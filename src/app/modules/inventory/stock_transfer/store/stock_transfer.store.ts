@@ -3,6 +3,7 @@ import {ProductService} from "../../../../core/services/product.service";
 import {Actions} from "@ngrx/effects";
 import {EntityState, StoreComponentService} from "../../../../standalone/data-table/store/store.component.service";
 import {Observable} from "rxjs";
+import {PurchasesService} from "../../../../core/services/purchases.service";
 
 @Injectable({providedIn: 'platform'})
 export class Stock_TransferStore extends StoreComponentService<any>{

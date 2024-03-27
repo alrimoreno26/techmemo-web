@@ -82,7 +82,7 @@ export class PermissionServices {
       this.delete = !!authority.find(f => f.permission === permissionAuthorityTOEnum.DELETE && f.domain.type === domain);
     }
     if (!environment.production) {
-      console.log(domain, this.create, this.update, this.delete);
+     // console.log(domain, this.create, this.update, this.delete);
     }
   }
 

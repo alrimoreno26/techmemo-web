@@ -34,7 +34,7 @@ export interface HeadersTable {
     field: string;
     header: string;
     visible: boolean;
-    export: boolean;
+    export?: boolean;
     // opcionales
     pipe?: pipe;
     extraVal?: string;

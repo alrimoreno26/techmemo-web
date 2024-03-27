@@ -74,7 +74,7 @@ export const menuList: any[] = [
                 label: 'Compras',
                 roles: [domainEnum.PAYMENT],
                 icon: 'mdi mdi-cash-multiple mdi-24px',
-                routerLink: ['vendas/historico']
+                routerLink: ['compras/lista']
             }
         ]
     },

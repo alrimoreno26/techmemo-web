@@ -16,23 +16,23 @@ export class ProductComponent extends BaseComponentDirective {
     override modalContent = MProductComponent;
     override headersTable: HeadersTable[] = [
         {
-            header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true, export: true
+            header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true
         },
         {
             header: 'Code', field: 'code',
-            sort: true, class: 'text-center', visible: true, export: true, width: 210
+            sort: true, class: 'text-center', visible: true, width: 210
         },
         {
             header: 'Classificação', field: 'type', filter:true,
-            sort: false, class: 'text-center', visible: true, export: true, width: 210
+            sort: false, class: 'text-center', visible: true, width: 210
         },
         {
             header: 'Preço', field: 'costPrice', pipe: 'currency',
-            sort: true, class: 'text-center', visible: true, export: true, width: 210
+            sort: true, class: 'text-center', visible: true, width: 210
         },
         {
             header: 'CFOP', sort: true, field: 'cfop',
-            class: 'text-center', visible: true, export: true
+            class: 'text-center', visible: true
         },
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];

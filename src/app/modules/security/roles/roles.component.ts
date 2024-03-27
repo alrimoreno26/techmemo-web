@@ -12,8 +12,8 @@ export class RolesComponent extends BaseComponentDirective {
 
     override modalContent = RoleModalComponent;
     override headersTable: HeadersTable[] = [
-        {header: 'security.role.labels.name', field: 'name', sort: true, visible: true, export: true},
-        {header: 'security.role.labels.description', field: 'description', sort: true, visible: true, export: true},
+        {header: 'security.role.labels.name', field: 'name', sort: true, visible: true},
+        {header: 'security.role.labels.description', field: 'description', sort: true, visible: true},
         {
             header: 'security.role.labels.operationArea',
             field: 'operationArea',
