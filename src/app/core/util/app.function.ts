@@ -1,7 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {EMPTY, Observable, of, tap} from 'rxjs';
 import {SessionServices} from '../injects/session.services';
-import {buildURL, buildUsersURL, getCookie} from './index';
+import {buildURL, getCookie} from './index';
 import {ACCESS_TOKEN} from "../enums/role";
 
 /**
@@ -15,7 +15,7 @@ export function initializeAppFactory(httpClient: HttpClient, session: SessionSer
   if (token !== '') {
     session.setAccessToken(token);
     return () => httpClient.get(
-      buildUsersURL('/v1/users/authenticated'),
+        buildURL('/v1/users/authenticated'),
       {headers: {Authorization: `Bearer ${token}`}})
       .pipe(tap(user => session.updateUser(user)));
   }

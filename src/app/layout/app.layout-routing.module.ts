@@ -8,11 +8,13 @@ const routes: Routes = [
     {
         path: '', component: AppLayoutComponent,
         children: [
-            // {path: '', component: AppLayoutComponent},
-            // {
-            //     path: '',
-            //     loadChildren: () => import('./../demo/components/dashboards/dashboards.module').then(m => m.DashboardsModule)
-            // },
+            {path: '', component: AppLayoutComponent},
+            {
+                path: 'painel',
+                data: {breadcrumb: 'Panéis Geral'},
+                canActivate: [canActivateControlGuard],
+                loadChildren: () => import('../modules/dashboard/dashboards.module').then(m => m.DashboardsModule)
+            },
             {
                 path: 'inventory',
                 data: {breadcrumb: 'Inventário'},

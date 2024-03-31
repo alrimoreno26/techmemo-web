@@ -21,7 +21,7 @@ export class ProductService extends BaseStoreServices<any> {
 
     override serverSide = true;
     override lazyLoadOnInit = false;
-    override pageSize = 10;
+    override pageSize = 15;
 
     additionals$: Signal<any>;
     autocomplete$: Signal<any>;

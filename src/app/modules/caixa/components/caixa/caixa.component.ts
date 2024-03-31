@@ -82,6 +82,10 @@ export class CaixaComponent implements OnInit {
                     this.pagamento = true;
                 }
 
+                if(this.orders.every((x: any) => (x.state === 'FINISHED'))){
+                    this.service.setSelected(null);
+                    this.router.navigate(['/comandas'])
+                }
                 this.ordersProducts = cloneDeep(this.service.selectedEntity$().products)
             }
             if (this.storeTablesServices.finalize$()) {
@@ -135,11 +139,12 @@ export class CaixaComponent implements OnInit {
                         }).onClose.subscribe(() => {
                             this.resetAllValues();
                         })
-                    }
-                    if (this.selectedItem.soldPerUnits) {
-                        this.visible = true;
                     } else {
-                        this.addElementComanda({count: 1, ...this.selectedItem});
+                        if (this.selectedItem.soldPerUnits) {
+                            this.addElementComanda({count: 1, ...this.selectedItem});
+                        } else {
+                            this.visible = true;
+                        }
                     }
                 } else {
                     if (this.pagamento) {
@@ -161,6 +166,9 @@ export class CaixaComponent implements OnInit {
         switch (this.activeRoute) {
             case 'table':
                 this.storeTablesServices.changeStateTable(this.activeRouteOrder, 'FREE')
+                break;
+            case 'order':
+                this.service.changeFieldStateOrders(this.activeRouteOrder, {state: 'FINISHED'})
                 break;
             default:
                 this.service.getById([], this.activeRouteOrder)

@@ -6,6 +6,13 @@ import {domainEnum} from "../../../core/enums/role";
  */
 export const menuList: any[] = [
     {
+        label: 'Painel',
+        icon: 'mdi mdi-monitor-dashboard mdi-24px',
+        roles: [domainEnum.PRODUCT],
+        routerLink: ['painel'],
+    },
+    {separator: true},
+    {
         label: 'Inventário',
         icon: 'mdi mdi-alpha-i-box-outline mdi-24px',
         roles: [domainEnum.PRODUCT],

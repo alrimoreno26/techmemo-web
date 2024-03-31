@@ -1,8 +1,12 @@
 <div class="card m-3">
-    <c-data-table [action]="true" [exportBtn]="false" [itemsSplit]="itemsSplit" (edit)="customEdit($event)"
+    <c-data-table [class]="'p-datable-sm'" [action]="true" [exportBtn]="false" [itemsSplit]="itemsSplit" (edit)="customEdit($event)"
+                  [rowsPerPageOptions]="[15,25,50,100]"
                   [headers]="headersTable" [service]="productService" [showCreate]="true">
         <ng-template let-data let-i="rowIndex" tableRow="type">
             <p-badge [severity]="data.type | severity" value="{{data.type | translate}}"/>
+        </ng-template>
+        <ng-template let-data let-i="rowIndex" tableRow="stockMoney">
+            {{(data.stockAmount * data.costPrice) | currency}}
         </ng-template>
     </c-data-table>
 </div>

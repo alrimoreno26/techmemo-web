@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AbstractService} from './abstract.services';
-import {buildURL, buildUsersURL} from '../util';
+import {buildURL} from '../util';
 import {GeneratePassword, User} from "../models";
 
 @Injectable({
@@ -11,7 +11,7 @@ import {GeneratePassword, User} from "../models";
 export class UserAdminServices extends AbstractService<User> {
 
   constructor(private httpClient: HttpClient) {
-    super(httpClient, buildUsersURL('/v1/users'));
+    super(httpClient, buildURL('/v1/users'));
   }
 
   /**

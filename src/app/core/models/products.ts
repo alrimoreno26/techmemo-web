@@ -27,6 +27,13 @@ export interface ProductsCreateDto {
     id?: string | number,
 }
 
+export interface StockProductReportTO {
+    id: string,
+    name: string,
+    stockAmount: number,
+    type: productType
+}
+
 export interface LightProductTO{
     amount: number,
     code: string,

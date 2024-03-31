@@ -1,6 +1,6 @@
 import {AbstractService} from "./abstract.services";
 import {HttpClient} from "@angular/common/http";
-import {buildOrderURL, buildURL} from "../util";
+import {buildURL} from "../util";
 import {Injectable} from "@angular/core";
 @Injectable({
     providedIn: 'root'
@@ -8,7 +8,7 @@ import {Injectable} from "@angular/core";
 export class ShopsServices extends AbstractService<any> {
 
     constructor(private httpClient: HttpClient) {
-        super(httpClient, buildOrderURL('/v1/orders/tables'));
+        super(httpClient, buildURL('/v1/tables'));
     }
 
     createTables(params:any){

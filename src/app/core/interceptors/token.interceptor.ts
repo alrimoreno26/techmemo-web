@@ -19,9 +19,7 @@ export class TokenInterceptor implements HttpInterceptor {
    */
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const isLoggedIn = this.sessionService.isLoggedIn && this.sessionService.getAccessToken();
-    const isApiUrl = request.url.startsWith(environment.apiUsers) ||
-      request.url.startsWith(environment.apiURL) ||
-      request.url.startsWith(environment.apiOrders);
+    const isApiUrl = request.url.startsWith(environment.apiURL)
     const isNotRefresh = request.url.includes('/auth/refresh_token');
     if (isLoggedIn && isApiUrl && !isNotRefresh) {
       request = request.clone({

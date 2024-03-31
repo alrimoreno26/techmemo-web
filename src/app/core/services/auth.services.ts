@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {silentIt} from '../interceptors/spinner.interceptor';
-import {buildURL, buildUsersURL} from '../util';
+import {buildURL} from '../util';
 import {FormAuth, RefreshTokenTO, UserAuthenticated} from "../models/user";
 
 @Injectable({
@@ -10,7 +10,7 @@ import {FormAuth, RefreshTokenTO, UserAuthenticated} from "../models/user";
 })
 export class AuthServices {
 
-  private basePath = buildUsersURL('/v1');
+  private basePath = buildURL('/v1');
 
   constructor(private httpClient: HttpClient) {
   }

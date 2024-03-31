@@ -14,7 +14,7 @@ export const productResolver: ResolveFn<boolean> = () => {
             if (!loaded) {
                 store.dispatch(fromProductListActions.loadProductList({
                     lazy: {
-                        page: 0, count: 10
+                        pageNumber: 0, pageSize: 15
                     }
                 }));
             }

@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {AbstractService} from "./abstract.services";
 import {Domains} from "../models/role";
 import {HttpClient} from "@angular/common/http";
-import {buildUsersURL} from "../util";
+import {buildURL} from "../util";
 
 @Injectable({
     providedIn: 'root'
@@ -10,6 +10,6 @@ import {buildUsersURL} from "../util";
 export class DomainsService extends AbstractService<Domains> {
 
     constructor(private httpClient: HttpClient) {
-        super(httpClient, buildUsersURL('/v1/domains'));
+        super(httpClient, buildURL('/v1/domains'));
     }
 }

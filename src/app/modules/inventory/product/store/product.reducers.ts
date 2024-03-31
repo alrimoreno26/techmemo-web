@@ -11,6 +11,7 @@ export interface State extends EntityState<any> {
     dialog: boolean;
     totalElements: number;
     additionals: any[];
+    stockLow: any;
     autocomplete: any[];
     selected?: any;
     error?: Error | any;
@@ -29,6 +30,7 @@ export const initialState: State = adapter.getInitialState({
     entities: [],
     additionals: [],
     autocomplete: [],
+    stockLow: null,
     loaded: false,
     dialog: false,
     totalElements: 0,
@@ -52,6 +54,9 @@ export const productReducer = createReducer<State>(
             })
         })
         return {...state, additionals: modifyProducts};
+    }),
+    on(fromProductListActions.lowStockSuccess, (state, {data}) => {
+        return {...state, stockLow: data};
     }),
     on(fromProductListActions.createProductSuccess, (state, {entity}) => {
         return adapter.addOne(entity, {...state, dialog: false});

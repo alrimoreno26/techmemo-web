@@ -20,18 +20,22 @@ export class ProductComponent extends BaseComponentDirective {
         },
         {
             header: 'Code', field: 'code',
-            sort: true, class: 'text-center', visible: true, width: 210
+            sort: true, class: 'text-center', visible: true
         },
         {
             header: 'Classificação', field: 'type', filter:true,
-            sort: false, class: 'text-center', visible: true, width: 210
+            sort: false, class: 'text-center', visible: true, width: 140
         },
         {
             header: 'Preço', field: 'costPrice', pipe: 'currency',
-            sort: true, class: 'text-center', visible: true, width: 210
+            sort: true, class: 'text-center', visible: true, width: 150
         },
         {
-            header: 'CFOP', sort: true, field: 'cfop',
+            header: 'Estoque', sort: true, field: 'stockAmount',
+            class: 'text-center', visible: true
+        },
+        {
+            header: 'Valor do estoque', sort: true, field: 'stockMoney',
             class: 'text-center', visible: true
         },
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}

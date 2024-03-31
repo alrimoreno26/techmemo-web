@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { Product } from 'src/app/demo/api/product';
-import { AppConfig, LayoutService } from 'src/app/layout/service/app.layout.service';
-import { ProductService } from 'src/app/demo/service/product.service';
-import { Table } from 'primeng/table';
-import { MenuItem } from 'primeng/api';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Subscription} from 'rxjs';
+import {Product} from 'src/app/demo/api/product';
+import {AppConfig, LayoutService} from 'src/app/layout/service/app.layout.service';
+import {ProductService} from 'src/app/demo/service/product.service';
+import {Table} from 'primeng/table';
+import {MenuItem} from 'primeng/api';
+import {StoreDashboardServices} from "../services/dashboard.services";
 
 @Component({
     templateUrl: './ecommerce.dashboard.component.html'
@@ -43,7 +44,8 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     selectedOrderWeek!: any;
 
-    constructor(private productService: ProductService, private layoutService: LayoutService) {
+    constructor(private productService: ProductService, private layoutService: LayoutService, public store: StoreDashboardServices) {
+        this.store.loadLowStock();
         this.subscription = this.layoutService.configUpdate$.subscribe(config => {
             console.log(this.config)
             this.config = config;
@@ -55,7 +57,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         this.productService.getProducts().then(data => {
             this.products = data;
             this.productsThisWeek = data;
-            this.productsBestSellers = data.slice(0,7);
+            this.productsBestSellers = data.slice(0, 7);
         });
 
         this.productService.getProductsMixed().then(data => this.productsLastWeek = data);
@@ -71,9 +73,9 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             {
                 label: 'Shipments',
                 items: [
-                    { label: 'Tracker', icon: 'pi pi-compass' },
-                    { label: 'Map', icon: 'pi pi-map-marker' },
-                    { label: 'Manage', icon: 'pi pi-pencil' }
+                    {label: 'Tracker', icon: 'pi pi-compass'},
+                    {label: 'Map', icon: 'pi pi-map-marker'},
+                    {label: 'Manage', icon: 'pi pi-pencil'}
                 ]
             }
         ];
@@ -192,12 +194,12 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                 mode: 'index'
             },
             scales: {
-                x:{
+                x: {
                     ticks: {
                         color: textColorSecondary
                     },
                     grid: {
-                        color:[surfaceBorder],
+                        color: [surfaceBorder],
                         drawBorder: false
                     }
                 },
@@ -208,7 +210,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                         max: 20
                     },
                     grid: {
-                        color:[surfaceBorder],
+                        color: [surfaceBorder],
                         drawBorder: false
                     }
                 }
@@ -287,7 +289,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                         color: '#ebedef'
                     },
                     grid: {
-                        color:  'rgba(160, 167, 181, .3)',
+                        color: 'rgba(160, 167, 181, .3)',
                     }
                 },
                 y: {
@@ -295,7 +297,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                         color: '#ebedef'
                     },
                     grid: {
-                        color:  'rgba(160, 167, 181, .3)',
+                        color: 'rgba(160, 167, 181, .3)',
                     }
                 },
             }
@@ -303,7 +305,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
     }
 
     applyLightTheme() {
-            this.ordersChartOptions = {
+        this.ordersChartOptions = {
             plugins: {
                 legend: {
                     labels: {
@@ -317,7 +319,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                         color: '#495057'
                     },
                     grid: {
-                        color:  '#ebedef',
+                        color: '#ebedef',
                     }
                 },
                 y: {
@@ -325,7 +327,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                         color: '#495057'
                     },
                     grid: {
-                        color:  '#ebedef',
+                        color: '#ebedef',
                     }
                 },
             }

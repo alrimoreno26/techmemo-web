@@ -2,5 +2,7 @@
     .p-dialog-content {
         overflow: hidden !important;
     }
-
+    .p-datatable .p-datatable-tbody > tr > td {
+        padding: 0.5rem 0.5rem !important;
+    }
 }

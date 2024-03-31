@@ -54,50 +54,33 @@
         <div class="col-12 xl:col-6">
             <div class="card mt-3">
                 <div class="flex justify-content-between">
-                    <h4>Recent Sales</h4>
-                    <p-dropdown [options]="orderWeek" [(ngModel)]="selectedOrderWeek" optionLabel="name" (onChange)="recentSales($event)" styleClass="w-9rem"> </p-dropdown>
+                    <h4>Produtos com baixo estoque</h4>
                 </div>
 
-                <p>Your sales activity over time.</p>
-
-				<p-table [value]="products" [paginator]="true" [rows]="5" responsiveLayout="scroll">
+				<p-table [value]="store.listEntities$()" [paginator]="true" [rows]="10" responsiveLayout="scroll">
 					<ng-template pTemplate="header">
 						<tr>
-							<th pSortableColumn="id" style="width:10%;min-width:6rem;">ID
-								<p-sortIcon field="id"></p-sortIcon>
-							</th>
-							<th pSortableColumn="category" style="width:30%;min-width:10rem;">Category
-								<p-sortIcon field="category"></p-sortIcon>
-							</th>
-							<th pSortableColumn="price" style="width:20%;min-width:10rem;">Preço
-								<p-sortIcon field="price"></p-sortIcon>
-							</th>
-							<th pSortableColumn="inventoryStatus" style="width:30%;min-width:10rem;">Status
-								<p-sortIcon field="inventoryStatus"></p-sortIcon>
-							</th>
-							<th style="width:10%;min-width:6rem;"></th>
+							<th>Nome</th>
+							<th class="text-center">Estoque</th>
 						</tr>
 					</ng-template>
 					<ng-template pTemplate="body" let-product>
 						<tr>
 							<td>
-								<span class="p-column-title">Id</span>
-								{{product.id}}</td>
-							<td>
 								<span class="p-column-title">Category</span>
-								{{product.category}}</td>
-							<td>
+								{{product.name}}
+                            </td>
+							<td class="text-center">
 								<span class="p-column-title">Price</span>
-								{{product.price | currency:'USD'}}</td>
-							<td>
-								<span class="p-column-title">Status</span>
-								<span [class]="'product-badge status-' + product.inventoryStatus.toLowerCase()">{{product.inventoryStatus}}</span>
-							</td>
-							<td style="text-align: center">
-								<button pButton type="button" icon="pi pi-search"></button>
-							</td>
+								{{product.stockAmount}}
+                            </td>
 						</tr>
 					</ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="5">No customers found.</td>
+                        </tr>
+                    </ng-template>
 				</p-table>
             </div>
         </div>

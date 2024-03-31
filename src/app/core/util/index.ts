@@ -1,8 +1,6 @@
 import {environment} from "../../../environments/environment";
 
 const APIUrl: string = environment.apiURL;
-const APIOrdersUrl: string = environment.apiOrders;
-const APIUsersUrl: string = environment.apiUsers;
 
 /**
  * Retrieve the base URL associated
@@ -13,13 +11,6 @@ const APIUsersUrl: string = environment.apiUsers;
  */
 export const buildURL = (serviceUrl: string): string => {
     return `${APIUrl + serviceUrl}`;
-};
-export const buildOrderURL = (serviceUrl: string): string => {
-    return `${APIOrdersUrl + serviceUrl}`;
-};
-
-export const buildUsersURL = (serviceUrl: string): string => {
-    return `${APIUsersUrl + serviceUrl}`;
 };
 
 export const onlyDigits = (value: string) => value.replace(/[^0-9]/g, '');
