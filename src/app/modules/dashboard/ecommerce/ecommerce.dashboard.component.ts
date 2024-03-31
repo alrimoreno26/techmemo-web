@@ -45,6 +45,8 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     teamMembers: any[] = [];
 
+    expenses: any = [];
+
     selectedOrderWeek!: any;
 
     constructor(private productService: ProductService, private layoutService: LayoutService, public store: StoreDashboardServices) {
@@ -100,6 +102,51 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                         ]
                     }
                 ];
+                this.productsBestSellers = this.stats.mostSoldProducts;
+                this.expenses = [
+                    {
+                        image: 'banking-4',
+                        title: 'Food',
+                        value: '79',
+                        amount: '$702.00',
+                        background: 'linear-gradient(-120deg, rgba(77, 182, 172, 1), rgba(77, 182, 172, 0.3) 70%)'
+                    },
+                    {
+                        image: 'banking-5',
+                        title: 'Electronics',
+                        value: '62',
+                        amount: '$421.60',
+                        background: 'linear-gradient(-120deg, rgba(77, 182, 172, 1), rgba(77, 182, 172, 0.3) 70%)'
+                    },
+                    {
+                        image: 'banking-6',
+                        title: 'Utilities',
+                        value: '45',
+                        amount: '$388.51',
+                        background: 'linear-gradient(-120deg, rgba(250, 183, 16, 1), rgba(250, 183, 16, 0.3) 70%)'
+                    },
+                    {
+                        image: 'banking-7',
+                        title: 'Clothing',
+                        value: '41',
+                        amount: '$295.72',
+                        background: 'linear-gradient(-120deg, rgba(250, 183, 16, 1), rgba(250, 183, 16, 0.3) 70%)'
+                    },
+                    {
+                        image: 'banking-8',
+                        title: 'Travel',
+                        value: '35',
+                        amount: '$170.05',
+                        background: 'linear-gradient(-120deg, rgba(198, 55, 55, 1), rgba(198, 55, 55, 0.3) 70%)'
+                    },
+                    {
+                        image: 'banking-9',
+                        title: 'Subscriptions',
+                        value: '23',
+                        amount: '$96.80',
+                        background: 'linear-gradient(-120deg, rgba(198, 55, 55, 1), rgba(198, 55, 55, 0.3) 70%)'
+                    },
+                ];
             }
 
         });
@@ -109,7 +156,6 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         this.productService.getProducts().then(data => {
             this.products = data;
             this.productsThisWeek = data;
-            this.productsBestSellers = data.slice(0, 7);
         });
 
         this.productService.getProductsMixed().then(data => this.productsLastWeek = data);
