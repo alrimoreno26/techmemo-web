@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, effect, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Product} from 'src/app/demo/api/product';
 import {AppConfig, LayoutService} from 'src/app/layout/service/app.layout.service';
@@ -6,11 +6,14 @@ import {ProductService} from 'src/app/demo/service/product.service';
 import {Table} from 'primeng/table';
 import {MenuItem} from 'primeng/api';
 import {StoreDashboardServices} from "../services/dashboard.services";
+import {ReportsDTO} from "../../../core/models/reports";
 
 @Component({
     templateUrl: './ecommerce.dashboard.component.html'
 })
 export class EcommerceDashboardComponent implements OnInit, OnDestroy {
+
+    stats: ReportsDTO;
 
     products: Product[] = [];
 
@@ -46,10 +49,59 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     constructor(private productService: ProductService, private layoutService: LayoutService, public store: StoreDashboardServices) {
         this.store.loadLowStock();
+        this.store.loadOrdersStats({startDate : '2024-01-01', endDate: '2024-12-31'});
         this.subscription = this.layoutService.configUpdate$.subscribe(config => {
-            console.log(this.config)
             this.config = config;
             this.initCharts();
+        });
+
+        effect(() => {
+            if(this.store.stat$()){
+                this.stats = this.store.stat$();
+                this.metrics = [
+                    {
+                        title: 'Orders',
+                        icon: 'pi pi-shopping-cart',
+                        color_light: '#64B5F6',
+                        color_dark: '#1976D2',
+                        textContent: [
+                            {amount: this.stats.ordersByStates.totalActive, text: 'Ativas'},
+                            {amount: this.stats.ordersByStates.totalFinished, text: 'Concluídas'}
+                        ]
+                    },
+                    {
+                        title: 'Revenue',
+                        icon: 'pi pi-dollar',
+                        color_light: '#7986CB',
+                        color_dark: '#303F9F',
+                        textContent: [
+                            {amount: this.stats.ordersByStates.totalInPayment, text: 'En pagamento'},
+                            {amount: this.stats.ordersByStates.totalPaid, text: 'Pagadas'}
+                        ]
+                    },
+                    {
+                        title: 'Customers',
+                        icon: 'pi pi-users',
+                        color_light: '#4DB6AC',
+                        color_dark: '#00796B',
+                        textContent: [
+                            {amount: 8272, text: 'Active'},
+                            {amount: 25402, text: 'Registered'}
+                        ]
+                    },
+                    {
+                        title: 'Comments',
+                        icon: 'pi pi-users',
+                        color_light: '#4DD0E1',
+                        color_dark: '#0097A7',
+                        textContent: [
+                            {amount: 12, text: 'New'},
+                            {amount: 85, text: 'Responded'}
+                        ]
+                    }
+                ];
+            }
+
         });
     }
 
@@ -83,49 +135,6 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         this.orderWeek = [
             {name: 'This Week', code: '0'},
             {name: 'Last Week', code: '1'}
-        ];
-
-        this.metrics = [
-            {
-                title: 'Orders',
-                icon: 'pi pi-shopping-cart',
-                color_light: '#64B5F6',
-                color_dark: '#1976D2',
-                textContent: [
-                    {amount: '640', text: 'Pending'},
-                    {amount: '1420', text: 'Completed'}
-                ]
-            },
-            {
-                title: 'Revenue',
-                icon: 'pi pi-dollar',
-                color_light: '#7986CB',
-                color_dark: '#303F9F',
-                textContent: [
-                    {amount: '$2,100', text: 'Expenses'},
-                    {amount: '$9,640', text: 'Income'}
-                ]
-            },
-            {
-                title: 'Customers',
-                icon: 'pi pi-users',
-                color_light: '#4DB6AC',
-                color_dark: '#00796B',
-                textContent: [
-                    {amount: 8272, text: 'Active'},
-                    {amount: 25402, text: 'Registered'}
-                ]
-            },
-            {
-                title: 'Comments',
-                icon: 'pi pi-users',
-                color_light: '#4DD0E1',
-                color_dark: '#0097A7',
-                textContent: [
-                    {amount: 12, text: 'New'},
-                    {amount: 85, text: 'Responded'}
-                ]
-            }
         ];
 
         this.teamMembers = [
