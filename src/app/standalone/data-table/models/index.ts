@@ -53,8 +53,8 @@ export interface TemplateSlot {
 }
 
 export interface LazyLoadData {
-    page: number;
-    count: number;
+    page?: number;
+    count?: number;
     first?: number;
     filter?: string;
     pageNumber?: number;

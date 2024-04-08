@@ -2,7 +2,7 @@ import {SocketClientState, WebSocketServices} from "./injects/webSocket.services
 import {MessageService} from "primeng/api";
 import {BlockUIModule} from "primeng/blockui";
 import {CommonModule, registerLocaleData} from "@angular/common";
-import {APP_INITIALIZER, DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule} from "@angular/core";
+import {APP_INITIALIZER, DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule, NgZone} from "@angular/core";
 import {tap, timer} from "rxjs";
 import {HTTP_INTERCEPTORS, HttpClient} from "@angular/common/http";
 import {ErrorInterceptor} from "./interceptors/error.interceptor";
@@ -14,6 +14,8 @@ import {windowProvider, WindowToken} from "./util/windows";
 import {SessionServices} from "./injects/session.services";
 import {initializeAppFactory} from "./util/app.function";
 import {TokenInterceptor} from "./interceptors/token.interceptor";
+import {CommercesServices} from "./services/commerces.services";
+import {LayoutService} from "../layout/service/app.layout.service";
 
 registerLocaleData(localePt, 'pt');
 
@@ -32,7 +34,7 @@ registerLocaleData(localePt, 'pt');
         {provide: LOCALE_ID, useValue: 'pt-BR'},
         {provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL'},
         {provide: WindowToken, useFactory: windowProvider},
-        {provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [HttpClient, SessionServices], multi: true},
+        {provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [HttpClient, SessionServices,CommercesServices,LayoutService], multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

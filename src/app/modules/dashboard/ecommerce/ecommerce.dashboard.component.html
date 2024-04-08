@@ -1,28 +1,29 @@
 <div class="layout-dashboard p-4">
     <div class="grid">
-        <div class="col-12 md:col-6 xl:col-3" *ngFor="let metric of metrics">
-            <div class="card shadow-1 flex flex-column" [style.borderColor]="metric.color_light"
-                 [style]="{'border-color': metric.color_light, 'border-left': '4px solid'}">
-                <div class="flex align-items-center">
-                    <div class="flex justify-content-center align-items-center p-2 border-round"
-                         [style.backgroundColor]="metric.color_light">
-                        <i [class]="metric.icon" [style.color]="metric.color_dark"></i>
+        <ng-template [ngIf]="session.userLogged.role.operationArea !== 'SUPER_ADMIN'">
+            <div class="col-12 md:col-6 xl:col-3" *ngFor="let metric of metrics">
+                <div class="card shadow-1 flex flex-column" [style.borderColor]="metric.color_light"
+                     [style]="{'border-color': metric.color_light, 'border-left': '4px solid'}">
+                    <div class="flex align-items-center">
+                        <div class="flex justify-content-center align-items-center p-2 border-round"
+                             [style.backgroundColor]="metric.color_light">
+                            <i [class]="metric.icon" [style.color]="metric.color_dark"></i>
+                        </div>
+                        <span class="text-xl ml-2 font-semibold"
+                              [style.color]="metric.color_light">{{ metric.title }}</span>
                     </div>
-                    <span class="text-xl ml-2 font-semibold"
-                          [style.color]="metric.color_light">{{ metric.title }}</span>
-                </div>
 
-                <div class="grid mt-3">
-                    <div class="col-6 flex flex-column p-3 text-center"
-                         *ngFor="let content of metric.textContent; let i = index"
-                         [class]="i === 0 ? 'border-right-1 surface-border' : '' ">
-                        <span class="text-color text-2xl font-semibold">{{ content.amount }}</span>
-                        <span class="text-color font-semibold">{{ content.text }}</span>
+                    <div class="grid mt-3">
+                        <div class="col-6 flex flex-column p-3 text-center"
+                             *ngFor="let content of metric.textContent; let i = index"
+                             [class]="i === 0 ? 'border-right-1 surface-border' : '' ">
+                            <span class="text-color text-2xl font-semibold">{{ content.amount }}</span>
+                            <span class="text-color font-semibold">{{ content.text }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-
+        </ng-template>
         <div class="col-12 xl:col-4">
             <div class="card h-full">
                 <h4 class="white-space-nowrap mb-2">Expenses</h4>

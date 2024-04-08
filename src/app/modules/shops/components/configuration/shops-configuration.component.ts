@@ -1,16 +1,20 @@
-import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
-import {BaseComponentDirective} from "../../../standalone/data-table/directives/base.component.directive";
+import {ChangeDetectorRef, Component, effect, OnInit} from "@angular/core";
+import {BaseComponentDirective} from "../../../../standalone/data-table/directives/base.component.directive";
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {AddressDTO} from "../../../core/models/supplier";
-import {CepValidateService} from "../../../core/services/cep-validate.service";
+import {AddressDTO} from "../../../../core/models/supplier";
+import {CepValidateService} from "../../../../core/services/cep-validate.service";
 import {Subscription} from "rxjs";
-import {ShopsService} from "../service/shops.service";
+import {ShopsService} from "../../service/shops.service";
 import {HttpClient} from "@angular/common/http";
 import * as XLSX from "xlsx";
-import {productType} from "../../../core/enums/product";
-import {ProductService} from "../../inventory/product/services/product.service";
+import {productType} from "../../../../core/enums/product";
+import {ProductService} from "../../../inventory/product/services/product.service";
 import {Router} from "@angular/router";
-import {CNPJService} from "../../../core/services/cnpj-validate.service";
+import {CNPJService} from "../../../../core/services/cnpj-validate.service";
+import {MenuItem} from "primeng/api";
+import {CommercesService} from "../../service/commerces.service";
+import {LayoutService} from "../../../../layout/service/app.layout.service";
+import {CommerceDto} from "../../../../core/models/commerce";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -25,15 +29,31 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     nome = 'alejandro';
     form: FormGroup;
 
+    items: MenuItem[] | undefined;
+
     searchingCNPJ: boolean = false;
+
+    imgLogo = './assets/images/commerce/logo_default.svg';
+    imgBanner = './assets/images/commerce/banner_default.jpg';
+
+    enableView = 'visual';
+    actualConfig: any = null;
 
     constructor(private fb: FormBuilder,
                 private cepValidateService: CepValidateService,
                 private cnpjService: CNPJService,
                 private shopsServices: ShopsService,
+                private layout: LayoutService,
+                private commercesService: CommercesService,
                 private router: Router,
                 private cdRef: ChangeDetectorRef,) {
         super();
+        effect(() => {
+            if (!this.commercesService.selectedEntity$()) {
+                this.commercesService.getById();
+            }
+        });
+
     }
 
     ngOnInit() {
@@ -58,6 +78,42 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
             this.enableQuantity = true;
         })
+
+
+        this.items = [
+            {
+                label: '<span class="font-bold">Configurações da Loja</span>',
+                escape: false,
+                items: [
+                    {
+                        label: 'Dados gerais ',
+                        icon: 'mdi mdi-store-cog-outline mdi-24px',
+                        command: () => {
+                            this.showView('dados');
+                        }
+                    },
+                ]
+            },
+            {
+                label: '<span class="font-bold">Informações e design</span>',
+                escape: false,
+                items: [
+                    {
+                        label: 'Configurações visuais',
+                        icon: 'mdi mdi-brush-outline mdi-24px',
+                        command: () => {
+                            this.showView('visual');
+                        }
+
+                    }
+                ]
+            },
+
+        ];
+    }
+
+    showView(type: string): void {
+        this.enableView = type;
     }
 
     verifyCEP(event: any): void {
@@ -100,6 +156,21 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.shopsServices.createTable(params);
     }
 
+    saveVisuals() {
+        debugger
+        let updatedTO: CommerceDto = {
+            id: this.commercesService.selectedEntity$().id,
+            config: {
+                colorSchemeType: this.layout.config.colorScheme.toUpperCase(),
+                componentTheme: this.layout.config.menuTheme,
+                menuType: this.layout.config.menuMode.toUpperCase(),
+                scale: this.layout.config.scale,
+                theme: this.layout.config.theme,
+            }
+        };
+        debugger
+        this.commercesService.update({data: updatedTO});
+    }
 
     goto() {
         this.router.navigate(['loja', this.nome]);

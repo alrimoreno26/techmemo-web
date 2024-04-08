@@ -9,19 +9,26 @@ import { TableModule } from 'primeng/table';
 import { ChartModule } from 'primeng/chart';
 import { RippleModule } from 'primeng/ripple';
 import { MenuModule } from 'primeng/menu';
+import {CommercesService} from "../../shops/service/commerces.service";
 
 @NgModule({
-	imports: [
-		CommonModule,
-		EcommerceDashboardRoutigModule,
-		ButtonModule,
-		RippleModule,
-		DropdownModule,
-		FormsModule,
-		TableModule,
-		ChartModule,
+    imports: [
+        CommonModule,
+        EcommerceDashboardRoutigModule,
+        ButtonModule,
+        RippleModule,
+        DropdownModule,
+        FormsModule,
+        TableModule,
+        ChartModule,
         MenuModule
-	],
-	declarations: [EcommerceDashboardComponent]
+    ],
+    exports: [
+        EcommerceDashboardComponent
+    ],
+    providers:[
+        CommercesService
+    ],
+    declarations: [EcommerceDashboardComponent]
 })
 export class EcommerceDashboardModule { }

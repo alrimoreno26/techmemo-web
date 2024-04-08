@@ -11,6 +11,12 @@
                 <input formControlName="name" formFieldValidation id="name" pInputText type="text">
             </div>
             <div class="field p-fluid">
+                <label class="required block" for="username">
+                    {{ 'security.user.labels.username' | translate }}
+                </label>
+                <input formControlName="username" formFieldValidation id="username" pInputText type="text">
+            </div>
+            <div class="field p-fluid">
                 <label class="required block" for="password">
                     {{ 'security.user.labels.newPassword' | translate }}
                 </label>
@@ -43,7 +49,7 @@
                 <label class="required block" for="cpf">
                     {{ 'security.user.labels.cpf' | translate }}
                 </label>
-                <p-inputMask formControlName="cpf" id="cpf" mask="999.999.999-99"></p-inputMask>
+                <p-inputMask formControlName="documentId" id="cpf" mask="999.999.999-99"></p-inputMask>
             </div>
         </div>
     </div>

@@ -1,16 +1,30 @@
-import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs';
 
-export type MenuMode = 'static' | 'overlay' | 'horizontal' | 'slim' | 'compact' | 'reveal' | 'drawer';
+export type MenuMode =
+    'static'
+    | 'overlay'
+    | 'horizontal'
+    | 'slim'
+    | 'compact'
+    | 'reveal'
+    | 'drawer'
+    | 'STATIC'
+    | 'OVERLAY'
+    | 'HORIZONTAL'
+    | 'SLIM'
+    | 'COMPACT'
+    | 'REVEAL'
+    | 'DRAWER';
 
-export type ColorScheme = 'light' | 'dark' | 'dim';
+export type ColorScheme = 'light' | 'dark' | 'dim' | 'LIGHT' | 'DARK' | 'DIM';
 
 export interface AppConfig {
     inputStyle: string;
-    colorScheme: ColorScheme;
+    colorScheme: string;
     theme: string;
     ripple: boolean;
-    menuMode: MenuMode;
+    menuMode: string;
     scale: number;
     menuTheme: string;
 }
@@ -73,14 +87,35 @@ export class LayoutService {
 
         if (this.isDesktop()) {
             this.state.staticMenuDesktopInactive = !this.state.staticMenuDesktopInactive;
-        }
-        else {
+        } else {
             this.state.staticMenuMobileActive = !this.state.staticMenuMobileActive;
 
             if (this.state.staticMenuMobileActive) {
                 this.overlayOpen.next(null);
             }
         }
+    }
+
+    userConfigVisuals(config: any) {
+        this.config = config;
+        this.configUpdate.next(this.config);
+    }
+
+    replaceThemeLink(href: string, targetId: string, onComplete?: Function) {
+        const id = targetId;
+        const targetLink = <HTMLLinkElement>document.getElementById(id);
+        const cloneLinkElement = <HTMLLinkElement>targetLink.cloneNode(true);
+
+        cloneLinkElement.setAttribute('href', href);
+        cloneLinkElement.setAttribute('id', id + '-clone');
+
+        targetLink.parentNode!.insertBefore(cloneLinkElement, targetLink.nextSibling);
+
+        cloneLinkElement.addEventListener('load', () => {
+            targetLink.remove();
+            cloneLinkElement.setAttribute('id', id);
+            onComplete && onComplete();
+        });
     }
 
     onOverlaySubmenuOpen() {

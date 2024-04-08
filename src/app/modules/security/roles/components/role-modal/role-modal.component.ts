@@ -31,13 +31,15 @@ export class RoleModalComponent extends BaseModalComponentDirective implements O
         },
         {
             value: 'PRODUCTION_MANAGER', label: 'PRODUCTION_MANAGER', items: [
+                {value: 'PRODUCTION_MANAGER', label: 'PRODUCTION_MANAGER'},
                 {value: 'PRODUCTION', label: 'PRODUCTION'},
                 {value: 'INVENTORY', label: 'INVENTORY'},
                 {value: 'BUYER', label: 'BUYER'},
             ]
         },
         {
-            value: 'SALES_MANAGER', label: 'PRODUCTION_MANAGER', items: [
+            value: 'SALES_MANAGER', label: 'SALES_MANAGER', items: [
+                {value: 'SALES_MANAGER', label: 'SALES_MANAGER'},
                 {value: 'SALES', label: 'SALES'},
             ]
         },

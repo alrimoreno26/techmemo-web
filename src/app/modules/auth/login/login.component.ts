@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = new FormGroup({
-            userName: new FormControl<string>('', [Validators.required, Validators.email]),
+            username: new FormControl<string>('', [Validators.required]),
             password: new FormControl<string>('', Validators.required)
         });
 
@@ -69,12 +69,21 @@ export class LoginComponent implements OnInit {
         this.ngZone.run(() => this.service.login(this.form.value).subscribe(
             (res: SecurityModel) => {
                 this.sessionService.setUserLogged(res);
-                this.service.profile().subscribe((user: UserAuthenticated) => {
+                this.ngZone.run(() => this.service.profile().subscribe((user: UserAuthenticated) => {
                     this.sessionService.addBasicInfo(user);
-                    this.router.navigateByUrl(this.returnUrl).then();
-                })
+                    this.redirectByRoleLoguin()
+                }));
             },
             () => {
             }));
+    }
+
+    redirectByRoleLoguin() {
+        const user = this.sessionService.userLogged;
+        if (user.role.operationArea === 'SUPER_ADMIN') {
+            this.router.navigateByUrl('/loja/lista').then();
+        } else {
+            this.router.navigateByUrl('/vendas/historico').then();
+        }
     }
 }

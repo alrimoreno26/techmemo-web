@@ -1,0 +1,344 @@
+.container-grid {
+    height: calc(100vh - 6rem);
+    display: grid;
+    grid-template-columns: 180px auto;
+    grid-template-areas: "area-menu area-content";
+
+    .area-menu {
+        grid-area: area-menu;
+    }
+    .area-content {
+        grid-area: area-content;
+        padding-bottom: 0;
+    }
+}
+
+.wrapper {
+    /*border: 1px solid blue;*/
+    height: 100%;
+
+    .container-wrapper {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr auto;
+        height: 100%;
+
+        .wrapper-bottom {
+            display: grid;
+            justify-content: end;
+
+            width: 100%;
+            border-top: 1px solid #E0E0E0;
+            border-bottom: 1px solid #E0E0E0;
+            background: #F5F5F5;
+            height: 60px;
+            color: #424242;
+
+            .mr-24px {
+                margin-right: 24px;
+            }
+        }
+
+        .layout-btn-add {
+            grid-template-columns: 1fr auto auto;
+        }
+    }
+}
+
+.p_title_logo_del_comercio {
+    color: #333333;
+    font-family: var(--font-source-semibold);
+    font-size: 16px;
+}
+
+.p_text_logo_del_comercio {
+    color: #808080;
+    font-family: var(--font-source-regular);
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+.div_img_btn {
+    display: flex;
+    align-items: center;
+}
+
+.button_back {
+    color: #999999;
+    font-size: 18px;
+    font-family: var(--font-source-semibold);
+    background-color: white;
+    border-style: hidden;
+    margin-right: 1.05em;
+}
+
+.img_foto_commercio {
+    width: 120px;
+    height: 120px;
+    border-radius: 150px;
+    border: 1px dashed;
+    color: #808080;
+    padding: 3px;
+    transition: .5s ease;
+    backface-visibility: hidden;
+    opacity: 1;
+    display: block;
+}
+
+.div_img:hover .image {
+    opacity: 0.3;
+}
+
+.div_img:hover .middle {
+    opacity: 1;
+}
+
+.text {
+    background-color: #b9b9b9;
+    color: black;
+    font-size: 16px;
+    /* padding: 16px 32px; */
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    opacity: 0.7;
+    margin-left: -5px;
+    margin-top: 3px;
+    padding-top: 50px;
+    font-family: var(--font-source-semibold);
+}
+
+.middle {
+    transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 49%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.div_btn {
+    display: block;
+    justify-content: left;
+    align-items: center;
+    margin-left: 1.2em;
+}
+
+.btn_subir_archivo {
+    border-radius: 5px;
+    border: 0;
+    outline: none;
+    color: #666666;
+    background-color: #F2F2F2;
+
+    width: 95%;
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: 16px;
+
+    border-style: solid;
+    border-width: 1px;
+    border-color: #DADADA;
+}
+
+.p_tamanno_recomendado {
+    margin-bottom: 0px;
+}
+
+.span_tamanno_recomendado {
+    font-size: 14px;
+    color: #808080;
+}
+
+.span_tamanno_recomendado_ast {
+    color: red;
+    margin-left: 2px;
+    font-size: 12px;
+}
+
+.p_tamanno_pxs {
+    font-size: 14px;
+    color: #535353;
+    font-family: var(--font-source-semibold);
+}
+
+.div_si_aun_no_tenes {
+    display: flex;
+    align-items: center;
+
+    font-size: 14px;
+    color: #666666;
+    background-color: #FCEBD0;
+    border-radius: 5px;
+    width: 80%;
+
+    margin-top: 2em;
+}
+
+.p_si_aun_no_tenes {
+    margin-bottom: 0px;
+    font-size: 14px;
+    font-family: var(--font-source-regular);
+}
+
+.p_title_banner_de_portada {
+    color: #333333;
+    font-family: var(--font-source-semibold);
+    font-size: 16px;
+}
+
+.p_text_banner_de_portada {
+    color: #808080;
+    font-family: var(--font-source-regular);
+    font-size: 14px;
+    margin-bottom: 0px;
+}
+
+.img_default_banner_image {
+    width: 100% !important;
+
+    border-style: dotted;
+    border-color: #DADADA;
+    border-width: 1.8px;
+    padding: 5px;
+    height: 175px;
+}
+
+//Radiobuttons
+input[type=radio] {
+    visibility: hidden;
+
+}
+
+input[type=radio] + label:before {
+    height: 12px;
+    width: 12px;
+    margin-right: 2px;
+    content: " ";
+    display: inline-block;
+    vertical-align: baseline;
+    border: 1px solid #EE6C01;
+}
+
+input[type=radio]:checked + label:before {
+    background: #EE6C01;
+}
+
+/* CUSTOM RADIO AND CHECKBOX STYLES */
+input[type=radio] + label:before {
+    border-radius: 50%;
+}
+
+.input_have_local_street {
+    margin-left: 0.3em;
+    width: 7px;
+}
+
+.label_have_local_street {
+    font-size: 14px;
+    color: #808080;
+}
+
+.label_not_have_local_street {
+    font-size: 14px;
+    color: #808080;
+}
+
+//End Radiobuttons
+
+.div_usar_predeterminado {
+    display: inline-flex;
+}
+
+.div_default_banner_image {
+    text-align: right;
+    margin: auto;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+.div_subir_archivo_banner {
+    margin: auto;
+    margin-right: 0px;
+    margin-left: 0px;
+}
+
+
+/* Create a custom checkbox */
+
+
+.container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 3px;
+    left: 185px;
+    height: 14px;
+    width: 14px;
+    border-color: #EE6C01;
+    border-style: solid;
+    border-width: 0.5px;
+    border-radius: 12px;
+}
+
+
+/* Create the checkmark/indicator (hidden when not checked) */
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+
+/* Show the checkmark when checked */
+
+.container input:checked ~ .checkmark:after {
+    display: block;
+}
+
+
+/* Style the checkmark/indicator */
+
+.container .checkmark:after {
+    left: 3px;
+    top: 1px;
+    width: 5px;
+    height: 8px;
+    border: solid;
+    border-color: #EE6C01;;
+    border-width: 0 2px 2px 0;
+    -webkit-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+
+.uploadLogo {
+    position: absolute;
+    width: 280px;
+    height: 120px;
+    opacity: 0;
+}
+
+.uploadBanner1 {
+    position: absolute;
+    width: 33%;
+    height: 180px;
+    opacity: 0;
+    right: 4rem;
+}
+
+.uploadBanner2 {
+    position: absolute;
+    width: 100%;
+    height: 40px;
+    opacity: 0;
+}

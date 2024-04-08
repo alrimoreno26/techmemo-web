@@ -19,6 +19,7 @@ export interface UserAuthenticated {
     confirmedPhone: boolean;
     cpf: string;
     created: string;
+    commerceId: string;
     email: string;
     enabled: boolean;
     hasRating: boolean;
@@ -26,6 +27,7 @@ export interface UserAuthenticated {
     image: DocumentMetadataTO;
     name: string;
     phone: string;
+    commerces: any[];
     refreshToken: string;
     role: Role;
     token: string;

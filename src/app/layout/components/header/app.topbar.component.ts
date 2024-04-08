@@ -2,7 +2,7 @@ import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
 import {SessionServices} from "../../../core/injects/session.services";
-import {domainEnum} from "../../../core/enums/role";
+import {domainEnum, operationAreaRoleEnum} from "../../../core/enums/role";
 
 @Component({
     selector: 'app-topbar',
@@ -15,14 +15,12 @@ export class AppTopbarComponent {
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
     @Input() showMenu: boolean = true;
-    lojas = [
-        { name: 'Fabrica', code: 'FACTORY' },
-        { name: 'Loja1', code: 'LOJA1' },
-        { name: 'Loja2', code: 'LOJA2' },
-        { name: 'Loja3', code: 'LOJA3' }
-    ];
-    selectedCity: any | undefined = { name: 'Fabrica', code: 'FACTORY' };
-    constructor(public layoutService: LayoutService, public el: ElementRef, public session: SessionServices) { }
+    lojas:any[] = [];
+    selectedCommerce: any | undefined = { name: '', code: '' };
+    constructor(public layoutService: LayoutService, public el: ElementRef, public session: SessionServices) {
+        this.lojas = this.session.userLogged.commerces;
+        this.selectedCommerce = this.lojas[0];
+    }
 
 
     onMenuButtonClick() {
@@ -47,4 +45,5 @@ export class AppTopbarComponent {
     }
 
     protected readonly domainEnum = domainEnum;
+    protected readonly operationAreaRoleEnum = operationAreaRoleEnum;
 }

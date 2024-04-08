@@ -7,8 +7,11 @@ import {Table} from 'primeng/table';
 import {MenuItem} from 'primeng/api';
 import {StoreDashboardServices} from "../services/dashboard.services";
 import {ReportsDTO} from "../../../core/models/reports";
+import {CommercesService} from "../../shops/service/commerces.service";
+import {SessionServices} from "../../../core/injects/session.services";
 
 @Component({
+    selector:'c-commerce-dashboard',
     templateUrl: './ecommerce.dashboard.component.html'
 })
 export class EcommerceDashboardComponent implements OnInit, OnDestroy {
@@ -49,12 +52,21 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     selectedOrderWeek!: any;
 
-    constructor(private productService: ProductService, private layoutService: LayoutService, public store: StoreDashboardServices) {
-        this.store.loadLowStock();
-        this.store.loadOrdersStats({startDate : '2024-01-01', endDate: '2024-12-31'});
+    constructor(private productService: ProductService,
+                private layoutService: LayoutService,
+                public store: StoreDashboardServices,
+                public session: SessionServices,
+                public commercesService: CommercesService) {
+
         this.subscription = this.layoutService.configUpdate$.subscribe(config => {
             this.config = config;
             this.initCharts();
+        });
+        effect(() => {
+            if(this.session.getTenantId()){
+                this.store.loadLowStock();
+                this.store.loadOrdersStats({startDate : '2024-01-01', endDate: '2024-12-31'});
+            }
         });
 
         effect(() => {

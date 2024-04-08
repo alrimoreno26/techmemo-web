@@ -1,6 +1,7 @@
 import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {map, Observable, throwError} from 'rxjs';
+import {silentIt} from "../interceptors/spinner.interceptor";
 
 
 @Injectable({
@@ -13,7 +14,7 @@ export class CNPJService {
     findCNPJ(cnpj: string): Observable<any> {
         if (cnpj != '') {
             const response = this.http.get(
-                `https://publica.cnpj.ws/cnpj/${cnpj}`
+                `https://publica.cnpj.ws/cnpj/${cnpj}`,{context: silentIt()}
             );
             return response.pipe(map((data: any) => data));
         }

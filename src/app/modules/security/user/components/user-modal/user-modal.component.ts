@@ -29,10 +29,11 @@ export class UserModalComponent extends BaseModalComponentDirective implements O
         const {data} = this.config;
         this.form = new FormGroup({
             name: new FormControl<string>(data?.name, Validators.required),
+            username: new FormControl<string>(data?.username, Validators.required),
             password: new FormControl<string>(data?.password, Validators.required),
             phone: new FormControl<string>(this.cleanPhone(data?.phone), [Validators.required, cellPhone]),
             roleId: new FormControl<number>(data?.role?.id, Validators.required),
-            cpf: new FormControl<string>(data?.cpf, [Validators.required, cpf]),
+            documentId: new FormControl<string>(data?.cpf, [Validators.required, cpf]),
             email: new FormControl<string>(data?.email, [Validators.required, Validators.email])
         });
     }
@@ -40,7 +41,7 @@ export class UserModalComponent extends BaseModalComponentDirective implements O
     override save(): void {
         const value = this.form.value;
         value.phone = '+55' + onlyDigits(value.phone);
-        value.cpf = onlyDigits(value.cpf);
+        value.documentId = onlyDigits(value.documentId);
 
         !this.config.data ?
             this.service.create(value) :

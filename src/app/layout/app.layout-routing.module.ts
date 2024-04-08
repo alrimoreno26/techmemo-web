@@ -11,13 +11,13 @@ const routes: Routes = [
             {path: '', component: AppLayoutComponent},
             {
                 path: 'painel',
-                data: {breadcrumb: 'Panéis Geral'},
+                data: {breadcrumb: 'Panéis Geral', roles: [domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/dashboard/dashboards.module').then(m => m.DashboardsModule)
             },
             {
                 path: 'inventory',
-                data: {breadcrumb: 'Inventário'},
+                data: {breadcrumb: 'Inventário', roles: [domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/inventory/inventory.module').then(m => m.InventoryModule)
             },
@@ -29,7 +29,7 @@ const routes: Routes = [
             },
             {
                 path: 'loja',
-                data: {breadcrumb: 'Loja', roles: [domainEnum.ALL]},
+                data: {breadcrumb: 'Loja', roles: [domainEnum.ALL,domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/shops/shops.module').then(m => m.ShopsModule)
             },

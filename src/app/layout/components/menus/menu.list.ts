@@ -25,13 +25,13 @@ export const menuList: any[] = [
             },
             {
                 label: 'Categorias',
-                roles: [domainEnum.CATEGORY],
+                roles: [domainEnum.CATEGORY,domainEnum.PRODUCT],
                 icon: 'mdi mdi-sitemap-outline mdi-24px',
                 routerLink: ['inventory/category']
             },
             {
                 label: 'Proveedores',
-                roles: [domainEnum.SUPPLIER],
+                roles: [domainEnum.SUPPLIER,domainEnum.PRODUCT],
                 icon: 'mdi mdi-card-account-details-outline mdi-24px',
                 routerLink: ['inventory/proveedores']
             },
@@ -47,11 +47,11 @@ export const menuList: any[] = [
     {
         label: 'Financeiro',
         icon: 'mdi mdi-cash-register mdi-24px',
-        roles: [domainEnum.CONFIGURATION],
+        roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
         items: [
             {
                 label: 'Meios de pagamento',
-                roles: [domainEnum.CONFIGURATION],
+                roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-plus mdi-24px',
                 routerLink: ['financial/payment-method']
             }
@@ -60,12 +60,12 @@ export const menuList: any[] = [
     {separator: true},
     {
         label: 'Vendas',
-        roles: [domainEnum.ORDER],
+        roles: [domainEnum.ORDER,domainEnum.PRODUCT],
         icon: 'mdi mdi-cash-check mdi-24px',
         items: [
             {
                 label: 'Vendas',
-                roles: [domainEnum.ORDER],
+                roles: [domainEnum.ORDER,domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-check mdi-24px',
                 routerLink: ['vendas/historico']
             }
@@ -75,11 +75,11 @@ export const menuList: any[] = [
     {
         label: 'Compras',
         icon: 'mdi mdi-cash-multiple mdi-24px',
-        roles: [domainEnum.PAYMENT],
+        roles: [domainEnum.PAYMENT,domainEnum.PRODUCT],
         items: [
             {
                 label: 'Compras',
-                roles: [domainEnum.PAYMENT],
+                roles: [domainEnum.PAYMENT,domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-multiple mdi-24px',
                 routerLink: ['compras/lista']
             }
@@ -89,12 +89,18 @@ export const menuList: any[] = [
     {
         label: 'Loja',
         icon: 'mdi mdi-office-building-outline mdi-24px',
-        roles: [domainEnum.CONFIGURATION],
+        roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
         items: [
+            {
+                label: 'Lista',
+                icon: 'mdi mdi mdi-storefront mdi-24px',
+                roles: [domainEnum.CONFIGURATION],
+                routerLink: ['loja/lista']
+            },
             {
                 label: 'Configurações',
                 icon: 'mdi mdi-storefront-edit-outline mdi-24px',
-                roles: [domainEnum.CONFIGURATION],
+                roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
                 routerLink: ['loja/configuration']
             }
         ]
@@ -123,12 +129,12 @@ export const menuList: any[] = [
     {
         label: 'Segurança',
         icon: 'mdi mdi-security mdi-24px',
-        roles: [domainEnum.ROLES],
+        roles: [domainEnum.ROLES,domainEnum.PRODUCT],
         items: [
             {
                 label: 'Usuario',
                 icon: 'mdi mdi-account-edit mdi-24px',
-                roles: [domainEnum.ROLES],
+                roles: [domainEnum.ROLES,domainEnum.PRODUCT],
                 routerLink: ['security/user']
             },
             {

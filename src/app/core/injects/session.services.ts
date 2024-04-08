@@ -28,6 +28,11 @@ export class SessionServices {
      * @private loggedUser$ BehaviorSubject<{@link UserAuthenticated}>
      */
     private loggedUser$: BehaviorSubject<UserAuthenticated> = new BehaviorSubject<any>(null);
+    /**
+     * Store the current user tenantId init default null value
+     * @private tenantSelected$ BehaviorSubject<{@link string}>
+     */
+    private tenantSelected$: BehaviorSubject<string> = new BehaviorSubject<any>(null);
 
     constructor(private router: Router,
                 private ngZone: NgZone,
@@ -55,6 +60,14 @@ export class SessionServices {
      */
     getAccessToken(): string {
         return this.currentToken$.getValue();
+    }
+
+    /**
+     * Get from Cookie the Access Token
+     * @return An {String} whit access token
+     */
+    getTenantId(): string {
+        return this.tenantSelected$.getValue();
     }
 
     getAccessToken$(): Observable<string> {
@@ -153,10 +166,21 @@ export class SessionServices {
 
     /**
      *  Set Basic Info for Permission use
+     * @param tenantId
+     */
+    setTenantId(tenantId: string) {
+        this.tenantSelected$.next(tenantId);
+    }
+
+    /**
+     *  Set Basic Info for Permission use
      * @param user {@link UserAuthenticated}
      */
     addBasicInfo(user: UserAuthenticated): void {
         this.loggedUser$.next(user);
+        if(user.commerces.length>0){
+            this.setTenantId(user.commerces[0].commerceId);
+        }
         this.permissionServices.setUser({
             id: user.id,
             name: user.name,

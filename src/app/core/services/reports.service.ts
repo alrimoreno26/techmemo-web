@@ -20,11 +20,11 @@ export class ReportsService extends AbstractService<any> {
             Array.isArray(e) ? k + '=' + e.join(',') : k + '=' + e : null)
             .filter(f => f).join('&');
 
-        return this.httpClient.get<LazyResultData<any>>(`${buildURL('/v1/products')}/stock-alert?${params}`, {context: silentIt()});
+        return this.httpClient.get<LazyResultData<any>>(`${buildURL('/v1/products')}/stock-alert?${params}`);
     }
 
     ordersStats(queryParams: any) {
         const params: HttpParams = new HttpParams({fromObject: queryParams});
-        return this.httpClient.get<any>(`${buildURL('/v1/reports')}`, {params, context: silentIt()});
+        return this.httpClient.get<any>(`${buildURL('/v1/reports')}`, {params});
     }
 }
