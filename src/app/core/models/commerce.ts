@@ -7,6 +7,8 @@ export interface CommerceDto {
     config?: CommerceConfigDto
     created?: string
     description?: string
+    hasOnlineCommerce?: boolean
+    enable?: boolean
     email?: string
     id?: string
     name?: string

@@ -36,8 +36,9 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     imgLogo = './assets/images/commerce/logo_default.svg';
     imgBanner = './assets/images/commerce/banner_default.jpg';
 
-    enableView = 'visual';
-    actualConfig: any = null;
+    enableView = 'dados';
+    selectedStore: any;
+    onlineStore: boolean = false;
 
     constructor(private fb: FormBuilder,
                 private cepValidateService: CepValidateService,
@@ -51,30 +52,19 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         effect(() => {
             if (!this.commercesService.selectedEntity$()) {
                 this.commercesService.getById();
+            } else {
+                this.selectedStore = this.commercesService.selectedEntity$();
+                console.log(this.selectedStore)
+                this.onlineStore = this.selectedStore.hasOnlineCommerce;
+                this.initForm()
             }
         });
 
     }
 
     ngOnInit() {
-        this.form = new FormGroup({
-            address: this.fb.group({
-                cep: ['', Validators.required],
-                city: [{value: '', disabled: true}, Validators.required],
-                complement: [''],
-                neighborhood: [{value: '', disabled: true}, Validators.required],
-                number: [''],
-                street: [{value: '', disabled: true}, Validators.required],
-                uf: [{value: '', disabled: true}, Validators.required],
-            }),
-            name: new FormControl<string>(''),
-            document: new FormControl<string>('', Validators.required),
-            socialReason: new FormControl<string>({
-                value: '',
-                disabled: true
-            }, Validators.required),
-            quantityTables: new FormControl<number>(0),
-        })
+        console.log(this.selectedStore)
+        this.initForm()
         this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
             this.enableQuantity = true;
         })
@@ -110,6 +100,29 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             },
 
         ];
+    }
+
+    initForm() {
+        this.form = new FormGroup({
+            address: this.fb.group({
+                cep: [{value: this.selectedStore?.address?.cep}, Validators.required],
+                city: [{value: this.selectedStore?.address?.city, disabled: true}, Validators.required],
+                complement: [this.selectedStore?.address?.complement],
+                neighborhood: [{value: this.selectedStore?.address?.neighborhood, disabled: true}, Validators.required],
+                number: [this.selectedStore?.address?.number],
+                street: [{value: this.selectedStore?.address?.street, disabled: true}, Validators.required],
+                uf: [{value: this.selectedStore?.address?.uf, disabled: true}, Validators.required],
+            }),
+            document: new FormControl<string>({value: this.selectedStore?.cnpj, disabled: true}, Validators.required),
+            name: new FormControl<string>(this.selectedStore?.name, Validators.required),
+            enable: new FormControl<string>(this.selectedStore?.enable, Validators.required),
+            hasOnlineCommerce: new FormControl<string>(this.selectedStore?.hasOnlineCommerce, Validators.required),
+            socialReason: new FormControl<string>({
+                value: this.selectedStore?.socialReason,
+                disabled: true
+            }, Validators.required),
+            quantityTables: new FormControl<number>(this.selectedStore?.amountTables),
+        })
     }
 
     showView(type: string): void {
@@ -157,7 +170,6 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     }
 
     saveVisuals() {
-        debugger
         let updatedTO: CommerceDto = {
             id: this.commercesService.selectedEntity$().id,
             config: {
@@ -168,7 +180,26 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 theme: this.layout.config.theme,
             }
         };
-        debugger
+        this.commercesService.update({data: updatedTO});
+    }
+
+    saveDados() {
+        let updatedTO: CommerceDto = {
+            id: this.commercesService.selectedEntity$().id,
+            name: this.form.get('name')?.value,
+            amountTables: this.form.get('quantityTables')?.value,
+            hasOnlineCommerce: this.form.get('hasOnlineCommerce')?.value,
+            enable: this.form.get('hasOnlineCommerce')?.value,
+            address: {
+                cep: (this.form.get('address') as FormGroup).get('cep')?.value,
+                complement: (this.form.get('address') as FormGroup).get('complement')?.value,
+                number: (this.form.get('address') as FormGroup).get('number')?.value,
+                city: (this.form.get('address') as FormGroup).get('city')?.value,
+                neighborhood: (this.form.get('address') as FormGroup).get('neighborhood')?.value,
+                street: (this.form.get('address') as FormGroup).get('street')?.value,
+                uf: (this.form.get('address') as FormGroup).get('uf')?.value
+            }
+        };
         this.commercesService.update({data: updatedTO});
     }
 

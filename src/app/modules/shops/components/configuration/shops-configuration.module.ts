@@ -16,6 +16,7 @@ import {AppConfigModule} from "../../../../layout/config/app.config.module";
 import {MenuModule} from "primeng/menu";
 import {CommercesService} from "../../service/commerces.service";
 import {RippleModule} from "primeng/ripple";
+import {InputSwitchModule} from "primeng/inputswitch";
 
 @NgModule({
     declarations: [
@@ -34,6 +35,7 @@ import {RippleModule} from "primeng/ripple";
         AppConfigModule,
         MenuModule,
         RippleModule,
+        InputSwitchModule,
     ],
     providers:[
         ProductService,

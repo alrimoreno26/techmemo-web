@@ -50,7 +50,7 @@ export class DomainsEffects {
             ofType(fromDomainsActions.updateDomains),
             switchMap(({entity}) =>
                 this.domainsServices.update(entity,'id').pipe(
-                    map((data) => fromDomainsActions.updateDomainsSuccess({entity: data})),
+                    map((data) => fromDomainsActions.updateDomainsSuccess({entity: entity})),
                     catchError(error => of(fromDomainsActions.domainsFailRequest({error})))
                 )
             )

@@ -71,15 +71,16 @@ export class LoginComponent implements OnInit {
                 this.sessionService.setUserLogged(res);
                 this.ngZone.run(() => this.service.profile().subscribe((user: UserAuthenticated) => {
                     this.sessionService.addBasicInfo(user);
-                    this.redirectByRoleLoguin()
+                    this.redirectByRoleLogin()
                 }));
             },
             () => {
             }));
     }
 
-    redirectByRoleLoguin() {
+    redirectByRoleLogin() {
         const user = this.sessionService.userLogged;
+        debugger
         if (user.role.operationArea === 'SUPER_ADMIN') {
             this.router.navigateByUrl('/loja/lista').then();
         } else {

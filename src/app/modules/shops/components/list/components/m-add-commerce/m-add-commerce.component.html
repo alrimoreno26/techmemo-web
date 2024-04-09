@@ -27,7 +27,7 @@
         <div class="col-12 field mt-3">
             <span class="p-float-label">
                 <p-dropdown
-                    [options]="userService.listEntities$()" optionLabel="name"
+                    [options]="listUser" optionLabel="name"
                    formControlName="userId"
                     emptyMessage="{{'primeng.emptyMessage' | translate}}"
                     emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
@@ -48,6 +48,7 @@
             <p-selectButton [options]="commerceTypeEnum"
                             formControlName="type"
                             styleClass="w-18rem"
+                            (onChange)="onChangeCommerceType($event)"
                             optionValue="value"></p-selectButton>
         </div>
 

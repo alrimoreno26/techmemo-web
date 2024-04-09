@@ -33,7 +33,7 @@ export class UserModalComponent extends BaseModalComponentDirective implements O
             password: new FormControl<string>(data?.password, Validators.required),
             phone: new FormControl<string>(this.cleanPhone(data?.phone), [Validators.required, cellPhone]),
             roleId: new FormControl<number>(data?.role?.id, Validators.required),
-            documentId: new FormControl<string>(data?.cpf, [Validators.required, cpf]),
+            documentId: new FormControl<string>(data?.documentId, [Validators.required, cpf]),
             email: new FormControl<string>(data?.email, [Validators.required, Validators.email])
         });
     }

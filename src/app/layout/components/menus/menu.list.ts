@@ -60,12 +60,12 @@ export const menuList: any[] = [
     {separator: true},
     {
         label: 'Vendas',
-        roles: [domainEnum.ORDER,domainEnum.PRODUCT],
+        roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
         icon: 'mdi mdi-cash-check mdi-24px',
         items: [
             {
                 label: 'Vendas',
-                roles: [domainEnum.ORDER,domainEnum.PRODUCT],
+                roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-check mdi-24px',
                 routerLink: ['vendas/historico']
             }
@@ -75,11 +75,11 @@ export const menuList: any[] = [
     {
         label: 'Compras',
         icon: 'mdi mdi-cash-multiple mdi-24px',
-        roles: [domainEnum.PAYMENT,domainEnum.PRODUCT],
+        roles: [domainEnum.PRODUCT],
         items: [
             {
                 label: 'Compras',
-                roles: [domainEnum.PAYMENT,domainEnum.PRODUCT],
+                roles: [domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-multiple mdi-24px',
                 routerLink: ['compras/lista']
             }

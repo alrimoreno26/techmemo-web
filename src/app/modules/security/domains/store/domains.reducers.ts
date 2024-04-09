@@ -48,6 +48,7 @@ export const domainsReducer = createReducer<State>(
     return adapter.addOne(entity, {...state, dialog: false});
   }),
   on(fromDomainsActions.updateDomainsSuccess, (state, {entity}) => {
+      debugger
     return adapter.updateOne({id: entity.id, changes: entity}, {...state, dialog: false});
   }),
   on(fromDomainsActions.deleteDomainsSuccess, (state, {id}) => {

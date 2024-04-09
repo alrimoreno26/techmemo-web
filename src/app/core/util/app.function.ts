@@ -13,11 +13,15 @@ import {CommerceDto} from "../models/commerce";
  * This function load the current profile every time the app is load
  * @param httpClient {@link HttpClient}
  * @param session {@link SessionServices}
- * @param ngZone
- * @param commercesService
+ * @param commercesService {@link CommercesServices}
+ * @param commercesServices
+ * @param layout {@link LayoutService}
  * @return An Observable
  */
-export function initializeAppFactory(httpClient: HttpClient, session: SessionServices, commercesService: CommercesServices, layout: LayoutService): () => Observable<any> {
+export function initializeAppFactory(httpClient: HttpClient,
+                                     session: SessionServices,
+                                     commercesService: CommercesServices,
+                                     layout: LayoutService): () => Observable<any> {
     const token = getCookie(ACCESS_TOKEN);
     if (token !== '') {
         session.setAccessToken(token);
@@ -28,16 +32,15 @@ export function initializeAppFactory(httpClient: HttpClient, session: SessionSer
                 session.setTenantId(user.commerces[0].commerceId)
                 session.updateUser(user)
                 commercesService.getById(user.commerces[0].commerceId).subscribe((commerce: CommerceDto) => {
-                    const userConfig = {
+                    let userConfig = {
                         ripple: true,
                         colorScheme: commerce.config ? commerce.config.colorSchemeType.toLowerCase() : 'light',
                         menuMode: commerce.config ? commerce.config.menuType.toLowerCase() : 'slim',
-                        menuTheme: commerce.config ? commerce.config.componentTheme : '',
+                        menuTheme: commerce.config ? commerce.config.componentTheme : 'darkgray',
                         scale: commerce.config ? commerce.config.scale : 14,
                         inputStyle: 'outlined',
-                        theme: commerce.config ? commerce.config.theme : '',
+                        theme: commerce.config ? commerce.config.theme : 'blue',
                     };
-                    console.log(userConfig.theme)
                     const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
                     const newHref = themeLink.getAttribute('href')!.replace(layout.config.theme, userConfig.theme);
 

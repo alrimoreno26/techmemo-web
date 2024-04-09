@@ -35,13 +35,13 @@ const routes: Routes = [
             },
             {
                 path: 'vendas',
-                data: {breadcrumb: 'Vendas', roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PAYMENT]},
+                data: {breadcrumb: 'Vendas', roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PAYMENT,domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/vendas/vendas.module').then(m => m.VendasModule)
             },
             {
                 path: 'compras',
-                data: {breadcrumb: 'Compras', roles: [domainEnum.ALL]},
+                data: {breadcrumb: 'Compras', roles: [domainEnum.CONFIGURATION]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/purchases/purchases.module').then(m => m.PurchasesModule)
             },
@@ -53,13 +53,13 @@ const routes: Routes = [
             },
             {
                 path: 'comandas',
-                data: {breadcrumb: 'Comandas', roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PAYMENT]},
+                data: {breadcrumb: 'Comandas', roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PAYMENT,domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('./../modules/caixa/caixa.module').then(m => m.CaixaModule)
             },
             {
                 path: 'security',
-                data: {breadcrumb: 'Segurança'},
+                data: {breadcrumb: 'Segurança', roles: [domainEnum.USER,domainEnum.ALL]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('./../modules/security/security.module').then(m => m.SecurityModule)
             },

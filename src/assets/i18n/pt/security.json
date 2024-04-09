@@ -8,6 +8,7 @@
                 "read": "Leitura",
                 "write": "Escrita",
                 "modify": "Modificar",
+                "username": "Usuário",
                 "delete": "Deletar",
                 "operationArea": "Área de Operação",
                 "domainType": "Tipo de domínio"
@@ -61,6 +62,7 @@
                 "cpf": "CPF",
                 "role": "Autoridade",
                 "codeCountryPhone": "Código País",
+                "username": "Usuário",
                 "reset": "Reiniciar Classificação",
                 "change": "Mudar",
                 "generatePassword": "Alterar a senha",

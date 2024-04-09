@@ -15,7 +15,6 @@ import {CommerceDto} from "../../../core/models/commerce";
 export class CommercesService extends StoreComponentService<any> {
 
     constructor(private services: CommercesServices,
-                private toastMessageService: ToastMessageService,
                 private sessionService: SessionServices,) {
         const defaultEntity: EntityState<any> =
             {entities: [], total: 0, dialog: false, loaded: false};

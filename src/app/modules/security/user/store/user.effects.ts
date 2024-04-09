@@ -50,7 +50,7 @@ export class UserEffects {
     this.actions$.pipe(
       ofType(fromUserActions.updateUser),
       switchMap(({entity}) =>
-        this.userAdminServices.update(entity,'id').pipe(
+        this.userAdminServices.update(entity, 'id',{}).pipe(
           map((data) => fromUserActions.updateUserSuccess({entity: data})),
           catchError(error => of(fromUserActions.userFailRequest({error})))
         )

@@ -16,6 +16,7 @@ import {initializeAppFactory} from "./util/app.function";
 import {TokenInterceptor} from "./interceptors/token.interceptor";
 import {CommercesServices} from "./services/commerces.services";
 import {LayoutService} from "../layout/service/app.layout.service";
+import {CommercesService} from "../modules/shops/service/commerces.service";
 
 registerLocaleData(localePt, 'pt');
 

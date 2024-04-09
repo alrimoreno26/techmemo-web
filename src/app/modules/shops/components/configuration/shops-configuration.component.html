@@ -6,21 +6,22 @@
             </div>
             <ng-template [ngIf]="enableView=== 'dados'">
                 <div class="col-12 area-content">
-                    <div class="flex justify-content-between">
-                        <h4 class="text-center">Configurações de dados da Loja</h4>
-                        <p-button (onClick)="goto()" label="Minha loja"></p-button>
-                    </div>
-
-
-                    <div class="grid">
-                        <div class="col-6">
-                            <div class="grid">
-                                <div class="col-12">
-                                    <h4 class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
-                                        <span>Dados Cadastrais</span>
-                                    </h4>
+                    <div class="wrapper">
+                        <div class="container-wrapper">
+                            <div class="top">
+                                <div class="flex justify-content-between">
+                                    <h4 class="text-center">Configurações de dados da Loja</h4>
+                                    <p-button [disabled]="!onlineStore" (onClick)="goto()" label="Minha loja"></p-button>
                                 </div>
-                                <div class="col-4">
+                                <div class="grid">
+                                    <div class="col-6">
+                                        <div class="grid">
+                                            <div class="col-12">
+                                                <h4 class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
+                                                    <span>Dados Cadastrais</span>
+                                                </h4>
+                                            </div>
+                                            <div class="col-4">
                                         <span class="p-input-icon-right">
                                             <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCNPJ"></i>
                                            <p-inputMask id="cnpj"
@@ -30,41 +31,52 @@
                                                         (keyup)="verifyCNPJ($event)">
                                                                 </p-inputMask>
                                         </span>
-                                </div>
-                                <div class="col-12">
-                                    <input class="w-full" pInputText type="text" formControlName="socialReason"
-                                           placeholder="Razon Social">
-                                </div>
-                                <div class="col-12">
-                                    <div class="align-items-center flex flex-auto gap-3">
-                                        <label class="flex w-3 block font-bold">Nome Loja</label>
-                                        <input pStyleClass="w-full" formControlName="name" class="w-full" type="text"
-                                               pInputText/>
-                                    </div>
-                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <input class="w-full" pInputText type="text"
+                                                       formControlName="socialReason"
+                                                       placeholder="Razon Social">
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="flex w-3 block font-bold">Nome Loja</label>
+                                                    <input pStyleClass="w-full" formControlName="name" class="w-full"
+                                                           type="text"
+                                                           pInputText/>
+                                                </div>
+                                            </div>
 
-                                <div class="col-10">
-                                    <div class="align-items-center flex flex-auto gap-3">
-                                        <label class="block font-bold">Quantidade de mesas</label>
-                                        <p-inputNumber formControlName="quantityTables" [showButtons]="true"
-                                                       inputId="stacked"></p-inputNumber>
-                                    </div>
-                                </div>
-                                <div class="col-2">
-                                    <p-button class="p-button-text" icon="pi pi-check" [disabled]="!enableQuantity"
-                                              (click)="configShop()"></p-button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="grid">
+                                            <div class="col-10">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">Quantidade de mesas</label>
+                                                    <p-inputNumber formControlName="quantityTables" [showButtons]="true"
+                                                                   inputId="stacked"></p-inputNumber>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">Tienda ativa</label>
+                                                    <p-inputSwitch formControlName="enable"></p-inputSwitch>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">Quer vender online</label>
+                                                    <p-inputSwitch formControlName="hasOnlineCommerce"></p-inputSwitch>
+                                                </div>
+                                            </div>
 
-                                <div class="col-12" formGroupName="address">
-                                    <h4 class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
-                                        <span>Endereco</span>
-                                    </h4>
-                                    <div class="grid">
-                                        <div class="field pb-0 mb-0 col-12">
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="grid">
+
+                                            <div class="col-12" formGroupName="address">
+                                                <h4 class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
+                                                    <span>Endereco</span>
+                                                </h4>
+                                                <div class="grid">
+                                                    <div class="field pb-0 mb-0 col-12">
                                 <span class="p-input-icon-right w-full">
                                     <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCEP"></i>
                                     <p-inputMask styleClass="w-full" class="w-full" id="cep"
@@ -73,54 +85,67 @@
                                                  (keyup)="verifyCEP($event)"
                                     ></p-inputMask>
                                 </span>
-                                        </div>
-                                        <div class="field pb-0 mb-0 col-12">
-                                            <input pStyleClass="w-full" class="w-full" formControlName="street"
-                                                   pInputText
-                                                   type="text"
-                                                   placeholder="Endereco">
-                                        </div>
-                                        <div class="col-12 pb-0 mb-0 field">
-                                            <div class="grid">
-                                                <div class="field pb-0 mb-0 col-6">
-                                                    <input pStyleClass="w-full" class="w-full" pInputText
-                                                           formControlName="number"
-                                                           type="text" placeholder="Numero">
-                                                </div>
-                                                <div class="field pb-0 mb-0 col-6">
-                                                    <input pStyleClass="w-full" class="w-full" pInputText type="text"
-                                                           formControlName="complement"
-                                                           placeholder="Complemento">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="field pb-0 mb-0 col-12">
-                                            <input pStyleClass="w-full" class="w-full" pInputText type="text"
-                                                   formControlName="neighborhood"
-                                                   placeholder="Barrio">
-                                        </div>
-                                        <div class="field pb-0 mb-0 col-12">
-                                            <div class="grid">
-                                                <div class="field pb-0 mb-0 col-3">
-                                                    <input pStyleClass="w-full" class="w-full" pInputText type="text"
-                                                           formControlName="uf"
-                                                           placeholder="UF">
-                                                </div>
-                                                <div class="field pb-0 mb-0 col-9">
-                                                    <input pStyleClass="w-full" class="w-full" pInputText type="text"
-                                                           formControlName="city"
-                                                           placeholder="Cidade">
-                                                </div>
-                                            </div>
+                                                    </div>
+                                                    <div class="field pb-0 mb-0 col-12">
+                                                        <input pStyleClass="w-full" class="w-full"
+                                                               formControlName="street"
+                                                               pInputText
+                                                               type="text"
+                                                               placeholder="Endereco">
+                                                    </div>
+                                                    <div class="col-12 pb-0 mb-0 field">
+                                                        <div class="grid">
+                                                            <div class="field pb-0 mb-0 col-6">
+                                                                <input pStyleClass="w-full" class="w-full" pInputText
+                                                                       formControlName="number"
+                                                                       type="text" placeholder="Numero">
+                                                            </div>
+                                                            <div class="field pb-0 mb-0 col-6">
+                                                                <input pStyleClass="w-full" class="w-full" pInputText
+                                                                       type="text"
+                                                                       formControlName="complement"
+                                                                       placeholder="Complemento">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="field pb-0 mb-0 col-12">
+                                                        <input pStyleClass="w-full" class="w-full" pInputText
+                                                               type="text"
+                                                               formControlName="neighborhood"
+                                                               placeholder="Barrio">
+                                                    </div>
+                                                    <div class="field pb-0 mb-0 col-12">
+                                                        <div class="grid">
+                                                            <div class="field pb-0 mb-0 col-3">
+                                                                <input pStyleClass="w-full" class="w-full" pInputText
+                                                                       type="text"
+                                                                       formControlName="uf"
+                                                                       placeholder="UF">
+                                                            </div>
+                                                            <div class="field pb-0 mb-0 col-9">
+                                                                <input pStyleClass="w-full" class="w-full" pInputText
+                                                                       type="text"
+                                                                       formControlName="city"
+                                                                       placeholder="Cidade">
+                                                            </div>
+                                                        </div>
 
+                                                    </div>
+                                                </div>
+
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
+                            </div>
+                            <div class="wrapper-bottom layout-btn-add align-items-center m-0">
+                                <p-button (onClick)="saveDados()"
+                                          class="flex mr-5 justify-content-end"
+                                          label="Salvar"></p-button>
+
                             </div>
                         </div>
                     </div>
-
                 </div>
             </ng-template>
             <ng-template [ngIf]="enableView=== 'visual'">
