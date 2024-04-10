@@ -6,13 +6,13 @@
                 <p-button class="flex-1"
                           [disabled]="pagamento"
                           styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-printer text-4xl"></i>
+                    <i class="mdi mdi-printer text-5xl"></i>
                     <span class="text-lg">(F4) NFC-e</span>
                 </p-button>
                 <p-button class="flex-1"
                           (onClick)="refreshOrders()"
                           styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-refresh text-4xl"></i>
+                    <i class="mdi mdi-refresh text-5xl"></i>
                     <span class="text-lg">(F5) Atualizar</span>
                 </p-button>
                 <p-button
@@ -20,21 +20,21 @@
                     (onClick)="deleteAll()"
                     [disabled]="pagamento"
                     styleClass="w-full p-button-outlined p-button-danger flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-minus-circle-outline text-4xl"></i>
+                    <i class="mdi mdi-minus-circle-outline text-5xl"></i>
                     <span class="text-lg">(F6) Apagar</span>
                 </p-button>
                 <p-button
                     class="flex-1"
                     [disabled]="pagamento"
                     styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-printer text-4xl"></i>
+                    <i class="mdi mdi-printer text-5xl"></i>
                     <span class="text-lg">(F7) Cozinha</span>
                 </p-button>
                 <p-button
                     class="flex-1"
                     [disabled]="pagamento"
                     styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-printer text-4xl"></i>
+                    <i class="mdi mdi-printer text-5xl"></i>
                     <span class="text-lg">(F8) Imprimir</span>
                 </p-button>
                 <p-button
@@ -42,7 +42,7 @@
                     [disabled]="!canFinalize$"
                     (onClick)="finalizeOrder()"
                     styleClass="w-full p-button-outlined p-button-success flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-check-circle-outline text-4xl"></i>
+                    <i class="mdi mdi-check-circle-outline text-5xl"></i>
                     <span class="text-lg">(F9) Finalizar</span>
                 </p-button>
                 <p-button
@@ -50,7 +50,7 @@
                     (onClick)="transferOrders()"
                     [disabled]="pagamento"
                     styleClass="w-full p-button-outlined p-button-warning flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-swap-horizontal text-4xl"></i>
+                    <i class="mdi mdi-swap-horizontal text-5xl"></i>
                     <span class="text-lg">(F10) Enviar</span>
                 </p-button>
                 <p-divider [layout]="'vertical'"></p-divider>
@@ -58,7 +58,7 @@
                     (onClick)="closeOrders()"
                     class="flex-1"
                     styleClass="w-full p-button-outlined p-button-danger flex-1 flex-column flex justify-content-center">
-                    <i class="mdi mdi-close-circle-outline text-4xl"></i>
+                    <i class="mdi mdi-close-circle-outline text-5xl"></i>
                     <span class="text-xl">(ESC) Fechar</span>
                 </p-button>
             </div>
@@ -150,7 +150,7 @@
                     <div class="flex align-items-center justify-content-between">
                         <h6 class="text-3xl text-gray-600 m-0">Total ({{ service.selectedEntity$().length }})
                             Orders:</h6>
-                        <h6 class="text-4xl text-primary m-0">{{ comandaTotal() | currency }}</h6>
+                        <h6 class="text-5xl text-primary m-0">{{ comandaTotal() | currency }}</h6>
                     </div>
                     <div class="flex gap-3">
                         <div class="flex-1">
