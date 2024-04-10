@@ -24,6 +24,8 @@ import {GeneratePasswordModalComponent} from './components/generate-password-mod
 import {PasswordModule} from 'primeng/password';
 import {DataTableModule} from '../../../standalone/data-table/data-table.module';
 import {RippleModule} from "primeng/ripple";
+import {RoleService} from "../roles/services/role.service";
+import {RoleEffects} from "../roles/store/role.effects";
 
 @NgModule({
   declarations: [
@@ -43,8 +45,10 @@ import {RippleModule} from "primeng/ripple";
         DropdownModule,
         InputSwitchModule,
         StoreModule.forFeature('user', reducer),
+        StoreModule.forFeature('role', reducer),
         StoreDevtoolsModule.instrument({}),
-        EffectsModule.forFeature([UserEffects]),
+        EffectsModule.forFeature([UserEffects,RoleEffects]),
+
         TooltipModule,
         InputMaskModule,
         PasswordModule,
@@ -52,7 +56,7 @@ import {RippleModule} from "primeng/ripple";
         RippleModule
     ],
   providers: [
-    UserService, DialogService
+    UserService, DialogService, RoleService
   ]
 })
 export class UserModule {

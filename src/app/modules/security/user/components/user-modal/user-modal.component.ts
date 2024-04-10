@@ -11,6 +11,7 @@ import {Role} from "../../../../../core/models";
 import {SessionServices} from "../../../../../core/injects/session.services";
 import {operationAreaRoleEnum} from "../../../../../core/enums/role";
 import {CommercesService} from "../../../../shops/service/commerces.service";
+import {RoleService} from "../../../roles/services/role.service";
 
 @Component({
     selector: 'm-domains-modal',
@@ -21,8 +22,9 @@ export class UserModalComponent extends BaseModalComponentDirective implements O
 
     roleList: Role[] = [];
 
-    constructor(public userService: UserService, public session: SessionServices, private commerce: CommercesService) {
+    constructor(public userService: UserService, public session: SessionServices, private commerce: CommercesService, private roles: RoleService) {
         super(userService);
+        this.roles.loadAll()
     }
 
     ngOnInit(): void {
@@ -34,7 +36,7 @@ export class UserModalComponent extends BaseModalComponentDirective implements O
             name: new FormControl<string>(data?.name, Validators.required),
             username: new FormControl<string>(data?.username, Validators.required),
             password: new FormControl<string>(data?.password, Validators.required),
-            commerceId: new FormControl<string>(this.session.userLogged.role.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE ? this.session.userLogged.commerces[0].commerceId : null, Validators.required),
+            commerceId: new FormControl<string>(this.session.userLogged.role.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE ? this.session.userLogged.commerces[0].commerceId : null),
             phone: new FormControl<string>(this.cleanPhone(data?.phone), [Validators.required, cellPhone]),
             roleId: new FormControl<number>(data?.role?.id, Validators.required),
             documentId: new FormControl<string>(data?.documentId, [Validators.required, cpf]),
