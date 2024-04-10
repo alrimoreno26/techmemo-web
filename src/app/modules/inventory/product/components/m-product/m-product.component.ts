@@ -90,7 +90,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             })
         }
         if (data?.technicalSheet?.products.length > 0) {
-            data?.technicalSheet.products.forEach((p:any) => {
+            data?.technicalSheet.products.forEach((p: any) => {
                 this.technicalSheetProducts.push({
                     amount: p.amount,
                     id: p.product.id,
@@ -157,6 +157,8 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     }
 
     supplier(id: string) {
+
+        debugger
         // @ts-ignore
         return this.supplierService.listEntities$().find(s => s.id === id);
     }
@@ -237,6 +239,12 @@ export class MProductComponent extends BaseModalComponentDirective implements On
 
         totalCostPrice = this.selectedAdditional.reduce((acc, item) => acc + item.costPrice, 0);
         return {totalUnitPrice, totalCostPrice};
+    }
+
+    getValueMultiselect(item: any) {
+        if(item === undefined)
+            return []
+        return item;
     }
 
     addFornecedor() {

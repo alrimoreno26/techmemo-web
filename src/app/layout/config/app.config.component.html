@@ -61,7 +61,7 @@
             <h5>Tema da Loja</h5>
             <div class="flex flex-wrap gap-3" *ngIf="layoutService.config.colorScheme === 'light'">
                 <a *ngFor="let theme of menuThemes" role="button" type="button" pRipple  (click)="changeMenuTheme(theme)"  [ngStyle]="{'background-color': theme.color}" class="w-2rem h-2rem cursor-pointer hover:shadow-4 border-round transition-duration-150 flex align-items-center justify-content-center">
-                    <i *ngIf="theme.name == this.layoutService.config.menuTheme " [class]="theme.name=='white'?'pi pi-check text-gray-900 ':'pi pi-check text-white'"></i>
+                    <i *ngIf="theme.name == this.layoutService.config.menuTheme " [class]="theme.name=='white'?'mdi mdi-check text-gray-900 ':'mdi mdi-check text-white'"></i>
                 </a>
             </div>
             <div *ngIf="layoutService.config.colorScheme !== 'light'">
@@ -74,7 +74,7 @@
         <h5>Tema de componentes da loja</h5>
         <div class="flex flex-wrap gap-3">
             <a *ngFor="let theme of componentThemes" role="button" type="button" pRipple (click)="changeComponentTheme(theme.name)" [ngStyle]="{'background-color': theme.color}" class="w-2rem h-2rem cursor-pointer hover:shadow-4 border-round transition-duration-150 flex align-items-center justify-content-center">
-                <i *ngIf="theme.name == this.layoutService.config.theme " class="pi pi-check text-white"></i>
+                <i *ngIf="theme.name == this.layoutService.config.theme " class="mdi mdi-check text-white"></i>
             </a>
         </div>
 

@@ -27,7 +27,7 @@
     </div>
 </form>
 <ng-template dialog-footer>
-    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
             icon="pi pi-fw pi-times"></button>
     <button pButton pRipple class="p-button-primary flex-1 border-round" [disabled]="form.invalid" label="Salvar"
             (click)="save()"

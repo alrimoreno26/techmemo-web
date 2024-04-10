@@ -11,11 +11,12 @@ $colors: (
     "purple": #9C27B0,
     "red": #FF4032,
     "primary": $primaryColor
-) !default;
+);
 
 //shades
 $shade000:rgba(255,255,255,.87) !default;  //text color
 $shade100:rgba(255,255,255,.60) !default;  //text secondary color
+$shade500:#3e526d !default;
 $shade600:#304562 !default;  //input bg, border, divider
 $shade700:#283951 !default;  //unused
 $shade800:#1f2d40 !default;  //elevated surface
@@ -24,7 +25,7 @@ $shade900:#17212f !default;  //ground surface
 $hoverBg:rgba(255,255,255,.03) !default;
 
 //global
-$fontFamily:Nunito,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji" !default;
+$fontFamily:Nunito,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji' !default;
 $fontSize:1rem !default;
 $fontWeight:normal !default;
 $textColor:$shade000 !default;
@@ -93,10 +94,12 @@ $inputListItemBg:transparent !default;
 $inputListItemTextColor:$shade000 !default;
 $inputListItemHoverBg:$hoverBg !default;
 $inputListItemTextHoverColor:$shade000 !default;
+$inputListItemFocusBg:rgba(255,255,255,.09) !default;
+$inputListItemTextFocusColor:$shade000 !default;
 $inputListItemBorder:0 none !default;
 $inputListItemBorderRadius:0 !default;
 $inputListItemMargin:0 !default;
-$inputListItemFocusShadow:inset 0 0 0 1px $focusOutlineColor !default;
+$inputListItemFocusShadow:inset 0 0 0 0.15rem $focusOutlineColor !default;
 $inputListHeaderPadding:.5rem 1rem !default;
 $inputListHeaderMargin:0 !default;
 $inputListHeaderBg:$shade800 !default;
@@ -238,7 +241,6 @@ $colorPickerPreviewWidth:2rem !default;
 $colorPickerPreviewHeight:2rem !default;
 $colorPickerBg:$shade800 !default;
 $colorPickerBorder:1px solid $shade600 !default;
-$colorPickerBorderColor:$shade600 !default;
 $colorPickerHandleColor:#ffffff !default;
 
 //togglebutton
@@ -417,7 +419,10 @@ $tabviewContentPadding:$panelContentPadding !default;
 
 //upload
 $fileUploadProgressBarHeight:.25rem !default;
-$fileUploadContentPadding:2rem 1rem !default;
+$fileUploadContentPadding: 2rem 1rem !default;
+$fileUploadContentHoverBorder: 1px dashed $primaryColor !default;
+$fileUploadFileBorder: 1px solid $shade600 !default;
+$fileUploadFilePadding: 1rem !default;
 
 //scrollpanel
 $scrollPanelTrackBorder:0 none !default;
@@ -487,7 +492,7 @@ $tableSortableColumnBadgeSize:1.143rem !default;
 
 $tableBodyRowBg:$shade800 !default;
 $tableBodyRowTextColor:$shade000 !default;
-$tableBodyRowEvenBg:rgba(255,255,255,0.01) !default;
+$tableBodyRowEvenBg:#253144 !default;
 $tableBodyRowHoverBg:$hoverBg !default;
 $tableBodyRowTextHoverColor:$shade000 !default;
 $tableBodyCellBorder:1px solid $shade600 !default;
@@ -522,10 +527,6 @@ $dataViewContentBorder:0 none !default;
 $dataViewListItemBorder:solid $shade600 !default;
 $dataViewListItemBorderWidth:0 0 1px 0 !default;
 
-//orderlist, picklist
-$orderListBreakpoint:960px !default;
-$pickListBreakpoint:960px !default;
-
 //schedule
 $fullCalendarEventBg:$primaryDarkColor !default;
 $fullCalendarEventBorderColor: $primaryDarkColor !default;
@@ -535,7 +536,7 @@ $fullCalendarEventTextColor:$primaryTextColor !default;
 //tree
 $treeContainerPadding:0.286rem !default;
 $treeNodePadding:0.143rem !default;
-$treeNodeContentPadding:.5rem !default;
+$treeNodeContentPadding:0 !default;
 $treeNodeChildrenPadding:0 0 0 1rem !default;
 $treeNodeIconColor:$shade100 !default;
 
@@ -613,6 +614,10 @@ $dialogContentPadding:0 1.5rem 2rem 1.5rem !default;
 $dialogFooterBorder:0 none !default;
 $dialogFooterPadding:0 1.5rem 1.5rem 1.5rem !default;
 
+//confirmpopup
+$confirmPopupContentPadding:$panelContentPadding !default;
+$confirmPopupFooterPadding:0 1rem 1rem 1rem !default;
+
 //tooltip
 $tooltipBg:$shade600 !default;
 $tooltipTextColor:$shade000 !default;
@@ -629,12 +634,18 @@ $stepsItemNumberColor:$shade000 !default;
 $stepsItemNumberBorderRadius:50% !default;
 $stepsItemActiveFontWeight:600 !default;
 
-//progressbar
+//progressbar, progressspinner
 $progressBarHeight:1.5rem !default;
 $progressBarBorder:0 none !default;
 $progressBarBg:$shade600 !default;
 $progressBarValueBg:$primaryColor !default;
 $progressBarValueTextColor:$primaryTextColor !default;
+
+$progressSpinnerStrokeColor:$errorMessageTextColor !default;
+$progressSpinnerColorOne:$errorMessageTextColor !default;
+$progressSpinnerColorTwo:$infoMessageTextColor !default;
+$progressSpinnerColorThree:$successMessageTextColor !default;
+$progressSpinnerColorFour:$warningMessageTextColor !default;
 
 //menu (e.g. menu, menubar, tieredmenu)
 $menuWidth:12.5rem !default;
@@ -648,9 +659,13 @@ $menuitemIconColor:$shade100 !default;
 $menuitemTextHoverColor:$shade000 !default;
 $menuitemIconHoverColor:$shade000 !default;
 $menuitemHoverBg:$hoverBg !default;
+$menuitemTextFocusColor:$shade000 !default;
+$menuitemIconFocusColor:$shade000 !default;
+$menuitemFocusBg:rgba(255,255,255,.09) !default;
 $menuitemTextActiveColor:$shade000 !default;
 $menuitemIconActiveColor:$shade000 !default;
 $menuitemActiveBg:$shade900 !default;
+$menuitemActiveFocusBg:$shade900 !default;
 $menuitemSubmenuIconFontSize:.875rem !default;
 $submenuHeaderMargin:0 !default;
 $submenuHeaderPadding:.75rem 1rem !default;
@@ -662,7 +677,6 @@ $overlayMenuBg:$menuBg !default;
 $overlayMenuBorder:1px solid $shade600 !default;
 $overlayMenuShadow:0 2px 4px -1px rgba(0,0,0,.2), 0 4px 5px 0 rgba(0,0,0,.14), 0 1px 10px 0 rgba(0,0,0,.12) !default;
 $verticalMenuPadding:.25rem 0 !default;
-$verticalMenuitemMargin:0;
 $menuSeparatorMargin:.25rem 0 !default;
 
 $breadcrumbPadding:1rem !default;
@@ -754,38 +768,40 @@ $galleriaThumbnailNavigatorWidth:2rem !default;
 $galleriaThumbnailNavigatorHeight:2rem !default;
 
 //divider
-$dividerHorizontalMargin:1rem 0;
-$dividerHorizontalPadding:0 1rem;
-$dividerVerticalMargin:0 1rem;
-$dividerVerticalPadding:1rem 0;
-$dividerSize:1px;
-$dividerColor:$shade600;
+$dividerHorizontalMargin:1rem 0 !default;
+$dividerHorizontalPadding:0 1rem !default;
+$dividerVerticalMargin:0 1rem !default;
+$dividerVerticalPadding:1rem 0 !default;
+$dividerSize:1px !default;
+$dividerColor:$shade600 !default;
 
 //avatar
-$avatarBg:$shade600;
-$avatarTextColor:$textColor;
+$avatarBg:$shade600 !default;
+$avatarTextColor:$textColor !default;
 
 //chip
-$chipBg:$shade600;
-$chipTextColor:$textColor;
-$chipBorderRadius: 16px;
+$chipBg:$shade600 !default;
+$chipTextColor:$textColor !default;
+$chipBorderRadius: 16px !default;
+$chipFocusBg:$shade500 !default;
+$chipFocusTextColor:$textColor !default;
 
 //scrollTop
-$scrollTopBg:$highlightBg;
-$scrollTopHoverBg:scale-color($highlightBg, $alpha: 24%);
-$scrollTopWidth:3rem;
-$scrollTopHeight:3rem;
-$scrollTopBorderRadius:50%;
-$scrollTopFontSize:1.5rem;
-$scrollTopTextColor:$highlightTextColor;
+$scrollTopBg:$highlightBg !default;
+$scrollTopHoverBg:scale-color($highlightBg, $alpha: 24%) !default;
+$scrollTopWidth:3rem !default;
+$scrollTopHeight:3rem !default;
+$scrollTopBorderRadius:50% !default;
+$scrollTopFontSize:1.5rem !default;
+$scrollTopTextColor:$highlightTextColor !default;
 
 //skeleton
-$skeletonBg:rgba(255,255,255,.06);
-$skeletonAnimationBg:rgba(255,255,255,.04);
+$skeletonBg:rgba(255,255,255,.06) !default;
+$skeletonAnimationBg:rgba(255,255,255,.04) !default;
 
 //splitter
-$splitterGutterBg:rgba(255,255,255,.03);
-$splitterGutterHandleBg:$shade600;
+$splitterGutterBg:rgba(255,255,255,.03) !default;
+$splitterGutterHandleBg:$shade600 !default;
 
 //speeddial
 $speedDialButtonWidth: 4rem !default;
@@ -802,6 +818,7 @@ $speedDialActionTextHoverColor: $shade900 !default;
 $dockActionWidth: 4rem !default;
 $dockActionHeight: 4rem !default;
 $dockItemPadding: .5rem !default;
+$dockItemBorderRadius:$borderRadius !default;
 $dockCurrentItemMargin: 1.5rem !default;
 $dockFirstItemsMargin: 1.3rem !default;
 $dockSecondItemsMargin: 0.9rem !default;
@@ -825,11 +842,18 @@ $imagePreviewActionIconFontSize:1.5rem !default;
 $imagePreviewActionIconBorderRadius:50% !default;
 
 :root {
+    font-family:Nunito,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+    --font-family:Nunito,-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,'Noto Sans',sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji';
+    --surface-a:#{$shade800};
+    --surface-b:#{$shade900};
+    --surface-c:#{$hoverBg};
+    --surface-d:#{$shade600};
+    --surface-e:#{$shade800};
+    --surface-f:#{$shade800};
     --text-color:#{$shade000};
     --text-color-secondary:#{$shade100};
     --primary-color:#{$primaryColor};
     --primary-color-text:#{$primaryTextColor};
-    --font-family:#{$fontFamily};
     --surface-0: #17212f;
     --surface-50: #2e3744;
     --surface-100: #454d59;
@@ -862,6 +886,7 @@ $imagePreviewActionIconBorderRadius:50% !default;
     --surface-hover:rgba(255,255,255,.03);
     --focus-ring: #{$focusShadow};
     --maskbg: #{$maskBg};
-    --transition-duration: #{$transitionDuration};
-    color-scheme: dark;
+    --highlight-bg: #{$highlightBg};
+    --highlight-text-color: #{$highlightTextColor};
+    color-scheme: light dark;
 }

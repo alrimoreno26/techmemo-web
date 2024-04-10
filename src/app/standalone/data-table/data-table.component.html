@@ -7,9 +7,10 @@
             type="button"></button>
     <p-splitButton (onClick)="createItem()" *ngIf="showCreate && itemsSplit?.length"
                    class="text-2xl"
+                   outlined
                    [model]="itemsSplit" appendTo="body" icon="mdi {{iconCreate}} mdi-24px" label="{{'common.create' | translate}}"
                    pTooltip="{{'common.tooltip.create' | translate: {value: (name | translate)} }}"
-                   styleClass="p-button-outlined text-2xl"
+                   styleClass="text-2xl"
     ></p-splitButton>
     <div>
     <span class="p-input-icon-left">

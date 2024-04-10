@@ -2,7 +2,8 @@
 	.companies-left-bar{
 		.p-listbox-list-wrapper {
 			overflow-y: hidden;
-			height: calc(100vh - 250px);
+			height: calc(100vh - 190px);
+            max-height: 100% !important;
 		}
 
 		.p-listbox-list-wrapper:hover {
