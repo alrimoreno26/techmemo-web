@@ -4,6 +4,7 @@
         <div class="col-12 shadow-6">
             <div class="flex flex-1 w-full gap-3" style="width: 220px">
                 <p-button class="flex-1"
+                          [disabled]="pagamento"
                           styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-print text-4xl"></i>
                     <span class="text-lg">(F4) NFC-e</span>
@@ -17,18 +18,21 @@
                 <p-button
                     class="flex-1"
                     (onClick)="deleteAll()"
+                    [disabled]="pagamento"
                     styleClass="w-full p-button-outlined p-button-danger flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-minus-circle text-4xl"></i>
                     <span class="text-lg">(F6) Apagar</span>
                 </p-button>
                 <p-button
                     class="flex-1"
+                    [disabled]="pagamento"
                     styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-print text-4xl"></i>
                     <span class="text-lg">(F7) Cozinha</span>
                 </p-button>
                 <p-button
                     class="flex-1"
+                    [disabled]="pagamento"
                     styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                     <i class="pi pi-print text-4xl"></i>
                     <span class="text-lg">(F8) Imprimir</span>

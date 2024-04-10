@@ -5,7 +5,7 @@ import {flatMap} from 'lodash';
 import {environment} from 'src/environments/environment';
 import {getCookie, setCookie} from '../util';
 import {RefreshTokenTO, SecurityModel, UserAuthenticated} from "../models/user";
-import {ACCESS_TOKEN, domainEnum, REFRESH_TOKEN} from "../enums/role";
+import {ACCESS_TOKEN, domainEnum, operationAreaRoleEnum, REFRESH_TOKEN} from "../enums/role";
 import {PermissionServices} from "./permission.services";
 import {AuthServices} from "../services/auth.services";
 
@@ -143,6 +143,10 @@ export class SessionServices {
     updateUser(user: UserAuthenticated | any): void {
         this.isLoggedIn = true;
         this.addBasicInfo(user);
+    }
+
+    onlyPosManageItem(){
+        return this.userLogged.role.operationArea === operationAreaRoleEnum.WAITER || this.userLogged.role.operationArea === operationAreaRoleEnum.ATTENDANT;
     }
 
     /**

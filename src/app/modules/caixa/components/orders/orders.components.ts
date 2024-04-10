@@ -6,6 +6,9 @@ import {Router} from "@angular/router";
 import {DatePipe} from "@angular/common";
 import {StoreTablesServices} from "../../services/store.tables.services";
 import {tableState} from "../../../../core/models/tables";
+import {SessionServices} from "../../../../core/injects/session.services";
+import {operationAreaRoleEnum} from "../../../../core/enums/role";
+import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 
 @Component({
     selector: 'app-orders',
@@ -21,10 +24,11 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     fromTable: any;
 
-
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
                 private router: Router,
+                private toastMessageService: ToastMessageService,
+                private session: SessionServices,
                 private datePipe: DatePipe) {
         super()
         this.tableService.loadAll({lazy: {page: 0, count: 50}})
@@ -88,9 +92,14 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     }
 
-    openOrder(id: string) {
-        this.service.getById([], id)
-        this.router.navigate([`/comandas/order/${id}`]).then();
+    openOrder(item: any) {
+        if (this.session.onlyPosManageItem()) {
+            this.toastMessageService.showMessage("warn", 'INFO', 'Essa mesa já fechou a conta e vem fazendo pagamentos')
+        } else {
+            this.service.getById([], item.id)
+            this.router.navigate([`/comandas/order/${item.id}`]).then();
+        }
+
     }
 
     transformDate(fecha: string) {
@@ -108,6 +117,14 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
             data: null,
             width: '350px',
         })
+    }
+
+    get getWidthClass() {
+        return {
+            'lg:px-12': this.session.onlyPosManageItem(),
+            'lg:px-8': this.session.userLogged.role.operationArea !== operationAreaRoleEnum.ATTENDANT && this.session.userLogged.role.operationArea !== operationAreaRoleEnum.WAITER,
+        }
+
     }
 
     getTitleComanda(item: any): string {

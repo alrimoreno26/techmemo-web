@@ -113,9 +113,7 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 	@ViewChild('companiesListData') companiesListData: Listbox;
 
 	constructor(
-		private route: ActivatedRoute,
 		private router: Router,
-		private actionsSubject$: ActionsSubject,
 		public messageService: MessageService,
 		private translateService: TranslateService,
 		private confirmationService: ConfirmationService,
@@ -123,7 +121,7 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
         public commercesService: CommercesService,
 	) {
 		this.updateSubscribers();
-		// this.initStates();
+
 
 		this.colorMap.set("ME", "#6738a4");
 		this.colorMap.set("EPP", "#10a4a0");
@@ -174,43 +172,6 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 
 	ngOnInit(): void {
 		this.isSandboxMode = false;//!environment.production;
-
-		// this.companiesPageData$.pipe(
-		// 	filter(value => value !== undefined),
-		// 	takeUntil(this.onDestroySubscriptions$)
-		// ).subscribe((companiesPageData) => {
-		// 	this.companiesPageData = companiesPageData;
-		// 	if(this.companiesPageData) {
-		// 		this.companiesTotal = this.companiesPageData.totalElements;
-		// 		this.companiesSize = this.companiesPageData.pageable.pageSize || 10;
-		// 		this.companiesFirstPage = this.companiesPageData.pageable?.pageNumber * this.companiesPageData.pageable.pageSize || 0;
-		// 	}
-		// });
-
-		// this.companiesData$.pipe(
-		// 	filter(value => value !== undefined),
-		// 	takeUntil(this.onDestroySubscriptions$)
-		// ).subscribe((companiesData) => {
-		// 	this.companiesData = companiesData;
-		// 	this.updateCleanCompanyListEmit.emit([this.companiesTotal === 0, this.filterValue !== '']);
-		// 	this.formattedCompaniesListData = [];
-		// 	if (this.companiesData) {
-		// 		this.formattedCompaniesListData = this.companiesData.map(item => ({ backgroundColor: this.getCompanyColor(item.companySize), textColor: this.getContrastYIQ(item.companySize), ...item }));
-		// 		this.filteredCompaniesListData = [...this.formattedCompaniesListData];
-        //
-		// 		if (this.companyDataInfo === null) {
-		// 			this.selectedCompanyData = this.formattedCompaniesListData[0];
-		// 		} else {
-		// 			this.selectedCompanyData = this.formattedCompaniesListData.filter(c => c.cnpj === this.cnpjActive)[0];
-		// 		}
-        //
-		// 		this.selectDataOption();
-        //
-		// 	} else {
-		// 		this.filteredCompaniesListData = [];
-		// 	}
-		// });
-
 		this.initAddCompanyForm();
 	}
 
@@ -235,81 +196,13 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 		});
 	}
 
-	addCnpjToList(event: any): void {
-		let cnpj = { 'cnpj': this.addCompanyForm.controls['cnpj'].value, '__rowNum__': this.cnpjArrayList ? this.cnpjArrayList.length + 1 : 1 };
-		const pos = this.cnpjArrayList.map(e => e.cnpj).indexOf(this.addCompanyForm.controls['cnpj'].value);
-		if (pos === -1) {
-			this.cnpjArrayList = [...this.cnpjArrayList, cnpj];
-		} else {
-			//this.toastMessageService.handleError(this.translateService.instant('companyList.table_company.cnpj_exist_text'))
-		}
-		this.addCompanyForm.controls['cnpj'].setValue('');
-	}
 
-
-
-	uploadCnpjDocument(
-		event: any,
-		elem: any
-	): void {
-		const files = [];
-		for (let file of event.files) {
-			files.push(file);
-		}
-
-		if (files.length > 0) {
-			let file = files[0];
-			let fileReader = new FileReader();
-			fileReader.readAsArrayBuffer(file);
-			fileReader.onload = (e) => {
-				this.cnpjArrayBuffer = fileReader.result;
-				var data = new Uint8Array(this.cnpjArrayBuffer);
-				var arr = new Array();
-				for (var i = 0; i != data.length; ++i) arr[i] = String.fromCharCode(data[i]);
-				var bstr = arr.join("");
-				var workbook = XLSX.read(bstr, { type: "binary" });
-				var first_sheet_name = workbook.SheetNames[0];
-				var worksheet = workbook.Sheets[first_sheet_name];
-				this.cnpjArrayList = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-			}
-		}
-		elem._files = [];
-	}
-
-	cnpjSelected(event: any) {
-
-	}
 
 
 
 	clearCompanyData(): void {
 		this.addCompanyForm?.controls['cnpj'].setValue('');
 		this.cnpjArrayList = [];
-	}
-
-	addCompanyFormData(): void {
-		if (!this.validateCnpjToAdd()) {
-			this.displayModalAddCompany = false;
-			this.displayModalAddCompanyState = true;
-
-			this.companyStateValue = 0;
-			this.companyActualValue = 0;
-			this.cnpjListSelected = [];
-			this.cnpjListState = [];
-
-			// if (this.cnpjArrayList.length === 0) {
-			// 	this.addCompanyData(onlyDigits(this.addCompanyForm.controls['cnpj'].value));
-			// 	this.cnpjListSelected.push(onlyDigits(this.addCompanyForm.controls['cnpj'].value));
-			// 	this.cnpjListState.push({cnpj: onlyDigits(this.addCompanyForm.controls['cnpj'].value), proccess: false, state: CompanyStateEnum.COMPANY_NOT_PROCCESS})
-			// } else {
-			// 	this.addCompanyForm.controls['cnpjArrayListSelected'].value.forEach((value: any) => {
-			// 		this.addCompanyData(onlyDigits(value.cnpj));
-			// 		this.cnpjListSelected.push(onlyDigits(value.cnpj));
-			// 		this.cnpjListState.push({cnpj: onlyDigits(value.cnpj), proccess: false, state: CompanyStateEnum.COMPANY_NOT_PROCCESS})
-			// 	});
-			// }
-			this.clearCompanyData();
-		}
 	}
 
 
@@ -322,60 +215,6 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 			invalid = this.addCompanyForm.controls['cnpjArrayListSelected'].value.length === 0
 		}
 		return invalid;
-	}
-
-	closeAddCompanyModal(): void {
-		this.displayModalAddCompanyState = false;
-		this.addCompanyForm.controls['cnpjArrayListSelected'].setValue('');
-	}
-
-	updateCompanyList(cnpj: string, error: any | null): void {
-		this.cnpjListState = this.cnpjListState.map(company => {
-			if (company.cnpj === cnpj) {
-				return {
-					...company,
-					proccess: true,
-				}
-			} else {
-				return company
-			}
-		});
-
-		if(!error) {
-			this.companiesTotal += 1;
-			this.updateCleanCompanyListEmit.emit([this.companiesTotal === 0, this.filterValue !== '']);
-		}
-		this.companyActualValue += 1;
-		this.companyStateValue = Math.floor((this.companyActualValue * 100) / this.cnpjListSelected.length);
-		if (this.companyStateValue >= 100) {
-			this.companyStateValue = 100;
-			this.activeIndex = 1;
-		}
-
-		if(this.cnpjListSelected[this.cnpjListSelected.length - 1] === cnpj){
-			if(this.newOrganizationCompanies.length > 0) {
-				this.setToLastAddedCompany();
-			}
-		}
-	}
-
-	setToLastAddedCompany(): void {
-		if (this.timeoutId) {
-			clearTimeout(this.timeoutId);
-		}
-
-		this.timeoutId = setTimeout(() => {
-			const currentPage = this.companiesPageFilterData.currentPage;
-			const lastPage = Math.ceil(this.companiesTotal / this.companiesSize) - 1;
-
-			//if(lastPage > currentPage) {
-				this.updatePageCompaniesFilterData(this.companiesPageFilterData.filterValue, lastPage, this.companiesPageFilterData.rowsPage, this.companiesPageFilterData.sortValue, this.companiesPageFilterData.directionValue);
-				this.refreshAllOrganizationCompaniesData();
-			//}
-
-			this.newOrganizationCompanies = [];
-		}, 1000);
-
 	}
 
 	updatePageCompaniesFilterData(filterValue: string, currentPage: number, rowsPage: number, sortValue: string, directionValue: string): void {

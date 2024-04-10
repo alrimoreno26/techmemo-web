@@ -1,6 +1,6 @@
 <c-spinner/>
 <div class="layout-wrapper" [ngClass]="containerClass" [class]="sidebarClass">
-    <div class="layout-content-wrapper">
+    <div [ngClass]="containerClassWrapper">
         <app-topbar [showMenu]="!user"></app-topbar>
         <div class="layout-content">
             <app-breadcrumb></app-breadcrumb>

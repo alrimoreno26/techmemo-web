@@ -44,6 +44,12 @@ export class AppTopbarComponent {
         return logo;
     }
 
+    get containerTopBarWrapper(){
+        return {
+            'layout-topbar-slim': this.session.userLogged.role.operationArea === operationAreaRoleEnum.ATTENDANT || this.session.userLogged.role.operationArea === operationAreaRoleEnum.WAITER,
+        }
+    }
+
     protected readonly domainEnum = domainEnum;
     protected readonly operationAreaRoleEnum = operationAreaRoleEnum;
 }

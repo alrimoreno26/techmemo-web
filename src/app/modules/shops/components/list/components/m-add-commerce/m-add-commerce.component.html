@@ -32,6 +32,7 @@
                     emptyMessage="{{'primeng.emptyMessage' | translate}}"
                     emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
                     optionValue="id"
+                    [autoDisplayFirst]="false"
                     appendTo="body" styleClass="p-sidebar-sm"
                     [style]="{'width': '100%'}" id="subordination">
                       <ng-template let-organization pTemplate="item">
@@ -40,7 +41,7 @@
                         </div>
                       </ng-template>
                 </p-dropdown>
-                 <label for="subordination">Administrador</label>
+                 <label for="subordination">Selecione administrador</label>
             </span>
         </div>
         <div class="flex flex-column justify-content-start gap-2">

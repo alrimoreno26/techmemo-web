@@ -80,11 +80,19 @@ export class LoginComponent implements OnInit {
 
     redirectByRoleLogin() {
         const user = this.sessionService.userLogged;
-        debugger
-        if (user.role.operationArea === 'SUPER_ADMIN') {
-            this.router.navigateByUrl('/loja/lista').then();
-        } else {
-            this.router.navigateByUrl('/vendas/historico').then();
+        switch (user.role.operationArea) {
+            case 'ADMINISTRATOR_STORE':
+                this.router.navigateByUrl('/loja/lista').then();
+                break;
+            case 'ATTENDANT':
+                this.router.navigateByUrl('/comandas').then();
+                break;
+            case 'SUPER_ADMIN':
+                this.router.navigateByUrl('/loja/lista').then();
+                break;
+            default:
+                this.router.navigateByUrl('/vendas/historico').then();
+                break;
         }
     }
 }

@@ -1,19 +1,5 @@
 <div class="companies-left-bar relative" [ngClass]="{'sandbox': isSandboxMode}">
     <ng-template [ngIf]="commercesService.loaded$()" [ngIfElse]="elseOr">
-        <div class="list-organization-data px-2 pb-3 border-gray-300 border-bottom-1 text-gray-600">
-			<span class="p-float-label mt-4 w-full text-gray-600 ">
-				<p-treeSelect containerStyleClass="w-full"
-                              [options]="organizationsChildrenListTreeNode"
-                              [(ngModel)]="selectedOrganizationsChildrenTreeNode"
-                              [filterInputAutoFocus]="true"
-                              (onNodeSelect)="selectOrganizationChildrenTreeNode($event)"
-                              placeholder="{{'app.label_commerce_subordinate' | translate}}"
-                              [filter]="true"
-                              [disabled]="true">
-				</p-treeSelect>
-				<label [ngClass]="{'organization-base': !collapseCompaniesListData, 'hidden': collapseCompaniesListData}">{{"app.label_commerce_subordinate" | translate}}</label>
-			</span>
-        </div>
         <p-listbox #companiesListData
                    [options]="filteredCompaniesListData"
                    [(ngModel)]="selectedCompanyData"
@@ -94,76 +80,6 @@
 <ng-template #showOrganizationCompaniesSearchOptions>
 	<div class="search-options flex justify-content-between align-items-center w-full gap-2">
 		<div [ngClass]="{'p-inputgroup': !collapseCompaniesListData, 'hidden': collapseCompaniesListData}">
-			<span class="p-inputgroup-addon cursor-pointer text-white bg-primary"
-				pTooltip="{{'app.orderCompanyBy' | translate}}"
-				(click)="opFilter.toggle($event)">
-				<i class="mdi mdi-order-alphabetical-ascending"></i>
-			</span>
-			<p-overlayPanel #opFilter [showCloseIcon]="true" [style]="{width: '300px'}">
-				<ng-template pTemplate>
-					<div class="w-full py-2">
-						<div class="p-fluid grid">
-							<div class="field col-12 w-full">
-								<span class="filter text-lg font-medium bg-gray-100 p-2 flex w-full">{{'app.orderCompanyBy' | translate}}</span>
-							</div>
-							<div class="field col-12">
-								<span class="p-float-label">
-									<p-dropdown inputId="order-field" [options]="orderFields" [(ngModel)]="orderFieldSelected"
-										optionLabel="name" [filter]="false" (onChange)="onCompanyOrderChange($event)"/>
-									<label>{{'app.field' | translate}}</label>
-								</span>
-							</div>
-							<div class="field col-12">
-								<span class="p-float-label">
-									<p-dropdown inputId="order-by" [options]="orderBy" [(ngModel)]="orderBySelected"
-										optionLabel="name" [filter]="false" (onChange)="onCompanyOrderChange($event)">
-										<ng-template pTemplate="selectedItem" [ngIf]="orderBySelected">
-												<div class="flex align-items-center gap-2">
-													<i [class]="'mdi mdi-' + orderBySelected.icon "></i>
-													<div>{{ orderBySelected.name }}</div>
-												</div>
-										</ng-template>
-										<ng-template let-order pTemplate="item">
-											<div class="flex align-items-center gap-2">
-												<i [class]="'mdi mdi-' + order.icon "></i>
-												<div>{{ order.name }}</div>
-											</div>
-										</ng-template>
-									</p-dropdown>
-									<label>{{'app.order' | translate}}</label>
-								</span>
-							</div>
-							<div class="field col-12 hidden">
-								<span class="p-float-label">
-									<p-multiSelect inputId="filter-users" [options]="organizationUsers" [(ngModel)]="filterUsers"
-										optionLabel="userName" [filter]="false" (onChange)="filterCompanyData($event)"/>
-									<label>{{'app.user' | translate}}</label>
-								</span>
-							</div>
-							<div class="field col-12 hidden">
-								<span class="p-float-label">
-									<p-calendar inputId="filter-created-date" [(ngModel)]="filterCreatedDate" [showIcon]="true"
-										[readonlyInput]="true" [showButtonBar]="true" (onSelect)="filterCompanyData($event)"
-										(onClear)="filterCompanyData($event)" (onClearClick)="filterCompanyData($event)"
-										dateFormat="dd/mm/yy"></p-calendar>
-									<label>{{'app.date' | translate}}</label>
-								</span>
-							</div>
-							<div class="field col-12 hidden">
-								<div class="flex flex-column gap-3">
-									<button pButton type="button" icon="mdi mdi-filter-off-outline" class="p-button-outlined p-button-secondary"
-										label="{{'app.clear' | translate}}" (click)="clearFilter($event)"></button>
-									<div class="total-filters bg-gray-100 text-right p-2 font-semibold font-italic">
-										{{'app.total' | translate}}: {{this.companiesTotal}} {{'app.companies' | translate}}
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</ng-template>
-			</p-overlayPanel>
-			<input type="text" pInputText class="hover:border-primary-color" placeholder="{{'app.search' | translate}}" [(ngModel)]="filterValue"
-				(keyup)="filterCompanyData($event)">
 		</div>
 		<button pButton pRipple
 			id="add-company-btn" class="px-2 p-button-sm"

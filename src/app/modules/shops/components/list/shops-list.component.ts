@@ -16,6 +16,8 @@ export class ShopsListComponent extends BaseComponentDirective implements OnInit
     isMobile: boolean = false;
     displayCompaniesListData: boolean = false;
 
+    override modalContent = MAddCommerceComponent;
+
     constructor(public commerceService: CommercesService,
                 private translateService: TranslateService) {
         super();
@@ -33,6 +35,7 @@ export class ShopsListComponent extends BaseComponentDirective implements OnInit
 
     openModalAddCommerce(event: any):void{
         if(event){
+            this.commerceService.openModalAddOrEdit()
             this.dialogService.open(MAddCommerceComponent,{
                 draggable: true,
                 width:'25vw',

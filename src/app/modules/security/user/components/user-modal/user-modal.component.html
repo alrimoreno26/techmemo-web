@@ -28,6 +28,8 @@
                     {{ 'security.user.labels.role' | translate }}
                 </label>
                 <p-dropdown [options]="roleList" [showClear]="true" appendTo="body" formControlName="roleId"
+                            placeholder=" {{ 'security.user.labels.role' | translate }}"
+                            [autoDisplayFirst]="false"
                             formFieldValidation id="roleId" optionLabel="name" optionValue="id"/>
             </div>
         </div>

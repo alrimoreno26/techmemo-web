@@ -1,4 +1,4 @@
-<div class="px-4 py-5 md:px-6 lg:px-8">
+<div class="px-4 py-5 md:px-6" [ngClass]="getWidthClass">
     <div class="grid">
         <div class="col-12 px-2 py-0">
             <p-toolbar>
@@ -22,12 +22,12 @@
         <!--         (click)="goOrder(item)"-->
         <ng-template [ngIf]="!isTable" [ngIfElse]="tables">
             <div class="col-12 lg:col-3 p-2 cursor-pointer"
-                 (click)="openOrder(item.id)"
+                 (click)="openOrder(item)"
                  *ngFor="let item of service.listEntities$(); let i=index">
                 <p-panel #pnl>
                     <ng-template pTemplate="header">
                         <div class="flex align-items-center w-full  justify-content-between gap-2">
-                            <span class="font-bold">{{getTitleComanda(item)}}</span>
+                            <span class="font-bold">{{ getTitleComanda(item) }}</span>
                             <p-tag value="{{item.state | translate}}" [severity]="item.state | severity"></p-tag>
                         </div>
                     </ng-template>
@@ -56,15 +56,15 @@
                 </p-panel>
             </div>
             <div class="col-12 lg:col-3 p-2">
-                <div class="w-full h-full flex">
+                <div class="w-full h-full flex" (click)="addNewComanda()">
                     <p-button pRipple label="Nova Comanda"
-                              (onClick)="addNewComanda()"
                               icon="pi pi-plus text-3xl font-semibold"
                               class="p-element text-3xl p-ripple py-3 justify-content-center font-semibold w-full border-round p-button p-component"
                     >
                     </p-button>
                 </div>
             </div>
+
         </ng-template>
         <ng-template #tables>
             <div *ngFor="let raw of tableService.auth$()" class="group-container"
@@ -84,7 +84,9 @@
                                 <div
                                     class="bg-blue-100 border-round inline-flex align-items-center justify-content-center"
                                     style="width: 52px; height: 52px;">
-                                    <ng-template [ngIf]="item.state === tableState.CLOSED || item.state === tableState.BUSY || item.state === tableState.BUSY_WITH_UNION" [ngIfElse]="free">
+                                    <ng-template
+                                        [ngIf]="item.state === tableState.CLOSED || item.state === tableState.BUSY || item.state === tableState.BUSY_WITH_UNION"
+                                        [ngIfElse]="free">
                                         <img src="assets/layout/images/tables_busy.svg" width="38" height="38">
                                     </ng-template>
                                     <ng-template #free>

@@ -7,14 +7,16 @@ import {CommerceTypeEnum} from "../../../../../../core/enums/commerce";
 import {UserService} from "../../../../../security/user/services/user.service";
 import {CommercesService} from "../../../../service/commerces.service";
 import {operationAreaRoleEnum} from "../../../../../../core/enums/role";
+import {
+    BaseModalStoreComponentDirective
+} from "../../../../../../standalone/data-table/directives/base.modal.store.component.directive";
 
 @Component({
     selector: 'm-add-commerce',
     templateUrl: './m-add-commerce.component.html',
 })
-export class MAddCommerceComponent implements OnInit {
+export class MAddCommerceComponent extends BaseModalStoreComponentDirective implements OnInit {
 
-    form: FormGroup;
     searchingCNPJ: boolean = false;
     protected subscriptions: Subscription[] = [];
     selectedUser: any;
@@ -26,10 +28,10 @@ export class MAddCommerceComponent implements OnInit {
 
     listUser: any[] = [];
 
-    constructor(public ref: DynamicDialogRef,
-                private service: CommercesService,
-                private cnpjService: CNPJService,
+    constructor(private cnpjService: CNPJService,
+                private commercesService: CommercesService,
                 public userService: UserService) {
+        super(commercesService)
         this.userService.loadAll({pageSize: 10, pageNumber: 0})
         effect(() => {
             this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE) ?? []);
@@ -86,7 +88,7 @@ export class MAddCommerceComponent implements OnInit {
         this.form.get('socialReason')?.patchValue(cnpjInformation.razao_social);
     }
 
-    save() {
+    override save() {
         if (this.form.valid) {
             const send = {
                 ...this.form.value,

@@ -11,7 +11,7 @@ import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 import {CommerceDto} from "../../../core/models/commerce";
 
-@Injectable({providedIn: 'platform'})
+@Injectable({providedIn: 'root'})
 export class CommercesService extends StoreComponentService<any> {
 
     constructor(private services: CommercesServices,
@@ -27,6 +27,17 @@ export class CommercesService extends StoreComponentService<any> {
         this.sessionService.setTenantId(entities[0].id);
         this.patchState({total: total, selected: entities[0]});
     }
+
+    override create = this.effect((trigger$: Observable<{ data: CommerceDto }>) => trigger$.pipe(
+        switchMap(({data}) => this.services.create(data).pipe(
+            tapResponse({
+                next: (response: any) => {
+                    this.patchState({dialog: false});
+                },
+                error: (err: HttpErrorResponse) => this.setError(err)
+            })
+        ))
+    ));
 
     override update = this.effect((trigger$: Observable<{ data: CommerceDto }>) => trigger$.pipe(
         switchMap(({data}) => this.services.update(data, 'id').pipe(
