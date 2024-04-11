@@ -46,9 +46,11 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
                 private commercesService: CommercesService,
                 public userService: UserService) {
         super(commercesService)
-        this.userService.loadAll({pageSize: 10, pageNumber: 0})
+        this.userService.loadBasic({pageSize: 10, pageNumber: 0})
         effect(() => {
-            this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE) ?? []);
+            this.userService.userBasic$.subscribe(user => {
+                this.listUser = user.filter((u: any) => u.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE) ?? [];
+            })
         });
     }
 
@@ -108,10 +110,10 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
                 ...this.form.value,
                 socialReason: this.form.get('socialReason')?.value
             }
-             let data = Object.fromEntries(
+            let data = Object.fromEntries(
                 Object.entries(send).filter(([key, value]) => value !== null && value !== undefined)
             );
-            this.service.create({data:data})
+            this.service.create({data: data})
         }
     }
 
