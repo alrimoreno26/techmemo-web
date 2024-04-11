@@ -14,6 +14,20 @@ import {
 @Component({
     selector: 'm-add-commerce',
     templateUrl: './m-add-commerce.component.html',
+    styles: [`
+        .icon-spinner {
+            animation: spin-animation 1.5s infinite;
+            display: inline-block;
+        }
+
+        @keyframes spin-animation {
+            0% {
+                transform: rotate(0deg);
+            }
+            100% {
+                transform: rotate(359deg);
+            }
+        }`]
 })
 export class MAddCommerceComponent extends BaseModalStoreComponentDirective implements OnInit {
 
@@ -94,7 +108,10 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
                 ...this.form.value,
                 socialReason: this.form.get('socialReason')?.value
             }
-            this.service.create({data: send})
+             let data = Object.fromEntries(
+                Object.entries(send).filter(([key, value]) => value !== null && value !== undefined)
+            );
+            this.service.create({data:data})
         }
     }
 

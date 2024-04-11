@@ -66,7 +66,7 @@
         <div class="bg-white border-round col-12 my-3 pt-0 px-0 shadow-2 sm:col-7 xl:col-7">
             <div class="border-0 col-12 p-0">
                 <div class="search-container p-3 gap-2">
-                    <i class="pi pi-search"></i>
+                    <i class="mdi mdi-magnify" style="top:30px; font-size: 2rem"></i>
                     <p-autoComplete styleClass="w-full" appFocus #input (completeMethod)="search($event)"
                                     (input)="searchProducts($event)"
                                     [disabled]="pagamento"
@@ -74,7 +74,7 @@
                                     [(ngModel)]="selectedItem" [suggestions]="suggestions"></p-autoComplete>
                     <div style="width: 6.5em;">
                         <span class="p-input-icon-left">
-                            <i class="pi pi-hashtag"></i>
+                            <i class="mdi mdi-pound" style="top:15px; font-size: 2rem"></i>
                             <input class="pl-4" type="number" pInputText [(ngModel)]="selectedItemAmount"
                                    [disabled]="pagamento"/>
                         </span>

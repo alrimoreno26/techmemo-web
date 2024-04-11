@@ -4,7 +4,7 @@
 
         <div class="col-12 field mt-4">
             <span class="p-float-label p-input-icon-right">
-                <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCNPJ"></i>
+                <i class="icon-spinner mdi mdi-loading text-primary" *ngIf="searchingCNPJ"></i>
                <p-inputMask id="cnpj"
                             formControlName="cnpj"
                             placeholder="CNPJ" mask="99.999.999/9999-99" (keyup)="verifyCNPJ($event)">

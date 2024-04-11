@@ -50,8 +50,6 @@ export class AuthServices {
    */
   logout(): Observable<any> {
     return this.httpClient.post<any>(
-      `${this.basePath}/auth/logout`, {},
-      {context: silentIt()}
-    );
+      `${this.basePath}/auth/logout`, {});
   }
 }

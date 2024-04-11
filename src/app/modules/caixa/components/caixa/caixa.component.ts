@@ -277,7 +277,7 @@ export class CaixaComponent implements OnInit {
     deleteAll(): void {
         this.dialogService.open(MCancelProductsComponents, {
             modal: true,
-            style: {'width': '20vw'},
+            style: {'width': '22vw'},
             draggable: false,
             resizable: false
         }).onClose.subscribe(() => {

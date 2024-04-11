@@ -105,7 +105,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     initForm() {
         this.form = new FormGroup({
             address: this.fb.group({
-                cep: [{value: this.selectedStore?.address?.cep}, Validators.required],
+                cep: new FormControl<string>(this.selectedStore?.address?.cep, Validators.required),
                 city: [{value: this.selectedStore?.address?.city, disabled: true}, Validators.required],
                 complement: [this.selectedStore?.address?.complement],
                 neighborhood: [{value: this.selectedStore?.address?.neighborhood, disabled: true}, Validators.required],
@@ -200,7 +200,20 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 uf: (this.form.get('address') as FormGroup).get('uf')?.value
             }
         };
-        this.commercesService.update({data: updatedTO});
+        let data = this.isAddressEmpty(updatedTO);
+        this.commercesService.update({data: data});
+    }
+
+    isAddressEmpty(updatedTO: CommerceDto): any {
+        const address = updatedTO.address;
+
+        const isEmpty = address && Object.values(address).every(value => value === null || value === undefined);
+
+        if (isEmpty) {
+            delete updatedTO.address;
+        }
+
+        return updatedTO;
     }
 
     goto() {

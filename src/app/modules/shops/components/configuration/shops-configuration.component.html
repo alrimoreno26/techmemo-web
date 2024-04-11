@@ -23,7 +23,7 @@
                                             </div>
                                             <div class="col-4">
                                         <span class="p-input-icon-right">
-                                            <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCNPJ"></i>
+                                            <i class="icon-spinner mdi mdi-loading text-primary" *ngIf="searchingCNPJ"></i>
                                            <p-inputMask id="cnpj"
                                                         class="w-full"
                                                         formControlName="document"
@@ -78,7 +78,7 @@
                                                 <div class="grid">
                                                     <div class="field pb-0 mb-0 col-12">
                                 <span class="p-input-icon-right w-full">
-                                    <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCEP"></i>
+                                    <i class="icon-spinner mdi mdi-loading text-primary" *ngIf="searchingCEP"></i>
                                     <p-inputMask styleClass="w-full" class="w-full" id="cep"
                                                  placeholder="CEP" mask="99.999-999"
                                                  formControlName="cep"

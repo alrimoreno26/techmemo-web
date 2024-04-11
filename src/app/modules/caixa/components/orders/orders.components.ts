@@ -93,7 +93,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     openOrder(item: any) {
-        if (this.session.onlyPosManageItem()) {
+        if (this.session.onlyPosManageItem() && item.state === 'CLOSED') {
             this.toastMessageService.showMessage("warn", 'INFO', 'Essa mesa já fechou a conta e vem fazendo pagamentos')
         } else {
             this.service.getById([], item.id)
