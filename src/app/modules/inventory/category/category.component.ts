@@ -33,8 +33,8 @@ export class CategoryComponent extends BaseComponentDirective {
         super();
         this.categoryService.loadAll({
             lazy: {
-                page: 0,
-                size: 10,
+                pageNumber: 0,
+                pageSize: 10,
                 type: 'PARENT'
             }
         })

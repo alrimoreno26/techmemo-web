@@ -14,7 +14,7 @@ export const unidadeResolvers: ResolveFn<boolean> = () => {
             if (!loaded) {
                 store.dispatch(fromUnitActions.loadUnitList({
                     lazy: {
-                        page: 0, count: 50
+                        pageNumber: 0, pageSize: 50
                     }
                 }));
             }

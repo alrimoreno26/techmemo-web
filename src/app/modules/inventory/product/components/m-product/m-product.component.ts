@@ -122,7 +122,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             }),
             showInMenu: new FormControl<boolean>(data?.showInMenu),
             soldPerUnits: new FormControl<boolean>(data?.soldPerUnits),
-            supplierIds: new FormControl<string[]>(suppliers, [Validators.required]),
+            supplierIds: new FormControl<string[]>(suppliers),
             unitMeasurementId: new FormControl<string>(data?.unitMeasurement?.id),
             valuePerUnits: new FormControl<number>(data?.valuePerUnits),
         });

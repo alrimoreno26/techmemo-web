@@ -32,6 +32,9 @@ export class AppMenuComponent implements OnInit {
         });
         if (this.sessionService.userLogged.role.operationArea === 'SUPER_ADMIN')
             this.model = this.model.slice(2)
+        if(this.sessionService.userLogged.role.operationArea !== 'SUPER_ADMIN'){
+            this.model.find((m: any) => m.label === 'Loja').items.shift();
+        }
     }
 
     private menuAccess(roles: Array<domainEnum> = []): boolean {

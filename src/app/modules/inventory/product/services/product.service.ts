@@ -75,13 +75,13 @@ export class ProductService extends BaseStoreServices<any> {
     override openModalAddOrEdit(): void {
         this.store.dispatch(fromProductListActions.openAddOrEdit());
         this.unitService.loadAll({
-            page: 0, count: 50
+            pageNumber: 0, pageSize: 50
         })
         this.supplierService.loadAll({
-            page: 0, count: 50
+            pageNumber: 0, pageSize: 50
         })
         this.categoryService.loadSubCategories({
-            page: 0, count: 50, type: 'SUB'
+            pageNumber: 0, pageSize: 50, type: 'SUB'
         })
     }
 

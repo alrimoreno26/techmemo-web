@@ -64,7 +64,7 @@ export class ProductComponent extends BaseComponentDirective {
     }
 
     openCombo() {
-        this.productService.getAdditionalProducts({page: 0, count: 1000, type: productType.ADDITIONAL})
+        this.productService.getAdditionalProducts({pageNumber: 0, pageSize: 1000, type: productType.ADDITIONAL})
         this.productService.openModalAddOrEdit();
         this.dialogService.open(this.modalContent, {data: {type: productType.COMBO}});
     }
@@ -72,7 +72,7 @@ export class ProductComponent extends BaseComponentDirective {
     customEdit(evt: any): void {
         this.productService.getById(evt.id)
         if(evt.type === 'COMBO'){
-            this.productService.getAdditionalProducts({page: 0, count: 1000, type: productType.ADDITIONAL})
+            this.productService.getAdditionalProducts({pageNumber: 0, pageSize: 1000, type: productType.ADDITIONAL})
         }
     }
 }

@@ -31,7 +31,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
                 private session: SessionServices,
                 private datePipe: DatePipe) {
         super()
-        this.tableService.loadAll({lazy: {page: 0, count: 50}})
+        this.tableService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         effect(() => {
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
@@ -54,12 +54,12 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     loadComanda() {
         this.isTable = false;
-        this.service.loadAll({page: 0, count: 50, state: 'ACTIVE'})
+        this.service.loadAll({pageNumber: 0, pageSize: 50, state: 'ACTIVE'})
     }
 
     loadMesas() {
         this.isTable = true;
-        this.tableService.loadAll({lazy: {page: 0, count: 50}})
+        this.tableService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
     }
 
 

@@ -2,7 +2,7 @@ import {Role} from './role';
 import {domainEnum, operationAreaRoleEnum} from "../enums/role";
 
 export interface FormAuth {
-    email: string;
+    username: string;
     password: string;
 }
 
@@ -11,6 +11,7 @@ export interface SecurityModel{
     refreshToken: string;
     expirationDate?: string;
     refreshTokenExpirationDate?: string;
+    operationArea?: operationAreaRoleEnum;
 }
 export interface UserAuthenticated {
     address?: AddressTO;

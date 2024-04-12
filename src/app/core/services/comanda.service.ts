@@ -6,6 +6,7 @@ import {LazyLoadData, LazyResultData} from "../../standalone/data-table/models";
 import {Observable} from "rxjs";
 import {map} from "lodash";
 import {CreatePaymentTransactionTO} from "../models/orders";
+import {DeleteOrderProductDto} from "../models/products";
 
 @Injectable({
     providedIn: 'root'
@@ -35,8 +36,8 @@ export class OrdersService extends AbstractService<any> {
         return this.httpClient.post<any>(`${this.basePath}/${id}/products`, params)
     }
 
-    deleteProductsOrders(id: string, productId: string[]): Observable<any> {
-        return this.httpClient.delete<any>(`${this.basePath}/${id}/products`, {body: productId})
+    deleteProductsOrders(id: string, entity: DeleteOrderProductDto): Observable<any> {
+        return this.httpClient.delete<any>(`${this.basePath}/${id}/products`, {body: entity})
     }
 
     loadOrders(paths: string[], queryParams: any): Observable<any> {

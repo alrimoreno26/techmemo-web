@@ -93,7 +93,7 @@ export class UserService extends BaseStoreServices<User> {
 
     override loadAllForExport(): Observable<Array<User>> {
         return this.userAdminServices
-            .findAllPaginate({page: 0, size: this.total$() as number})
+            .findAllPaginate({pageNumber: 0, pageSize: this.total$() as number})
             .pipe(
                 map(users => users.content),
                 catchError(() => of([] as User[]))

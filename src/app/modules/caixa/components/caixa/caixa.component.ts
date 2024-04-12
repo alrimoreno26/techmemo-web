@@ -269,8 +269,10 @@ export class CaixaComponent implements OnInit {
             style: {'width': '20vw'},
             draggable: false,
             resizable: false
-        }).onClose.subscribe(() => {
-            this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, [pedido.id])
+        }).onClose.subscribe((data) => {
+            if(data.cancel){
+                //this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, [pedido.id])
+            }
         })
     }
 
@@ -280,8 +282,10 @@ export class CaixaComponent implements OnInit {
             style: {'width': '22vw'},
             draggable: false,
             resizable: false
-        }).onClose.subscribe(() => {
-            // this.service.deleteProductsOrders(this.service.selectedEntity$().id, pedido.id)
+        }).onClose.subscribe((data) => {
+            if(data.cancel){
+                // this.service.deleteProductsOrders(this.service.selectedEntity$().id, pedido.id)
+            }
         })
     }
 

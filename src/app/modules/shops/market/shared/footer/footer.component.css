@@ -1,0 +1,88 @@
+.inner_footer_social_media > ul {
+    list-style: none;
+    padding-left: 0px;
+    margin-bottom: 0px;
+}
+
+.inner_footer_social_media > ul > li {
+    display: inline-block;
+}
+
+.inner_footer_social_media {
+    text-align: right;
+}
+
+.inner_footer_social_media > ul > li > a {
+    width: 26px;
+    height: 26px;
+    border: 1px solid #959594;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    line-height: 26px;
+    font-size: 13px;
+    border-radius: 100px;
+    color: #959594;
+}
+
+.inner_footer_social_media > ul > li {
+    margin: 0px 6px;
+}
+
+.footer_section {
+    background: #fbfaf4;
+    height: 55px;
+}
+
+.inner_footer_social_media > ul {
+    line-height: 55px;
+}
+
+.foots_cop_txt > p {
+    margin-bottom: 0px;
+    font-size: 12px;
+    color: #959594;
+    line-height: 55px;
+    letter-spacing: 0.8px;
+}
+
+.footer_section {
+    border-top: 1px solid #E0E0E0;
+}
+
+.inner_footer_social_media > ul > li > a.facebook:hover {
+    color: #1877F2;
+}
+
+.inner_footer_social_media > ul > li > a.instagrame:hover {
+    color: #fccc63;
+}
+
+.inner_footer_social_media > ul > li > a.twitter:hover {
+    color: #1DA1F2;
+}
+
+.inner_footer_social_media > ul > li > a.youtube:hover {
+    color: #FF0000;
+}
+
+@media only screen and (max-width: 790px) and (min-width: 300px) {
+    .footer_section {
+        background: #fbfaf4;
+        height: auto;
+        text-align: center;
+        padding: 12px 0px;
+    }
+
+    .foots_cop_txt > p {
+        margin-bottom: 0px;
+        font-size: 12px;
+        color: #959594;
+        line-height: normal;
+        letter-spacing: 0.8px;
+    }
+
+    .inner_footer_social_media {
+        text-align: center;
+    }
+}

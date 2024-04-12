@@ -24,6 +24,15 @@ export class AuthServices {
     return this.httpClient.post<UserAuthenticated>(`${this.basePath}/auth/login`, loginForm);
   }
 
+    /**
+     * Login method
+     * @param loginForm {@link FormAuth}
+     * @return An Observable {@link UserAuthenticated}
+     */
+    basic_login(loginForm: FormAuth): Observable<UserAuthenticated> {
+        return this.httpClient.post<UserAuthenticated>(`${this.basePath}/auth/basic-login`, loginForm);
+    }
+
   /**
    * Get Profile method
    * @return An Observable {@link UserAuthenticated}

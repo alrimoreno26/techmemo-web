@@ -21,7 +21,7 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
 
     ngOnInit() {
         this.supplierService.loadAll({
-            page: 0, count: 50
+            pageNumber: 0, pageSize: 50
         })
     }
 

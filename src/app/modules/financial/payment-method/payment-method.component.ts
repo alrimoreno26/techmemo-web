@@ -47,8 +47,8 @@ export class PaymentMethodComponent extends BaseComponentDirective implements On
         super();
         this.service.loadAll({
             lazy: {
-                page: 0,
-                size: 10,
+                pageNumber: 0,
+                pageSize: 10,
             }
         })
     }

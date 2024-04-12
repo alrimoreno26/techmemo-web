@@ -11,7 +11,7 @@ import {
 } from "../store/caixa.selectors";
 import {fromOrdersListActions} from "../store/caixa.actions";
 import {CreateOrderTO, CreatePaymentTransactionTO} from "../../../core/models/orders";
-import {ProductLightDto} from "../../../core/models/products";
+import {DeleteOrderProductDto, ProductLightDto} from "../../../core/models/products";
 import {BehaviorSubject, Observable} from "rxjs";
 
 
@@ -48,7 +48,7 @@ export class CaixaService extends BaseStoreServices<any> {
     getOrders(){
         this.store.dispatch(fromOrdersListActions.loadOrdersList({
             lazy: {
-                page: 0, count: 50
+                pageNumber: 0, pageSize: 50
             }
         }));
     }
@@ -89,8 +89,8 @@ export class CaixaService extends BaseStoreServices<any> {
         this.store.dispatch(fromOrdersListActions.addProductsOrders({id, params}));
     }
 
-    deleteProductsOrders(id: string, productId: string[]) {
-        this.store.dispatch(fromOrdersListActions.deleteProductsOrders({id, productId}));
+    deleteProductsOrders(id: string, entity: DeleteOrderProductDto) {
+        this.store.dispatch(fromOrdersListActions.deleteProductsOrders({id, entity}));
     }
 
     override setSelected(data: any) {

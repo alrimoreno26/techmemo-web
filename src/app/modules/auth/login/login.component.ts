@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AuthServices} from "../../../core/services/auth.services";
 import {SessionServices} from "../../../core/injects/session.services";
 import {SecurityModel, UserAuthenticated} from "../../../core/models/user";
+import * as CryptoJS from 'crypto-js';
 
 @Component({
     selector: 'app-login',
@@ -66,7 +67,10 @@ export class LoginComponent implements OnInit {
      * and store authenticate user in service
      */
     login(): void {
-        this.ngZone.run(() => this.service.login(this.form.value).subscribe(
+        let {username, password} = this.form.value;
+
+        password = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(password));
+        this.ngZone.run(() => this.service.login({username,password}).subscribe(
             (res: SecurityModel) => {
                 this.sessionService.setUserLogged(res);
                 this.ngZone.run(() => this.service.profile().subscribe((user: UserAuthenticated) => {

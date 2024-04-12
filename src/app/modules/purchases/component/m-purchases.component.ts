@@ -32,7 +32,7 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
                 public stockTransferStore: Stock_TransferStore) {
         super(storeService);
         if (!paymentMethodService.loaded$()) {
-            this.paymentMethodService.loadAll({lazy: {page: 0, count: 10}})
+            this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
         }
     }
 

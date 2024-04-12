@@ -16,7 +16,7 @@ export class UserEffects {
             switchMap(({lazy}) =>
                 forkJoin([
                     this.userAdminServices.findAllPaginate(lazy),
-                    this.roleService.findAllPaginate({page: 0, count: 50}),
+                    this.roleService.findAllPaginate({pageNumber: 0, pageSize: 50}),
                 ]).pipe(
                     map(([data, role]) => fromUserActions.loadResolverSuccess({data, role})),
                     catchError(error => of(fromUserActions.userFailRequest({error})))

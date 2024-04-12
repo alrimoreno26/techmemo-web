@@ -5,10 +5,10 @@ import {canActivateAuthGuard, canMatchAuthGuard} from "./core/guards/auth.guard"
 
 
 const routes: Routes = [
-    // {
-    //     path: ':name',
-    //     loadChildren: () => import('./modules/shops/market/market.module').then(c => c.MarketModule)
-    // },
+    {
+        path: 'shops-online/:name',
+        loadChildren: () => import('./modules/shops/market/market.module').then(c => c.MarketModule)
+    },
     {
         path: 'login',
         loadChildren: () => import('./modules/auth/login/login.module').then(m => m.LoginModule),

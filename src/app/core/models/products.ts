@@ -27,6 +27,12 @@ export interface ProductsCreateDto {
     id?: string | number,
 }
 
+export interface DeleteOrderProductDto {
+    description: string
+    productIds: string[]
+    token: string
+}
+
 export interface StockProductReportTO {
     id: string,
     name: string,
@@ -34,7 +40,7 @@ export interface StockProductReportTO {
     type: productType
 }
 
-export interface LightProductTO{
+export interface LightProductTO {
     amount: number,
     code: string,
     id: string,
@@ -87,7 +93,7 @@ export interface ProductLightDto {
     id: string,
     name: string,
     type: productType,
-    salePrice:number,
-    totalAdditionalsValue:number,
-    amount:number,
+    salePrice: number,
+    totalAdditionalsValue: number,
+    amount: number,
 }

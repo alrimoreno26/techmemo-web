@@ -78,10 +78,9 @@ export class SessionServices {
      * Get from Cookie Token and Refresh Token
      * @return An {@link RefreshTokenTO} width current values
      */
-    getRefreshToken(): RefreshTokenTO {
+    getRefreshToken(): any {
         return {
-            token: getCookie(ACCESS_TOKEN),
-            refreshToken: getCookie(REFRESH_TOKEN)
+            token: getCookie(REFRESH_TOKEN)
         };
     }
 
