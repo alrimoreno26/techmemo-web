@@ -22,7 +22,7 @@ export class CommercesServices extends AbstractService<any> {
 
     override update(params: any, idProp?: string, queryParams?: any): Observable<any> {
         // @ts-ignore
-        return this.httpClient.put<any>(`${this.basePath}/${params[idProp]}`,params)
+        return this.httpClient.patch<any>(`${this.basePath}/${params[idProp]}`,params)
     }
 
     getById(id: string){

@@ -54,7 +54,6 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 this.commercesService.getById();
             } else {
                 this.selectedStore = this.commercesService.selectedEntity$();
-                console.log(this.selectedStore)
                 this.onlineStore = this.selectedStore.hasOnlineCommerce;
                 this.initForm()
             }
