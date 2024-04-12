@@ -24,7 +24,7 @@ import {User, Role, GeneratePassword} from 'src/app/core/models';
 @Injectable({providedIn: 'platform'})
 export class UserService extends BaseStoreServices<User> {
     override serverSide = true;
-    override lazyLoadOnInit = false;
+    override lazyLoadOnInit = true;
     /**
      * List of {@link Role} as Observable
      */

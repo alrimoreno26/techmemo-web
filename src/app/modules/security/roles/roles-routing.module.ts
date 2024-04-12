@@ -5,6 +5,7 @@ import {roleResolver} from './resolvers/role.resolvers';
 
 const routes: Routes = [{
   path: '', component: RolesComponent,
+    data: {name: 'security.role.labels.role'},
   resolve: {
     entityLoaded: roleResolver
   }

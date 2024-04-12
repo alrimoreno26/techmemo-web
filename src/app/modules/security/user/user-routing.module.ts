@@ -4,15 +4,16 @@ import {UserComponent} from './user.component';
 import {userResolver} from './resolvers/user.resolvers';
 
 const routes: Routes = [{
-  path: '', component: UserComponent,
-  resolve: {
-    entityLoaded: userResolver
-  }
+    path: '', component: UserComponent,
+    data: {name: 'security.user.tooltip.user'},
+    resolve: {
+        entityLoaded: userResolver
+    }
 }];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class UserRoutingModule {
 }

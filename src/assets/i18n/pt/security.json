@@ -3,6 +3,7 @@
         "role": {
             "labels": {
                 "name": "Nome",
+                "role": "Role",
                 "description": "Descricão",
                 "permission": "Autoridade",
                 "read": "Leitura",
@@ -74,6 +75,7 @@
             },
             "tooltip": {
                 "state": "Ativar ou desativar o usuário",
+                "user": "Usuário",
                 "changePassword": "Gerar senha",
                 "reloadUser": "Funcionalidade para reiniciar o usuário usado em apresentações"
             },

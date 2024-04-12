@@ -5,6 +5,7 @@ import {domainsResolvers} from "./resolvers/domains.resolvers";
 
 const routes: Routes = [{
     path: '', component: DomainsComponent,
+    data: {name: 'security.role.select.type'},
     resolve: {
         entityLoaded: domainsResolvers
     }
