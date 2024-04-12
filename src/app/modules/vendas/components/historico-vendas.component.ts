@@ -46,7 +46,6 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
     }
 
     showDetails(order: any) {
-        console.log(order)
         this.storeServices.getDetails(order)
         this.storeServices.hideShow(true);
     }

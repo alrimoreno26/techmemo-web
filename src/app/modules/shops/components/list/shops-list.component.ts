@@ -22,11 +22,7 @@ export class ShopsListComponent extends BaseComponentDirective implements OnInit
                 private translateService: TranslateService) {
         super();
         this.commerceService.loadAll({lazy: {pageNumber: 0, pageSize: 15}})
-        effect(() => {
-            if(this.commerceService.selectedEntity$()){
-                console.log(this.commerceService.selectedEntity$())
-            }
-        });
+
     }
 
     ngOnInit() {

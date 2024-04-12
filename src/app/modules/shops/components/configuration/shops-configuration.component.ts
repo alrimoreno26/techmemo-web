@@ -11,7 +11,7 @@ import {productType} from "../../../../core/enums/product";
 import {ProductService} from "../../../inventory/product/services/product.service";
 import {Router} from "@angular/router";
 import {CNPJService} from "../../../../core/services/cnpj-validate.service";
-import {MenuItem} from "primeng/api";
+import {MenuItem, SelectItemGroup} from "primeng/api";
 import {CommercesService} from "../../service/commerces.service";
 import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CommerceDto} from "../../../../core/models/commerce";
@@ -29,7 +29,8 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     nome = 'alejandro';
     form: FormGroup;
 
-    items: MenuItem[] | undefined;
+    items: SelectItemGroup[] = []
+    selectedItems: any = 'dados';
 
     searchingCNPJ: boolean = false;
 
@@ -62,7 +63,6 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     }
 
     ngOnInit() {
-        console.log(this.selectedStore)
         this.initForm()
         this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
             this.enableQuantity = true;
@@ -71,28 +71,26 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
 
         this.items = [
             {
-                label: '<span class="font-bold">Configurações da Loja</span>',
-                escape: false,
+                label: 'Configurações da Loja',
+                value: 'dados',
                 items: [
                     {
                         label: 'Dados gerais ',
+                        value: 'dados',
                         icon: 'mdi mdi-store-cog-outline mdi-24px',
-                        command: () => {
-                            this.showView('dados');
-                        }
+
                     },
                 ]
             },
             {
-                label: '<span class="font-bold">Informações e design</span>',
-                escape: false,
+                label: 'Informações e design',
+                value: 'visuals',
                 items: [
                     {
                         label: 'Configurações visuais',
+                        value: 'visual',
                         icon: 'mdi mdi-brush-outline mdi-24px',
-                        command: () => {
-                            this.showView('visual');
-                        }
+
 
                     }
                 ]

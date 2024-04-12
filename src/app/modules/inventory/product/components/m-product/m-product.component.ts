@@ -78,7 +78,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
                 this.selectedAdditional.push(p);
             }
         })
-        console.log(this.selectedAdditional)
     }
 
     initForm(data: any): void {
@@ -157,8 +156,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     }
 
     supplier(id: string) {
-
-        debugger
         // @ts-ignore
         return this.supplierService.listEntities$().find(s => s.id === id);
     }

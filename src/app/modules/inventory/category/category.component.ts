@@ -52,7 +52,6 @@ export class CategoryComponent extends BaseComponentDirective {
             .subscribe(
                 (data) => {
                     const send = this.processExcelData(data);
-                    console.log(send)
                     send.forEach(x => {
                         if (x.name !== 'AGREGADOS')
                             setTimeout(() => {

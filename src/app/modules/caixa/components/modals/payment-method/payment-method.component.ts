@@ -19,7 +19,6 @@ export class MPaymentMethodComponent implements OnInit {
     }
 
     selectPaymentMethod(paymentMethod: any) {
-        console.log(paymentMethod)
         this.ref.close(paymentMethod);
     }
 

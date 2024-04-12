@@ -14,6 +14,5 @@ export class DialogContentDirective implements OnInit {
     }
     ngOnInit() {
         const content = this.element.nativeElement.parentElement.closest('.p-dialog-content');
-        console.log(content)
     }
 }

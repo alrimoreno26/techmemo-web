@@ -17,6 +17,7 @@ import {MenuModule} from "primeng/menu";
 import {CommercesService} from "../../service/commerces.service";
 import {RippleModule} from "primeng/ripple";
 import {InputSwitchModule} from "primeng/inputswitch";
+import {ListboxModule} from "primeng/listbox";
 
 @NgModule({
     declarations: [
@@ -36,6 +37,7 @@ import {InputSwitchModule} from "primeng/inputswitch";
         MenuModule,
         RippleModule,
         InputSwitchModule,
+        ListboxModule,
     ],
     providers:[
         ProductService,

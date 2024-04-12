@@ -48,7 +48,8 @@
                 "ORDER": "Pedido",
                 "POS": "Ponto de Venda",
                 "PAYMENT": "Pagamento",
-                "REPORT": "Relatórios"
+                "REPORT": "Relatórios",
+                "type": "Domínio"
             }
         },
         "user": {

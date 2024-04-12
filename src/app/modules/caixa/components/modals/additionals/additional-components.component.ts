@@ -78,7 +78,7 @@ export class AdditionalComponents implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes["product"] && !changes["product"].firstChange && isObject(changes["product"].currentValue)) {
-            console.log(this.product)
+
         }
     }
 

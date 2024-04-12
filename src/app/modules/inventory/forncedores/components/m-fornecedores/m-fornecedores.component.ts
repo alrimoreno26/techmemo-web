@@ -89,7 +89,6 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
             phone: new FormControl<string>(data?.phone, [Validators.required, cellPhone]),
             type: new FormControl<string>(type, Validators.required),
         });
-        console.log(this.form)
         if (cep !== '') {
             this.updateFormBasedOnType(type);
             (this.form.get('address') as FormGroup).get('cep')?.patchValue(cep);
@@ -116,7 +115,6 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
             this.form.addControl('lastName', this.fb.control(this.config.data?.lastName, Validators.required));
             this.form.addControl('birthdate', this.fb.control(this.config.data?.birthdate, Validators.required));
         }
-        console.log(this.form)
     }
 
     verifyCEP(event: any): void {
