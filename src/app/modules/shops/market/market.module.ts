@@ -10,8 +10,6 @@ import {HomeModule} from "./components/home/home.module";
 @NgModule({
     declarations: [
         MarketComponent,
-        FooterComponent,
-        HeaderComponent
     ],
     imports: [
         CommonModule,

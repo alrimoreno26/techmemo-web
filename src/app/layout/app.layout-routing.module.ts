@@ -8,7 +8,7 @@ const routes: Routes = [
     {
         path: '', component: AppLayoutComponent,
         children: [
-            {path: '', component: AppLayoutComponent},
+            //{path: '', component: AppLayoutComponent},
             {
                 path: 'painel',
                 data: {breadcrumb: 'Panéis Geral', roles: [domainEnum.PRODUCT]},

@@ -7,6 +7,8 @@ import {BannerComponent} from './section/banner/banner.component';
 import {ShopComponent} from './section/shop/shop.component';
 import {CarouselModule} from "primeng/carousel";
 import {ButtonModule} from "primeng/button";
+import {FooterComponent} from "../../shared/footer/footer.component";
+import {HeaderComponent} from "../../shared/header/header.component";
 // import {CarouselModule} from 'ngx-owl-carousel-o';
 // import {NgxSliderModule} from '@angular-slider/ngx-slider';
 
@@ -15,7 +17,9 @@ import {ButtonModule} from "primeng/button";
     declarations: [
         HomeComponent,
         BannerComponent,
-        ShopComponent
+        ShopComponent,
+        FooterComponent,
+        HeaderComponent
     ],
     imports: [
         CommonModule,

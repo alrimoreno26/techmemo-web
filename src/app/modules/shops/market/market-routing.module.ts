@@ -4,7 +4,7 @@ import {MarketComponent} from "./market.component";
 
 const routes: Routes = [
     {
-        path: '', component: MarketComponent
+        path: '', loadChildren: () => import('./components/home/home.module').then(m => m.HomeModule)
     },
 ];
 
