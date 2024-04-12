@@ -41,7 +41,7 @@ export class MCancelProductsComponents implements OnInit {
                 if (res.operationArea !== 'ADMINISTRATOR_STORE') {
                     this.toastMessageService.showMessage("error", 'Erro de permissão', 'Somente administradores podem remover produtos das comandas')
                 } else {
-                    this.ref.close({cancel: true, data: res});
+                    this.ref.close({cancel: true, data: {...res,description: this.form.value.description}});
                 }
             },
             () => {

@@ -115,13 +115,13 @@
                                     <tr [ngClass]="{'bg-green-100': isPaid(product)}">
                                         <td class="flex gap-2" pFrozenColumn>
                                             <p-button styleClass="border-round-3xl severity_danger small"
-                                                      icon="pi pi-times"
+                                                      icon="mdi mdi-close"
                                                       [disabled]="pagamento || product.amount === product.amountPaid"
                                                       (onClick)="deleteFromOrder(product)">
                                             </p-button>
                                             <p-button styleClass="border-round-3xl severity_info small"
                                                       [disabled]="product.additionals.length === 0 || pagamento || product.amount === product.amountPaid"
-                                                      icon="pi pi-search"
+                                                      icon="mdi mdi-magnify"
                                                       (onClick)="lookAdditional(product)">
                                             </p-button>
                                         </td>

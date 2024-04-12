@@ -6,7 +6,7 @@ import {CaixaService} from "../../services/caixa.service";
 import {ProductService} from "../../../inventory/product/services/product.service";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {cloneDeep, isArray} from "lodash";
-import {ProductLightDto} from "../../../../core/models/products";
+import {DeleteOrderProductDto, ProductLightDto} from "../../../../core/models/products";
 import {isObject} from "../../../../core/util";
 import {DialogService} from "primeng/dynamicdialog";
 import {AdditionalComponents} from "../modals/additionals/additional-components.component";
@@ -284,7 +284,14 @@ export class CaixaComponent implements OnInit {
             resizable: false
         }).onClose.subscribe((data) => {
             if(data.cancel){
-                // this.service.deleteProductsOrders(this.service.selectedEntity$().id, pedido.id)
+                const deleteTO: DeleteOrderProductDto = {
+                    description: data.data.description,
+                    productIds:this.service.selectedEntity$()[this.activeOrder].products.map((obj:any) => {
+                        return obj.id
+                    }),
+                    token: data.data.token
+                }
+                this.service.deleteProductsOrders(this.service.selectedEntity$().id, deleteTO)
             }
         })
     }

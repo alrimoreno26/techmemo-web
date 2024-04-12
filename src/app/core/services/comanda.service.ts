@@ -37,6 +37,7 @@ export class OrdersService extends AbstractService<any> {
     }
 
     deleteProductsOrders(id: string, entity: DeleteOrderProductDto): Observable<any> {
+        debugger
         return this.httpClient.delete<any>(`${this.basePath}/${id}/products`, {body: entity})
     }
 
@@ -48,7 +49,7 @@ export class OrdersService extends AbstractService<any> {
     }
 
     unionTables(tables: string[]): Observable<any> {
-        return this.httpClient.post<any>(`${this.basePath}/union-tables`, tables)
+        return this.httpClient.post<any>(`${buildURL('/v1')}/union-tables`, tables)
     }
 
     transferProducts(params: any) {
@@ -56,7 +57,7 @@ export class OrdersService extends AbstractService<any> {
     }
 
     payments(params: CreatePaymentTransactionTO[]) {
-        return this.httpClient.post<any>(`${this.basePath}/payments`, params)
+        return this.httpClient.post<any>(`${buildURL('/v1')}/payments`, params)
     }
 
     changeFieldState(id: string, params: any) {
