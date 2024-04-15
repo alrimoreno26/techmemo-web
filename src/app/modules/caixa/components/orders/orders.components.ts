@@ -54,7 +54,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     loadComanda() {
         this.isTable = false;
-        this.service.loadAll({pageNumber: 0, pageSize: 50, state: 'ACTIVE'})
+        this.service.loadAll({pageNumber: 0, pageSize: 50, states: ['ACTIVE', 'IN_PAYMENT', 'PAID','CLOSED']})
     }
 
     loadMesas() {

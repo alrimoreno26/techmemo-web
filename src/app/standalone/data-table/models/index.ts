@@ -60,6 +60,7 @@ export interface LazyLoadData {
     pageNumber: number;
     pageSize: number;
     state?: string[];
+    states?: string[];
     sort?: string;
     direction?: any;
     type?: any;

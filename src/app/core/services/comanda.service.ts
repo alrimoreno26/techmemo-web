@@ -37,7 +37,6 @@ export class OrdersService extends AbstractService<any> {
     }
 
     deleteProductsOrders(id: string, entity: DeleteOrderProductDto): Observable<any> {
-        debugger
         return this.httpClient.delete<any>(`${this.basePath}/${id}/products`, {body: entity})
     }
 

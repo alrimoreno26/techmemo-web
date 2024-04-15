@@ -14,6 +14,7 @@ import {MTransferComponents} from "../modals/transfer/transfer.components";
 import {MCancelProductsComponents} from "../modals/cancel_products/cancel-products.components";
 import {StoreTablesServices} from "../../services/store.tables.services";
 import {MComandaComponents} from "../modals/m-comanda/m-comanda.components";
+import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 
 
 @Component({
@@ -59,6 +60,7 @@ export class CaixaComponent implements OnInit {
                 private activatedRoute: Router,
                 private dialogService: DialogService,
                 private productService: ProductService,
+                private toastMessageService: ToastMessageService,
                 private storeTablesServices: StoreTablesServices,
                 private router: Router,
                 public service: CaixaService) {
@@ -213,13 +215,18 @@ export class CaixaComponent implements OnInit {
     }
 
     transferOrders() {
-        this.dialogService.open(MTransferComponents, {
-            data: this.service.selectedEntity$()[this.activeOrder],
-            modal: true,
-            style: {'width': '60vw'},
-            draggable: false,
-            resizable: false
-        })
+        if(this.service.selectedEntity$()[this.activeOrder].products.length > 0){
+            this.dialogService.open(MTransferComponents, {
+                data: this.service.selectedEntity$()[this.activeOrder],
+                modal: true,
+                style: {'width': '60vw'},
+                draggable: false,
+                resizable: false
+            })
+        } else{
+            this.toastMessageService.showMessage("info", 'INFO', 'Nao tem productos para transferir')
+        }
+
     }
 
     closeOrders() {
