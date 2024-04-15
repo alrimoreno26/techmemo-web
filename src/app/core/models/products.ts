@@ -30,7 +30,6 @@ export interface ProductsCreateDto {
 export interface DeleteOrderProductDto {
     description: string
     productIds: string[]
-    token: string
 }
 
 export interface StockProductReportTO {

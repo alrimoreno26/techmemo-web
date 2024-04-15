@@ -278,7 +278,11 @@ export class CaixaComponent implements OnInit {
             resizable: false
         }).onClose.subscribe((data) => {
             if(data.cancel){
-                //this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, [pedido.id])
+                const deleteTO: DeleteOrderProductDto = {
+                    description: data.data.description,
+                    productIds:[pedido.id]
+                }
+                this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
             }
         })
     }
@@ -296,7 +300,6 @@ export class CaixaComponent implements OnInit {
                     productIds:this.service.selectedEntity$()[this.activeOrder].products.map((obj:any) => {
                         return obj.id
                     }),
-                    token: data.data.token
                 }
                 this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
             }
