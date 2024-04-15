@@ -298,7 +298,7 @@ export class CaixaComponent implements OnInit {
                     }),
                     token: data.data.token
                 }
-                this.service.deleteProductsOrders(this.service.selectedEntity$().id, deleteTO)
+                this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
             }
         })
     }

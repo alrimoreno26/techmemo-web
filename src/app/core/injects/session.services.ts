@@ -5,7 +5,7 @@ import {flatMap} from 'lodash';
 import {environment} from 'src/environments/environment';
 import {getCookie, setCookie} from '../util';
 import {RefreshTokenTO, SecurityModel, UserAuthenticated} from "../models/user";
-import {ACCESS_TOKEN, domainEnum, operationAreaRoleEnum, REFRESH_TOKEN} from "../enums/role";
+import {ACCESS_TOKEN, DELETE_TOKEN, domainEnum, operationAreaRoleEnum, REFRESH_TOKEN} from "../enums/role";
 import {PermissionServices} from "./permission.services";
 import {AuthServices} from "../services/auth.services";
 
@@ -23,6 +23,11 @@ export class SessionServices {
      * @private currentToken$ BehaviorSubject<string>
      */
     private currentToken$: BehaviorSubject<string> = new BehaviorSubject<any>(null);
+    /**
+     * Store the current token init default in null value
+     * @private deleteToken$ BehaviorSubject<string>
+     */
+    private deleteToken$: BehaviorSubject<string> = new BehaviorSubject<any>(null);
     /**
      * Store the current user authenticated init default null value
      * @private loggedUser$ BehaviorSubject<{@link UserAuthenticated}>
@@ -59,6 +64,14 @@ export class SessionServices {
      * @return An {String} whit access token
      */
     getAccessToken(): string {
+        return this.currentToken$.getValue();
+    }
+
+    /**
+     * Get from Cookie the Delete Token
+     * @return An {String} whit access token
+     */
+    getDeleteToken(): string {
         return this.currentToken$.getValue();
     }
 
@@ -108,6 +121,18 @@ export class SessionServices {
     }
 
     /**
+     * Method set user value from auth
+     * @param token {@link string}
+     * @return void
+     */
+    setDeleteToken(token: string): void {
+        if (token) {
+            this.deleteToken$.next(token);
+            setCookie(DELETE_TOKEN, token);
+        }
+    }
+
+    /**
      * Set the new token and refresh to the session and stored cookie
      * @param refresh string
      */
@@ -148,15 +173,21 @@ export class SessionServices {
         return this.userLogged.role.operationArea === operationAreaRoleEnum.WAITER || this.userLogged.role.operationArea === operationAreaRoleEnum.ATTENDANT;
     }
 
+    clearDeleteToken(): void {
+        setCookie(DELETE_TOKEN, '', 5);
+    }
+
     /**
      * Clear the session and store cookie
      */
     clearSession(): void {
         this.isLoggedIn = false;
         this.currentToken$.complete();
+        this.deleteToken$.complete();
         this.loggedUser$.complete();
         setCookie(REFRESH_TOKEN, '', 5);
         setCookie(ACCESS_TOKEN, '', 5);
+        setCookie(DELETE_TOKEN, '', 5);
         this.router.navigate(['/login']).then(() => {
                 document.location.reload();
             }

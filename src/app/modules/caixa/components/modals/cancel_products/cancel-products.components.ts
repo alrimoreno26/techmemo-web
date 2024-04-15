@@ -6,6 +6,7 @@ import * as CryptoJS from "crypto-js";
 import {SecurityModel, UserAuthenticated} from "../../../../../core/models/user";
 import {AuthServices} from "../../../../../core/services/auth.services";
 import {ToastMessageService} from "../../../../../core/injects/toast-message.service";
+import {SessionServices} from "../../../../../core/injects/session.services";
 
 @Component({
     selector: 'm-cancel-products',
@@ -20,6 +21,7 @@ export class MCancelProductsComponents implements OnInit {
                 public ref: DynamicDialogRef,
                 private toastMessageService: ToastMessageService,
                 private ngZone: NgZone,
+                private sessionService: SessionServices,
                 public config: DynamicDialogConfig) {
 
     }
@@ -41,7 +43,8 @@ export class MCancelProductsComponents implements OnInit {
                 if (res.operationArea !== 'ADMINISTRATOR_STORE') {
                     this.toastMessageService.showMessage("error", 'Erro de permissão', 'Somente administradores podem remover produtos das comandas')
                 } else {
-                    this.ref.close({cancel: true, data: {...res,description: this.form.value.description}});
+                    this.sessionService.setDeleteToken(res.token)
+                    this.ref.close({cancel: true, data: {description: this.form.value.description}});
                 }
             },
             () => {

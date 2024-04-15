@@ -22,9 +22,11 @@ export class TokenInterceptor implements HttpInterceptor {
         const isApiUrl = request.url.startsWith(environment.apiURL)
         const isNotRefresh = request.url.includes('/auth/refresh_token');
         if (isLoggedIn && isApiUrl && !isNotRefresh) {
+            const routePattern = /^(?:.*\/)*orders\/([a-zA-Z0-9\-]+)\/products$/;
+            const requestToken = (routePattern.test(request.url) && request.method === 'DELETE') ? this.sessionService.getDeleteToken() : this.sessionService.getAccessToken()
             request = request.clone({
                 setHeaders: {
-                    Authorization: `Bearer ${this.sessionService.getAccessToken()}`,
+                    Authorization: `Bearer ${requestToken}`,
                     'X-Tenant-Id': `${this.sessionService.getTenantId()}`,
                 }
             });
