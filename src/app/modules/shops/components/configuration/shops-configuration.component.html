@@ -259,20 +259,22 @@
                                               label="Nova"></p-button>
                                 </div>
                                 <div class="grid">
-                                    <div class="col-3">
-                                        <p-card header="Nome impresora" subheader="ipaddress">
-                                            <ng-template pTemplate="header">
-                                                <img alt="Card" src="assets/layout/images/elgin.jpeg"/>
-                                            </ng-template>
-                                            <p-badge value="COCINA"></p-badge>
-                                            <ng-template pTemplate="footer">
-                                                <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="block font-bold">Activa</label>
-                                                    <p-inputSwitch class="flex"></p-inputSwitch>
-                                                </div>
-                                            </ng-template>
-                                        </p-card>
-                                    </div>
+                                    @for (printer of printersServices.listEntities$() || []; track printer.id) {
+                                        <div class="col-3">
+                                            <p-card header="{{printer.name}}" subheader="{{ printer.ip }}">
+                                                <ng-template pTemplate="header">
+                                                    <img alt="Card" src="assets/layout/images/elgin.jpeg"/>
+                                                </ng-template>
+                                                <p-badge value="{{printer.area}}"></p-badge>
+                                                <ng-template pTemplate="footer">
+                                                    <div class="align-items-center flex flex-auto gap-3">
+                                                        <label class="block font-bold">Activa</label>
+                                                        <p-inputSwitch [(ngModel)]="printer.enable" [ngModelOptions]="{standalone: true}" class="flex"></p-inputSwitch>
+                                                    </div>
+                                                </ng-template>
+                                            </p-card>
+                                        </div>
+                                    }
                                 </div>
                             </div>
                         </ng-template>
@@ -284,20 +286,23 @@
                                               label="Nova"></p-button>
                                 </div>
                                 <div class="grid">
-                                    <div class="col-3">
-                                        <p-card header="Nome impresora" subheader="ipaddress">
-                                            <ng-template pTemplate="header">
-                                                <img alt="Card" src="assets/layout/images/caixa.jpeg"/>
-                                            </ng-template>
-                                            <p-badge value="COCINA"></p-badge>
-                                            <ng-template pTemplate="footer">
-                                                <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="block font-bold">Activa</label>
-                                                    <p-inputSwitch class="flex"></p-inputSwitch>
-                                                </div>
-                                            </ng-template>
-                                        </p-card>
-                                    </div>
+                                    @for (printer of printersServices.listEntities$() || []; track printer.id) {
+                                        <div class="col-3">
+                                            <p-card header="{{printer.name}}" subheader="{{ printer.ip }}">
+                                                <ng-template pTemplate="header">
+                                                    <img alt="Card" src="assets/layout/images/caixa.jpeg"/>
+                                                </ng-template>
+                                                <p-badge value="{{printer.area}}"></p-badge>
+                                                <ng-template pTemplate="footer">
+                                                    <div class="align-items-center flex flex-auto gap-3">
+                                                        <label class="block font-bold">Activa</label>
+                                                        <p-inputSwitch class="flex"></p-inputSwitch>
+                                                    </div>
+                                                </ng-template>
+                                            </p-card>
+                                        </div>
+                                    }
+
                                 </div>
                             </div>
                         </ng-template>

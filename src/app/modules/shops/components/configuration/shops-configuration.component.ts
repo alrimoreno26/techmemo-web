@@ -12,6 +12,7 @@ import {CommercesService} from "../../service/commerces.service";
 import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CommerceDto} from "../../../../core/models/commerce";
 import {MAddPrintersComponent} from "./components/m-add-printers/m-add-printers.component";
+import {PrintersService} from "../../service/printers.service";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -43,6 +44,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 private cepValidateService: CepValidateService,
                 private cnpjService: CNPJService,
                 private shopsServices: ShopsService,
+                public printersServices: PrintersService,
                 private layout: LayoutService,
                 private commercesService: CommercesService,
                 private router: Router,
@@ -62,6 +64,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
 
     ngOnInit() {
         this.initForm()
+        this.printersServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
             this.enableQuantity = true;
         })

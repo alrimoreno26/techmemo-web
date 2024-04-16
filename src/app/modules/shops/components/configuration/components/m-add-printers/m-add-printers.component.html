@@ -18,11 +18,11 @@
                 <div class="col-12 field">
                     <div class="align-items-center flex flex-auto gap-3">
                         <label class="block font-bold">Está conectado por rede</label>
-                        <p-inputSwitch formControlName="ip"></p-inputSwitch>
+                        <p-inputSwitch formControlName="connectionByIp"></p-inputSwitch>
                     </div>
                 </div>
-                <div class="col-12 field" *ngIf="form.get('ip')?.value">
-                    <input pInputText type="text" formControlName="ipAddress" placeholder="Direção IP">
+                <div class="col-12 field" *ngIf="form.get('connectionByIp')?.value">
+                    <input pInputText type="text" formControlName="ip" placeholder="Direção IP">
                 </div>
                 <div class="col-12 field">
                     <div class="align-items-center flex flex-auto gap-3">
@@ -38,5 +38,6 @@
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
             icon="mdi mdi-close"></button>
     <button pButton pRipple class="p-button-primary flex-1 border-round" label="Criar"
+            (click)="save()"
             icon="mdi mdi-check"></button>
 </ng-template>
