@@ -117,12 +117,6 @@ export const menuList: any[] = [
                 roles: [domainEnum.CONFIGURATION],
                 routerLink: ['configurations/unidade']
             },
-            {
-                label: 'Impresion',
-                icon: 'mdi mdi-printer-outline mdi-24px',
-                roles: [domainEnum.CONFIGURATION],
-                routerLink: ['configurations/category']
-            },
         ]
     },
     {separator: true},

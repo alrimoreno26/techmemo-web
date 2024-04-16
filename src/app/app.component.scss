@@ -2,6 +2,7 @@
     .p-dialog-content {
         overflow: hidden !important;
     }
+
     .p-datatable .p-datatable-tbody > tr > td {
         padding: 0.5rem 0.5rem !important;
     }
@@ -9,5 +10,9 @@
     .layout-wrapper.layout-slim .layout-topbar-slim {
         width: 100%;
         margin-left: 0;
+    }
+
+    .p-listbox-list-wrapper {
+        max-height: 100% !important;
     }
 }

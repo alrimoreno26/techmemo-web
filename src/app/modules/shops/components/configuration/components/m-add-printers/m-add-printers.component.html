@@ -1,0 +1,42 @@
+<ng-template dialog-header><span class="p-dialog-title">Configuração da impressora</span></ng-template>
+<form [formGroup]="form">
+    <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+        <div class="col-12 lg:col-12">
+            <div class="grid formgrid">
+                <div class="col-12 lg:col-12 field">
+                    <input pInputText type="text" formControlName="name" placeholder="Nome Impresora">
+                </div>
+                <div class="col-12">
+                    <label class="block font-bold">Area de uso</label>
+                    <p-divider align="center">
+                        <p-selectButton [options]="areaType"
+                                        formControlName="area"
+                                        styleClass="w-20rem"
+                                        optionValue="value"></p-selectButton>
+                    </p-divider>
+                </div>
+                <div class="col-12 field">
+                    <div class="align-items-center flex flex-auto gap-3">
+                        <label class="block font-bold">Está conectado por rede</label>
+                        <p-inputSwitch formControlName="ip"></p-inputSwitch>
+                    </div>
+                </div>
+                <div class="col-12 field" *ngIf="form.get('ip')?.value">
+                    <input pInputText type="text" formControlName="ipAddress" placeholder="Direção IP">
+                </div>
+                <div class="col-12 field">
+                    <div class="align-items-center flex flex-auto gap-3">
+                        <label class="block font-bold">Você está usando esta impressora</label>
+                        <p-inputSwitch formControlName="enable"></p-inputSwitch>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+            icon="mdi mdi-close"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Criar"
+            icon="mdi mdi-check"></button>
+</ng-template>

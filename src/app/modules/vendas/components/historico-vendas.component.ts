@@ -47,6 +47,7 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
 
     showDetails(order: any) {
         this.storeServices.getDetails(order)
+        this.storeServices.getDeletedProductsFromOrder(order)
         this.storeServices.hideShow(true);
     }
 

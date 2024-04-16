@@ -34,6 +34,9 @@ $gutter: 1rem; //for primeflex grid system
         padding: 0.5rem 0.5rem !important;
     }
 
+    .p-listbox-list-wrapper{
+        max-height: 100% !important;
+    }
 }
 
 /* width */

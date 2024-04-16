@@ -14,6 +14,7 @@ import {CommerceDto} from "../../../core/models/commerce";
 @Injectable({providedIn: 'root'})
 export class CommercesService extends StoreComponentService<any> {
 
+    override serverSide = false;
     constructor(private services: CommercesServices,
                 private sessionService: SessionServices,) {
         const defaultEntity: EntityState<any> =
@@ -54,6 +55,10 @@ export class CommercesService extends StoreComponentService<any> {
         return this.services.findOneById(this.sessionService.userLogged.commerces[0].commerceId).subscribe((response: any) => {
             this.patchState({ selected: response});
         })
+    }
+
+    closeModal() {
+        this.patchState({raw: [], dialog: false})
     }
 
 }

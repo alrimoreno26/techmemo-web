@@ -3,10 +3,6 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {of} from "rxjs";
 import {
-    addProductsOrders, changeFieldStateOrders,
-    createInTableOrders,
-    createInTableOrdersSuccess,
-    deleteProductsOrders,
     fromOrdersListActions
 } from "./caixa.actions";
 import {OrdersService} from "../../../core/services/comanda.service";

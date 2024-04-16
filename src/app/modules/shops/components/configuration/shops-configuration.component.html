@@ -4,7 +4,7 @@
             <div class="col-12 p-0 area-menu">
                 <p-listbox [options]="items" [group]="true" [(ngModel)]="selectedItems"
                            [ngModelOptions]="{standalone: true}"
-                           [style]="{ width: '15rem',height:'100%'}">
+                           [style]="{ width: '15rem',height:'100%', maxHeight: '100%'}">
                     <ng-template let-group pTemplate="group">
                         <div class="flex align-items-center">
 
@@ -20,10 +20,10 @@
                 </p-listbox>
                 <!--                <p-menu class="h-full" [model]="items" styleClass="h-full"></p-menu>-->
             </div>
-            <ng-template [ngIf]="selectedItems=== 'dados'">
-                <div class="col-12 area-content">
-                    <div class="wrapper">
-                        <div class="container-wrapper">
+            <div class="col-12 pl-6 area-content">
+                <div class="wrapper">
+                    <div class="container-wrapper">
+                        <ng-template [ngIf]="selectedItems=== 'dados'">
                             <div class="top">
                                 <div class="flex justify-content-between">
                                     <h4 class="text-center">Configurações de dados da Loja</h4>
@@ -39,21 +39,27 @@
                                                 </h4>
                                             </div>
                                             <div class="col-4">
-                                        <span class="p-input-icon-right">
-                                            <i class="icon-spinner mdi mdi-loading text-primary"
-                                               *ngIf="searchingCNPJ"></i>
-                                           <p-inputMask id="cnpj"
-                                                        class="w-full"
-                                                        formControlName="document"
-                                                        placeholder="CNPJ" mask="99.999.999/9999-99"
-                                                        (keyup)="verifyCNPJ($event)">
-                                                                </p-inputMask>
-                                        </span>
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">CNPJ</label>
+                                                    <span class="p-input-icon-right">
+                                                    <i class="icon-spinner mdi mdi-loading text-primary"
+                                                       *ngIf="searchingCNPJ"></i>
+                                                   <p-inputMask id="cnpj"
+                                                                class="w-full"
+                                                                formControlName="document"
+                                                                placeholder="CNPJ" mask="99.999.999/9999-99"
+                                                                (keyup)="verifyCNPJ($event)">
+                                                                        </p-inputMask>
+                                                    </span>
+                                                </div>
                                             </div>
                                             <div class="col-12">
-                                                <input class="w-full" pInputText type="text"
-                                                       formControlName="socialReason"
-                                                       placeholder="Razon Social">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold w-3">Razon Social</label>
+                                                    <input class="w-full" pInputText type="text"
+                                                           formControlName="socialReason"
+                                                           placeholder="Razon Social">
+                                                </div>
                                             </div>
                                             <div class="col-12">
                                                 <div class="align-items-center flex flex-auto gap-3">
@@ -156,20 +162,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="wrapper-bottom layout-btn-add align-items-center m-0">
-                                <p-button (onClick)="saveDados()"
-                                          class="flex mr-5 justify-content-end"
-                                          label="Salvar"></p-button>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </ng-template>
-            <ng-template [ngIf]="selectedItems=== 'visual'">
-                <div class="col-12 area-content">
-                    <div class="wrapper">
-                        <div class="container-wrapper">
+                        </ng-template>
+                        <ng-template [ngIf]="selectedItems=== 'visual'">
                             <div class="top">
                                 <div class="p-0">
                                     <h4 class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
@@ -256,18 +250,68 @@
 
                                 </div>
                             </div>
-                            <div class="wrapper-bottom layout-btn-add align-items-center m-0">
-                                <p-button (onClick)="saveVisuals()"
-                                          class="flex mr-5 justify-content-end"
-                                          label="Salvar"></p-button>
-
+                        </ng-template>
+                        <ng-template [ngIf]="selectedItems=== 'printers'">
+                            <div class="top">
+                                <div class="flex justify-content-between">
+                                    <h4 class="text-center">Configurações das impresoras</h4>
+                                    <p-button (onClick)="addPrinters()"
+                                              label="Nova"></p-button>
+                                </div>
+                                <div class="grid">
+                                    <div class="col-3">
+                                        <p-card header="Nome impresora" subheader="ipaddress">
+                                            <ng-template pTemplate="header">
+                                                <img alt="Card" src="assets/layout/images/elgin.jpeg"/>
+                                            </ng-template>
+                                            <p-badge value="COCINA"></p-badge>
+                                            <ng-template pTemplate="footer">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">Activa</label>
+                                                    <p-inputSwitch class="flex"></p-inputSwitch>
+                                                </div>
+                                            </ng-template>
+                                        </p-card>
+                                    </div>
+                                </div>
                             </div>
+                        </ng-template>
+                        <ng-template [ngIf]="selectedItems=== 'caixa'">
+                            <div class="top">
+                                <div class="flex justify-content-between">
+                                    <h4 class="text-center">Configurações das impresoras</h4>
+                                    <p-button (onClick)="addPrinters()"
+                                              label="Nova"></p-button>
+                                </div>
+                                <div class="grid">
+                                    <div class="col-3">
+                                        <p-card header="Nome impresora" subheader="ipaddress">
+                                            <ng-template pTemplate="header">
+                                                <img alt="Card" src="assets/layout/images/caixa.jpeg"/>
+                                            </ng-template>
+                                            <p-badge value="COCINA"></p-badge>
+                                            <ng-template pTemplate="footer">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">Activa</label>
+                                                    <p-inputSwitch class="flex"></p-inputSwitch>
+                                                </div>
+                                            </ng-template>
+                                        </p-card>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <div class="wrapper-bottom layout-btn-add align-items-center m-0"
+                             *ngIf="selectedItems !== 'printers' && selectedItems !== 'caixa'">
+                            <p-button (onClick)="saveDataBySection()"
+                                      class="flex mr-5 justify-content-end"
+                                      label="Salvar"></p-button>
+
                         </div>
-
                     </div>
-
                 </div>
-            </ng-template>
+
+            </div>
         </div>
     </form>
 </div>

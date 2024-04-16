@@ -5,16 +5,13 @@ import {AddressDTO} from "../../../../core/models/supplier";
 import {CepValidateService} from "../../../../core/services/cep-validate.service";
 import {Subscription} from "rxjs";
 import {ShopsService} from "../../service/shops.service";
-import {HttpClient} from "@angular/common/http";
-import * as XLSX from "xlsx";
-import {productType} from "../../../../core/enums/product";
-import {ProductService} from "../../../inventory/product/services/product.service";
 import {Router} from "@angular/router";
 import {CNPJService} from "../../../../core/services/cnpj-validate.service";
-import {MenuItem, SelectItemGroup} from "primeng/api";
+import {SelectItemGroup} from "primeng/api";
 import {CommercesService} from "../../service/commerces.service";
 import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CommerceDto} from "../../../../core/models/commerce";
+import {MAddPrintersComponent} from "./components/m-add-printers/m-add-printers.component";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -23,6 +20,7 @@ import {CommerceDto} from "../../../../core/models/commerce";
 })
 export class ShopsConfigurationComponent extends BaseComponentDirective implements OnInit {
 
+    override modalContent = MAddPrintersComponent;
     enableQuantity: boolean
     searchingCEP: boolean = false;
     protected subscriptions: Subscription[] = [];
@@ -30,7 +28,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     form: FormGroup;
 
     items: SelectItemGroup[] = []
-    selectedItems: any = 'dados';
+    selectedItems: any = 'printers';
 
     searchingCNPJ: boolean = false;
 
@@ -67,8 +65,6 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
             this.enableQuantity = true;
         })
-
-
         this.items = [
             {
                 label: 'Configurações da Loja',
@@ -95,7 +91,22 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                     }
                 ]
             },
-
+            {
+                label: 'Dispositivos',
+                value: 'devices',
+                items: [
+                    {
+                        label: 'Impresoras',
+                        value: 'printers',
+                        icon: 'mdi mdi-printer-pos-cog-outline mdi-24px',
+                    },
+                    {
+                        label: 'Caixas',
+                        value: 'caixa',
+                        icon: 'mdi mdi-cash-register mdi-24px',
+                    }
+                ]
+            },
         ];
     }
 
@@ -164,6 +175,29 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             number: this.form.get('quantityTables')?.value
         }
         this.shopsServices.createTable(params);
+    }
+
+    saveDataBySection() {
+        switch (this.selectedItems) {
+            case 'dados':
+                this.saveDados()
+                break;
+            case 'visuals':
+                this.saveVisuals();
+                break;
+            case 'printers':
+                break
+        }
+    }
+
+    addPrinters() {
+        this.commercesService.openModalAddOrEdit();
+        this.dialogService.open(MAddPrintersComponent, {
+            data: null,
+            width: '350px',
+        }).onClose.subscribe((res:any)=> {
+            console.log(res)
+        });
     }
 
     saveVisuals() {

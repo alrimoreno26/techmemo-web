@@ -18,10 +18,19 @@ import {CommercesService} from "../../service/commerces.service";
 import {RippleModule} from "primeng/ripple";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {ListboxModule} from "primeng/listbox";
+import {CardModule} from "primeng/card";
+import {MAddPrintersComponent} from "./components/m-add-printers/m-add-printers.component";
+import {MAddCaixasComponent} from "./components/m-add-caixa/m-add-caixas.component";
+import {DirectivesModule} from "../../../../core/directives/directives.module";
+import {DividerModule} from "primeng/divider";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {BadgeModule} from "primeng/badge";
 
 @NgModule({
     declarations: [
-        ShopsConfigurationComponent
+        ShopsConfigurationComponent,
+        MAddPrintersComponent,
+        MAddCaixasComponent
     ],
     imports: [
         CommonModule,
@@ -38,15 +47,20 @@ import {ListboxModule} from "primeng/listbox";
         RippleModule,
         InputSwitchModule,
         ListboxModule,
+        CardModule,
+        DirectivesModule,
+        DividerModule,
+        SelectButtonModule,
+        BadgeModule,
     ],
-    providers:[
+    providers: [
         ProductService,
         CommercesService,
         StoreCategoryService,
         SupplierService,
         UnidadeService
     ],
-    exports:[],
+    exports: [],
 })
 export class ShopsConfigurationModule {
 }

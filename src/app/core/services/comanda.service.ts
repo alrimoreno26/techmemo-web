@@ -40,6 +40,11 @@ export class OrdersService extends AbstractService<any> {
         return this.httpClient.delete<any>(`${this.basePath}/${id}/products`, {body: entity})
     }
 
+    loadDeletedProductsFromOrder(queryParams: any): Observable<any> {
+        const params: HttpParams = new HttpParams({fromObject: queryParams});
+        return this.httpClient.get<any>(`${this.basePath}/deleted-products`, {params})
+    }
+
     loadOrders(paths: string[], queryParams: any): Observable<any> {
         const params: HttpParams = new HttpParams({fromObject: queryParams});
         return paths?.length > 0 ?

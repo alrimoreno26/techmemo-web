@@ -9,7 +9,7 @@
                     </div>
                     <div class="text-right">
                             <span class="block font-semibold text-xl white-space-nowrap text-3xl">
-                                {{metric.value | currency}}
+                                {{ metric.value | currency }}
                             </span>
                     </div>
                 </div>
@@ -171,7 +171,7 @@
            (onHide)="closeSidebar()"
            [style]="{'width': '650px'}">
     <ng-template pTemplate="header">Detalhes do pedido Nº: <span
-        class="mb-0 font-bold"> {{ storeServices.details$().code }}</span></ng-template>
+        class="mb-0 font-bold"> {{ storeServices.details$().code || ''}}</span></ng-template>
     <ng-template pTemplate="content">
         <p-table [value]="storeServices.details$().products|| []" [scrollable]="true"
                  [styleClass]="'p-datatable-sm'">
@@ -202,6 +202,40 @@
                     <td class="custom-td">{{ product.totalAdditionalsValue| currency }}</td>
                     <td class="custom-td font-bold" alignFrozen="right"
                         pFrozenColumn>{{ product.soldPerUnits ? ((product.salePrice + product.totalAdditionalsValue) * product.amount | currency) : (product.salePrice | currency) }}
+                    </td>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+                <tr>
+                    <td [attr.colspan]="7" class="text-center text-2xl">
+                        Ainda no tem productos
+                    </td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <p-divider></p-divider>
+        <p-table [value]="storeServices.canceled$()|| []" [scrollable]="true"
+                 [styleClass]="'p-datatable-sm'">
+            <ng-template pTemplate="caption">Lista de produtos cancelados</ng-template>
+            <ng-template pTemplate="header">
+                <tr>
+                    <th class="custom-th font-bold">Nome do Produto</th>
+                    <th class="custom-th font-bold">Quantia</th>
+                    <th class="custom-th font-bold">Preço</th>
+                    <th class="custom-th font-bold">Price Total</th>
+                    <th class="custom-th font-bold" alignFrozen="right" pFrozenColumn>Usuário que cancelou</th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-product>
+                <tr>
+                    <td class="custom-td" style="min-width: 220px">{{ product.productName | wrapText: 30 }}
+                    </td>
+
+                    <td class="custom-td">{{ product.unit === 'KILO' ? product.peso_liquido : ('-') }}</td>
+                    <td class="custom-td">{{ product.salePrice| currency }}</td>
+                    <td class="custom-td font-bold">{{ product.soldPerUnits ? ((product.salePrice + product.totalAdditionalsValue) * product.amount | currency) : (product.salePrice | currency) }}
+                    <td class="custom-td font-bold" alignFrozen="right"
+                        pFrozenColumn>{{ product.userAdminName }}
                     </td>
                 </tr>
             </ng-template>
