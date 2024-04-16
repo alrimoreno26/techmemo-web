@@ -1,4 +1,3 @@
-import {MenuItem} from "primeng/api";
 import {domainEnum} from "../../../core/enums/role";
 
 /**

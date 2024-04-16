@@ -4,7 +4,7 @@ import {BehaviorSubject, Observable} from 'rxjs';
 import {flatMap} from 'lodash';
 import {environment} from 'src/environments/environment';
 import {getCookie, setCookie} from '../util';
-import {RefreshTokenTO, SecurityModel, UserAuthenticated} from "../models/user";
+import {SecurityModel, UserAuthenticated} from "../models/user";
 import {ACCESS_TOKEN, DELETE_TOKEN, domainEnum, operationAreaRoleEnum, REFRESH_TOKEN} from "../enums/role";
 import {PermissionServices} from "./permission.services";
 import {AuthServices} from "../services/auth.services";
@@ -100,7 +100,6 @@ export class SessionServices {
     /**
      * Method set user value from auth
      * @param security {@link SecurityModel}
-     * @param user {@link UserAuthenticated}
      * @return void
      */
     setUserLogged(security: SecurityModel): void {

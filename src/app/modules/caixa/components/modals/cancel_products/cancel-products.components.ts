@@ -1,4 +1,4 @@
-import {Component, effect, EventEmitter, Input, NgZone, OnInit, Output} from "@angular/core";
+import {Component, NgZone, OnInit} from "@angular/core";
 import {CaixaService} from "../../../services/caixa.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";

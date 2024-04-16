@@ -1,7 +1,6 @@
 import {Component, OnInit} from "@angular/core";
 import {CommercesService} from "../../../../service/commerces.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {supplierType} from "../../../../../../core/models/supplier";
 
 @Component({
     selector: 'm-add-printers',
