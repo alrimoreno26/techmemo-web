@@ -3,16 +3,18 @@ import {BaseComponentDirective} from "../../../../standalone/data-table/directiv
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 import {AddressDTO} from "../../../../core/models/supplier";
 import {CepValidateService} from "../../../../core/services/cep-validate.service";
-import {Subscription} from "rxjs";
+import {Subscription, takeUntil} from "rxjs";
 import {ShopsService} from "../../service/shops.service";
 import {Router} from "@angular/router";
 import {CNPJService} from "../../../../core/services/cnpj-validate.service";
 import {SelectItemGroup} from "primeng/api";
 import {CommercesService} from "../../service/commerces.service";
 import {LayoutService} from "../../../../layout/service/app.layout.service";
-import {CommerceDto} from "../../../../core/models/commerce";
+import {CommerceDto, PrinterDto} from "../../../../core/models/commerce";
 import {MAddPrintersComponent} from "./components/m-add-printers/m-add-printers.component";
 import {PrintersService} from "../../service/printers.service";
+import {confirmDialog} from "../../../../core/rx/confirm";
+import {ConfirmServices} from "../../../../core/injects/confirm.services";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -47,6 +49,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 public printersServices: PrintersService,
                 private layout: LayoutService,
                 private commercesService: CommercesService,
+                private confirmationService: ConfirmServices,
                 private router: Router,
                 private cdRef: ChangeDetectorRef,) {
         super();
@@ -193,14 +196,16 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         }
     }
 
-    addPrinters() {
-        this.commercesService.openModalAddOrEdit();
+    addEditPrinters(param: any) {
+        this.printersServices.openModalAddOrEdit();
         this.dialogService.open(MAddPrintersComponent, {
-            data: null,
+            data: param,
             width: '350px',
-        }).onClose.subscribe((res:any)=> {
-            console.log(res)
         });
+    }
+
+    patchEnable(event:any, item: PrinterDto){
+        this.printersServices.update({data: {id: item.id, enable: event.checked}});
     }
 
     saveVisuals() {
@@ -274,4 +279,16 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.form.get('fantasyName')?.patchValue(cnpjInformation.nome_fantasia);
         this.form.get('socialReason')?.patchValue(cnpjInformation.razao_social);
     }
+
+    deletePrinter(id: string) {
+        this.confirmationService.confirm(
+            'security.user.messages.confirmation',
+            'security.user.messages.message'
+        ).pipe(
+            takeUntil(this.ngUnsubscribe),
+            confirmDialog(() => this.printersServices.delete({id}))
+        ).subscribe();
+    }
+
+
 }

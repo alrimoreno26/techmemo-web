@@ -16,9 +16,11 @@ export class SeverityPipe implements PipeTransform {
             case productType.SIMPLE:
             case 'PAID':
             case 'FINISHED':
+            case 'POS':
                 return 'success';
             case productType.COMBO:
             case 'IN_PAYMENT':
+            case 'KITCHEN':
                 return 'warning';
             case 'CLOSED':
             case 'CANCELLED':

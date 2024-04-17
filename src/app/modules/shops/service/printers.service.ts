@@ -8,6 +8,7 @@ import {switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 import {groupBy} from "../../../core/util";
+import {CategoryDto} from "../../../core/models";
 
 @Injectable({providedIn: 'root'})
 export class PrintersService extends StoreComponentService<any> {
@@ -21,17 +22,23 @@ export class PrintersService extends StoreComponentService<any> {
         super(services, defaultEntity);
     }
 
-    // override finalizeLoad = () => {
-    //     const {entities, total} = this.state();
-    //     this.setAll(entities);
-    //     this.patchState({total: total});
-    // }
-
-
     override create = this.effect((trigger$: Observable<{ data: PrinterDto }>) => trigger$.pipe(
         switchMap(({data}) => this.services.create(data).pipe(
             tapResponse({
                 next: (response: any) => {
+                    this.setAdd(response);
+                    this.patchState({dialog: false});
+                },
+                error: (err: HttpErrorResponse) => this.setError(err)
+            })
+        ))
+    ));
+
+    override update = this.effect((trigger$: Observable<{ data: Partial<PrinterDto> }>) => trigger$.pipe(
+        switchMap(({data}) => this.services.update(data, 'id').pipe(
+            tapResponse({
+                next: (response: any) => {
+                    this.setUpdate(data);
                     this.patchState({dialog: false});
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)
