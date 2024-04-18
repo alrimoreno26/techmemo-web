@@ -7,6 +7,8 @@ import {MPaymentMethodComponent} from "../modals/payment-method/payment-method.c
 import {PaymentStructureTO} from "../../../../core/models/financial";
 import {MPartialPaymentComponent} from "../modals/partial-payment/partial-payment.component";
 import {CreatePaymentTransactionTO} from "../../../../core/models/orders";
+import {CpfNotaComponents} from "../modals/cpf_nota/cpf-nota.components";
+
 @Component({
     selector: 'app-keypad',
     templateUrl: './keypad.components.html'
@@ -14,6 +16,7 @@ import {CreatePaymentTransactionTO} from "../../../../core/models/orders";
 export class KeypadComponents implements OnInit {
     @Input() totalPayment: number = 0;
     @Input() tableOrderClosed: boolean;
+    @Input() activeRouteOrder: any;
     @Output() confirmSell: EventEmitter<boolean> = new EventEmitter<boolean>()
     @Output() goBack: EventEmitter<boolean> = new EventEmitter<boolean>()
 
@@ -137,7 +140,12 @@ export class KeypadComponents implements OnInit {
     }
 
     addNameOrder() {
-
+        this.dialogService.open(CpfNotaComponents, {
+            data: this.activeRouteOrder,
+            style: {'width': '25vw'},
+            draggable: false,
+            resizable: false
+        })
     }
 
     voltarAtras() {
@@ -173,8 +181,7 @@ export class KeypadComponents implements OnInit {
         }
     }
 
-    showProductsPagamento(products: any){
-        console.log(products)
+    showProductsPagamento(products: any) {
         const arrayPlano = this.service.selectedEntity$().flatMap((p: any) =>
             p.products
                 .filter((x: any) => x.paid)

@@ -83,7 +83,7 @@
                         <p-button
                             class="flex-1"
                             (onClick)="addNewOrderTable()"
-                            [disabled]="pagamento"
+                            [disabled]="pagamento || this.activeRoute !== 'table'"
                             styleClass="w-full p-button-outlined flex-1">
                             <img src="assets/layout/images/comanda.svg" width="28" height="28">
                         </p-button>
@@ -205,6 +205,7 @@
             <ng-container *ngIf="pagamento">
                 <app-keypad [totalPayment]="comandaTotal()" (confirmSell)="sellConfirmed($event)"
                             [tableOrderClosed]="oneClosed"
+                            [activeRouteOrder]="service.selectedEntity$()[this.activeOrder]"
                             (goBack)="goBack($event)"></app-keypad>
             </ng-container>
         </div>
@@ -248,4 +249,3 @@
 </p-dialog>
 
 <m-cancellation [cancellation]="cancellation" (closed)="closeModalCancellation($event)"></m-cancellation>
-<m-cpf-nota [cpfNota]="cpfNota" (closed)="closeModalCpfNota($event)"></m-cpf-nota>

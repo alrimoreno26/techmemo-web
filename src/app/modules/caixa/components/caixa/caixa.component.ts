@@ -75,7 +75,8 @@ export class CaixaComponent implements OnInit {
             }
             if (this.service.selectedEntity$()) {
                 this.orders = this.service.selectedEntity$().filter((f: any) => (f.state !== 'CANCELLED' || f.state !== 'FINISHED'));
-                const allOrdersPaid = this.orders.every((x: any) => (x.valueToPaid === x.valuePaid && x.valueToPaid !== 0));
+                //AQUI QUITE CONDICION  && x.valueToPaid !== 0
+                const allOrdersPaid = this.orders.every((x: any) => (x.valueToPaid === x.valuePaid));
                 this.oneClosed = this.orders.some((x: any) => (x.state === 'CLOSED'));
                 if (allOrdersPaid) {
                     this.service.setFinalizeValue(true);
@@ -102,6 +103,7 @@ export class CaixaComponent implements OnInit {
 
     ngOnInit(): void {
         this.service.canFinalize$.subscribe((value: boolean) => {
+            console.log(value)
             this.canFinalize$ = value;
         });
     }

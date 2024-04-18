@@ -3,8 +3,9 @@
         <div class="flex flex-1 w-full gap-3" style="width: 220px">
             <p-button class="flex-1"
                       (click)="addNameOrder()"
+                      [disabled]="activeRouteOrder.clientDocument !== null"
                       styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
-                <i class="pi pi-user-plus text-5xl"></i>
+                <i class="mdi mdi-account-plus text-5xl"></i>
                 <span class="text-xl">(F6) <br> CPF</span>
             </p-button>
             <p-button
@@ -12,7 +13,7 @@
                 [disabled]="!disableAllFields"
                 class="flex-1"
                 styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
-                <i class="pi pi-credit-card text-5xl"></i>
+                <i class="mdi mdi-credit-card text-5xl"></i>
                 <span class="text-xl">(F7) <br> Pagamento</span>
             </p-button>
             <p-button
@@ -20,7 +21,7 @@
                 [disabled]="!disableAllFields || tableOrderClosed"
                 class="flex-1"
                 styleClass="w-full p-button-danger p-button-outlined flex-1 flex-column flex justify-content-center">
-                <i class="pi pi-times text-5xl"></i>
+                <i class="mdi mdi-close-circle-outline text-5xl"></i>
                 <span class="text-xl">Fechar Pagamento</span>
             </p-button>
         </div>

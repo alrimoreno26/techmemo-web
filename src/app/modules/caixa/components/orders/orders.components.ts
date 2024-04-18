@@ -9,7 +9,8 @@ import {tableState} from "../../../../core/models/tables";
 import {SessionServices} from "../../../../core/injects/session.services";
 import {operationAreaRoleEnum} from "../../../../core/enums/role";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
-import {Message} from "primeng/api";
+import {MOpenCaixaComponents} from "../modals/m-open-caixa/m-open-caixa.components";
+import {MCloseCaixaComponents} from "../modals/m-close-caixa/m-close-caixa.components";
 
 @Component({
     selector: 'app-orders',
@@ -25,7 +26,6 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     fromTable: any;
 
-    messages: Message[];
 
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
@@ -53,9 +53,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     ngOnInit() {
-        this.messages = [
-            { severity: 'warn', summary: 'Info', detail: 'Caixa fechada, para iniciar um pedido, abra a caixa' },
-        ];
+
     }
 
     loadComanda() {
@@ -131,6 +129,13 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
             'lg:px-8': this.session.userLogged.role.operationArea !== operationAreaRoleEnum.ATTENDANT && this.session.userLogged.role.operationArea !== operationAreaRoleEnum.WAITER,
         }
 
+    }
+
+    openCaixa(){
+        this.dialogService.open(MCloseCaixaComponents, {
+            data: null,
+            width: '700px',
+        });
     }
 
     getTitleComanda(item: any): string {

@@ -33,7 +33,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     form: FormGroup;
 
     items: SelectItemGroup[] = []
-    selectedItems: any = 'printers';
+    selectedItems: any = 'dados';
 
     searchingCNPJ: boolean = false;
 

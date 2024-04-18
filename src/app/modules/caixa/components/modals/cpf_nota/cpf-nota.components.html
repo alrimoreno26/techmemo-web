@@ -1,14 +1,15 @@
-<p-dialog [(visible)]="cpfNota" [modal]="true" [style]="{ width: '50vw' }" [draggable]="false" [resizable]="false">
-    <ng-template pTemplate="header"><span class="p-dialog-title">Inserir CPF Nota</span></ng-template>
-    <div class="grid">
-        <div class="col-12 field">
-            <p-inputMask id="cpf" mask="999.999.999-99" placeholder="CPF"></p-inputMask>
-        </div>
+<ng-template dialog-header><span class="p-dialog-title">Inserir CPF Nota</span></ng-template>
+<div class="grid mt-0">
+    <div class="col-12 field pb-0">
+        <p-inputMask [(ngModel)]="cpfNota" styleClass="w-full" id="cpf" mask="999.999.999-99"
+                     placeholder="CPF"></p-inputMask>
     </div>
-    <ng-template pTemplate="footer">
-        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Cancelar" (click)="close()"
-                icon="pi pi-fw pi-trash"></button>
-        <button pButton pRipple class="p-button-primary flex-1 border-round" label="Salvar"
-                icon="mdi mdi-check"></button>
-    </ng-template>
-</p-dialog>
+</div>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+            icon="mdi mdi-close"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Adicionar CPF"
+            (click)="setCPF()"
+            icon="mdi mdi-check"></button>
+</ng-template>
+

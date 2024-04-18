@@ -59,6 +59,12 @@ import {ToastModule} from "primeng/toast";
 import {TranslateModule} from "@ngx-translate/core";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {MessagesModule} from "primeng/messages";
+import {MOpenCaixaComponents} from "./components/modals/m-open-caixa/m-open-caixa.components";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {InputGroupModule} from "primeng/inputgroup";
+import {InputGroupAddonModule} from "primeng/inputgroupaddon";
+import {UserService} from "../security/user/services/user.service";
+import {MCloseCaixaComponents} from "./components/modals/m-close-caixa/m-close-caixa.components";
 
 @NgModule({
     imports: [
@@ -101,6 +107,9 @@ import {MessagesModule} from "primeng/messages";
         TranslateModule,
         OverlayPanelModule,
         MessagesModule,
+        InputSwitchModule,
+        InputGroupModule,
+        InputGroupAddonModule,
     ],
     declarations: [
         CaixaComponent,
@@ -112,7 +121,9 @@ import {MessagesModule} from "primeng/messages";
         MPaymentMethodComponent,
         MPartialPaymentComponent,
         MCancelProductsComponents,
-        AdditionalComponents
+        AdditionalComponents,
+        MOpenCaixaComponents,
+        MCloseCaixaComponents
     ],
     providers: [
         PaymentMethodService,
@@ -124,7 +135,8 @@ import {MessagesModule} from "primeng/messages";
         UnidadeService,
         StoreCategoryService,
         SupplierService,
-        DatePipe
+        DatePipe,
+        UserService
     ]
 })
 export class CaixaModule {

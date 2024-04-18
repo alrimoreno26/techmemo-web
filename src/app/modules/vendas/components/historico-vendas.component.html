@@ -74,14 +74,8 @@
                         </p-columnFilter>
                     </div>
                 </th>
-                <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Usuario
-                    Criacao
-                </th>
                 <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Data
                     Finalizacao
-                </th>
-                <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Usuario
-                    Criacao
                 </th>
                 <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                     <div class="flex align-items-center">
@@ -132,16 +126,10 @@
                     -
                 </td>
                 <td class="text-center">
-                    {{ order.created | date }}
+                    {{ order.created | date:'dd/MM/YYYY hh:mm' : '+0'}}
                 </td>
                 <td class="text-center">
-                    -
-                </td>
-                <td class="text-center">
-                    {{ order.created | date }}
-                </td>
-                <td class="text-center">
-                    -
+                    {{ order.state === 'FINISHED' ? (order.changeStateDate | date:'dd/MM/YYYY hh:mm' : '+0') : '-' }}
                 </td>
                 <td class="text-center">
                     <p-badge [value]="order.state | translate" [severity]="order.state | severity"></p-badge>
@@ -170,8 +158,13 @@
 <p-sidebar [(visible)]="storeServices.showSidebar" position="right"
            (onHide)="closeSidebar()"
            [style]="{'width': '650px'}">
-    <ng-template pTemplate="header">Detalhes do pedido Nº: <span
-        class="mb-0 font-bold"> {{ storeServices.details$().code || ''}}</span></ng-template>
+    <ng-template pTemplate="header">
+        <div class="flex w-full justify-content-between">
+            <div> Detalhes do pedido Nº: <span class="mb-0 font-bold"> {{ storeServices.details$().code || '' }}</span></div>
+            <div> Usuario Criacao: <span class="mb-0 font-bold"> {{ storeServices.details$().creatorUser.name || '' }}</span></div>
+        </div>
+
+    </ng-template>
     <ng-template pTemplate="content">
         <p-table [value]="storeServices.details$().products|| []" [scrollable]="true"
                  [styleClass]="'p-datatable-sm'">
@@ -242,7 +235,7 @@
             <ng-template pTemplate="emptymessage">
                 <tr>
                     <td [attr.colspan]="7" class="text-center text-2xl">
-                        Ainda no tem productos
+                        No tem productos cancelados
                     </td>
                 </tr>
             </ng-template>
