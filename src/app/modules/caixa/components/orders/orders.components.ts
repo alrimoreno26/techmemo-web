@@ -9,6 +9,7 @@ import {tableState} from "../../../../core/models/tables";
 import {SessionServices} from "../../../../core/injects/session.services";
 import {operationAreaRoleEnum} from "../../../../core/enums/role";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
+import {Message} from "primeng/api";
 
 @Component({
     selector: 'app-orders',
@@ -23,6 +24,8 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     busy: number;
 
     fromTable: any;
+
+    messages: Message[];
 
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
@@ -50,6 +53,9 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     ngOnInit() {
+        this.messages = [
+            { severity: 'warn', summary: 'Info', detail: 'Caixa fechada, para iniciar um pedido, abra a caixa' },
+        ];
     }
 
     loadComanda() {

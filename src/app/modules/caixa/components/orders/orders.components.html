@@ -1,6 +1,9 @@
 <div class="px-4 py-5 md:px-6" [ngClass]="getWidthClass">
     <div class="grid">
         <div class="col-12 px-2 py-0">
+            <p-messages [(value)]="messages" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [enableService]="false"></p-messages>
+        </div>
+        <div class="col-12 px-2 py-0">
             <p-toolbar>
                 <div class="p-toolbar-group-start" *ngIf="service.listEntities$()">
                     <p class="mb-0 font-medium text-2xl">Mesas Libre: <span class="font-bold"

@@ -58,6 +58,7 @@ import {MCancelProductsComponents} from "./components/modals/cancel_products/can
 import {ToastModule} from "primeng/toast";
 import {TranslateModule} from "@ngx-translate/core";
 import {OverlayPanelModule} from "primeng/overlaypanel";
+import {MessagesModule} from "primeng/messages";
 
 @NgModule({
     imports: [
@@ -99,6 +100,7 @@ import {OverlayPanelModule} from "primeng/overlaypanel";
         ToastModule,
         TranslateModule,
         OverlayPanelModule,
+        MessagesModule,
     ],
     declarations: [
         CaixaComponent,
