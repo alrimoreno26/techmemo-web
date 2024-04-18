@@ -1,0 +1,77 @@
+:host ::ng-deep {
+
+    .p-sidebar .p-sidebar-content {
+        padding: 0;
+    }
+
+    .sidebar-companies-list-data {
+        .p-sidebar .p-sidebar-content {
+            overflow-y: hidden;
+        }
+    }
+
+    .credit-analysis-info-data .p-speeddial-button.p-button.p-button-icon-only{
+        background: var(--primary-theme-color);
+        border: 1px solid var(--primary-theme-color);
+    }
+}
+
+.credit-analysis-content{
+    display: grid;
+    height: calc(100vh - 56px);
+    grid-template-columns: 300px 1fr;
+    grid-template-areas: "credit-analysis-menu-list-data credit-analysis-data";
+
+    &.collapse {
+        grid-template-columns: 60px 1fr !important;
+    }
+
+    &.empty {
+        grid-template-columns: 0px 1fr !important;
+    }
+
+}
+
+.credit-analysis-menu-list-data{
+    grid-area: credit-analysis-menu-list-data;
+    height: 100%;
+    width: 300px;
+    overflow: hidden;
+    transition: all 0.5s ease;
+
+    &.collapse {
+        width: 60px !important;
+    }
+
+    &.empty {
+        width: 0px !important;
+    }
+}
+
+.credit-analysis-data{
+    grid-area: credit-analysis-data;
+}
+
+.credit-analysis-info-data {
+    transition: all 0.5s ease;
+}
+
+.empty-companies {
+    height: 100%;
+    svg {
+        height: 350px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .credit-analysis-content {
+        height: calc(100vh - 161px);
+        grid-template-columns: 1fr;
+        grid-template-areas: "credit-analysis-data credit-analysis-data";
+    }
+
+    .credit-analysis-menu-list-data {
+        display: none;
+    }
+}

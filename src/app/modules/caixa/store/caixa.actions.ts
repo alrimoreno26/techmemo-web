@@ -1,6 +1,7 @@
 import {createAction, props} from "@ngrx/store";
 import {LazyLoadData, LazyResultData} from "../../../standalone/data-table/models";
 import {CreateOrderTO, CreatePaymentTransactionTO, OrdersTO} from "../../../core/models/orders";
+import {DeleteOrderProductDto} from "../../../core/models/products";
 
 export enum EntityActionTypes {
     LoadOrdersList = '[Orders] Load Orders List',
@@ -76,7 +77,7 @@ export const createInTableOrdersSuccess = createAction(EntityActionTypes.CreateI
 export const addProductsOrders = createAction(EntityActionTypes.AddProductsOrders, props<{ id: string, params:any[] }>());
 export const addProductsOrdersSuccess = createAction(EntityActionTypes.AddProductsOrdersSuccess, props<{ entity: OrdersTO }>());
 
-export const deleteProductsOrders = createAction(EntityActionTypes.DeleteProductsOrders, props<{ id: string, productId:string[] }>());
+export const deleteProductsOrders = createAction(EntityActionTypes.DeleteProductsOrders, props<{ id: string, entity:DeleteOrderProductDto }>());
 export const deleteProductsOrdersSuccess = createAction(EntityActionTypes.DeleteProductsOrdersSuccess, props<{ productId:string[] }>());
 
 export const updateOrders = createAction(EntityActionTypes.UpdateOrders, props<{ entity: OrdersTO }>());

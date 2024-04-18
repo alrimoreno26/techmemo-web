@@ -4,7 +4,7 @@ import {fromUserActions} from '../store/user.actions';
 import {UserPartialState} from '../store/user.reducers';
 import {
     getDialog,
-    getRoleList,
+    getRoleList, getUserBasic,
     selectAllEntities,
     selectedEntity,
     selectEntityCount,
@@ -24,11 +24,12 @@ import {User, Role, GeneratePassword} from 'src/app/core/models';
 @Injectable({providedIn: 'platform'})
 export class UserService extends BaseStoreServices<User> {
     override serverSide = true;
-    override lazyLoadOnInit = false;
+    override lazyLoadOnInit = true;
     /**
      * List of {@link Role} as Observable
      */
     roleList$: Observable<Role[]>;
+    userBasic$: Observable<User[]>;
 
 
     constructor(private store: Store<UserPartialState>,
@@ -47,6 +48,7 @@ export class UserService extends BaseStoreServices<User> {
         this.selectedEntity$ = this.store.selectSignal((selectedEntity));
         this.dialog$ = this.store.selectSignal((getDialog));
         this.roleList$ = this.store.select(getRoleList);
+        this.userBasic$ = this.store.select(getUserBasic);
 
         /**
          * Subscription specific Actions
@@ -85,9 +87,13 @@ export class UserService extends BaseStoreServices<User> {
         super.loadAll(data);
     }
 
+    loadBasic(data: LazyLoadData): void {
+        this.store.dispatch(fromUserActions.loadUserBasic({lazy: data}));
+    }
+
     override loadAllForExport(): Observable<Array<User>> {
         return this.userAdminServices
-            .findAllPaginate({page: 0, size: this.total$() as number})
+            .findAllPaginate({pageNumber: 0, pageSize: this.total$() as number})
             .pipe(
                 map(users => users.content),
                 catchError(() => of([] as User[]))

@@ -57,6 +57,8 @@ import {MPartialPaymentComponent} from "./components/modals/partial-payment/part
 import {MCancelProductsComponents} from "./components/modals/cancel_products/cancel-products.components";
 import {ToastModule} from "primeng/toast";
 import {TranslateModule} from "@ngx-translate/core";
+import {OverlayPanelModule} from "primeng/overlaypanel";
+import {MessagesModule} from "primeng/messages";
 
 @NgModule({
     imports: [
@@ -97,6 +99,8 @@ import {TranslateModule} from "@ngx-translate/core";
         DropdownModule,
         ToastModule,
         TranslateModule,
+        OverlayPanelModule,
+        MessagesModule,
     ],
     declarations: [
         CaixaComponent,

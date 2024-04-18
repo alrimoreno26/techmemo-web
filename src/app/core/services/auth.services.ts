@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {silentIt} from '../interceptors/spinner.interceptor';
-import {buildURL, buildUsersURL} from '../util';
+import {buildURL} from '../util';
 import {FormAuth, RefreshTokenTO, UserAuthenticated} from "../models/user";
 
 @Injectable({
@@ -10,7 +10,7 @@ import {FormAuth, RefreshTokenTO, UserAuthenticated} from "../models/user";
 })
 export class AuthServices {
 
-  private basePath = buildUsersURL('/v1');
+  private basePath = buildURL('/v1');
 
   constructor(private httpClient: HttpClient) {
   }
@@ -21,15 +21,24 @@ export class AuthServices {
    * @return An Observable {@link UserAuthenticated}
    */
   login(loginForm: FormAuth): Observable<UserAuthenticated> {
-    return this.httpClient.post<UserAuthenticated>(`${this.basePath}/login`, loginForm);
+    return this.httpClient.post<UserAuthenticated>(`${this.basePath}/auth/login`, loginForm);
   }
+
+    /**
+     * Login method
+     * @param loginForm {@link FormAuth}
+     * @return An Observable {@link UserAuthenticated}
+     */
+    basic_login(loginForm: FormAuth): Observable<UserAuthenticated> {
+        return this.httpClient.post<UserAuthenticated>(`${this.basePath}/auth/basic-login`, loginForm);
+    }
 
   /**
    * Get Profile method
    * @return An Observable {@link UserAuthenticated}
    */
   profile(): Observable<UserAuthenticated> {
-    return this.httpClient.get<UserAuthenticated>(buildURL('/api/user/client/profile'));
+    return this.httpClient.get<UserAuthenticated>(`${this.basePath}/users/authenticated`);
   }
 
   /**
@@ -39,7 +48,7 @@ export class AuthServices {
    */
   refreshToken(param: RefreshTokenTO): Observable<RefreshTokenTO> {
     return this.httpClient.post<RefreshTokenTO>(
-      `${this.basePath}/refresh_token`, param,
+      `${this.basePath}/auth/refresh_token`, param,
       {context: silentIt()}
     );
   }
@@ -50,8 +59,6 @@ export class AuthServices {
    */
   logout(): Observable<any> {
     return this.httpClient.post<any>(
-      `${this.basePath}/logout`, {},
-      {context: silentIt()}
-    );
+      `${this.basePath}/auth/logout`, {});
   }
 }

@@ -6,6 +6,10 @@ import {Router} from "@angular/router";
 import {DatePipe} from "@angular/common";
 import {StoreTablesServices} from "../../services/store.tables.services";
 import {tableState} from "../../../../core/models/tables";
+import {SessionServices} from "../../../../core/injects/session.services";
+import {operationAreaRoleEnum} from "../../../../core/enums/role";
+import {ToastMessageService} from "../../../../core/injects/toast-message.service";
+import {Message} from "primeng/api";
 
 @Component({
     selector: 'app-orders',
@@ -21,13 +25,16 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     fromTable: any;
 
+    messages: Message[];
 
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
                 private router: Router,
+                private toastMessageService: ToastMessageService,
+                private session: SessionServices,
                 private datePipe: DatePipe) {
         super()
-        this.tableService.loadAll({lazy: {page: 0, count: 50}})
+        this.tableService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         effect(() => {
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
@@ -46,16 +53,19 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     ngOnInit() {
+        this.messages = [
+            { severity: 'warn', summary: 'Info', detail: 'Caixa fechada, para iniciar um pedido, abra a caixa' },
+        ];
     }
 
     loadComanda() {
         this.isTable = false;
-        this.service.loadAll({page: 0, count: 50, state: 'ACTIVE'})
+        this.service.loadAll({pageNumber: 0, pageSize: 50, states: ['ACTIVE', 'IN_PAYMENT', 'PAID','CLOSED']})
     }
 
     loadMesas() {
         this.isTable = true;
-        this.tableService.loadAll({lazy: {page: 0, count: 50}})
+        this.tableService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
     }
 
 
@@ -88,9 +98,14 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     }
 
-    openOrder(id: string) {
-        this.service.getById([], id)
-        this.router.navigate([`/comandas/order/${id}`]).then();
+    openOrder(item: any) {
+        if (this.session.onlyPosManageItem() && item.state === 'CLOSED') {
+            this.toastMessageService.showMessage("warn", 'INFO', 'Essa mesa já fechou a conta e vem fazendo pagamentos')
+        } else {
+            this.service.getById([], item.id)
+            this.router.navigate([`/comandas/order/${item.id}`]).then();
+        }
+
     }
 
     transformDate(fecha: string) {
@@ -108,6 +123,14 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
             data: null,
             width: '350px',
         })
+    }
+
+    get getWidthClass() {
+        return {
+            'lg:px-12': this.session.onlyPosManageItem(),
+            'lg:px-8': this.session.userLogged.role.operationArea !== operationAreaRoleEnum.ATTENDANT && this.session.userLogged.role.operationArea !== operationAreaRoleEnum.WAITER,
+        }
+
     }
 
     getTitleComanda(item: any): string {

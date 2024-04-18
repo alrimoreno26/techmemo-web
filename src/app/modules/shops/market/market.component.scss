@@ -1,14 +1,70 @@
-.promo-desc{
-    font-size: 12px;
-    margin-top: 2px;
-    display: block;
-    color: #777777;
+@import url('https://fonts.googleapis.com/css2?family=Bree+Serif&family=Source+Sans+3:ital,wght@0,200..900;1,200..900&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css');
+@import url('https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js');
+* {
+    margin: 0px;
+    padding: 0px;
 }
 
-.promo-item{
-    background: white;
-    border: 1px solid #fb4734;
-    border-radius: 10px;
-    padding: 10px 0;
-    width: 60rem;
+body {
+    font-family: "Source Sans 3", sans-serif !important;
+}
+
+.owl-prev {
+    position: absolute;
+    left: -55px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white !important;
+    color: #ED6C09 !important;
+    box-shadow: -7px 1px 12px 2px #00000024 !important;
+    width: 30px !important;
+    height: 30px !important;
+}
+
+.owl-next {
+    position: absolute;
+    right: -55px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: white !important;
+    color: #ED6C09 !important;
+    box-shadow: -7px 1px 12px 2px #00000024 !important;
+    width: 30px !important;
+    height: 30px !important;
+}
+
+span.right_slides {
+    line-height: 26px;
+}
+
+span.left_slides {
+    line-height: 26px;
+}
+
+.owl-prev .cart {
+    line-height: 30px;
+}
+
+.owl-next .cart {
+    line-height: 30px;
+}
+
+@media only screen and (max-width: 1280px) and (min-width: 900px) {
+    .owl-prev {
+        left: -30px;
+    }
+    .owl-next {
+        right: -30px;
+    }
+}
+
+@media only screen and (max-width: 590px) and (min-width: 300px) {
+    .owl-next {
+        position: absolute;
+        right: 0px;
+    }
+    .owl-prev {
+        left: 0px;
+    }
 }

@@ -180,15 +180,16 @@
                                                        optionValue="id"
                                                        placeholder="Selecione um provedor">
                                             <ng-template let-value pTemplate="selectedItems">
-                                                <ng-template [ngIf]="value === null || value.length === 0">
+                                                <ng-template [ngIf]="getValueMultiselect(value)">
                                                     <span>Selecione um provedor</span>
                                                 </ng-template>
-                                                <ng-template [ngIf]="value !== null">
+                                                <ng-template [ngIf]="getValueMultiselect(value)">
+
                                                     <div *ngFor="let option of value">
                                                     <span
-                                                        *ngIf="supplier(option).type === 'PERSON'">{{ supplier(option).name }} {{ supplier(option).lastName }}</span>
+                                                        *ngIf="option.type === 'PERSON'">{{ option.name }} {{ option.lastName }}</span>
                                                         <span
-                                                            *ngIf="supplier(option).type !== 'PERSON'">{{ supplier(option).fantasyName | wrapText: 25 }}</span>
+                                                            *ngIf="option.type !== 'PERSON'">{{ option.fantasyName | wrapText: 25 }}</span>
                                                     </div>
                                                 </ng-template>
 
@@ -205,7 +206,7 @@
                                             </ng-template>
                                         </p-multiSelect>
                                     </div>
-                                    <p-button icon="pi pi-plus" class="mr-2" styleClass="p-button-success"
+                                    <p-button icon="mdi mdi-plus" class="mr-2" [outlined]="true" severity="success"
                                               (onClick)="addFornecedor()"></p-button>
                                 </div>
                             </div>
@@ -382,15 +383,16 @@
                                                        optionValue="id"
                                                        placeholder="Selecione um provedor">
                                             <ng-template let-value pTemplate="selectedItems">
-                                                <ng-template [ngIf]="value === null || value.length === 0">
+                                                <ng-template [ngIf]="getValueMultiselect(value)">
                                                     <span>Selecione um provedor</span>
                                                 </ng-template>
-                                                <ng-template [ngIf]="value !== null">
+                                                <ng-template [ngIf]="getValueMultiselect(value)">
+
                                                     <div *ngFor="let option of value">
                                                     <span
-                                                        *ngIf="supplier(option).type === 'PERSON'">{{ supplier(option).name }} {{ supplier(option).lastName }}</span>
+                                                        *ngIf="option.type === 'PERSON'">{{ option.name }} {{ option.lastName }}</span>
                                                         <span
-                                                            *ngIf="supplier(option).type !== 'PERSON'">{{ supplier(option).fantasyName | wrapText: 25 }}</span>
+                                                            *ngIf="option.type !== 'PERSON'">{{ option.fantasyName | wrapText: 25 }}</span>
                                                     </div>
                                                 </ng-template>
 
@@ -407,7 +409,7 @@
                                             </ng-template>
                                         </p-multiSelect>
                                     </div>
-                                    <p-button icon="pi pi-plus" class="mr-2" styleClass="p-button-success"
+                                    <p-button icon="mdi mdi-plus" class="mr-2" [outlined]="true" severity="success"
                                               (onClick)="addFornecedor()"></p-button>
                                 </div>
 
@@ -443,7 +445,7 @@
                                         <p-button
                                             class="flex-1 px-3"
                                             (onClick)="addProductAutocomplete()"
-                                            icon="pi pi-plus"
+                                            icon="mdi mdi-plus"
                                             styleClass="w-full p-button-outlined flex-1">
 
                                         </p-button>
@@ -491,7 +493,7 @@
 </form>
 <ng-template dialog-footer>
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
-            icon="pi pi-fw pi-times"></button>
+            icon="mdi mdi-close"></button>
     <button pButton pRipple class="p-button-primary flex-1 border-round" label="Salvar" [disabled]="form.invalid"
-            (click)="save()" icon="pi pi-fw pi-check"></button>
+            (click)="save()" icon="mdi mdi-check"></button>
 </ng-template>

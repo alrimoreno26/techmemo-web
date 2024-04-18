@@ -1,8 +1,17 @@
 import {Role} from './role';
+import {domainEnum, operationAreaRoleEnum} from "../enums/role";
 
 export interface FormAuth {
-    email: string;
+    username: string;
     password: string;
+}
+
+export interface SecurityModel{
+    token: string;
+    refreshToken: string;
+    expirationDate?: string;
+    refreshTokenExpirationDate?: string;
+    operationArea?: operationAreaRoleEnum;
 }
 export interface UserAuthenticated {
     address?: AddressTO;
@@ -11,6 +20,7 @@ export interface UserAuthenticated {
     confirmedPhone: boolean;
     cpf: string;
     created: string;
+    commerceId: string;
     email: string;
     enabled: boolean;
     hasRating: boolean;
@@ -18,6 +28,7 @@ export interface UserAuthenticated {
     image: DocumentMetadataTO;
     name: string;
     phone: string;
+    commerces: any[];
     refreshToken: string;
     role: Role;
     token: string;

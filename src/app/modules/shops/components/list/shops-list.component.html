@@ -1,0 +1,42 @@
+<div class="credit-analysis-content" [ngClass]="{'empty': !optionsTabsVisible, 'collapse': collapseCompaniesListData}">
+    <div class="credit-analysis-menu-list-data bg-white border-right-1 border-gray-300"
+         [ngClass]="{'empty': !optionsTabsVisible, 'collapse': collapseCompaniesListData}">
+        <ng-container
+            *ngTemplateOutlet="showOrganizationCompaniesLeftBar;context:{visibleLeftBar: !displayCompaniesListData}"></ng-container>
+    </div>
+    <div class="credit-analysis-data m-3 bg-white border-1 border-gray-300 overflow-y-hidden">
+        <div class="credit-analysis-info-data h-full overflow-auto">
+            <ng-template [ngIf]="commerceService.selectedEntity$()" [ngIfElse]="empty">
+                <c-commerce-dashboard></c-commerce-dashboard>
+            </ng-template>
+            <ng-template #empty>
+                <div class="h-full flex flex-column align-items-center justify-content-center gap-3 empty-companies">
+                    <img src="assets/images/commerce-add.svg" width="350px" height="350px" alt="add-data"/>
+                    <button pButton pRipple type="submit" iconPos="left" icon="mdi mdi-plus-circle-outline"
+                            (click)="openModalAddCommerce(true)"
+                            class="inline-block px-3 py-2 text-lg font-medium text-center text-white transition duration-200 bg-blue-600 rounded-lg hover:bg-blue-700 ease"
+                            label="{{'app.addCompany' | translate}}">
+                    </button>
+                </div>
+            </ng-template>
+        </div>
+    </div>
+</div>
+<p-sidebar [(visible)]="displayCompaniesListData" [style]="{width:'300px'}" class="sidebar-companies-list-data">
+    <ng-container
+        *ngTemplateOutlet="showOrganizationCompaniesLeftBar;context:{visibleLeftBar: displayCompaniesListData}"></ng-container>
+</p-sidebar>
+<ng-template #showOrganizationCompaniesLeftBar let-visibleLeftBar="visibleLeftBar">
+    <div class="collapse flex m-1 mr-2"
+         [ngClass]="{'justify-content-end': !collapseCompaniesListData, 'justify-content-center': collapseCompaniesListData}">
+        <span class="mdi cursor-pointer hover:text-blue-500"
+              [ngClass]="{'mdi-arrow-expand-left': !collapseCompaniesListData, 'mdi-arrow-expand-right': collapseCompaniesListData, 'disabled': isMobile || !optionsTabsVisible}"
+              [pTooltip]="(!collapseCompaniesListData ? 'app.collapse' : 'app.expand') | translate"
+              (click)="collapseCompaniesListData = !collapseCompaniesListData"></span>
+    </div>
+    <commerce-left-bar
+        [collapseCompaniesListData]="collapseCompaniesListData"
+        (updateAddCompanyEmit)="openModalAddCommerce($event)"
+    >
+    </commerce-left-bar>
+</ng-template>

@@ -1,11 +1,12 @@
 import {Injectable} from "@angular/core";
 import {AbstractService} from "./abstract.services";
 import {HttpClient, HttpParams} from "@angular/common/http";
-import {buildOrderURL} from "../util";
+import {buildURL} from "../util";
 import {LazyLoadData, LazyResultData} from "../../standalone/data-table/models";
 import {Observable} from "rxjs";
 import {map} from "lodash";
 import {CreatePaymentTransactionTO} from "../models/orders";
+import {DeleteOrderProductDto} from "../models/products";
 
 @Injectable({
     providedIn: 'root'
@@ -13,9 +14,16 @@ import {CreatePaymentTransactionTO} from "../models/orders";
 export class OrdersService extends AbstractService<any> {
 
     constructor(private httpClient: HttpClient) {
-        super(httpClient, buildOrderURL('/v1/orders'));
+        super(httpClient, buildURL('/v1/orders'));
     }
 
+    override findAllPaginate(queryParams: any): Observable<LazyResultData<any>> {
+        const params = map(queryParams, (e, k) => (e !== undefined) ?
+            Array.isArray(e) ? k + '=' + e.join(',') : k + '=' + e : null)
+            .filter(f => f).join('&');
+
+        return this.httpClient.get<LazyResultData<any>>(`${this.basePath}?${params}`);
+    }
     findAllPaginateFilter(data: LazyLoadData | Partial<LazyLoadData>): Observable<LazyResultData<any>> {
         const params = map(data, (e, k) => (e !== undefined) ?
             Array.isArray(e) ? k + '=' + e.join(',') : k + '=' + e : null)
@@ -28,8 +36,13 @@ export class OrdersService extends AbstractService<any> {
         return this.httpClient.post<any>(`${this.basePath}/${id}/products`, params)
     }
 
-    deleteProductsOrders(id: string, productId: string[]): Observable<any> {
-        return this.httpClient.delete<any>(`${this.basePath}/${id}/products`, {body: productId})
+    deleteProductsOrders(id: string, entity: DeleteOrderProductDto): Observable<any> {
+        return this.httpClient.delete<any>(`${this.basePath}/${id}/products`, {body: entity})
+    }
+
+    loadDeletedProductsFromOrder(queryParams: any): Observable<any> {
+        const params: HttpParams = new HttpParams({fromObject: queryParams});
+        return this.httpClient.get<any>(`${this.basePath}/deleted-products`, {params})
     }
 
     loadOrders(paths: string[], queryParams: any): Observable<any> {
@@ -40,7 +53,7 @@ export class OrdersService extends AbstractService<any> {
     }
 
     unionTables(tables: string[]): Observable<any> {
-        return this.httpClient.post<any>(`${this.basePath}/union-tables`, tables)
+        return this.httpClient.post<any>(`${buildURL('/v1')}/union-tables`, tables)
     }
 
     transferProducts(params: any) {
@@ -48,7 +61,7 @@ export class OrdersService extends AbstractService<any> {
     }
 
     payments(params: CreatePaymentTransactionTO[]) {
-        return this.httpClient.post<any>(`${this.basePath}/payments`, params)
+        return this.httpClient.post<any>(`${buildURL('/v1')}/payments`, params)
     }
 
     changeFieldState(id: string, params: any) {

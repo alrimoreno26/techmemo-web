@@ -18,27 +18,31 @@ import {DropdownModule} from 'primeng/dropdown';
 import {TableModule} from 'primeng/table';
 import {TooltipModule} from 'primeng/tooltip';
 import {DataTableModule} from '../../../standalone/data-table/data-table.module';
+import {RippleModule} from "primeng/ripple";
+import {CheckboxModule} from "primeng/checkbox";
 
 @NgModule({
   declarations: [
     RolesComponent,
     RoleModalComponent
   ],
-  imports: [
-    CommonModule,
-    RolesRoutingModule,
-    ReactiveFormsModule,
-    TranslateModule,
-    ButtonModule,
-    DynamicDialogModule,
-    InputTextModule,
-    DropdownModule,
-    StoreModule.forFeature('role', reducer),
-    EffectsModule.forFeature([RoleEffects]),
-    TableModule,
-    TooltipModule,
-    DataTableModule
-  ],
+    imports: [
+        CommonModule,
+        RolesRoutingModule,
+        ReactiveFormsModule,
+        TranslateModule,
+        ButtonModule,
+        DynamicDialogModule,
+        InputTextModule,
+        DropdownModule,
+        StoreModule.forFeature('role', reducer),
+        EffectsModule.forFeature([RoleEffects]),
+        TableModule,
+        TooltipModule,
+        DataTableModule,
+        RippleModule,
+        CheckboxModule
+    ],
   providers: [
     RoleService, DialogService
   ]

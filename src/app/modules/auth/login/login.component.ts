@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AuthServices} from "../../../core/services/auth.services";
 import {SessionServices} from "../../../core/injects/session.services";
+import {SecurityModel, UserAuthenticated} from "../../../core/models/user";
+import * as CryptoJS from 'crypto-js';
 
 @Component({
     selector: 'app-login',
@@ -51,13 +53,13 @@ export class LoginComponent implements OnInit {
 
     ngOnInit(): void {
         this.form = new FormGroup({
-            userName: new FormControl<string>('', [Validators.required, Validators.email]),
+            username: new FormControl<string>('', [Validators.required]),
             password: new FormControl<string>('', Validators.required)
         });
 
         // get return url from route parameters or default to '/'
         const {returnUrl} = this.route.snapshot.queryParams;
-        this.returnUrl = returnUrl || '/inventory/product';
+        this.returnUrl = returnUrl || '/vendas/historico';
     }
 
     /**
@@ -65,12 +67,40 @@ export class LoginComponent implements OnInit {
      * and store authenticate user in service
      */
     login(): void {
-        this.ngZone.run(() => this.service.login(this.form.value).subscribe(
-            res => {
+        let {username, password} = this.form.value;
+
+        password = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(password));
+        this.ngZone.run(() => this.service.login({username,password}).subscribe(
+            (res: SecurityModel) => {
                 this.sessionService.setUserLogged(res);
-                this.router.navigateByUrl(this.returnUrl).then();
+                this.ngZone.run(() => this.service.profile().subscribe((user: UserAuthenticated) => {
+                    this.sessionService.addBasicInfo(user);
+                    this.redirectByRoleLogin()
+                }));
             },
             () => {
             }));
+    }
+
+    redirectByRoleLogin() {
+        const user = this.sessionService.userLogged;
+        if(user.commerces.length === 0) {
+            this.router.navigateByUrl('/static/empty-store').then();
+        } else {
+            switch (user.role.operationArea) {
+                case 'ADMINISTRATOR_STORE':
+                    this.router.navigateByUrl('/loja/lista').then();
+                    break;
+                case 'ATTENDANT':
+                    this.router.navigateByUrl('/comandas').then();
+                    break;
+                case 'SUPER_ADMIN':
+                    this.router.navigateByUrl('/loja/lista').then();
+                    break;
+                default:
+                    this.router.navigateByUrl('/vendas/historico').then();
+                    break;
+            }
+        }
     }
 }

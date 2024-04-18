@@ -11,7 +11,7 @@ export class MPaymentMethodComponent implements OnInit {
 
     constructor(public paymentMethodService: PaymentMethodService, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
         if (!paymentMethodService.loaded$()) {
-            this.paymentMethodService.loadAll({lazy: {page: 0, count: 10}})
+            this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
         }
     }
 
@@ -19,7 +19,6 @@ export class MPaymentMethodComponent implements OnInit {
     }
 
     selectPaymentMethod(paymentMethod: any) {
-        console.log(paymentMethod)
         this.ref.close(paymentMethod);
     }
 

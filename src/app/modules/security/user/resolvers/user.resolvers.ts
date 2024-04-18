@@ -14,7 +14,7 @@ export const userResolver: ResolveFn<boolean> = () => {
   return loaded$.pipe(
     filter(loaded => {
       if (!loaded) {
-        store.dispatch(fromUserActions.loadResolver({lazy: {page: 0, count: 25}}));
+        store.dispatch(fromUserActions.loadResolver({lazy: {pageNumber: 0, pageSize: 25}}));
       }
       return loaded;
     }),

@@ -16,7 +16,7 @@ export class CategoryComponent extends BaseComponentDirective {
     override modalContent = MCategoryComponent;
 
     override headersTable: HeadersTable[] = [
-        {header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true, export: true},
+        {header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true},
         {
             header: 'Descrição',
             field: 'description',
@@ -33,8 +33,8 @@ export class CategoryComponent extends BaseComponentDirective {
         super();
         this.categoryService.loadAll({
             lazy: {
-                page: 0,
-                size: 10,
+                pageNumber: 0,
+                pageSize: 10,
                 type: 'PARENT'
             }
         })
@@ -52,7 +52,6 @@ export class CategoryComponent extends BaseComponentDirective {
             .subscribe(
                 (data) => {
                     const send = this.processExcelData(data);
-                    console.log(send)
                     send.forEach(x => {
                         if (x.name !== 'AGREGADOS')
                             setTimeout(() => {

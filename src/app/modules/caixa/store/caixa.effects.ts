@@ -3,10 +3,6 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {of} from "rxjs";
 import {
-    addProductsOrders, changeFieldStateOrders,
-    createInTableOrders,
-    createInTableOrdersSuccess,
-    deleteProductsOrders,
     fromOrdersListActions
 } from "./caixa.actions";
 import {OrdersService} from "../../../core/services/comanda.service";
@@ -150,7 +146,7 @@ export class CaixaEffects {
             switchMap(({entity}) =>
                 this.service.unionTables(entity).pipe(
                     switchMap(() => {
-                        this.tables.loadAll({lazy: {page: 0, count: 50}})
+                        this.tables.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
                         return of(
                             fromOrdersListActions.joinTablesSuccess()
                         )
@@ -192,9 +188,9 @@ export class CaixaEffects {
     deleteProductsOrders$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromOrdersListActions.deleteProductsOrders),
-            switchMap(({id, productId}) =>
-                this.service.deleteProductsOrders(id, productId).pipe(
-                    map((data) => fromOrdersListActions.deleteProductsOrdersSuccess({productId})),
+            switchMap(({id, entity}) =>
+                this.service.deleteProductsOrders(id, entity).pipe(
+                    map((data) => fromOrdersListActions.deleteProductsOrdersSuccess({productId: entity.productIds})),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
                 )
             )

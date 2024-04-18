@@ -27,6 +27,9 @@ export enum EntityActionTypes {
     AutocompleteSearch = '[Product] Autocomplete Search',
     AutocompleteSearchSuccess = '[Product] Autocomplete Search Success',
 
+    LowStock = '[Product] Low Stock',
+    LowStockSuccess = '[Product] Low Stock Success',
+
     OpenAddOrEdit = '[Product] Open Add Or Edit Dialog',
 
 }
@@ -35,6 +38,13 @@ export const loadProductList = createAction(EntityActionTypes.LoadProductList, p
     lazy: Partial<LazyLoadData>
 }>());
 export const loadProductListSuccess = createAction(EntityActionTypes.LoadProductListSuccess, props<{
+    data: LazyResultData<any>
+}>());
+
+export const lowStock = createAction(EntityActionTypes.LowStock, props<{
+    lazy: Partial<LazyLoadData>
+}>());
+export const lowStockSuccess = createAction(EntityActionTypes.LowStockSuccess, props<{
     data: LazyResultData<any>
 }>());
 
@@ -88,5 +98,7 @@ export const fromProductListActions = {
     getByIDSuccess,
     autocompleteSearch,
     autocompleteSearchSuccess,
+    lowStock,
+    lowStockSuccess,
     openAddOrEdit
 };

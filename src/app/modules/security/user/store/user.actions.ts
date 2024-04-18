@@ -11,6 +11,9 @@ export enum EntityActionTypes {
   LoadUserSuccess = '[User] Load User Success',
   UserFailRequest = '[User] User Fail Request',
 
+  LoadUserBasic = '[User] Load User Basic',
+  LoadUserBasicSuccess = '[User] Load User Basic Success',
+
   CreateUser = '[User] Create User',
   CreateUserSuccess = '[User] Create User Success',
 
@@ -38,10 +41,12 @@ export enum EntityActionTypes {
 }
 
 export const loadResolver = createAction(EntityActionTypes.LoadResolver, props<{ lazy: LazyLoadData }>());
-export const loadResolverSuccess = createAction(EntityActionTypes.LoadResolverSuccess, props<{ data: LazyResultData<User>, role: Role[] }>());
+export const loadResolverSuccess = createAction(EntityActionTypes.LoadResolverSuccess, props<{ data: LazyResultData<User>, role: LazyResultData<Role> }>());
 
 export const loadUser = createAction(EntityActionTypes.LoadUser, props<{ lazy: LazyLoadData }>());
+export const loadUserBasic = createAction(EntityActionTypes.LoadUserBasic, props<{ lazy: LazyLoadData }>());
 export const loadUserSuccess = createAction(EntityActionTypes.LoadUserSuccess, props<{ data: LazyResultData<User> }>());
+export const loadUserBasicSuccess = createAction(EntityActionTypes.LoadUserBasicSuccess, props<{ data: LazyResultData<User> }>());
 export const userFailRequest = createAction(EntityActionTypes.UserFailRequest, props<{ error: Error | any }>());
 
 export const createUser = createAction(EntityActionTypes.CreateUser, props<{ entity: User }>());
@@ -73,7 +78,9 @@ export const fromUserActions = {
   loadResolver,
   loadResolverSuccess,
   loadUser,
+  loadUserBasic,
   loadUserSuccess,
+  loadUserBasicSuccess,
   userFailRequest,
   updateUser,
   updateUserSuccess,

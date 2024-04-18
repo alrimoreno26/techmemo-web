@@ -4,6 +4,8 @@ import { filter, Subscription } from 'rxjs';
 import { MenuService } from './components/menus/app.menu.service';
 import { AppTopbarComponent } from './components/header/app.topbar.component';
 import { LayoutService } from './service/app.layout.service';
+import {SessionServices} from "../core/injects/session.services";
+import {operationAreaRoleEnum} from "../core/enums/role";
 
 @Component({
     selector: 'app-layout',
@@ -21,7 +23,7 @@ export class AppLayoutComponent implements OnDestroy {
 
     @ViewChild(AppTopbarComponent) appTopbar!: AppTopbarComponent;
 
-    constructor(private menuService: MenuService, public layoutService: LayoutService, public renderer: Renderer2, public router: Router) {
+    constructor(private menuService: MenuService, public layoutService: LayoutService, public renderer: Renderer2, public router: Router, public session:SessionServices) {
         if(this.router.routerState.snapshot.url.includes('comandas')){
             this.user = true;
         }
@@ -111,6 +113,13 @@ export class AppLayoutComponent implements OnDestroy {
             'p-input-filled': this.layoutService.config.inputStyle === 'filled',
             'layout-sidebar-active': this.layoutService.state.sidebarActive,
             'layout-sidebar-anchored': this.layoutService.state.anchored
+        }
+    }
+
+    get containerClassWrapper(){
+        return {
+            'layout-content-wrapper': this.session.userLogged.role.operationArea !== operationAreaRoleEnum.ATTENDANT && this.session.userLogged.role.operationArea !== operationAreaRoleEnum.WAITER,
+            'layout-wrapper-user': this.user
         }
     }
 

@@ -1,48 +1,66 @@
-<form [formGroup]="form">
-  <div class="grid" formResponsive>
-    <div class="col-12 md:col-6">
-      <div class="field p-fluid">
-        <label class="required block" for="name">
-          {{ 'security.user.labels.name' | translate }}
-        </label>
-        <input formControlName="name" formFieldValidation id="name" pInputText type="text">
-      </div>
-      <div class="field p-fluid">
-        <label class="required block" for="phone">
-          {{ 'security.user.labels.phone' | translate }}
-        </label>
-        <p-inputMask formControlName="phone" formFieldValidation id="phone" mask="(99) 99999-9999"></p-inputMask>
-      </div>
-      <div class="field p-fluid">
-        <label class="required block" for="cpf">
-          {{ 'security.user.labels.cpf' | translate }}
-        </label>
-        <p-inputMask formControlName="cpf" formFieldValidation id="cpf" mask="999.999.999-99"></p-inputMask>
-      </div>
+<ng-template dialog-header>
+    Edição de usuário de aplicativo
+</ng-template>
+<form class="overflow-hidden" [formGroup]="form">
+    <div class="grid" formResponsive>
+        <div class="col-12 md:col-6">
+            <div class="field p-fluid">
+                <label class="required block" for="name">
+                    {{ 'security.user.labels.name' | translate }}
+                </label>
+                <input formControlName="name" formFieldValidation id="name" pInputText type="text">
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="username">
+                    {{ 'security.user.labels.username' | translate }}
+                </label>
+                <input formControlName="username" formFieldValidation id="username" pInputText type="text">
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="password">
+                    {{ 'security.user.labels.newPassword' | translate }}
+                </label>
+                <p-password [toggleMask]="true" formControlName="password" formFieldValidation
+                            id="password" styleClass="p-input-icon-right"></p-password>
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="roleId">
+                    {{ 'security.user.labels.role' | translate }}
+                </label>
+                <p-dropdown [options]="roleList" [showClear]="true" appendTo="body" formControlName="roleId"
+                            placeholder=" {{ 'security.user.labels.role' | translate }}"
+                            [autoDisplayFirst]="false"
+                            formFieldValidation id="roleId" optionLabel="name" optionValue="id"/>
+            </div>
+        </div>
+        <div class="col-12 md:col-6">
+            <div class="field p-fluid">
+                <label class="required block" for="email">
+                    {{ 'security.user.labels.email' | translate }}
+                </label>
+                <input formControlName="email" formFieldValidation id="email" pInputText type="text">
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="phone">
+                    {{ 'security.user.labels.phone' | translate }}
+                </label>
+                <p-inputMask formControlName="phone" formFieldValidation id="phone"
+                             mask="(99) 99999-9999"></p-inputMask>
+            </div>
+            <div class="field p-fluid">
+                <label class="required block" for="cpf">
+                    {{ 'security.user.labels.cpf' | translate }}
+                </label>
+                <p-inputMask formControlName="documentId" id="cpf" mask="999.999.999-99"></p-inputMask>
+            </div>
+        </div>
     </div>
-    <div class="col-12 md:col-6">
-      <div class="field p-fluid">
-        <label class="required block" for="email">
-          {{ 'security.user.labels.email' | translate }}
-        </label>
-        <input formControlName="email" formFieldValidation id="email" pInputText type="text">
-      </div>
-      <div class="field p-fluid">
-        <label class="required block" for="roleId">
-          {{ 'security.user.labels.role' | translate }}
-        </label>
-        <ng-template *ngIf="userService.roleList$ | async as roleList">
-            <p-dropdown [options]="roleList" [showClear]="true" appendTo="body" formControlName="roleId"
-                        formFieldValidation id="roleId" optionLabel="name" optionValue="id"/>
-        </ng-template>
-
-      </div>
-    </div>
-  </div>
 </form>
 <ng-template dialog-footer>
-  <button (click)="ref.close('Cancel')" class="p-button-outlined mr-2" icon="mdi mdi-close"
-          label="{{'common.cancel' | translate}}" pButton type="button"></button>
-  <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined mr-2" icon="mdi mdi-check"
-          label="{{'common.save' | translate}}" pButton type="button"></button>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="{{'common.cancel' | translate}}"
+            (click)="ref.close('Cancel')"
+            icon="mdi mdi-close"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="{{'common.save' | translate}}"
+            [disabled]="form.invalid"
+            (click)="save()" icon="mdi mdi-check"></button>
 </ng-template>

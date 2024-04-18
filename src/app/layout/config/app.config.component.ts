@@ -34,7 +34,7 @@ export class AppConfigComponent implements OnInit {
         this.layoutService.config.scale = _val;
     }
 
-    get menuMode(): MenuMode {
+    get menuMode(): string {
         return this.layoutService.config.menuMode;
     }
 
@@ -45,7 +45,7 @@ export class AppConfigComponent implements OnInit {
         }
     }
 
-    get colorScheme(): ColorScheme {
+    get colorScheme(): string {
         return this.layoutService.config.colorScheme;
     }
 
@@ -153,6 +153,10 @@ export class AppConfigComponent implements OnInit {
         });
     }
 
+    onMenuModeChange(){
+        this.layoutService.onConfigUpdate();
+    }
+
     changeMenuTheme(theme: any) {
         this.layoutService.config.menuTheme = theme.name;
         this.layoutService.onConfigUpdate();
@@ -170,6 +174,7 @@ export class AppConfigComponent implements OnInit {
 
     applyScale() {
         document.documentElement.style.fontSize = this.scale + 'px';
+        this.layoutService.onConfigUpdate();
     }
 
 }

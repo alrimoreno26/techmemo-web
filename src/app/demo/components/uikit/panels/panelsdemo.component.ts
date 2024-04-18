@@ -18,7 +18,7 @@ export class PanelsDemoComponent implements OnInit {
 
         this.cardMenu = [
             {
-                label: 'Save', icon: 'pi pi-fw pi-check'
+                label: 'Save', icon: 'mdi mdi-check'
             },
             {
                 label: 'Update', icon: 'pi pi-fw pi-refresh'
@@ -28,5 +28,5 @@ export class PanelsDemoComponent implements OnInit {
             },
         ];
     }
-    
+
 }

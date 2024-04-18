@@ -1,13 +1,14 @@
 <c-spinner/>
 <div class="layout-wrapper" [ngClass]="containerClass" [class]="sidebarClass">
-    <div class="layout-content-wrapper">
+    <div [ngClass]="containerClassWrapper">
         <app-topbar [showMenu]="!user"></app-topbar>
         <div class="layout-content">
             <app-breadcrumb></app-breadcrumb>
             <p-toast toastTranslate/>
             <router-outlet></router-outlet>
+            <p-confirmDialog [autoZIndex]="true" [style]="{width: '30rem'}" appendTo="body" confirmTranslate/>
         </div>
     </div>
-    <app-config></app-config>
+<!--    <app-config></app-config>-->
     <app-rightmenu></app-rightmenu>
 </div>

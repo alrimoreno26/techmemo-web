@@ -18,7 +18,7 @@ export class UnidadeComponent extends BaseComponentDirective {
         },
         {
             header: 'Code', field: 'code',
-            class: 'text-center', visible: true, export: true
+            class: 'text-center', visible: true
         },
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];

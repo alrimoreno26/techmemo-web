@@ -7,6 +7,6 @@ RUN npm run build --production
 
 # Use an official Nginx image as the base image
 FROM nginx
-COPY --from=node /app/dist/techzilla-web /usr/share/nginx/html
+COPY --from=node /app/dist/techmemo-web /usr/share/nginx/html
 EXPOSE 9080
 CMD ["nginx", "-g", "daemon off;"]

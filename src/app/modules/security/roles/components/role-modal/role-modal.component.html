@@ -1,78 +1,90 @@
+<ng-template dialog-header>
+    Edição de roles de aplicativo
+</ng-template>
 <form [formGroup]="form">
-  <div class="grid" formResponsive width="950px">
-    <div class="col-12 md:col-6">
-      <div class="field p-fluid">
-        <label class="required block" for="name">
-          {{ 'security.role.labels.name' | translate }}
-        </label>
-        <input formControlName="name" formFieldValidation id="name" pInputText type="text">
-      </div>
+    <div class="grid" formResponsive width="950px">
+        <div class="col-12 md:col-6">
+            <div class="field p-fluid">
+                <label class="required block" for="name">
+                    {{ 'security.role.labels.name' | translate }}
+                </label>
+                <input formControlName="name" formFieldValidation id="name" pInputText type="text">
+            </div>
+        </div>
+        <div class="col-12 md:col-6">
+            <div class="field p-fluid">
+                <label class="required block" for="operationArea">
+                    {{ 'security.role.labels.operationArea' | translate }}
+                </label>
+                <p-dropdown [options]="operationArea" appendTo="body" formControlName="operationArea"
+                            [group]="true"
+                            placeholder="{{ 'security.role.labels.operationArea' | translate }}"
+                            formFieldValidation
+                            id="operationArea">
+                    <ng-template let-selected pTemplate="selectedItem">
+                        <ng-template [ngIf]="selected">
+                            {{ ('security.role.select.' + selected.label) | translate }}
+                        </ng-template>
+                    </ng-template>
+                    <ng-template let-group pTemplate="group">
+                        <div class="font-bold">{{ ('security.role.select.' + group.label) | translate }}</div>
+                    </ng-template>
+                    <ng-template let-item pTemplate="item">
+                        <div class="pl-3">{{ ('security.role.select.' + item.label) | translate }}</div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="field p-fluid">
+                <label class="required block" for="description">
+                    {{ 'security.role.labels.description' | translate }}
+                </label>
+                <input formControlName="description" formFieldValidation id="description" pInputText type="text">
+            </div>
+        </div>
+        <div class="col-12" formArrayName="authorities">
+            <p-table [value]="authorities.controls">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>{{ 'security.role.labels.permission' | translate }}</th>
+                        <th>{{ 'security.role.labels.read' | translate }}</th>
+                        <th>{{ 'security.role.labels.write' | translate }}</th>
+                        <th>{{ 'security.role.labels.modify' | translate }}</th>
+                        <th>{{ 'security.role.labels.delete' | translate }}</th>
+                    </tr>
+                </ng-template>
+                <ng-template let-authority let-i="rowIndex" pTemplate="body">
+                    <tr [formGroupName]="i">
+                        <td>
+                            {{ authority.get('description')?.value }}
+                            <i class="mdi mdi-information-outline text-blue-500"
+                               pTooltip="{{('security.role.select.')+authority.get('type')?.value | translate}}"
+                               tooltipPosition="top"></i>
+                        </td>
+                        <td class="text-center">
+                            <p-checkbox formControlName="read" [binary]="true" formFieldValidation></p-checkbox>
+                        </td>
+                        <td class="text-center">
+                            <p-checkbox formControlName="write" [binary]="true" formFieldValidation></p-checkbox>
+                        </td>
+                        <td class="text-center">
+                            <p-checkbox formControlName="modify" [binary]="true" formFieldValidation></p-checkbox>
+                        </td>
+                        <td class="text-center">
+                            <p-checkbox formControlName="delete" [binary]="true" formFieldValidation></p-checkbox>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
     </div>
-    <div class="col-12 md:col-6">
-      <div class="field p-fluid">
-        <label class="required block" for="operationArea">
-          {{ 'security.role.labels.operationArea' | translate }}
-        </label>
-        <p-dropdown [options]="operationArea" appendTo="body" formControlName="operationArea" formFieldValidation
-                    id="operationArea" optionLabel="name" optionValue="value">
-          <ng-template let-selected pTemplate="selectedItem">
-            @if (selected) {
-              {{ ('security.role.select.' + selected.name) | translate }}
-            }
-          </ng-template>
-          <ng-template let-area pTemplate="item">
-            <div>{{ ('security.role.select.' + area.name) | translate }}</div>
-          </ng-template>
-        </p-dropdown>
-      </div>
-    </div>
-    <div class="col-12">
-      <div class="field p-fluid">
-        <label class="required block" for="description">
-          {{ 'security.role.labels.description' | translate }}
-        </label>
-        <input formControlName="description" formFieldValidation id="description" pInputText type="text">
-      </div>
-    </div>
-    <div class="col-12" formArrayName="authorities">
-      <p-table [value]="authorities.controls">
-        <ng-template pTemplate="header">
-          <tr>
-            <th>{{ 'security.role.labels.permission' | translate }}</th>
-            <th>{{ 'security.role.labels.read' | translate }}</th>
-            <th>{{ 'security.role.labels.write' | translate }}</th>
-            <th>{{ 'security.role.labels.modify' | translate }}</th>
-            <th>{{ 'security.role.labels.delete' | translate }}</th>
-          </tr>
-        </ng-template>
-        <ng-template let-authority let-i="rowIndex" pTemplate="body">
-          <tr [formGroupName]="i">
-            <td>
-              {{ authority.get('description')?.value }}
-              <i class="mdi mdi-information-outline text-blue-500"
-                 pTooltip="{{authority.get('type')?.value}}" tooltipPosition="top"></i>
-            </td>
-            <td class="text-center">
-              <input formControlName="read" formFieldValidation type="checkbox">
-            </td>
-            <td class="text-center">
-              <input formControlName="write" formFieldValidation type="checkbox">
-            </td>
-            <td class="text-center">
-              <input formControlName="modify" formFieldValidation type="checkbox">
-            </td>
-            <td class="text-center">
-              <input formControlName="delete" formFieldValidation type="checkbox">
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-  </div>
 </form>
 <ng-template dialog-footer>
-  <button (click)="ref.close('Cancel')" class="p-button-outlined mr-2" icon="mdi mdi-close"
-          label="{{'common.cancel' | translate}}" pButton type="button"></button>
-  <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined mr-2" icon="mdi mdi-check"
-          label="{{'common.save' | translate}}" pButton type="button"></button>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="{{'common.cancel' | translate}}"
+            (click)="ref.close('Cancel')"
+            icon="mdi mdi-close"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="{{'common.save' | translate}}"
+            [disabled]="form.invalid"
+            (click)="save()" icon="mdi mdi-check"></button>
 </ng-template>

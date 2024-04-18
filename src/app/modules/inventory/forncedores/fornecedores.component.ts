@@ -12,10 +12,10 @@ export class FornecedoresComponent extends BaseComponentDirective {
 
     override modalContent = MFornecedoresComponent;
     override headersTable: HeadersTable[] = [
-        {header: 'Document', field: 'document', pipe: 'cpfCnpj', class: 'text-center', visible: true, export: true},
-        {header: 'Nome', field: 'identification', class: 'text-center', visible: true, export: true},
-        {header: 'E-mail', field: 'email', class: 'text-center', visible: true, export: true},
-        {header: 'Teléfono', field: 'phone', pipe: 'tel', class: 'text-center', visible: true, export: true},
+        {header: 'Document', field: 'document', pipe: 'cpfCnpj', class: 'text-center', visible: true},
+        {header: 'Nome', field: 'identification', class: 'text-center', visible: true},
+        {header: 'E-mail', field: 'email', class: 'text-center', visible: true},
+        {header: 'Teléfono', field: 'phone', pipe: 'tel', class: 'text-center', visible: true},
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];
 

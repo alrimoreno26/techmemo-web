@@ -25,13 +25,13 @@ export class AdditionalComponents implements OnInit, OnChanges {
     additionals: LazyResultData<any> = {content: [], totalPages: 0, totalElements: 0};
     combos: LazyResultData<any> = {content: [], totalPages: 0, totalElements: 0};
     additionalsParams = {
-        page: 0,
-        count: 20,
+        pageNumber: 0,
+        pageSize: 20,
         type: 'ADDITIONAL'
     }
     comboParams = {
-        page: 0,
-        count: 20,
+        pageNumber: 0,
+        pageSize: 20,
         type: 'COMBO'
     }
     private fromAuthActions: any;
@@ -78,7 +78,7 @@ export class AdditionalComponents implements OnInit, OnChanges {
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes["product"] && !changes["product"].firstChange && isObject(changes["product"].currentValue)) {
-            console.log(this.product)
+
         }
     }
 

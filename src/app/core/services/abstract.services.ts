@@ -85,8 +85,7 @@ export class AbstractService<T> {
    * @return An Observable<T>
    */
   update(params: any, idProp?: string, queryParams?: any): Observable<T> {
-    return idProp ? this.client.patch<T>(this.basePath + '/' + params[idProp], params) :
-      this.client.put<T>(this.basePath, params);
+    return this.client.patch<T>(this.basePath + '/' + params['id'], params)
   }
 
   /**

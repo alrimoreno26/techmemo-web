@@ -32,6 +32,7 @@ import {BaseDragServices} from './class/base.drag.services';
 import {MultiSelectModule} from "primeng/multiselect";
 import {DropdownModule} from "primeng/dropdown";
 import {FormsModule} from "@angular/forms";
+import {StyleClassModule} from "primeng/styleclass";
 
 
 @NgModule({
@@ -64,7 +65,8 @@ import {FormsModule} from "@angular/forms";
         DirectivesModule,
         MultiSelectModule,
         DropdownModule,
-        FormsModule
+        FormsModule,
+        StyleClassModule
     ],
   providers: [
     DecimalPipe, CurrencyPipe, DatePipe, DialogService,

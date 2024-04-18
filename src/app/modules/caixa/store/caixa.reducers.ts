@@ -77,10 +77,10 @@ export const ordersReducer = createReducer<State>(
             orderCreate: false
         };
     }),
-    on(fromOrdersListActions.deleteProductsOrders, (state, {productId}) => {
+    on(fromOrdersListActions.deleteProductsOrders, (state, {entity}) => {
         const excludedValues: number[] = [];
         const tempProducts = state?.orderProducts?.filter(product => {
-            if (!productId.includes(product.id)) {
+            if (!entity.productIds.includes(product.id)) {
                 excludedValues.push(product.salePrice + product.totalAdditionalsValue);
                 return true;
             }

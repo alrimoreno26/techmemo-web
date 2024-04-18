@@ -1,12 +1,16 @@
 <div [ngClass]="{'justify-content-between': showCreate, 'justify-content-end': !showCreate}"
      class="sm:flex align-items-center mb-3">
     <button (click)="createItem()" *ngIf="showCreate && !itemsSplit?.length"
-            class="p-button-outlined" icon="mdi {{iconCreate}}" label="Criar"
+            class="p-button-outlined text-2xl" icon="mdi {{iconCreate}} mdi-24px" label="{{'common.create' | translate}}"
+            pTooltip="{{'common.tooltip.create' | translate: {value: (name | translate)} }}"
             pButton
             type="button"></button>
     <p-splitButton (onClick)="createItem()" *ngIf="showCreate && itemsSplit?.length"
-                   [model]="itemsSplit" appendTo="body" icon="mdi {{iconCreate}}" label="Criar"
-                   styleClass="p-button-outlined"
+                   class="text-2xl"
+                   outlined
+                   [model]="itemsSplit" appendTo="body" icon="mdi {{iconCreate}} mdi-24px" label="{{'common.create' | translate}}"
+                   pTooltip="{{'common.tooltip.create' | translate: {value: (name | translate)} }}"
+                   styleClass="text-2xl"
     ></p-splitButton>
     <div>
     <span class="p-input-icon-left">
@@ -15,7 +19,7 @@
              placeholder="Vamos pesquisar" type="text"/>
     </span>
         <button (click)="refreshContentData(dt)" *ngIf="refreshBtn"
-                class="ml-2 p-button-rounded p-button-text" icon="pi pi-replay" pButton
+                class="ml-2 p-button-rounded p-button-text" icon="mdi mdi-replay mdi-24px" pButton
                 pTooltip="Refresh" tooltipPosition="left" type="button"></button>
     </div>
 </div>
@@ -33,12 +37,12 @@
             <ng-template [ngForOf]="columns" let-item ngFor>
                 <ng-template [ngIfElse]="headWidthSort" [ngIf]="!item.sort">
                     <th [class]="item.class" [style.max-width.px]="item?.width">
-                        {{ item.header }}
+                        {{ item.header | translate}}
                         <p-columnFilter *ngIf="item.filter" [field]="item.field" matchMode="in" ma display="menu" [showMatchModes]="false"
                                         [showOperator]="false" [showAddButton]="false">
                             <ng-template pTemplate="header">
                                 <div class="px-3 pt-3 pb-0">
-                                    <span class="font-bold">{{ item.header }}</span>
+                                    <span class="font-bold">{{ item.header | translate}}</span>
                                 </div>
                             </ng-template>
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
@@ -62,7 +66,7 @@
                 <ng-template #headWidthSort>
                     <th [class]="item.class" [pSortableColumn]="item?.sortField ? item?.sortField : item.field"
                         [style.max-width.px]="item?.width">
-                        {{ item.header }}
+                        {{ item.header | translate}}
                         <p-sortIcon [field]="item?.sortField ? item?.sortField : item.field"></p-sortIcon>
                     </th>
                 </ng-template>
@@ -159,11 +163,11 @@
 <p-menu #menu [model]="contextAction" [popup]="true" appendTo="body" menuTranslate/>
 
 <ng-template #staticActions let-rowData>
-    <button (click)="editItem(rowData)" *ngIf="showEdit" class="p-button-rounded p-button-text" icon="pi pi-pencil"
+    <button (click)="editItem(rowData)" *ngIf="showEdit" class="p-button-rounded p-button-text" icon="mdi mdi-pencil mdi-24px"
             pButton
             type="button"></button>
     <button (click)="deleteItem(rowData)" *ngIf="showDelete" class="p-button-rounded p-button-text p-button-danger"
-            icon="pi pi-trash"
+            icon="mdi mdi-delete mdi-24px"
             pButton
             type="button"></button>
 </ng-template>

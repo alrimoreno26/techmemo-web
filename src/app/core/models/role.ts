@@ -13,13 +13,13 @@ export interface Role {
 export interface AuthorityTO {
   permission: permissionAuthorityTOEnum;
   id: number;
-  domainDetail: DomainDetailTO;
+  domain: DomainDetailTO;
 }
 
 export interface DomainDetailTO {
   id: number;
   description: string;
-  domain: domainEnum;
+  type: domainEnum;
 }
 
 export interface AuthMap {
@@ -28,4 +28,9 @@ export interface AuthMap {
   permission: permissionAuthorityTOEnum;
   type: domainEnum;
   value: boolean;
+}
+export interface Domains {
+    id: number;
+    description: string;
+    DomainType: domainEnum;
 }

@@ -34,3 +34,4 @@ export const getDialog = createSelector(getEntityState, state => state.dialog);
 
 // get list of Roles
 export const getRoleList = createSelector(getEntityState, state => state.roleList);
+export const getUserBasic = createSelector(getEntityState, state => state.userBasic);

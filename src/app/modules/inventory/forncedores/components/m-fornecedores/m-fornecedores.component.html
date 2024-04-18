@@ -22,7 +22,7 @@
                             </div>
                             <div class="col-4 field">
                             <span class="p-input-icon-right">
-                                <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCNPJ"></i>
+                                <i class="icon-spinner mdi mdi-loading text-primary" *ngIf="searchingCNPJ"></i>
                                <p-inputMask id="cnpj"
                                             formControlName="document"
                                             placeholder="CNPJ" mask="99.999.999/9999-99" (keyup)="verifyCNPJ($event)">
@@ -105,7 +105,7 @@
                     </p>
                     <div class="p-1">
                         <span class="p-input-icon-right">
-                        <i class="pi pi-spin pi-spinner text-primary" *ngIf="searchingCEP"></i>
+                        <i class="icon-spinner mdi mdi-loading text-primary" *ngIf="searchingCEP"></i>
                         <p-inputMask id="cep" placeholder="CEP" mask="99.999-999" formControlName="cep"
                                      (keyup)="verifyCEP($event)"></p-inputMask>
                     </span>
@@ -135,8 +135,8 @@
 </form>
 <ng-template dialog-footer>
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
-            icon="pi pi-fw pi-times" (click)="ref.close('Cancel')"></button>
+            icon="mdi mdi-close" (click)="ref.close('Cancel')"></button>
     <button pButton pRipple class="p-button-primary flex-1 border-round" [disabled]="form.invalid" label="Salvar"
             (click)="save()"
-            icon="pi pi-fw pi-check"></button>
+            icon="mdi mdi-check"></button>
 </ng-template>

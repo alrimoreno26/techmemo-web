@@ -14,7 +14,7 @@ export const fornecedoresResolvers: ResolveFn<boolean> = () => {
             if (!loaded) {
                 store.dispatch(fromSupplierListActions.loadSupplierList({
                     lazy: {
-                        page: 0, count: 50
+                        pageNumber: 0, pageSize: 50
                     }
                 }));
             }

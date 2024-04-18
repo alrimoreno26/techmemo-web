@@ -1,1 +1,7 @@
-<c-data-table [headers]="headersTable" [service]="service"></c-data-table>
+<div class="card m-3">
+    <c-data-table [headers]="headersTable" [service]="service">
+        <ng-template let-data tableRow="operationArea">
+            {{('security.role.select.' + data.operationArea) | translate}}
+        </ng-template>
+    </c-data-table>
+</div>

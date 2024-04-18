@@ -78,7 +78,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
                 this.selectedAdditional.push(p);
             }
         })
-        console.log(this.selectedAdditional)
     }
 
     initForm(data: any): void {
@@ -90,7 +89,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             })
         }
         if (data?.technicalSheet?.products.length > 0) {
-            data?.technicalSheet.products.forEach((p:any) => {
+            data?.technicalSheet.products.forEach((p: any) => {
                 this.technicalSheetProducts.push({
                     amount: p.amount,
                     id: p.product.id,
@@ -122,7 +121,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             }),
             showInMenu: new FormControl<boolean>(data?.showInMenu),
             soldPerUnits: new FormControl<boolean>(data?.soldPerUnits),
-            supplierIds: new FormControl<string[]>(suppliers, [Validators.required]),
+            supplierIds: new FormControl<string[]>(suppliers),
             unitMeasurementId: new FormControl<string>(data?.unitMeasurement?.id),
             valuePerUnits: new FormControl<number>(data?.valuePerUnits),
         });
@@ -237,6 +236,12 @@ export class MProductComponent extends BaseModalComponentDirective implements On
 
         totalCostPrice = this.selectedAdditional.reduce((acc, item) => acc + item.costPrice, 0);
         return {totalUnitPrice, totalCostPrice};
+    }
+
+    getValueMultiselect(item: any) {
+        if(item === undefined)
+            return []
+        return item;
     }
 
     addFornecedor() {

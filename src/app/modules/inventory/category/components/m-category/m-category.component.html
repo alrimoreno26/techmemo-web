@@ -5,8 +5,7 @@
             <div class="col-12 lg:col-12">
                 <div class="grid formgrid">
                     <div class="col-12 lg:col-6 field">
-                        <input pInputText type="text" formControlName="name" placeholder="Nome categoria"
-                               label="Nome categoria">
+                        <input pInputText type="text" formControlName="name" placeholder="Nome categoria">
                     </div>
                     <div class="col-12 lg:col-6 field">
                         <p class="align-items-center block flex font-bold justify-content-end gap-3 surface-border text-900">
@@ -56,11 +55,11 @@
                 <td>{{subgrupo.name}}</td>
                 <td><p [innerHTML]="subgrupo.description | sanitizeHtml"></p></td>
                 <td>
-                    <button (click)="editItem(subgrupo)"  class="p-button-rounded p-button-text" icon="pi pi-pencil"
+                    <button (click)="editItem(subgrupo)"  class="p-button-rounded p-button-text" icon="mdi mdi-pencil"
                             pButton
                             type="button"></button>
                     <button (click)="deleteItem(subgrupo)"  class="p-button-rounded p-button-text p-button-danger"
-                            icon="pi pi-trash"
+                            icon="mdi mdi-trash-can-outline"
                             pButton
                             type="button"></button>
                 </td>
@@ -88,7 +87,7 @@
         </form>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="pi pi-fw pi-trash" class="p-button-danger flex-1 p-button-outlined"
+        <button pButton pRipple label="Cancel" icon="mdi pi-fw mdi-trash-can-outline" class="p-button-danger flex-1 p-button-outlined"
                 (click)="hideDialog()"></button>
         <button pButton pRipple label="Salvar" class="p-button-primary flex-1 border-round"
                 (click)="saveFields()"></button>
@@ -97,8 +96,8 @@
 <ng-template dialog-footer>
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
             (click)="close()"
-            icon="pi pi-fw pi-times"></button>
+            icon="mdi mdi-close"></button>
     <button pButton pRipple class="p-button-primary flex-1 border-round" [disabled]="form.invalid" label="Salvar"
             (click)="save()"
-            icon="pi pi-fw pi-check"></button>
+            icon="mdi mdi-check"></button>
 </ng-template>

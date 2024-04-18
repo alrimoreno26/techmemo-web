@@ -32,14 +32,14 @@
 
     .comanda_list{
         width: 100%;
-        height: calc(100vh - 420px);
+        height: calc(100vh - 445px);
         overflow: auto;
     }
 
     .list_products {
         display: table;
         border-collapse: collapse;
-        border-spacing: 0px;
+        border-spacing: 0;
     }
 
     .custom-th {

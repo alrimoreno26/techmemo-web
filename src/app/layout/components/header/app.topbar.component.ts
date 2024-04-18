@@ -1,6 +1,8 @@
 import {Component, ElementRef, Input, ViewChild} from '@angular/core';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
+import {SessionServices} from "../../../core/injects/session.services";
+import {domainEnum, operationAreaRoleEnum} from "../../../core/enums/role";
 
 @Component({
     selector: 'app-topbar',
@@ -13,8 +15,12 @@ export class AppTopbarComponent {
     @ViewChild(AppSidebarComponent) appSidebar!: AppSidebarComponent;
 
     @Input() showMenu: boolean = true;
-
-    constructor(public layoutService: LayoutService, public el: ElementRef) { }
+    lojas:any[] = [];
+    selectedCommerce: any | undefined = { name: '', code: '' };
+    constructor(public layoutService: LayoutService, public el: ElementRef, public session: SessionServices) {
+        this.lojas = this.session.userLogged.commerces;
+        this.selectedCommerce = this.lojas[0];
+    }
 
 
     onMenuButtonClick() {
@@ -38,4 +44,12 @@ export class AppTopbarComponent {
         return logo;
     }
 
+    get containerTopBarWrapper(){
+        return {
+            'layout-topbar-slim': this.session.userLogged.role.operationArea === operationAreaRoleEnum.ATTENDANT || this.session.userLogged.role.operationArea === operationAreaRoleEnum.WAITER,
+        }
+    }
+
+    protected readonly domainEnum = domainEnum;
+    protected readonly operationAreaRoleEnum = operationAreaRoleEnum;
 }

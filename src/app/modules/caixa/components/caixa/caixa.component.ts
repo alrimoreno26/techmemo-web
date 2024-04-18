@@ -6,7 +6,7 @@ import {CaixaService} from "../../services/caixa.service";
 import {ProductService} from "../../../inventory/product/services/product.service";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {cloneDeep, isArray} from "lodash";
-import {ProductLightDto} from "../../../../core/models/products";
+import {DeleteOrderProductDto, ProductLightDto} from "../../../../core/models/products";
 import {isObject} from "../../../../core/util";
 import {DialogService} from "primeng/dynamicdialog";
 import {AdditionalComponents} from "../modals/additionals/additional-components.component";
@@ -14,6 +14,7 @@ import {MTransferComponents} from "../modals/transfer/transfer.components";
 import {MCancelProductsComponents} from "../modals/cancel_products/cancel-products.components";
 import {StoreTablesServices} from "../../services/store.tables.services";
 import {MComandaComponents} from "../modals/m-comanda/m-comanda.components";
+import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 
 
 @Component({
@@ -59,6 +60,7 @@ export class CaixaComponent implements OnInit {
                 private activatedRoute: Router,
                 private dialogService: DialogService,
                 private productService: ProductService,
+                private toastMessageService: ToastMessageService,
                 private storeTablesServices: StoreTablesServices,
                 private router: Router,
                 public service: CaixaService) {
@@ -82,6 +84,10 @@ export class CaixaComponent implements OnInit {
                     this.pagamento = true;
                 }
 
+                if(this.orders.every((x: any) => (x.state === 'FINISHED'))){
+                    this.service.setSelected(null);
+                    this.router.navigate(['/comandas'])
+                }
                 this.ordersProducts = cloneDeep(this.service.selectedEntity$().products)
             }
             if (this.storeTablesServices.finalize$()) {
@@ -135,11 +141,12 @@ export class CaixaComponent implements OnInit {
                         }).onClose.subscribe(() => {
                             this.resetAllValues();
                         })
-                    }
-                    if (this.selectedItem.soldPerUnits) {
-                        this.visible = true;
                     } else {
-                        this.addElementComanda({count: 1, ...this.selectedItem});
+                        if (this.selectedItem.soldPerUnits) {
+                            this.addElementComanda({count: 1, ...this.selectedItem});
+                        } else {
+                            this.visible = true;
+                        }
                     }
                 } else {
                     if (this.pagamento) {
@@ -161,6 +168,9 @@ export class CaixaComponent implements OnInit {
         switch (this.activeRoute) {
             case 'table':
                 this.storeTablesServices.changeStateTable(this.activeRouteOrder, 'FREE')
+                break;
+            case 'order':
+                this.service.changeFieldStateOrders(this.activeRouteOrder, {state: 'FINISHED'})
                 break;
             default:
                 this.service.getById([], this.activeRouteOrder)
@@ -205,13 +215,18 @@ export class CaixaComponent implements OnInit {
     }
 
     transferOrders() {
-        this.dialogService.open(MTransferComponents, {
-            data: this.service.selectedEntity$()[this.activeOrder],
-            modal: true,
-            style: {'width': '60vw'},
-            draggable: false,
-            resizable: false
-        })
+        if(this.service.selectedEntity$()[this.activeOrder].products.length > 0){
+            this.dialogService.open(MTransferComponents, {
+                data: this.service.selectedEntity$()[this.activeOrder],
+                modal: true,
+                style: {'width': '60vw'},
+                draggable: false,
+                resizable: false
+            })
+        } else{
+            this.toastMessageService.showMessage("info", 'INFO', 'Nao tem productos para transferir')
+        }
+
     }
 
     closeOrders() {
@@ -261,19 +276,33 @@ export class CaixaComponent implements OnInit {
             style: {'width': '20vw'},
             draggable: false,
             resizable: false
-        }).onClose.subscribe(() => {
-            this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, [pedido.id])
+        }).onClose.subscribe((data) => {
+            if(data.cancel){
+                const deleteTO: DeleteOrderProductDto = {
+                    description: data.data.description,
+                    productIds:[pedido.id]
+                }
+                this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
+            }
         })
     }
 
     deleteAll(): void {
         this.dialogService.open(MCancelProductsComponents, {
             modal: true,
-            style: {'width': '20vw'},
+            style: {'width': '22vw'},
             draggable: false,
             resizable: false
-        }).onClose.subscribe(() => {
-            // this.service.deleteProductsOrders(this.service.selectedEntity$().id, pedido.id)
+        }).onClose.subscribe((data) => {
+            if(data.cancel){
+                const deleteTO: DeleteOrderProductDto = {
+                    description: data.data.description,
+                    productIds:this.service.selectedEntity$()[this.activeOrder].products.map((obj:any) => {
+                        return obj.id
+                    }),
+                }
+                this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
+            }
         })
     }
 

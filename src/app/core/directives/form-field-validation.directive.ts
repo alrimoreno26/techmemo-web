@@ -57,7 +57,7 @@ export class FormFieldValidationDirective implements OnInit, OnDestroy {
         /**
          * Print form error for future treatment
          */
-        console.error(this.ngControl.errors);
+        // console.error(this.ngControl.errors);
       }
       return true;
     }

@@ -34,7 +34,7 @@ export interface HeadersTable {
     field: string;
     header: string;
     visible: boolean;
-    export: boolean;
+    export?: boolean;
     // opcionales
     pipe?: pipe;
     extraVal?: string;
@@ -53,11 +53,14 @@ export interface TemplateSlot {
 }
 
 export interface LazyLoadData {
-    page: number;
-    count: number;
+    page?: number;
+    count?: number;
     first?: number;
     filter?: string;
+    pageNumber: number;
+    pageSize: number;
     state?: string[];
+    states?: string[];
     sort?: string;
     direction?: any;
     type?: any;

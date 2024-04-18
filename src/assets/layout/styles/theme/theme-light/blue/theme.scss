@@ -6,7 +6,9 @@ $primaryTextColor: #ffffff;
 
 $highlightBg: #E3F2FD;
 $highlightTextColor: #495057;
+$highlightFocusBg: rgba($primaryColor, .24) !default;
 
 @import '../_variables';
 @import '../../theme-base/_components';
 @import '../_extensions';
+@import '../../extensions/_fullcalendar';

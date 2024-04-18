@@ -31,4 +31,5 @@ export class ProductService extends AbstractService<any> {
 
         return this.httpClient.get<LazyResultData<any>>(`${this.basePath}?${params}`,{context: silentIt()});
     }
+
 }

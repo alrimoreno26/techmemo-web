@@ -14,8 +14,8 @@ export class PaymentMethodComponent extends BaseComponentDirective implements On
     override modalContent = AddEditPaymentMethodModal;
 
     override headersTable: HeadersTable[] = [
-        {header: 'Nome', field: 'description', sort: true, class: 'text-center', visible: true, export: true},
-        {header: 'Ativo', field: 'enable', sort: true, class: 'text-center', visible: true, export: true},
+        {header: 'Nome', field: 'description', sort: true, class: 'text-center', visible: true},
+        {header: 'Ativo', field: 'enable', sort: true, class: 'text-center', visible: true},
         {
             header: 'Permitir Troco',
             field: 'allowsChange',
@@ -47,8 +47,8 @@ export class PaymentMethodComponent extends BaseComponentDirective implements On
         super();
         this.service.loadAll({
             lazy: {
-                page: 0,
-                size: 10,
+                pageNumber: 0,
+                pageSize: 10,
             }
         })
     }

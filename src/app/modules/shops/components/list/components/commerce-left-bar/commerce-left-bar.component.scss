@@ -1,0 +1,209 @@
+:host ::ng-deep {
+	.companies-left-bar{
+		.p-listbox-list-wrapper {
+			overflow-y: hidden;
+			height: calc(100vh - 190px);
+            max-height: 100% !important;
+		}
+
+		.p-listbox-list-wrapper:hover {
+			overflow-y: scroll;
+			transition: all 0.52s ease;
+		}
+
+		.empty-list-companies {
+			.p-listbox-list-wrapper:hover {
+				overflow-y: hidden;
+			}
+		}
+
+		.p-listbox-list-wrapper::-webkit-scrollbar {
+			background: transparent;
+		}
+
+		.p-listbox-list-wrapper::-webkit-scrollbar-thumb {
+			background: hsla(0, 0%, 38%, 0.376);
+			border-radius: 10px;
+			opacity: 1;
+		}
+
+		.p-listbox-list-wrapper::-webkit-scrollbar-thumb:hover {
+			background: hsla(217, 91%, 60%, 0.753);
+		}
+
+		.p-listbox .p-listbox-header {
+			background-color: #FFF !important;
+			border: unset;
+			border-radius: 0;
+			padding: 10px;
+			border-color: var(--gray-300) !important;
+			border-bottom: 1px solid;
+
+			.p-listbox-filter {
+				background: #F0F0F0;
+			}
+
+			.p-inputtext {
+				&:enabled{
+					&:hover{
+						border-color: var(--primary-theme-color) !important;
+					}
+					&:focus {
+						border-color: var(--primary-theme-color) !important;
+						box-shadow: none !important;
+					}
+				}
+			}
+		}
+
+		.p-listbox .p-listbox-list {
+			padding: 0px;
+			//margin: 1rem 0;
+			height: 100%;
+
+			.p-listbox-item{
+				border-top: 1px solid #eee;
+				padding: 0;
+			}
+
+			.p-listbox-item > .company-item {
+				padding: 0.70rem 0.70rem;
+
+				&:focus {
+					box-shadow: none !important;
+				}
+			}
+
+			.p-listbox-item > .active-company-item {
+				border-right: 3px solid var(--primary-theme-color);
+				color: var(--primary-theme-color);
+				background: #EFF6FF;
+				font-weight: 500;
+
+				&:focus {
+					box-shadow: none !important;
+				}
+			}
+
+			.p-listbox-item-group {
+				background-color: #F0F0F0 !important;
+				font-weight: 700;
+				font-size: 12px;
+				line-height: 20px;
+				color: #424242;
+			}
+
+			/*.p-listbox-item.p-highlight {
+				border-right: 3px solid var(--primary-theme-color);
+				color: var(--primary-theme-color);
+				font-weight: 500;
+
+				&:focus {
+					box-shadow: none !important;
+				}
+			}*/
+		}
+
+		p-paginator {
+			.p-paginator {
+				padding: 0 !important;
+				.p-paginator-current {
+					padding: 0 !important;
+				}
+			}
+		}
+
+		.p-speeddial-direction-up {
+			&.speeddial-right {
+				right: 5px;
+				bottom: 10px;
+			}
+		}
+
+		.p-speeddial-action {
+			color: #FFFFFF !important;
+		}
+	}
+
+	.sandbox {
+		.social-reason, .cnpj {
+			filter: blur(3px);
+		}
+	}
+
+	#company-list-add {
+		.p-listbox .p-listbox-list-wrapper {
+			max-height: 300px;
+		}
+	}
+
+	#companies-state-modal {
+		.p-dialog .p-dialog-content {
+			padding: 0px !important;
+		}
+
+		.p-dialog .p-dialog-header {
+			padding: 0px !important;
+		}
+
+		.p-tabview .p-tabview-panels {
+			padding: 0px !important;
+		}
+	}
+}
+
+.bg-primary-color {
+	background-color: var(--primary-theme-color) !important;
+}
+
+.text-primary-color {
+	color: var(--primary-theme-color) !important;
+}
+
+.border-primary-color {
+	border-color: var(--primary-theme-color) !important;
+}
+
+.skeleton-companies-container {
+	overflow-y: hidden;
+    height: calc(100vh - 338px);
+}
+
+.companies-paginate {
+	bottom: -40px;
+	border-top: 2px solid gray;
+}
+
+.total-companies {
+	bottom: -10px;
+	border-left: 3px solid gray;
+}
+
+.empty-search-companies {
+	height: 100%;
+	svg {
+		height: 250px;
+		width: 100%;
+	}
+}
+
+.companies-list-state {
+	.company-not-proccess {
+		color: #666876;
+	}
+	.company-added {
+		color: #198754;
+	}
+	.company-exist {
+		color: #DC3545;
+	}
+	.company-error {
+		color: #DC3545;
+	}
+}
+
+.speed-options {
+	position: absolute;
+	bottom: 80px;
+    right: 60px;
+}

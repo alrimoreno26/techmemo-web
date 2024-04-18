@@ -1,6 +1,7 @@
 import {inject, Injectable} from '@angular/core';
 import {ActivatedRouteSnapshot, CanActivateChildFn, CanActivateFn, Router, RouterStateSnapshot} from '@angular/router';
 import {SessionServices} from '../injects/session.services';
+import {operationAreaRoleEnum} from "../enums/role";
 
 export const canActivateControlGuard: CanActivateFn = (route: ActivatedRouteSnapshot, state: RouterStateSnapshot) => {
   return inject(ControlGuard).canActivate(route, state);
@@ -25,10 +26,12 @@ export class ControlGuard {
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const {roles} = route?.data;
+    if(this.sessionService.userLogged.role.operationArea === operationAreaRoleEnum.SUPER_ADMIN)
+        return true
     if (this.sessionService.roleAccess(roles)) {
       return true;
     } else {
-      this.router.navigate(['/static/access']).then();
+      this.router.navigate(['/static/access-denied']).then();
     }
     return false;
   }

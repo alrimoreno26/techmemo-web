@@ -1,0 +1,566 @@
+<div class="shop_section_areas">
+
+    <div class="top_filter_shop_section_areas">
+        <div class="container p-3">
+            <div class="flex align-items-center ml-4 gap-5">
+                <div class="filter_wrapers">
+                    <p-button (onClick)="side_expand()" label="Filtros" icon="mdi mdi-menu" [rounded]="true" severity="secondary" [outlined]="true"></p-button>
+                </div>
+
+                <div class="wraper_shop_tools">
+                    <div class="count_labels">
+                        <h4>Mostrando 16 productos</h4>
+                    </div>
+                    <div class="tag_tools">
+                        <ul>
+                            <li>
+                                <a href="">
+                                    <span class="tools_icon"><i class="mdi mdi-close"></i></span>
+                                    <span class="tools_text">tomates</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="tools_icon"><i class="mdi mdi-close"></i></span>
+                                    <span class="tools_text">Sin TACC</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <span class="tools_icon"><i class="mdi mdi-close"></i></span>
+                                    <span class="tools_text">free delivery</span>
+                                </a>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-------------------------Bottom-mainsections------------------>
+    <div class="main-product-sections">
+        <div class="inner-main-product-sections">
+            <div [class.container-fluid]="active_expand" [class.container]="!active_expand"
+                 [ngClass]="{'active_expand_dash_board': active_expand}">
+                <div class="grid">
+                    <div class="transition_sideber" [class.col-md-3]="active_expand"
+                         [class.col-0-width]="!active_expand" [ngClass]="{'active_expand_dash_board': active_expand}">
+                        <div class="side_ber_shop_filter">
+                            <a (click)="close_sideber()" class="close_btns"><i class="mdi mdi-close"></i></a>
+                            <div class="inner_side_ber_shop_filter">
+                                <div class="filter_section_item">
+                                    <div class="inner_top">
+                                        <div class="new">
+                                            <form>
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="Ofertas">
+                                                    <label for="Ofertas">Ofertas especiales
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="css">
+                                                    <label for="css">Descuentos </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="javascript">
+                                                    <label for="javascript">Cuponera especial</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <div class="inner_top end_top">
+
+                                        <div class="new">
+                                            <div class="side_sect_head">
+                                                <h4>Ordenar por</h4>
+                                            </div>
+                                            <form>
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="Ofertas11
+                        ">
+                                                    <label for="Ofertas11
+                        ">Más Vendidos
+                                                    </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="css2">
+                                                    <label for="css2">Menos Vendidos </label>
+                                                </div>
+                                                <div class="form-group">
+                                                    <input type="checkbox" id="javascript33">
+                                                    <label for="javascript33">Mayor Reputación</label>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="new">
+                                            <div class="side_sect_head">
+                                                <h4>Categorías</h4> <span class="head_minus"><i
+                                                class="fa-solid fa-minus"></i></span>
+                                            </div>
+                                            <div class="list_cat">
+                                                <ul>
+                                                    <li><a href=""><span class="">Alimentos</span> <span><i
+                                                        class="mdi mdi-plus mdi-24px"></i></span></a></li>
+                                                    <li><a href=""><span class="">Belleza</span> <span><i
+                                                        class="mdi mdi-plus mdi-24px"></i></span></a></li>
+                                                    <li><a href=""><span class="">Mascotas</span> <span><i
+                                                        class="mdi mdi-plus mdi-24px"></i></span></a></li>
+                                                    <li><a href=""><span class="">Insumos</span> <span><i
+                                                        class="mdi mdi-plus mdi-24px"></i></span></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <!-----------------next--------------->
+                                        <div class="new">
+                                            <div class="side_sect_head">
+                                                <h4>nutrición</h4> <span class="head_minus"><i
+                                                class="fa-solid fa-minus"></i></span>
+                                            </div>
+                                            <div class="main_all_col">
+                                                <div class="col_item">
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Vegano
+                            ">
+                                                            <label for="Vegano
+                            ">Vegano
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Sin Gluten">
+                                                            <label for="Sin Gluten">Sin Gluten </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Sin">
+                                                            <label for="Sin">Sin </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="lactosa">
+                                                            <label for="lactosa">lactosa </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Sin Sal">
+                                                            <label for="Sin Sal">Sin Sal </label>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <div class="col_item">
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Halal
+                            ">
+                                                            <label for="Halal
+                            ">Halal
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="De Quinta">
+                                                            <label for="De Quinta">De Quinta </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Orgánico">
+                                                            <label for="Orgánico">Orgánico</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="sugar">
+                                                            <label for="sugar">Sin Azúcar</label>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <!-------------Next------------->
+                                        <div class="new">
+                                            <div class="side_sect_head">
+                                                <h4>Estado</h4>
+                                            </div>
+                                            <div class="main_all_col">
+                                                <div class="col_item">
+                                                    <form>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Nuevo
+                            ">
+                                                            <label for="Nuevo
+                            ">Nuevo
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="En stock">
+                                                            <label for="En stock">En stock</label>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="Pausado">
+                                                            <label for="Pausado">Pausado </label>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-------------Next------------->
+                                        <div class="new">
+                                            <div class="side_sect_head">
+                                                <h4>Marca</h4> <span class="head_minus"><i
+                                                class="fa-solid fa-minus"></i></span>
+                                            </div>
+                                            <div class="main_all_col">
+                                                <div class="col_item">
+                                                    <form>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="Filtro1
+                            ">
+                                                            <label for="Filtro1
+                            ">Filtro 1
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="Filtro2">
+                                                            <label for="Filtro2">Filtro 2</label>
+                                                        </div>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="Filtro3">
+                                                            <label for="Filtro3">Filtro 3 </label>
+                                                        </div>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="Filtro4">
+                                                            <label for="Filtro4">Filtro 4 </label>
+                                                        </div>
+
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-------------Next------------->
+                                        <div class="new">
+                                            <div class="side_sect_head">
+                                                <h4>modo de envío</h4> <span class="head_minus"><i
+                                                class="fa-solid fa-minus"></i></span>
+                                            </div>
+                                            <div class="main_all_col">
+                                                <div class="col_item">
+                                                    <form>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="Fi
+                              ">
+                                                            <label for="Fi
+                              ">Entrega sin cargo <span>(32)</span>
+                                                            </label>
+                                                        </div>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="cargo">
+                                                            <label for="cargo">Entrega con cargo
+                                                                <span>(360)</span></label>
+                                                        </div>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="Envíos">
+                                                            <label for="Envíos">Envíos Naturali
+                                                                <span>(800)</span></label>
+                                                        </div>
+                                                        <div class="form-group roundd">
+                                                            <input type="checkbox" id="Retiro">
+                                                            <label for="Retiro">Retiro en el domicilio
+                                                                <span>(360)</span></label>
+                                                        </div>
+                                                    </form>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <!-------------Next------------->
+                                        <div class="new">
+                                            <div class="side_sect_head">
+                                                <h4>Precios</h4> <span class="head_minus"><i
+                                                class="fa-solid fa-minus"></i></span>
+                                            </div>
+                                            <div class="main_all_col">
+
+                                                <div class="price_range_sliders">
+                                                    <!-- <ngx-slider [(value)]="minValue" [(highValue)]="maxValue" [options]="options"></ngx-slider> -->
+                                                    <div class="slidecontainer">
+                                                        <input type="range" min="1" max="100" value="50" class="slider"
+                                                               id="myRange">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div [class.md:col-9]="active_expand" [class.col-md-12]="!active_expand"
+                         [ngClass]="{'active_expand_dash_board': active_expand}">
+                        <div class="slider_section_products">
+
+                            <!-------------------Next section -------------->
+                            <div class="slider_section_products mx-5 card mt-5">
+                                <div class="section_header mt-50">
+                                    <div class="grid">
+                                        <div class="xl:col-12">
+                                            <h2>Todos los productos</h2>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product_sliderss">
+                                    <div class="grid auto_width">
+                                        <div class="xl:col-2 lg:col-2 md:col-4 col-6">
+                                            <div class="product_cards">
+                                                <a href="" class="cart">
+                      <span>
+                        <i class="mdi mdi-plus mdi-24px"></i>
+                      </span>
+                                                </a>
+                                                <div class="inner_product_cards">
+                                                    <div class="product_thumbnail">
+                                                        <img
+                                                            src="../.././../../../../../../assets/images/commerce/img/gb41-1d2740a564167a565d15131206455359-640-0.jpg"
+                                                            alt="" srcset="">
+                                                    </div>
+                                                    <div class="product_content">
+                                                        <div class="inner_product_content">
+                                                            <div class="regular_price">
+                                                                <h4>
+                                                                    <s>$580</s>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="sale_price_wraper">
+                                                                <div class="inner_sale_price_wrapers">
+                                                                    <h4>$480</h4>
+                                                                    <div class="tag">
+                                <span>
+                                  25% OFF
+                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product_title">
+                                                                <h4 class="title">Café de Frutos de</h4>
+                                                                <h5 class="product_category">Mistol</h5>
+                                                                <h5 class="waight">250grs</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="xl:col-2 lg:col-2 md:col-4 col-6">
+                                            <div class="product_cards">
+                                                <a href="" class="cart">
+                      <span>
+                        <i class="mdi mdi-plus mdi-24px"></i>
+                      </span>
+                                                </a>
+                                                <div class="inner_product_cards">
+                                                    <div class="product_thumbnail">
+                                                        <img
+                                                            src="../.././../../../../../../assets/images/commerce/img/gb41-1d2740a564167a565d15131206455359-640-0.jpg"
+                                                            alt="" srcset="">
+                                                    </div>
+                                                    <div class="product_content">
+                                                        <div class="inner_product_content">
+                                                            <div class="regular_price">
+                                                                <h4>
+                                                                    <s>$580</s>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="sale_price_wraper">
+                                                                <div class="inner_sale_price_wrapers">
+                                                                    <h4>$480</h4>
+                                                                    <div class="tag">
+                                <span>
+                                  25% OFF
+                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product_title">
+                                                                <h4 class="title">Helado frutal Melona
+                                                                </h4>
+                                                                <h5 class="product_category">Aceite de coco</h5>
+                                                                <h5 class="waight">500ml</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="xl:col-2 lg:col-2 md:col-4 col-6">
+                                            <div class="product_cards">
+                                                <a href="" class="cart">
+                      <span>
+                        <i class="mdi mdi-plus mdi-24px"></i>
+                      </span>
+                                                </a>
+                                                <div class="inner_product_cards">
+                                                    <div class="product_thumbnail">
+                                                        <img
+                                                            src="../.././../../../../../../assets/images/commerce/img/gb41-1d2740a564167a565d15131206455359-640-0.jpg"
+                                                            alt="" srcset="">
+                                                    </div>
+                                                    <div class="product_content">
+                                                        <div class="inner_product_content">
+                                                            <div class="regular_price">
+                                                                <h4>
+                                                                    <s>$580</s>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="sale_price_wraper">
+                                                                <div class="inner_sale_price_wrapers">
+                                                                    <h4>$295</h4>
+                                                                    <div class="tag">
+                                <span>
+                                  25% OFF
+                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product_title">
+                                                                <h4 class="title">Mostaza Dijon Grey</h4>
+                                                                <h5 class="product_category">Aceite de coco</h5>
+                                                                <h5 class="waight">250grs</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="xl:col-2 lg:col-2 md:col-4 col-6">
+                                            <div class="product_cards">
+                                                <a href="" class="cart">
+                      <span>
+                        <i class="mdi mdi-plus mdi-24px"></i>
+                      </span>
+                                                </a>
+                                                <div class="inner_product_cards">
+                                                    <div class="product_thumbnail">
+                                                        <img
+                                                            src="../.././../../../../../../assets/images/commerce/img/gb41-1d2740a564167a565d15131206455359-640-0.jpg"
+                                                            alt="" srcset="">
+                                                    </div>
+                                                    <div class="product_content">
+                                                        <div class="inner_product_content">
+                                                            <div class="regular_price">
+                                                                <h4>
+                                                                    <s>$580</s>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="sale_price_wraper">
+                                                                <div class="inner_sale_price_wrapers">
+                                                                    <h4>$480</h4>
+                                                                    <div class="tag">
+                                <span>
+                                  25% OFF
+                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product_title">
+                                                                <h4 class="title">Aceite de coco</h4>
+                                                                <h5 class="product_category">Aceite de coco</h5>
+                                                                <h5 class="waight">500ml</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="xl:col-2 lg:col-2 md:col-4 col-6">
+                                            <div class="product_cards">
+                                                <a href="" class="cart">
+                      <span>
+                        <i class="mdi mdi-plus mdi-24px"></i>
+                      </span>
+                                                </a>
+                                                <div class="inner_product_cards">
+                                                    <div class="product_thumbnail">
+                                                        <img
+                                                            src="../.././../../../../../../assets/images/commerce/img/gb41-1d2740a564167a565d15131206455359-640-0.jpg"
+                                                            alt="" srcset="">
+                                                    </div>
+                                                    <div class="product_content">
+                                                        <div class="inner_product_content">
+                                                            <div class="regular_price">
+                                                                <h4>
+                                                                    <s>$580</s>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="sale_price_wraper">
+                                                                <div class="inner_sale_price_wrapers">
+                                                                    <h4>$480</h4>
+                                                                    <div class="tag">
+                                <span>
+                                  25% OFF
+                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product_title">
+                                                                <h4 class="title">Aceite de coco</h4>
+                                                                <h5 class="product_category">Aceite de coco</h5>
+                                                                <h5 class="waight">500ml</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="xl:col-2 lg:col-2 md:col-4 col-6">
+                                            <div class="product_cards">
+                                                <a href="" class="cart">
+                      <span>
+                        <i class="mdi mdi-plus mdi-24px"></i>
+                      </span>
+                                                </a>
+                                                <div class="inner_product_cards">
+                                                    <div class="product_thumbnail">
+                                                        <img
+                                                            src="../.././../../../../../../assets/images/commerce/img/gb41-1d2740a564167a565d15131206455359-640-0.jpg"
+                                                            alt="" srcset="">
+                                                    </div>
+                                                    <div class="product_content">
+                                                        <div class="inner_product_content">
+                                                            <div class="regular_price">
+                                                                <h4>
+                                                                    <s>$580</s>
+                                                                </h4>
+                                                            </div>
+                                                            <div class="sale_price_wraper">
+                                                                <div class="inner_sale_price_wrapers">
+                                                                    <h4>$480</h4>
+                                                                    <div class="tag">
+                                <span>
+                                  25% OFF
+                                </span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="product_title">
+                                                                <h4 class="title">Aceite de coco</h4>
+                                                                <h5 class="product_category">Aceite de coco</h5>
+                                                                <h5 class="waight">500ml</h5>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!------------------Sideber-filter-------------->
+
+        </div>
+
+
+    </div>
+</div>
