@@ -15,6 +15,8 @@ import {MAddPrintersComponent} from "./components/m-add-printers/m-add-printers.
 import {PrintersService} from "../../service/printers.service";
 import {confirmDialog} from "../../../../core/rx/confirm";
 import {ConfirmServices} from "../../../../core/injects/confirm.services";
+import {CashRegisterService} from "../../service/cash-register.service";
+import {MAddCaixasComponent} from "./components/m-add-caixa/m-add-caixas.component";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -47,6 +49,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 private cnpjService: CNPJService,
                 private shopsServices: ShopsService,
                 public printersServices: PrintersService,
+                public cashRegisterService: CashRegisterService,
                 private layout: LayoutService,
                 private commercesService: CommercesService,
                 private confirmationService: ConfirmServices,
@@ -68,6 +71,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     ngOnInit() {
         this.initForm()
         this.printersServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+        this.cashRegisterService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
             this.enableQuantity = true;
         })
@@ -196,12 +200,21 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         }
     }
 
-    addEditPrinters(param: any) {
-        this.printersServices.openModalAddOrEdit();
-        this.dialogService.open(MAddPrintersComponent, {
-            data: param,
-            width: '350px',
-        });
+    addEditPrintersCashRegister(param: any, type: 'CAIXA' | 'POS') {
+        if(type === "CAIXA"){
+            this.printersServices.openModalAddOrEdit();
+            this.dialogService.open(MAddPrintersComponent, {
+                data: param,
+                width: '350px',
+            });
+        } else {
+            this.cashRegisterService.openModalAddOrEdit();
+            this.dialogService.open(MAddCaixasComponent, {
+                data: param,
+                width: '350px',
+            });
+        }
+
     }
 
     patchEnable(event:any, item: PrinterDto){
@@ -287,6 +300,15 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         ).pipe(
             takeUntil(this.ngUnsubscribe),
             confirmDialog(() => this.printersServices.delete({id}))
+        ).subscribe();
+    }
+    deleteCashRegister(id: string) {
+        this.confirmationService.confirm(
+            'security.user.messages.confirmation',
+            'security.user.messages.message'
+        ).pipe(
+            takeUntil(this.ngUnsubscribe),
+            confirmDialog(() => this.cashRegisterService.delete({id}))
         ).subscribe();
     }
 

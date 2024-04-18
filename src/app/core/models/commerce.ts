@@ -36,3 +36,11 @@ export interface PrinterDto {
     ip: string
     name: string
 }
+
+export interface CashRegisterDto {
+    created?: string
+    enable: boolean
+    id: string
+    name: string
+    working?: boolean
+}

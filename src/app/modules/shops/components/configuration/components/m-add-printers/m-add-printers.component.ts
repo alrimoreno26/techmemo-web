@@ -1,5 +1,4 @@
 import {Component, effect, OnInit} from "@angular/core";
-import {CommercesService} from "../../../../service/commerces.service";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PrintersService} from "../../../../service/printers.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";

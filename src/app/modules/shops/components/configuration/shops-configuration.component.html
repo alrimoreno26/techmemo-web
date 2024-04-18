@@ -255,71 +255,101 @@
                             <div class="top">
                                 <div class="flex justify-content-between align-items-center pb-4">
                                     <h4 class="text-center">Configurações das impresoras</h4>
-                                    <p-button (onClick)="addEditPrinters(null)"
+                                    <p-button (onClick)="addEditPrintersCashRegister(null,'CAIXA')"
                                               label="Nova"></p-button>
                                 </div>
-                                <div class="grid">
-                                    @for (printer of printersServices.listEntities$() || []; track printer.id) {
-                                        <div class="col-3">
-                                            <p-card header="{{printer.name}}" subheader="{{ printer.ip }}">
-                                                <ng-template pTemplate="header">
-                                                    <img alt="Card" src="assets/layout/images/elgin.jpeg"
-                                                         [height]="150"/>
-                                                </ng-template>
-                                                <p-badge value="{{printer.area}}"
-                                                         [severity]="printer.area === 'POS' ? 'success' : 'warning'"></p-badge>
-                                                <div class="align-items-center flex flex-auto gap-3 pt-2">
-                                                    <label class="block font-bold">Activa</label>
-                                                    <p-inputSwitch [(ngModel)]="printer.enable"
-                                                                   (onChange)="patchEnable($event,printer)"
-                                                                   [ngModelOptions]="{standalone: true}"
-                                                                   class="flex"></p-inputSwitch>
-                                                </div>
-                                                <ng-template pTemplate="footer">
-                                                    <div class="flex justify-content-center gap-3">
-                                                        <button pButton pRipple
-                                                                class="p-button-danger p-button-outlined"
-                                                                [pTooltip]="'Elminar'"
-                                                                (click)="deletePrinter(printer.id)"
-                                                                icon="mdi mdi-close"></button>
-                                                        <button pButton pRipple
-                                                                class="p-button-primary border-round"
-                                                                [pTooltip]="'Editar'"
-                                                                (click)="addEditPrinters(printer)"
-                                                                icon="mdi mdi-pencil"></button>
+                                @if (printersServices.listEntities$().length > 0) {
+                                    <div class="grid">
+                                        @for (printer of printersServices.listEntities$() || []; track printer.id) {
+                                            <div class="col-3">
+                                                <p-card header="{{printer.name}}" subheader="{{ printer.ip }}">
+                                                    <ng-template pTemplate="header">
+                                                        <img alt="Card" src="assets/layout/images/elgin.jpeg"
+                                                             [height]="150"/>
+                                                    </ng-template>
+                                                    <p-badge value="{{printer.area}}"
+                                                             [severity]="printer.area === 'POS' ? 'success' : 'warning'"></p-badge>
+                                                    <div class="align-items-center flex flex-auto gap-3 pt-2">
+                                                        <label class="block font-bold">Activa</label>
+                                                        <p-inputSwitch [(ngModel)]="printer.enable"
+                                                                       (onChange)="patchEnable($event,printer)"
+                                                                       [ngModelOptions]="{standalone: true}"
+                                                                       class="flex"></p-inputSwitch>
                                                     </div>
-                                                </ng-template>
-                                            </p-card>
-                                        </div>
-                                    }
-                                </div>
+                                                    <ng-template pTemplate="footer">
+                                                        <div class="flex justify-content-center gap-3">
+                                                            <button pButton pRipple
+                                                                    class="p-button-danger p-button-outlined"
+                                                                    [pTooltip]="'Elminar'"
+                                                                    (click)="deletePrinter(printer.id)"
+                                                                    icon="mdi mdi-close"></button>
+                                                            <button pButton pRipple
+                                                                    class="p-button-primary border-round"
+                                                                    [pTooltip]="'Editar'"
+                                                                    (click)="addEditPrintersCashRegister(printer,'CAIXA')"
+                                                                    icon="mdi mdi-pencil"></button>
+                                                        </div>
+                                                    </ng-template>
+                                                </p-card>
+                                            </div>
+                                        }
+                                    </div>
+                                } @else {
+                                    <ng-container *ngTemplateOutlet="blank;"></ng-container>
+                                }
+
+
                             </div>
                         </ng-template>
                         <ng-template [ngIf]="selectedItems=== 'caixa'">
                             <div class="top">
                                 <div class="flex justify-content-between">
                                     <h4 class="text-center">Configurações das impresoras</h4>
-                                    <p-button label="Nova"></p-button>
+                                    <p-button label="Nova"
+                                              (onClick)="addEditPrintersCashRegister(null,'POS')"></p-button>
                                 </div>
-                                <div class="grid">
-                                    @for (printer of printersServices.listEntities$() || []; track printer.id) {
-                                        <div class="col-3">
-                                            <p-card header="{{printer.name}}" subheader="{{ printer.ip }}">
-                                                <ng-template pTemplate="header">
-                                                    <img alt="Card" src="assets/layout/images/caixa.jpeg"/>
-                                                </ng-template>
-                                                <p-badge value="{{printer.area}}"></p-badge>
-                                                <ng-template pTemplate="footer">
+                                @if (cashRegisterService.listEntities$().length > 0) {
+                                    <div class="grid">
+                                        @for (cash of cashRegisterService.listEntities$() || []; track cash.id) {
+                                            <div class="col-3">
+                                                <p-card header="{{cash.name}}">
+                                                    <ng-template pTemplate="header">
+                                                        <img alt="Card" src="assets/layout/images/caixa.jpeg"
+                                                             [height]="150"/>
+                                                    </ng-template>
                                                     <div class="align-items-center flex flex-auto gap-3">
                                                         <label class="block font-bold">Activa</label>
                                                         <p-inputSwitch class="flex"></p-inputSwitch>
                                                     </div>
-                                                </ng-template>
-                                            </p-card>
-                                        </div>
-                                    }
+                                                    <ng-template pTemplate="footer">
+                                                        <div class="flex justify-content-center gap-3">
+                                                            <button pButton pRipple
+                                                                    class="p-button-danger p-button-outlined"
+                                                                    [pTooltip]="'Elminar'"
+                                                                    (click)="deleteCashRegister(cash.id)"
+                                                                    icon="mdi mdi-close"></button>
+                                                            <button pButton pRipple
+                                                                    class="p-button-primary border-round"
+                                                                    [pTooltip]="'Editar'"
+                                                                    (click)="addEditPrintersCashRegister(cash,'POS')"
+                                                                    icon="mdi mdi-pencil"></button>
+                                                        </div>
+                                                    </ng-template>
+                                                </p-card>
+                                            </div>
+                                        }
+                                    </div>
+                                } @else {
+                                    <ng-container *ngTemplateOutlet="blank;"></ng-container>
+                                }
 
-                                </div>
+                            </div>
+                        </ng-template>
+
+                        <ng-template #blank>
+                            <div class="flex justify-content-center">
+                                <img [src]="'assets/layout/images/no-data.svg'" alt="diamond-layout" width="400"
+                                     height="600"/>
                             </div>
                         </ng-template>
                         <div class="wrapper-bottom layout-btn-add align-items-center m-0"
