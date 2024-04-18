@@ -31,7 +31,7 @@ jobs:
     # Trabajo para la rama develop
     job_for_develop:
         needs: common_tasks
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/develop'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -55,7 +55,7 @@ jobs:
     # Trabajo para la rama main
     job_for_main:
         needs: common_tasks
-        if: github.ref == 'refs/heads/develop'
+        if: github.ref == 'refs/heads/main'
         runs-on: ubuntu-latest
         steps:
             - name: Checkout code
@@ -64,7 +64,7 @@ jobs:
             - name: Build the Angular project
               uses: actions/setup-node@v3
               with:
-                  node-version: '18'
+                  node-version: '20'
             - run: npm install
             - run: npm run build
 
