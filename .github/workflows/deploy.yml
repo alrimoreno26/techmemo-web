@@ -1,125 +1,100 @@
 name: Docker Image CI with Multi-Stage Build
 
 on:
-  push:
-    branches: [ "main" ]
+    push:
+        branches:
+            - main
+            - develop
 
 jobs:
-  InitDeploy:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    # Trabajo común que se ejecuta para ambas ramas
+    common_tasks:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Set up Python
+              uses: actions/setup-python@v2
+              with:
+                  python-version: '3.x'
 
-      - name: Get current date and time
-        id: datetime
-        run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
+            - name: Get current date and time
+              id: datetime
+              run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
 
-      - name: Send custom message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            The deployment of the web application begin at ${{ steps.datetime.outputs.datetime }}.
-  build:
-    needs: InitDeploy
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+            - name: Send custom message
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_TO }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  message: |
+                      The deployment of the web application began at ${{ steps.datetime.outputs.datetime }}.
 
-      - name: Login to DockerHub
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+    # Trabajo para la rama develop
+    job_for_develop:
+        needs: common_tasks
+        if: github.ref == 'refs/heads/main'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-      - name: Build the Docker image
-        run: docker build -t techmemo-web .
+            - name: Login to DockerHub
+              env:
+                  DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+                  DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+              run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
-      - name: Create tag for build
-        run: docker tag techmemo-web:latest armoreno2626/techmemo-web:latest
+            - name: Build the Docker image
+              run: docker build -t techmemo-web .
 
-      - name: Push the Docker image
-        run: docker push armoreno2626/techmemo-web:latest
-  deploy:  # Separate deploy job (CD)
-      runs-on: ubuntu-latest
-      needs: build
-      steps:
-          - name: Checkout code
-            uses: actions/checkout@v3
+            - name: Create tag for build
+              run: docker tag techmemo-web:latest armoreno2626/techmemo-web:latest
 
-          # Compilar el proyecto Angular
-          - name: Set up Node.js
-            uses: actions/setup-node@v3
-            with:
-             node-version: '18'
+            - name: Push the Docker image
+              run: docker push armoreno2626/techmemo-web:latest
 
-          - name: Install dependencies
-            run: npm install
+    # Trabajo para la rama main
+    job_for_main:
+        needs: common_tasks
+        if: github.ref == 'refs/heads/develop'
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-          - name: Build Angular project
-            run: npm run build
-         # Configurar credenciales de AWS para la implementación en S3
-          - name: Configure AWS Credentials
-            uses: aws-actions/configure-aws-credentials@v1
-            with:
-              aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-              aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-              aws-region: us-east-1
+            - name: Build the Angular project
+              uses: actions/setup-node@v3
+              with:
+                  node-version: '18'
+            - run: npm install
+            - run: npm run build
 
-              # Copiar archivos compilados a S3
-          - name: Sync to S3
-            run: |
-              aws s3 sync ./dist/techmemo-web s3://techmemo-app
-  EndDeploy:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.x'
+    # Trabajo de despliegue para ambas ramas
+    deploy:
+        runs-on: ubuntu-latest
+        needs:
+            - job_for_main
+            - job_for_dev
+        steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
 
-      - name: Get current date and time
-        id: datetime
-        run: echo "::set-output name=datetime::$(date +'%Y-%m-%d %H:%M:%S')"
+            # Configurar credenciales de AWS para la implementación en S3
+            - name: Configure AWS Credentials
+              uses: aws-actions/configure-aws-credentials@v1
+              with:
+                  aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+                  aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                  aws-region: us-east-1
 
-      - name: Send custom message
-        uses: appleboy/telegram-action@master
-        with:
-          to: ${{ secrets.TELEGRAM_TO }}
-          token: ${{ secrets.TELEGRAM_TOKEN }}
-          message: |
-            The deployment of the web application finished at ${{ steps.datetime.outputs.datetime }}.
-            For download docker image use docker pull armoreno2626/techmemo-web:latest
+            # Copiar archivos compilados a S3
+            - name: Sync to S3
+              run: aws s3 sync ./dist/techmemo-web s3://techmemo-app
 
-
-#    deploy:  # Separate deploy job (CD)
-#        runs-on: ubuntu-latest
-#        needs: build  # Waits for build job to finish
-#        steps:
-#            - uses: appleboy/ssh-action@master
-#              with:
-#                  host: ${{ secrets.EC2_HOST }}
-#                  username: ${{ secrets.EC2_USERNAME }}
-#                  key: ${{ secrets.EC2_PRIVATE_KEY }}
-#                  script: |  # Script to be executed on EC2
-#                      sudo yum update -y
-#                      sudo yum install git -y
-#                      sudo yum install docker -y
-#                      sudo groupadd docker
-#                      sudo usermod -a -G docker ${{ secrets.EC2_USERNAME }}
-#                      id ${{ secrets.EC2_USERNAME }}
-#                      sudo newgrp docker
-#
-#                      #Ativar docker
-#                      sudo systemctl enable docker.service
-#                      sudo systemctl start docker.service
-#                      docker stop techmemo-web || true
-#                      docker rm techmemo-web || true
-#                      docker pull ${{ secrets.DOCKER_USERNAME }}/techmemo-web:latest
-#                      docker run -d -p 80:80 --name techmemo-web ${{ secrets.DOCKER_USERNAME }}/techmemo-web:latest
+            - name: Send custom message
+              uses: appleboy/telegram-action@master
+              with:
+                  to: ${{ secrets.TELEGRAM_TO }}
+                  token: ${{ secrets.TELEGRAM_TOKEN }}
+                  message: |
+                      The deployment of the web application finished at ${{ steps.datetime.outputs.datetime }}.
+                      For download docker image use docker pull armoreno2626/techmemo-web:latest
