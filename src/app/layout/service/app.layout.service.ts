@@ -1,45 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
+import {AppConfig, LayoutState} from "../../core/models/layout";
 
-export type MenuMode =
-    'static'
-    | 'overlay'
-    | 'horizontal'
-    | 'slim'
-    | 'compact'
-    | 'reveal'
-    | 'drawer'
-    | 'STATIC'
-    | 'OVERLAY'
-    | 'HORIZONTAL'
-    | 'SLIM'
-    | 'COMPACT'
-    | 'REVEAL'
-    | 'DRAWER';
-
-export type ColorScheme = 'light' | 'dark' | 'dim' | 'LIGHT' | 'DARK' | 'DIM';
-
-export interface AppConfig {
-    inputStyle: string;
-    colorScheme: string;
-    theme: string;
-    ripple: boolean;
-    menuMode: string;
-    scale: number;
-    menuTheme: string;
-}
-
-interface LayoutState {
-    staticMenuDesktopInactive: boolean;
-    overlayMenuActive: boolean;
-    rightMenuVisible: boolean;
-    configSidebarVisible: boolean;
-    staticMenuMobileActive: boolean;
-    menuHoverActive: boolean;
-    searchBarActive: boolean;
-    sidebarActive: boolean;
-    anchored: boolean;
-}
 
 @Injectable({
     providedIn: 'root',
@@ -72,9 +34,13 @@ export class LayoutService {
 
     private overlayOpen = new Subject<any>();
 
+    public closePDV = new Subject<boolean>();
+
     configUpdate$ = this.configUpdate.asObservable();
 
     overlayOpen$ = this.overlayOpen.asObservable();
+
+    closePDV$ = this.closePDV.asObservable();
 
     onMenuToggle() {
         if (this.isOverlay()) {
@@ -100,6 +66,12 @@ export class LayoutService {
         this.config = config;
         this.configUpdate.next(this.config);
     }
+
+    setPDVClose(param:any) {
+        console.log(param)
+        this.closePDV.next(param);
+    }
+
 
     replaceThemeLink(href: string, targetId: string, onComplete?: Function) {
         const id = targetId;

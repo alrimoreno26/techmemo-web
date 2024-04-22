@@ -11,6 +11,9 @@ import {operationAreaRoleEnum} from "../../../../core/enums/role";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 import {MOpenCaixaComponents} from "../modals/m-open-caixa/m-open-caixa.components";
 import {MCloseCaixaComponents} from "../modals/m-close-caixa/m-close-caixa.components";
+import {LayoutService} from "../../../../layout/service/app.layout.service";
+import {CashRegisterService} from "../../../shops/service/cash-register.service";
+import {filter, take} from "rxjs/operators";
 
 @Component({
     selector: 'app-orders',
@@ -26,16 +29,23 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     fromTable: any;
 
+    caixaOpened: boolean;
 
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
                 private router: Router,
+                public layoutService: LayoutService,
                 private toastMessageService: ToastMessageService,
                 private session: SessionServices,
+                private cashRegisterService: CashRegisterService,
                 private datePipe: DatePipe) {
         super()
         this.tableService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+        this.cashRegisterService.existsAnyWorking();
         effect(() => {
+            this.cashRegisterService.opened$.subscribe((opened) => {
+                this.caixaOpened = opened;
+            })
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
                     let tableId = tableService.listEntities$()?.find(f => f.number.toString() === this.service.selectedEntity$()[0].tableNumber)?.id;
@@ -50,15 +60,15 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
                 this.busy = tableService.listEntities$()?.filter(f => f.state === tableState.BUSY || f.state === tableState.BUSY_WITH_UNION).length || 0;
             }
         });
+
     }
 
     ngOnInit() {
-
     }
 
     loadComanda() {
         this.isTable = false;
-        this.service.loadAll({pageNumber: 0, pageSize: 50, states: ['ACTIVE', 'IN_PAYMENT', 'PAID','CLOSED']})
+        this.service.loadAll({pageNumber: 0, pageSize: 50, states: ['ACTIVE', 'IN_PAYMENT', 'PAID', 'CLOSED']})
     }
 
     loadMesas() {
@@ -130,11 +140,17 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         }
 
     }
-
-    openCaixa(){
+    closeCaixa(){
         this.dialogService.open(MCloseCaixaComponents, {
             data: null,
             width: '700px',
+        });
+    }
+
+    openCaixa() {
+        this.dialogService.open(MOpenCaixaComponents, {
+            data: null,
+            width: '300px',
         });
     }
 

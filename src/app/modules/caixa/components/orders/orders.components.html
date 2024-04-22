@@ -1,22 +1,23 @@
 <div class="px-4 py-5 md:px-6" [ngClass]="getWidthClass">
     <div class="grid">
-        <div class="col-12 px-2 py-0">
-            <p-messages [severity]="'error'" [closable]="false" [showTransitionOptions]="'500ms'" [hideTransitionOptions]="'500ms'" [enableService]="false">
-                <ng-template pTemplate>
-                    <div class="flex w-full">
-                        <div class="flex flex-1 align-items-center">
-                            <img src="assets/layout/warning1.png" width="32" />
-                            <div class="ml-2">Caixa fechada, para iniciar um pedido, abra a caixa</div>
+        @if (!caixaOpened) {
+            <div class="col-12 px-2 py-0">
+                <p-messages [severity]="'error'" [closable]="false" [showTransitionOptions]="'500ms'"
+                            [hideTransitionOptions]="'500ms'" [enableService]="false">
+                    <ng-template pTemplate>
+                        <div class="flex w-full">
+                            <div class="flex flex-1 align-items-center">
+                                <img src="assets/layout/warning1.png" width="32"/>
+                                <div class="ml-2">Caixa fechada, para iniciar um pedido, abra a caixa</div>
+                            </div>
+                            <div>
+                                <p-button styleClass="p-button-sm" (click)="openCaixa()">Abrir Caixa</p-button>
+                            </div>
                         </div>
-                        <div>
-                            <p-button styleClass="p-button-sm" (click)="openCaixa()">Abrir Caixa</p-button>
-                        </div>
-                    </div>
-
-
-                </ng-template>
-            </p-messages>
-        </div>
+                    </ng-template>
+                </p-messages>
+            </div>
+        }
         <div class="col-12 px-2 py-0">
             <p-toolbar>
                 <div class="p-toolbar-group-start" *ngIf="service.listEntities$()">
@@ -28,11 +29,21 @@
                 </div>
                 <div class="p-toolbar-group-end">
                     <button (click)="loadComanda()" pButton icon="mdi mdi-list-box-outline" class="mr-2"
+                            [disabled]="!caixaOpened"
                             [pTooltip]="'Mostrar Comandas'"></button>
                     <button (click)="loadMesas()" pButton icon="mdi mdi-table-furniture mdi-18px" class="mr-2"
+                            [disabled]="!caixaOpened"
                             [pTooltip]="'Mostrar Mesas'"></button>
                     <button [disabled]="table_union.length === 0" (click)="juntarMesas()" pButton
                             icon="mdi mdi-vector-union mdi-18px" class="mr-2" [pTooltip]="'Juntar Mesas'"></button>
+                    @if(caixaOpened){
+                        <p-divider layout="vertical"></p-divider>
+                        <p-button [pTooltip]="'Fechar Caixa'" tooltipPosition="bottom" styleClass="px-4"
+                                  (click)="closeCaixa()"
+                                  icon="mdi mdi-power mdi-24px" severity="danger" [outlined]="true">
+                        </p-button>
+                    }
+
                 </div>
             </p-toolbar>
         </div>

@@ -65,6 +65,10 @@ import {InputGroupModule} from "primeng/inputgroup";
 import {InputGroupAddonModule} from "primeng/inputgroupaddon";
 import {UserService} from "../security/user/services/user.service";
 import {MCloseCaixaComponents} from "./components/modals/m-close-caixa/m-close-caixa.components";
+import {LayoutService} from "../../layout/service/app.layout.service";
+import {reducer} from "../security/user/store/user.reducers";
+import {UserEffects} from "../security/user/store/user.effects";
+import {RoleEffects} from "../security/roles/store/role.effects";
 
 @NgModule({
     imports: [
@@ -88,7 +92,9 @@ import {MCloseCaixaComponents} from "./components/modals/m-close-caixa/m-close-c
         StoreDevtoolsModule.instrument({}),
         StoreModule.forFeature('orders', ordersReducer),
         StoreModule.forFeature('product', reducerProduct),
-        EffectsModule.forFeature([CaixaEffects, ProductEffects]),
+        StoreModule.forFeature('user', reducer),
+        EffectsModule.forFeature([CaixaEffects, ProductEffects,UserEffects]),
+
         MCancellationComponent,
         DividerModule,
         PickListModule,
@@ -136,6 +142,7 @@ import {MCloseCaixaComponents} from "./components/modals/m-close-caixa/m-close-c
         StoreCategoryService,
         SupplierService,
         DatePipe,
+        LayoutService,
         UserService
     ]
 })

@@ -30,15 +30,24 @@ import {InputSwitchModule} from "primeng/inputswitch";
 })
 export class AddEditPaymentMethodModal extends BaseModalStoreComponentDirective implements OnInit {
 
-
+    listPaymentMethod: any[] = [];
     constructor(public servicePaymentMethodService: PaymentMethodService) {
         super(servicePaymentMethodService);
     }
 
     ngOnInit() {
+        this.listPaymentMethod = [
+            { name: 'DINHEIRO', code: 'MONEY' },
+            { name: 'DÉBITO', code: 'DEBIT' },
+            { name: 'CREDITO', code: 'CREDIT' },
+            { name: 'PIX', code: 'PIX' },
+            { name: 'OUTROS', code: 'OTHERS' }
+        ];
+
         const {data} = this.config;
         this.form = new FormGroup({
             description: new FormControl<string>(data?.description, Validators.required),
+            type: new FormControl<string>(data?.type, Validators.required),
             enable: new FormControl<boolean>(data?.enable || false),
             allowsChange: new FormControl<boolean>(data?.allowsChange || false),
             mandatorySendCfe: new FormControl<boolean>(data?.mandatorySendCfe || false),

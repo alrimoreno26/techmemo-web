@@ -1,7 +1,7 @@
 import {Component, effect, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {Product} from 'src/app/demo/api/product';
-import {AppConfig, LayoutService} from 'src/app/layout/service/app.layout.service';
+import {LayoutService} from 'src/app/layout/service/app.layout.service';
 import {ProductService} from 'src/app/demo/service/product.service';
 import {Table} from 'primeng/table';
 import {MenuItem} from 'primeng/api';
@@ -9,9 +9,10 @@ import {StoreDashboardServices} from "../services/dashboard.services";
 import {ReportsDTO} from "../../../core/models/reports";
 import {CommercesService} from "../../shops/service/commerces.service";
 import {SessionServices} from "../../../core/injects/session.services";
+import {AppConfig} from "../../../core/models/layout";
 
 @Component({
-    selector:'c-commerce-dashboard',
+    selector: 'c-commerce-dashboard',
     templateUrl: './ecommerce.dashboard.component.html'
 })
 export class EcommerceDashboardComponent implements OnInit, OnDestroy {
@@ -63,14 +64,14 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             this.initCharts();
         });
         effect(() => {
-            if(this.session.getTenantId()){
+            if (this.session.getTenantId()) {
                 this.store.loadLowStock();
-                this.store.loadOrdersStats({startDate : '2024-01-01', endDate: '2024-12-31'});
+                this.store.loadOrdersStats({startDate: '2024-01-01', endDate: '2024-12-31'});
             }
         });
 
         effect(() => {
-            if(this.store.stat$()){
+            if (this.store.stat$()) {
                 this.stats = this.store.stat$();
                 this.metrics = [
                     {

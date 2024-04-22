@@ -1,12 +1,32 @@
 <ng-template dialog-header><span class="p-dialog-title">Apertura de Caixa</span></ng-template>
 <form [formGroup]="form">
-    <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
+    <div class="grid grid-nogutter flex-wrap gap-3 p-fluid pt-2">
         <div class="col-12 lg:col-12">
             <div class="grid formgrid">
+                <div class="col-12 field mt-3">
+                        <span class="p-float-label">
+                            <p-dropdown
+                                [options]="listCaixas" optionLabel="name"
+                                formControlName="id"
+                                emptyMessage="{{'primeng.emptyMessage' | translate}}"
+                                emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
+                                optionValue="id"
+                                [autoDisplayFirst]="false"
+                                appendTo="body" styleClass="p-sidebar-sm"
+                                [style]="{'width': '100%'}" id="caixa">
+                                  <ng-template let-caixa pTemplate="item">
+                                    <div class="organization-item flex flex-row gap-2 ">
+                                      <div class="name font-medium">{{ caixa.name }}</div>
+                                    </div>
+                                  </ng-template>
+                            </p-dropdown>
+                             <label for="subordination">Selecione uma caixa</label>
+                        </span>
+                </div>
                 <div class="col-12 lg:col-12 field">
                     <p-inputGroup>
                         <p-inputGroupAddon>$</p-inputGroupAddon>
-                        <input type="text" formControlName="money" pInputText placeholder="Dinheiro em caixa" />
+                        <input type="text" formControlName="value" pInputText placeholder="Dinheiro em caixa" />
                         <p-inputGroupAddon>.00</p-inputGroupAddon>
                     </p-inputGroup>
                 </div>
@@ -15,7 +35,7 @@
                         <span class="p-float-label">
                             <p-dropdown
                                 [options]="listUser" optionLabel="name"
-                                formControlName="userId"
+                                formControlName="operatorId"
                                 emptyMessage="{{'primeng.emptyMessage' | translate}}"
                                 emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
                                 optionValue="id"
@@ -28,7 +48,7 @@
                                     </div>
                                   </ng-template>
                             </p-dropdown>
-                             <label for="subordination">selecione uma operador de caixa</label>
+                             <label for="subordination">Selecione uma operador de caixa</label>
                         </span>
                     </div>
                 }
@@ -41,5 +61,7 @@
             (click)="ref.close()"
             icon="mdi mdi-close"></button>
     <button pButton pRipple class="p-button-primary flex-1 border-round" label="Abrir Caixa"
+            [disabled]="form.invalid"
+            (click)="openCaixa()"
             icon="mdi mdi-check"></button>
 </ng-template>

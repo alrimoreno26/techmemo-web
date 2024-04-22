@@ -6,7 +6,7 @@ import {ACCESS_TOKEN} from "../enums/role";
 import {NgZone} from "@angular/core";
 import {CommercesService} from "../../modules/shops/service/commerces.service";
 import {CommercesServices} from "../services/commerces.services";
-import {AppConfig, LayoutService} from "../../layout/service/app.layout.service";
+import {LayoutService} from "../../layout/service/app.layout.service";
 import {CommerceDto} from "../models/commerce";
 
 /**

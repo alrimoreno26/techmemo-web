@@ -19,4 +19,12 @@ export class CashRegisterServices extends AbstractService<any> {
         const params: HttpParams = new HttpParams({fromObject: queryParams});
         return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}?${params}`);
     }
+
+    existsAnyWorking(): Observable<boolean> {
+        return this.httpClient.get<boolean>(`${this.basePath}/exists-any-working`);
+    }
+
+    openCaixa(param:any): Observable<any> {
+        return this.httpClient.post<any>(`${this.basePath}/${param.id}/open`, param);
+    }
 }

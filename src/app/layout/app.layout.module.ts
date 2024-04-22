@@ -81,7 +81,7 @@ import {CoreModule} from "../core/core.module";
         CoreModule,
     ],
     providers: [
-        NotifyService
+        NotifyService,
     ]
 })
 export class AppLayoutModule {

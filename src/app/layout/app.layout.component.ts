@@ -27,6 +27,9 @@ export class AppLayoutComponent implements OnDestroy {
         if(this.router.routerState.snapshot.url.includes('comandas')){
             this.user = true;
         }
+        this.layoutService.closePDV$.subscribe((res) => {
+            console.log(res)
+        });
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
 
             if (!this.menuOutsideClickListener) {

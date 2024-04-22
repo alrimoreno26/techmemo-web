@@ -2,8 +2,28 @@
 <form [formGroup]="form">
     <div formResponsive width="380px">
         <div class="grid grid-nogutter formgrid flex-wrap gap-3 p-fluid">
+            <div class="col-12 field mt-3">
+                <span class="p-float-label">
+                    <p-dropdown
+                        [options]="listPaymentMethod" optionLabel="name"
+                        formControlName="type"
+                        emptyMessage="{{'primeng.emptyMessage' | translate}}"
+                        emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
+                        optionValue="code"
+                        [autoDisplayFirst]="false"
+                        appendTo="body" styleClass="p-sidebar-sm"
+                        [style]="{'width': '100%'}" id="subordination">
+                          <ng-template let-payment pTemplate="item">
+                            <div class="organization-item flex flex-row gap-2 ">
+                              <div class="name font-medium">{{ payment.name }}</div>
+                            </div>
+                          </ng-template>
+                    </p-dropdown>
+                     <label for="subordination">Selecione uma tipo de pagamento</label>
+                </span>
+            </div>
             <div class="col-12 lg:col-12 field">
-                <input pInputText type="text" formControlName="description" placeholder="Tipo de Pagamento">
+                <input pInputText type="text" formControlName="description" placeholder="Nome do Pagamento">
             </div>
             <div class="grid">
                 <div class="align-items-center col-12 field flex gap-3 lg:col-6">
