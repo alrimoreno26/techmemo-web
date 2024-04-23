@@ -12,7 +12,7 @@ import {SupplierDTO} from "../models/supplier";
 export class CashRegisterServices extends AbstractService<any> {
 
     constructor(private httpClient: HttpClient) {
-        super(httpClient, buildURL('/v1/cash_registers'));
+        super(httpClient, buildURL('/v1/cash-registers'));
     }
 
     override findAllPaginate(queryParams: any): Observable<LazyResultData<any>> {
@@ -24,7 +24,4 @@ export class CashRegisterServices extends AbstractService<any> {
         return this.httpClient.get<boolean>(`${this.basePath}/exists-any-working`);
     }
 
-    openCaixa(param:any): Observable<any> {
-        return this.httpClient.post<any>(`${this.basePath}/${param.id}/open`, param);
-    }
 }

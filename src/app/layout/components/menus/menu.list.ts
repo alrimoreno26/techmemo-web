@@ -46,11 +46,11 @@ export const menuList: any[] = [
     {
         label: 'Financeiro',
         icon: 'mdi mdi-cash-register mdi-24px',
-        roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
+        roles: [domainEnum.CONFIGURATION],
         items: [
             {
                 label: 'Meios de pagamento',
-                roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
+                roles: [domainEnum.CONFIGURATION],
                 icon: 'mdi mdi-cash-plus mdi-24px',
                 routerLink: ['financial/payment-method']
             }

@@ -221,6 +221,10 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.printersServices.update({data: {id: item.id, enable: event.checked}});
     }
 
+    patchCaixaEnable(event:any, item: any){
+        this.cashRegisterService.update({data: {id: item.id, enable: event.checked}});
+    }
+
     saveVisuals() {
         let updatedTO: CommerceDto = {
             id: this.commercesService.selectedEntity$().id,

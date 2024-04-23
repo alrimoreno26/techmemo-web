@@ -51,9 +51,5 @@ export class CashRegisterService extends StoreComponentService<CashRegisterDto> 
         });
     }
 
-    openCaixa(param:any): void {
-        this.services.openCaixa(param).subscribe((response:any) => {
-            this.patchState({opened: true});
-        });
-    }
+
 }

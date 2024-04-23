@@ -6,6 +6,7 @@ import {operationAreaRoleEnum} from "../../../../../core/enums/role";
 import {UserService} from "../../../../security/user/services/user.service";
 import {SessionServices} from "../../../../../core/injects/session.services";
 import {CashRegisterService} from "../../../../shops/service/cash-register.service";
+import {CashRegisterOperationsService} from "../../../../shops/service/cash-register-operations.service";
 
 @Component({
     selector: 'm-open-caixa',
@@ -19,6 +20,7 @@ export class MOpenCaixaComponents implements OnInit {
 
     constructor(public session: SessionServices,
                 public cashRegisterService: CashRegisterService,
+                public cashRegisterOperations: CashRegisterOperationsService,
                 public ref: DynamicDialogRef,
                 public config: DynamicDialogConfig,
                 public userService: UserService) {
@@ -40,16 +42,15 @@ export class MOpenCaixaComponents implements OnInit {
 
     ngOnInit(): void {
         this.form = new FormGroup({
-            id: new FormControl<string>(this.config.data?.id, Validators.required),
+            cashRegisterId: new FormControl<string>(this.config.data?.id, Validators.required),
             value: new FormControl<string>(this.config.data?.value, Validators.required),
-            operatorId: new FormControl<string>(this.config.data?.operatorId, Validators.required),
+            operatorId: new FormControl<string>(this.session.userLogged.role.operationArea !== 'ADMINISTRATOR_STORE' ? this.session.userLogged.id : this.config.data?.operatorId, Validators.required),
         });
     }
 
     openCaixa() {
-        if(this.form.valid){
-            this.cashRegisterService.openCaixa(this.form.value)
+        if (this.form.valid) {
+            this.cashRegisterOperations.openCaixa(this.form.value)
         }
-        console.log(this.form.value)
     }
 }
