@@ -72,7 +72,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.initForm()
         this.printersServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         this.cashRegisterService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
-        this.form.get('quantityTables')?.valueChanges.subscribe((type: any) => {
+        this.form.get('quantityTables')?.valueChanges.subscribe(() => {
             this.enableQuantity = true;
         })
         this.items = [

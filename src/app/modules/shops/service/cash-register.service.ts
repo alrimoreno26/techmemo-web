@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {SessionServices} from "../../../core/injects/session.services";
 import {Observable} from "rxjs";
-import {CashRegisterDto, CommerceDto, PrinterDto} from "../../../core/models/commerce";
+import {CashRegisterDto} from "../../../core/models/commerce";
 import {switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
@@ -14,8 +14,7 @@ export class CashRegisterService extends StoreComponentService<CashRegisterDto> 
     override serverSide = true;
     opened$: Observable<boolean> = this.select(state => state.opened);
 
-    constructor(private services: CashRegisterServices,
-                private sessionService: SessionServices,) {
+    constructor(private services: CashRegisterServices) {
         const defaultEntity: EntityState<any> & { opened: boolean }=
             {entities: [], total: 0, dialog: false, loaded: false, opened: false};
         super(services, defaultEntity);
@@ -36,7 +35,7 @@ export class CashRegisterService extends StoreComponentService<CashRegisterDto> 
     override update = this.effect((trigger$: Observable<{ data: Partial<CashRegisterDto> }>) => trigger$.pipe(
         switchMap(({data}) => this.services.update(data, 'id').pipe(
             tapResponse({
-                next: (response: any) => {
+                next: () => {
                     this.setUpdate(data);
                     this.patchState({dialog: false});
                 },

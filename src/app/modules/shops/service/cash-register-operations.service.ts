@@ -2,11 +2,7 @@ import {Injectable} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {SessionServices} from "../../../core/injects/session.services";
 import {Observable} from "rxjs";
-import {CashRegisterDto, CommerceDto, PrinterDto} from "../../../core/models/commerce";
-import {switchMap} from "rxjs/operators";
-import {tapResponse} from "@ngrx/component-store";
-import {HttpErrorResponse} from "@angular/common/http";
-import {CashRegisterServices} from "../../../core/services/cash-register.services";
+import {CashRegisterDto} from "../../../core/models/commerce";
 import {CashRegisterOperationsServices} from "../../../core/services/cash-register-operations.services";
 
 @Injectable({providedIn: 'root'})

@@ -1,6 +1,5 @@
-import {Component, effect, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, effect, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {PrintersService} from "../../../../shops/service/printers.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {operationAreaRoleEnum} from "../../../../../core/enums/role";
 import {UserService} from "../../../../security/user/services/user.service";
