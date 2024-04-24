@@ -3,7 +3,6 @@ import {MessageService} from "primeng/api";
 import {BlockUIModule} from "primeng/blockui";
 import {CommonModule, registerLocaleData} from "@angular/common";
 import {APP_INITIALIZER, DEFAULT_CURRENCY_CODE, LOCALE_ID, NgModule, NgZone} from "@angular/core";
-import {tap, timer} from "rxjs";
 import {HTTP_INTERCEPTORS, HttpClient} from "@angular/common/http";
 import {ErrorInterceptor} from "./interceptors/error.interceptor";
 import localePt from '@angular/common/locales/pt';
@@ -16,7 +15,6 @@ import {initializeAppFactory} from "./util/app.function";
 import {TokenInterceptor} from "./interceptors/token.interceptor";
 import {CommercesServices} from "./services/commerces.services";
 import {LayoutService} from "../layout/service/app.layout.service";
-import {CommercesService} from "../modules/shops/service/commerces.service";
 import {InactivityService} from "./injects/inactive.services";
 
 registerLocaleData(localePt, 'pt');

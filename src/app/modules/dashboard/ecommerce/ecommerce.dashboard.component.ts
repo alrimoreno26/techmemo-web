@@ -54,9 +54,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     constructor(private layoutService: LayoutService,
                 public store: StoreDashboardServices,
-                public session: SessionServices,
-                private authServices: AuthServices,
-                public commercesService: CommercesService) {
+                public session: SessionServices) {
 
         this.subscription = this.layoutService.configUpdate$.subscribe(config => {
             this.config = config;

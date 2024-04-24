@@ -1,5 +1,4 @@
 import {Component, effect, OnInit} from "@angular/core";
-import {DynamicDialogRef} from "primeng/dynamicdialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {Subscription} from "rxjs";
 import {CNPJService} from "../../../../../../core/services/cnpj-validate.service";

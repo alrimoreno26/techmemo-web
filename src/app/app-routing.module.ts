@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {canActivateNotAuthGuard} from "./core/guards/not.auth.guard";
 import {canActivateAuthGuard, canMatchAuthGuard} from "./core/guards/auth.guard";
-import {LockModule} from "./modules/auth/lock/lock.module";
 
 
 const routes: Routes = [

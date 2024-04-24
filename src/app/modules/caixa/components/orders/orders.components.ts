@@ -13,7 +13,6 @@ import {MOpenCaixaComponents} from "../modals/m-open-caixa/m-open-caixa.componen
 import {MCloseCaixaComponents} from "../modals/m-close-caixa/m-close-caixa.components";
 import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CashRegisterService} from "../../../shops/service/cash-register.service";
-import {filter, take} from "rxjs/operators";
 
 @Component({
     selector: 'app-orders',
