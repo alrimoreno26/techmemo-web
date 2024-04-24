@@ -12,11 +12,11 @@ import {CashRegisterServices} from "../../../core/services/cash-register.service
 export class CashRegisterService extends StoreComponentService<CashRegisterDto> {
 
     override serverSide = true;
-    opened$: Observable<boolean> = this.select(state => state.opened);
+    opened$: Observable<any> = this.select(state => state.opened);
 
     constructor(private services: CashRegisterServices) {
-        const defaultEntity: EntityState<any> & { opened: boolean }=
-            {entities: [], total: 0, dialog: false, loaded: false, opened: false};
+        const defaultEntity: EntityState<any> & { opened: any }=
+            {entities: [], total: 0, dialog: false, loaded: false, opened: null};
         super(services, defaultEntity);
     }
 
@@ -46,7 +46,7 @@ export class CashRegisterService extends StoreComponentService<CashRegisterDto> 
 
     existsAnyWorking(): void {
         this.services.existsAnyWorking().subscribe((working:any) => {
-            this.patchState({opened: working.exists});
+            this.patchState({opened: working.cashRegisterId});
         });
     }
 

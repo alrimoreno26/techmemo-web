@@ -15,6 +15,7 @@ import {MCancelProductsComponents} from "../modals/cancel_products/cancel-produc
 import {StoreTablesServices} from "../../services/store.tables.services";
 import {MComandaComponents} from "../modals/m-comanda/m-comanda.components";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
+import {CashRegisterService} from "../../../shops/service/cash-register.service";
 
 
 @Component({
@@ -54,6 +55,7 @@ export class CaixaComponent implements OnInit {
     canFinalize$: boolean;
     activeRoute: string;
     activeRouteOrder: string;
+    totalOrders = 0;
 
     constructor(public notify: NotifyService,
                 private http: HttpClient,
@@ -63,7 +65,9 @@ export class CaixaComponent implements OnInit {
                 private toastMessageService: ToastMessageService,
                 private storeTablesServices: StoreTablesServices,
                 private router: Router,
+                public cashService: CashRegisterService,
                 public service: CaixaService) {
+        this.cashService.existsAnyWorking();
         this.notify.weightScale$.subscribe(weight => {
             if (weight !== "" && this.value === 'on') {
                 this.weightScale = parseFloat(weight)
@@ -74,7 +78,9 @@ export class CaixaComponent implements OnInit {
                 this.suggestions = this.productService.listEntities$() ?? []
             }
             if (this.service.selectedEntity$()) {
+
                 this.orders = this.service.selectedEntity$().filter((f: any) => (f.state !== 'CANCELLED' || f.state !== 'FINISHED'));
+                this.comandaTotal();
                 //AQUI QUITE CONDICION  && x.valueToPaid !== 0
                 const allOrdersPaid = this.orders.every((x: any) => (x.valueToPaid === x.valuePaid));
                 this.oneClosed = this.orders.some((x: any) => (x.state === 'CLOSED'));
@@ -103,7 +109,6 @@ export class CaixaComponent implements OnInit {
 
     ngOnInit(): void {
         this.service.canFinalize$.subscribe((value: boolean) => {
-            console.log(value)
             this.canFinalize$ = value;
         });
     }
@@ -240,9 +245,16 @@ export class CaixaComponent implements OnInit {
         this.dialogNameCliente = true
     }
 
-    comandaTotal(): number {
-        return this.orders?.reduce((sumaTotal: any, item: any) =>
+    comandaTotal(): void {
+        this.totalOrders =  this.orders?.reduce((sumaTotal: any, item: any) =>
                 sumaTotal + (item.valueToPaid - item.valuePaid),
+            0
+        ) || 0;
+    }
+
+    comandaAllTotal(): number {
+        return this.orders?.reduce((sumaTotal: any, item: any) =>
+                sumaTotal + item.valueToPaid,
             0
         ) || 0;
     }

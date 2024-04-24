@@ -2,6 +2,8 @@
     <div class="align-items-center flex flex-auto gap-3 py-3">
         <label class="block font-bold">Vencimiento</label>
         <p-calendar styleClass="w-20rem" class="w-20rem" [(ngModel)]="rangeDates" selectionMode="range"
+                    dateFormat="dd/mm/yy"
+                    (onClose)="applyFilter()"
                     [readonlyInput]="true"></p-calendar>
     </div>
     <div class="grid">
@@ -98,6 +100,7 @@
                             </ng-template>
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
                                 <p-dropdown [ngModel]="value" [options]="statuses" (onChange)="filter($event.value)"
+                                            [showClear]="true"
                                             placeholder="Selecione">
                                     <ng-template let-option pTemplate="item">
                                         <p-tag [value]="option.label |translate"

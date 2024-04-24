@@ -9,12 +9,12 @@ import {CashRegisterOperationsServices} from "../../../core/services/cash-regist
 export class CashRegisterOperationsService extends StoreComponentService<CashRegisterDto> {
 
     override serverSide = true;
-    opened$: Observable<boolean> = this.select(state => state.opened);
+    opened$: Observable<any> = this.select(state => state.opened);
 
     constructor(private services: CashRegisterOperationsServices,
                 private sessionService: SessionServices,) {
-        const defaultEntity: EntityState<any> & { opened: boolean }=
-            {entities: [], total: 0, dialog: false, loaded: false, opened: false};
+        const defaultEntity: EntityState<any> & { opened: any }=
+            {entities: [], total: 0, dialog: false, loaded: false, opened: null};
         super(services, defaultEntity);
     }
 
@@ -23,4 +23,12 @@ export class CashRegisterOperationsService extends StoreComponentService<CashReg
             this.patchState({opened: true});
         });
     }
+
+    getOperationsById(cashRegisterId :string): void {
+        this.services.getOperationsById(cashRegisterId).subscribe((response:any) => {
+            console.log(response)
+        })
+    }
+
+
 }

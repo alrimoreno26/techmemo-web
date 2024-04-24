@@ -9,6 +9,7 @@ import {MPartialPaymentComponent} from "../modals/partial-payment/partial-paymen
 import {CreatePaymentTransactionTO} from "../../../../core/models/orders";
 import {CpfNotaComponents} from "../modals/cpf_nota/cpf-nota.components";
 import {SessionServices} from "../../../../core/injects/session.services";
+import {CashRegisterService} from "../../../shops/service/cash-register.service";
 
 @Component({
     selector: 'app-keypad',
@@ -41,10 +42,13 @@ export class KeypadComponents implements OnInit {
     show: boolean = false;
     productsPagamento: any[] = [];
 
+    cashRegisterId = '';
     constructor(private service: CaixaService,
                 private messageService: MessageServices,
+                public cashService: CashRegisterService,
                 private session: SessionServices,
                 private dialogService: DialogService) {
+
         effect(() => {
             if (this.service.selectedEntity$()) {
                 let allPayments = this.service.selectedEntity$().flatMap((item: any) => item.payments);
@@ -92,13 +96,24 @@ export class KeypadComponents implements OnInit {
                         sumaTotal + item.payment,
                     0
                 ) || 0;
-                this.remaining_amount = this.formPagamento.get('amountPaid')?.value;
+                let totales = this.service.selectedEntity$().reduce((sumaTotal: any, item: any) =>
+                        sumaTotal + item.valueToPaid,
+                    0
+                ) || 0;
+                console.log(this.paymentsDone)
+                console.log(this.service.selectedEntity$())
+                console.log(totales)
+                console.log(this.pagamento)
+                this.remaining_amount = totales - this.pagamento;
+                this.paymentsResetFields()
             }
+        });
+        this.cashService.opened$.subscribe((opened) => {
+            this.cashRegisterId = opened ? opened : '';
         });
     }
 
     initPagamento() {
-        console.log(this.activeRouteOrder)
         this.amountPaid = this.totalPayment;
         this.remaining_amount = this.totalPayment;
         let total = this.paymentsDone.reduce((sumaTotal: any, item: any) =>
@@ -225,7 +240,7 @@ export class KeypadComponents implements OnInit {
                 let totalValuePaid = this.formPagamento.get('paymentValue')?.value;
                 this.paymentByProduct.forEach((el: any) => {
                     transactions.push({
-                        cashRegisterId: this.session.userLogged.id,
+                        cashRegisterId: this.cashRegisterId,
                         orderId: el.orderId,
                         paymentPerProducts: [
                             {
@@ -248,13 +263,13 @@ export class KeypadComponents implements OnInit {
                 if (this.formPagamento.get('paymentValue')?.value === this.formPagamento.get('amountPaid')?.value) {
                     this.service.selectedEntity$().forEach((el: any) => {
                         transactions.push({
-                            cashRegisterId: this.session.userLogged.id,
+                            cashRegisterId: this.cashRegisterId,
                             orderId: el.id,
                             paymentPerProducts: [{
                                 payments: [{
                                     paymentStructureId: this.selectedPaymentMethod?.id,
-                                    valueToPaid: el.valueToPaid,
-                                    valuePaid: el.valueToPaid,
+                                    valueToPaid: this.formPagamento.get('amountPaid')?.value,
+                                    valuePaid: this.formPagamento.get('paymentValue')?.value,
                                     discount: this.formPagamento.get('discount')?.value,
                                     valuePaidChange: this.formPagamento.get('paidChange')?.value
                                 }]
@@ -267,7 +282,7 @@ export class KeypadComponents implements OnInit {
                     this.service.selectedEntity$().forEach((el: any) => {
                         if (totalValuePaid > 0) {
                             transactions.push({
-                                cashRegisterId: this.session.userLogged.id,
+                                cashRegisterId: this.cashRegisterId,
                                 orderId: el.id,
                                 paymentPerProducts: [{
                                     payments: [{
@@ -296,10 +311,10 @@ export class KeypadComponents implements OnInit {
     paymentsResetFields() {
         this.pagamento = this.paymentsDone.reduce((total, item) => total + item.payment, 0);
         this.amountPaid = this.amountPaid - this.formPagamento.get('paymentValue')?.value;
-        this.remaining_amount = this.totalPayment - this.paymentsDone.reduce((total, item) => total + item.payment, 0);
+        this.remaining_amount = this.totalPayment - this.pagamento;
         this.disableAllFields = true;
         this.divider = 1;
-        this.formPagamento.get('amountPaid')?.setValue(this.amountPaid);
+        this.formPagamento.get('amountPaid')?.setValue(this.remaining_amount);
         this.formPagamento.get('paymentValue')?.setValue(0);
         this.formPagamento.get('discount')?.setValue(0);
         this.formPagamento.get('paidChange')?.setValue(0);

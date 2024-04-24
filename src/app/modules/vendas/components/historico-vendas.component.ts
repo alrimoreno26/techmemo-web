@@ -42,7 +42,14 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
 
     constructor(public storeServices: StoreVendasServices, public store: StoreDashboardServices, public session: SessionServices) {
         super()
-        this.storeServices.loadAll({lazy: {page: 0, count: 25}})
+        this.storeServices.loadAll({
+            lazy: {
+                pageNumber: 0,
+                pageSize: 25,
+                startDate: this.formatDate(this.rangeDates[0]),
+                endDate: this.formatDate(this.rangeDates[1])
+            }
+        })
         effect(() => {
             if (this.session.getTenantId()) {
                 this.store.loadOrdersStats({
@@ -75,12 +82,21 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
 
     }
 
-    applyFilter(type: string) {
-        switch (type) {
-            case 'created': {
-                console.log(this.rangeDates)
+    applyFilter() {
+        const startDate = this.formatDate(this.rangeDates[0]);
+        const endDate = this.rangeDates[1] !== null ? this.formatDate(this.rangeDates[1]) : this.formatDate(this.rangeDates[0]);
+        this.store.loadOrdersStats({
+            startDate,
+            endDate
+        });
+        this.storeServices.loadAll({
+            lazy: {
+                pageNumber: 0,
+                pageSize: 25,
+                startDate: this.formatDate(this.rangeDates[0]),
+                endDate: this.formatDate(this.rangeDates[1])
             }
-        }
+        })
     }
 
     show(el: HTMLElement) {

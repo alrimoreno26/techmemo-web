@@ -61,3 +61,10 @@ export const setCookie = (key: string, value: string, maxAge: number = 7200) => 
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; SameSite=None; Secure; Path=/;` :
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`;
 };
+
+export function formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2); // Suma 1 al mes porque los meses comienzan desde 0
+    const day = ('0' + date.getDate()).slice(-2);
+    return `${year}-${month}-${day}`;
+}

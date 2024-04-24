@@ -27,7 +27,7 @@ export class InactivityService {
     }
 
     startInactivityTimer(): void {
-        if (this.returnUrl.includes('lockscreen')) return;
+        if (this.returnUrl.includes('lockscreen') || this.returnUrl.includes('login') ) return;
         this.inactivityTimeout = setTimeout(() => {
             this.router.navigate(['/lockscreen'], {queryParams: {returnUrl: this.returnUrl}});
         }, this.timerDuration);

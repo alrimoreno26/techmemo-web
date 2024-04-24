@@ -31,6 +31,11 @@ export class MOpenCaixaComponents implements OnInit {
                     this.ref.close();
                 }
             })
+            this.cashRegisterOperations.opened$.subscribe((opened) => {
+                if (opened) {
+                    this.ref.close();
+                }
+            })
             this.userService.userBasic$.subscribe(user => {
                 this.listUser = user.filter((u: any) => u.operationArea === operationAreaRoleEnum.POINT_OF_SALE) ?? [];
             })

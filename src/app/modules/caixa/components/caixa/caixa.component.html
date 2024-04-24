@@ -150,7 +150,7 @@
                     <div class="flex align-items-center justify-content-between">
                         <h6 class="text-3xl text-gray-600 m-0">Total ({{ service.selectedEntity$().length }})
                             Orders:</h6>
-                        <h6 class="text-5xl text-primary m-0">{{ comandaTotal() | currency }}</h6>
+                        <h6 class="text-5xl text-primary m-0">{{ totalOrders | currency }}</h6>
                     </div>
                     <div class="flex gap-3">
                         <div class="flex-1">
@@ -163,7 +163,7 @@
                         <div class="flex-1">
                             <p-button styleClass="w-full flex align-items-center justify-content-center p-button-raised"
                                       (onClick)="goToPayment()"
-                                      [disabled]="pagamento || comandaTotal() === 0">
+                                      [disabled]="pagamento || totalOrders === 0">
                                 <span class="text-3xl">(F12) Efectuar Pagemento</span>
                             </p-button>
                         </div>
@@ -203,7 +203,7 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="pagamento">
-                <app-keypad [totalPayment]="comandaTotal()" (confirmSell)="sellConfirmed($event)"
+                <app-keypad [totalPayment]="comandaAllTotal()" (confirmSell)="sellConfirmed($event)"
                             [tableOrderClosed]="oneClosed"
                             [activeRouteOrder]="service.selectedEntity$()[this.activeOrder]"
                             (goBack)="goBack($event)"></app-keypad>

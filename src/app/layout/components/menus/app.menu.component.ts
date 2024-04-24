@@ -36,7 +36,7 @@ export class AppMenuComponent implements OnInit {
         }
 
         if(this.sessionService.userLogged.role.operationArea !== 'SUPER_ADMIN'){
-            this.model.find((m: any) => m.label === 'Loja').items.shift();
+            this.model.find((m: any) => m.label === 'Loja')?.items.shift();
         }
     }
 

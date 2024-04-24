@@ -102,7 +102,7 @@ export const ordersReducer = createReducer<State>(
     }),
     on(fromOrdersListActions.makePaymentsOrdersSuccess, (state, {entity}) => {
         const updatePaidProducts = (product: any, payments: any[]): any => {
-            const finded = payments.find((payment: any) => payment.product.id === product.id);
+            const finded = payments.find((payment: any) => payment.product && payment.product.id === product.id);
             return finded && finded.valuePaid === finded.valueToPaid ? { ...product, paid: true } : { ...product };
         };
 

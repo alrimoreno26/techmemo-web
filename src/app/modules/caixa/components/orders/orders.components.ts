@@ -13,6 +13,7 @@ import {MOpenCaixaComponents} from "../modals/m-open-caixa/m-open-caixa.componen
 import {MCloseCaixaComponents} from "../modals/m-close-caixa/m-close-caixa.components";
 import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CashRegisterService} from "../../../shops/service/cash-register.service";
+import {CashRegisterOperationsService} from "../../../shops/service/cash-register-operations.service";
 
 @Component({
     selector: 'app-orders',
@@ -28,13 +29,14 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
     fromTable: any;
 
-    caixaOpened: boolean;
+    caixaOpened: any;
 
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
                 private router: Router,
                 public layoutService: LayoutService,
                 private toastMessageService: ToastMessageService,
+                public cashRegisterOperations: CashRegisterOperationsService,
                 public session: SessionServices,
                 private cashRegisterService: CashRegisterService,
                 private datePipe: DatePipe) {
@@ -43,7 +45,12 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterService.existsAnyWorking();
         effect(() => {
             this.cashRegisterService.opened$.subscribe((opened) => {
-                this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
+                if (opened)
+                    this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
+            })
+            this.cashRegisterOperations.opened$.subscribe((opened) => {
+                if (opened)
+                    this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
             })
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
@@ -139,7 +146,8 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         }
 
     }
-    closeCaixa(){
+
+    closeCaixa() {
         this.dialogService.open(MCloseCaixaComponents, {
             data: null,
             width: '700px',
