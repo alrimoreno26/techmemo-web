@@ -48,7 +48,7 @@ export class AuthServices {
    */
   refreshToken(param: RefreshTokenTO): Observable<RefreshTokenTO> {
     return this.httpClient.post<RefreshTokenTO>(
-      `${this.basePath}/auth/refresh_token`, param,
+      `${this.basePath}/auth/refresh-token`, {},
       {context: silentIt()}
     );
   }

@@ -8,6 +8,7 @@ import {PaymentStructureTO} from "../../../../core/models/financial";
 import {MPartialPaymentComponent} from "../modals/partial-payment/partial-payment.component";
 import {CreatePaymentTransactionTO} from "../../../../core/models/orders";
 import {CpfNotaComponents} from "../modals/cpf_nota/cpf-nota.components";
+import {SessionServices} from "../../../../core/injects/session.services";
 
 @Component({
     selector: 'app-keypad',
@@ -42,6 +43,7 @@ export class KeypadComponents implements OnInit {
 
     constructor(private service: CaixaService,
                 private messageService: MessageServices,
+                private session: SessionServices,
                 private dialogService: DialogService) {
         effect(() => {
             if (this.service.selectedEntity$()) {
@@ -96,6 +98,7 @@ export class KeypadComponents implements OnInit {
     }
 
     initPagamento() {
+        console.log(this.activeRouteOrder)
         this.amountPaid = this.totalPayment;
         this.remaining_amount = this.totalPayment;
         let total = this.paymentsDone.reduce((sumaTotal: any, item: any) =>
@@ -222,6 +225,7 @@ export class KeypadComponents implements OnInit {
                 let totalValuePaid = this.formPagamento.get('paymentValue')?.value;
                 this.paymentByProduct.forEach((el: any) => {
                     transactions.push({
+                        cashRegisterId: this.session.userLogged.id,
                         orderId: el.orderId,
                         paymentPerProducts: [
                             {
@@ -244,6 +248,7 @@ export class KeypadComponents implements OnInit {
                 if (this.formPagamento.get('paymentValue')?.value === this.formPagamento.get('amountPaid')?.value) {
                     this.service.selectedEntity$().forEach((el: any) => {
                         transactions.push({
+                            cashRegisterId: this.session.userLogged.id,
                             orderId: el.id,
                             paymentPerProducts: [{
                                 payments: [{
@@ -262,6 +267,7 @@ export class KeypadComponents implements OnInit {
                     this.service.selectedEntity$().forEach((el: any) => {
                         if (totalValuePaid > 0) {
                             transactions.push({
+                                cashRegisterId: this.session.userLogged.id,
                                 orderId: el.id,
                                 paymentPerProducts: [{
                                     payments: [{
@@ -281,7 +287,7 @@ export class KeypadComponents implements OnInit {
 
             this.service.payments(transactions);
 
-            this.paymentsResetFields();
+            //this.paymentsResetFields();
         } else {
             // this.messageService.addError('Valor pago no pode ser 0')
         }

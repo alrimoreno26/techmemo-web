@@ -36,7 +36,7 @@
                             [pTooltip]="'Mostrar Mesas'"></button>
                     <button [disabled]="table_union.length === 0" (click)="juntarMesas()" pButton
                             icon="mdi mdi-vector-union mdi-18px" class="mr-2" [pTooltip]="'Juntar Mesas'"></button>
-                    @if(caixaOpened){
+                    @if(caixaOpened && session.userLogged.role.operationArea !== 'ADMINISTRATOR_STORE'){
                         <p-divider layout="vertical"></p-divider>
                         <p-button [pTooltip]="'Fechar Caixa'" tooltipPosition="bottom" styleClass="px-4"
                                   (click)="closeCaixa()"

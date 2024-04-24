@@ -3,13 +3,13 @@
         <div class="flex flex-1 w-full gap-3" style="width: 220px">
             <p-button class="flex-1"
                       (click)="addNameOrder()"
-                      [disabled]="activeRouteOrder.clientDocument !== null"
+                      [disabled]="activeRouteOrder.clientDocument !== ''"
                       styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                 <i class="mdi mdi-account-plus text-5xl"></i>
                 <span class="text-xl">(F6) <br> CPF</span>
             </p-button>
             <p-button
-                (click)="doPagamento()"
+                (onClick)="doPagamento()"
                 [disabled]="!disableAllFields"
                 class="flex-1"
                 styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
@@ -80,7 +80,7 @@
                 <div class="flex flex-column h-full justify-content-between">
                     <p-button
                         [disabled]="disableAllFields"
-                        (click)="partialPayment()"
+                        (onClick)="partialPayment()"
                         class="flex justify-content-around ml-5"
                         styleClass="p-button-outlined flex justify-content-center">
                         <i class="mdi mdi-percent mr-2"></i>
@@ -88,7 +88,7 @@
                     </p-button>
                     <p-button
                         [disabled]="disableAllFields"
-                        (click)="addPaymentDone()"
+                        (onClick)="addPaymentDone()"
                         class="flex justify-content-around ml-4"
                         styleClass="w-8 flex justify-content-center mr-6">
                         <i class="mdi mdi-currency-usd mr-2"></i>

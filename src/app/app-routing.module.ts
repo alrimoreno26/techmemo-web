@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {canActivateNotAuthGuard} from "./core/guards/not.auth.guard";
 import {canActivateAuthGuard, canMatchAuthGuard} from "./core/guards/auth.guard";
+import {LockModule} from "./modules/auth/lock/lock.module";
 
 
 const routes: Routes = [
@@ -13,6 +14,10 @@ const routes: Routes = [
         path: 'login',
         loadChildren: () => import('./modules/auth/login/login.module').then(m => m.LoginModule),
         canActivate: [canActivateNotAuthGuard]
+    },
+    {
+        path: 'lockscreen',
+        loadChildren: () => import('./modules/auth/lock/lock.module').then(m => m.LockModule),
     },
     {
         path: 'static',

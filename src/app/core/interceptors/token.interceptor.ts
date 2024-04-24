@@ -20,14 +20,23 @@ export class TokenInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const isLoggedIn = this.sessionService.isLoggedIn && this.sessionService.getAccessToken();
         const isApiUrl = request.url.startsWith(environment.apiURL)
-        const isNotRefresh = request.url.includes('/auth/refresh_token');
+        const isNotRefresh = request.url.includes('/auth/refresh-token');
+        let requestToken = '';
         if (isLoggedIn && isApiUrl && !isNotRefresh) {
             const routePattern = /^(?:.*\/)*orders\/([a-zA-Z0-9\-]+)\/products$/;
-            const requestToken = (routePattern.test(request.url) && request.method === 'DELETE') ? this.sessionService.getDeleteToken() : this.sessionService.getAccessToken()
+            requestToken = (routePattern.test(request.url) && request.method === 'DELETE') ? this.sessionService.getDeleteToken() : this.sessionService.getAccessToken()
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${requestToken}`,
                     'X-Tenant-Id': `${this.sessionService.getTenantId()}`,
+                }
+            });
+        }
+        if (isNotRefresh) {
+            requestToken = this.sessionService.getRefreshToken().token;
+            request = request.clone({
+                setHeaders: {
+                    Authorization: `Bearer ${requestToken}`
                 }
             });
         }

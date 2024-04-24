@@ -1,6 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, effect, OnInit} from '@angular/core';
 import {BaseComponentDirective} from "../../../standalone/data-table/directives/base.component.directive";
 import {StoreVendasServices} from "../service/store.vendas.services";
+import {StoreDashboardServices} from "../../dashboard/services/dashboard.services";
+import {SessionServices} from "../../../core/injects/session.services";
 
 @Component({
     selector: 'c-historico-vendas',
@@ -9,7 +11,7 @@ import {StoreVendasServices} from "../service/store.vendas.services";
 })
 export class HistoricoVendasComponent extends BaseComponentDirective implements OnInit {
 
-    rangeDates: Date[] | undefined;
+    rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), 11, 31)];
 
     statuses = [
         {value: "PAID", label: "Pago"},
@@ -19,30 +21,48 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
         {value: "CLOSED", label: "Fechado"},
         {value: "FINISHED", label: "Terminada"},
     ]
-    statusesValue:any = '';
+    statusesValue: any = '';
     metrics = [
         {
             title: 'Ativos',
             image: 'banking-1',
-            value: 122
+            value: 0
         },
         {
-            title: 'Pago',
+            title: 'Em pagamento',
             image: 'banking-2',
-            value: 122
+            value: 0
         },
         {
-            title: 'Pedidos',
+            title: 'Finalizado',
             image: 'banking-3',
-            value: 122
+            value: 0
         },
     ];
-    constructor(public storeServices: StoreVendasServices) {
+
+    constructor(public storeServices: StoreVendasServices, public store: StoreDashboardServices, public session: SessionServices) {
         super()
         this.storeServices.loadAll({lazy: {page: 0, count: 25}})
+        effect(() => {
+            if (this.session.getTenantId()) {
+                this.store.loadOrdersStats({
+                    startDate: this.formatDate(this.rangeDates[0]),
+                    endDate: this.formatDate(this.rangeDates[1])
+                });
+            }
+        });
+        effect(() => {
+            if (this.store.stat$()) {
+                this.metrics[0].value = this.store.stat$().orderSummary.totalActive;
+                this.metrics[1].value = this.store.stat$().orderSummary.totalInPayment;
+                this.metrics[2].value = this.store.stat$().orderSummary.totalPaid;
+            }
+        });
     }
 
     ngOnInit() {
+        console.log(new Date())
+
     }
 
     showDetails(order: any) {
@@ -62,6 +82,7 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
             }
         }
     }
+
     show(el: HTMLElement) {
         el.classList.remove('hidden');
         el.classList.add('fadeindown');
@@ -69,5 +90,12 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
 
     hide(el: HTMLElement) {
         el.classList.add('hidden');
+    }
+
+    formatDate(date: Date): string {
+        const year = date.getFullYear();
+        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Suma 1 al mes porque los meses comienzan desde 0
+        const day = ('0' + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
     }
 }

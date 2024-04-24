@@ -1,6 +1,6 @@
 export interface ReportsDTO {
     mostSoldProducts: MostSoldProductsDTO[],
-    ordersByStates: OrdersByStateDTO,
+    orderSummary: OrdersByStateDTO,
     salesByPaymentStructures: SalesByPaymentStructureDTO[]
 }
 
@@ -16,6 +16,7 @@ export interface OrdersByStateDTO {
     totalCancelled: 0,
     totalClosed: 0,
     totalFinished: 0,
+    averageOrders: 0,
     totalInPayment: 0,
     totalPaid: 0
 }

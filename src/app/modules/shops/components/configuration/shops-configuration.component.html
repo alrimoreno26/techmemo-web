@@ -271,7 +271,7 @@
                                                              [severity]="printer.area === 'POS' ? 'success' : 'warning'"></p-badge>
                                                     <div class="align-items-center flex flex-auto gap-3 pt-2">
                                                         <label class="block font-bold">Activa</label>
-                                                        <p-inputSwitch [(ngModel)]="printer.enable"
+                                                        <p-inputSwitch [(ngModel)]="printer.enabled"
                                                                        (onChange)="patchEnable($event,printer)"
                                                                        [ngModelOptions]="{standalone: true}"
                                                                        class="flex"></p-inputSwitch>
@@ -320,7 +320,7 @@
                                                     <div class="align-items-center flex flex-auto gap-3">
                                                         <label class="block font-bold">Activa</label>
                                                         <p-inputSwitch
-                                                            [(ngModel)]="cash.enable"
+                                                            [(ngModel)]="cash.enabled"
                                                             (onChange)="patchCaixaEnable($event,cash)"
                                                             [ngModelOptions]="{standalone: true}"
                                                             class="flex"></p-inputSwitch>

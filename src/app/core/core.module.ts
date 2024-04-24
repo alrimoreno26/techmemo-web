@@ -17,9 +17,15 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
 import {CommercesServices} from "./services/commerces.services";
 import {LayoutService} from "../layout/service/app.layout.service";
 import {CommercesService} from "../modules/shops/service/commerces.service";
+import {InactivityService} from "./injects/inactive.services";
 
 registerLocaleData(localePt, 'pt');
-
+export function inactivityServiceFactory(inactivityService: InactivityService): () => Promise<any> {
+    return () => {
+        inactivityService.setupInactivityTimer();
+        return Promise.resolve();
+    };
+}
 @NgModule({
     declarations: [
         SpinnerComponent
@@ -32,10 +38,17 @@ registerLocaleData(localePt, 'pt');
         SpinnerComponent
     ],
     providers: [
+        InactivityService,
         {provide: LOCALE_ID, useValue: 'pt-BR'},
         {provide: DEFAULT_CURRENCY_CODE, useValue: 'BRL'},
         {provide: WindowToken, useFactory: windowProvider},
         {provide: APP_INITIALIZER, useFactory: initializeAppFactory, deps: [HttpClient, SessionServices,CommercesServices,LayoutService], multi: true},
+        {
+            provide: APP_INITIALIZER,
+            useFactory: inactivityServiceFactory,
+            deps: [InactivityService],
+            multi: true
+        },
         {provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: SpinnerInterceptor, multi: true},
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},

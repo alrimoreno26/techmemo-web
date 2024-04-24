@@ -16,6 +16,7 @@ import {TagModule} from "primeng/tag";
 import {TranslateModule} from "@ngx-translate/core";
 import {FormsModule} from "@angular/forms";
 import {TooltipModule} from "primeng/tooltip";
+import {InputSwitchModule} from "primeng/inputswitch";
 
 @NgModule({
     declarations: [
@@ -37,7 +38,8 @@ import {TooltipModule} from "primeng/tooltip";
         TagModule,
         TranslateModule,
         FormsModule,
-        TooltipModule
+        TooltipModule,
+        InputSwitchModule
     ],
     providers:[
     ],

@@ -31,7 +31,7 @@ export interface PrinterDto {
     area: 'POS' | 'KITCHEN'
     connectionByIp: boolean
     created: string
-    enable?: boolean
+    enabled?: boolean
     id: string
     ip: string
     name: string
@@ -39,7 +39,7 @@ export interface PrinterDto {
 
 export interface CashRegisterDto {
     created?: string
-    enable: boolean
+    enabled: boolean
     id: string
     name: string
     working?: boolean

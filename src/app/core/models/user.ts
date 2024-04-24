@@ -24,9 +24,10 @@ export interface UserAuthenticated {
     email: string;
     enabled: boolean;
     hasRating: boolean;
-    id: number;
+    id: string;
     image: DocumentMetadataTO;
     name: string;
+    username: string;
     phone: string;
     commerces: any[];
     refreshToken: string;
@@ -113,7 +114,7 @@ export interface UpdatePassword {
 }
 
 export interface LightUserTO {
-  id: number;
+  id: string;
   email: string;
   name: string;
   phone: string;

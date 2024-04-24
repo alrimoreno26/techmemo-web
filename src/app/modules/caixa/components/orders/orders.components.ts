@@ -36,7 +36,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
                 private router: Router,
                 public layoutService: LayoutService,
                 private toastMessageService: ToastMessageService,
-                private session: SessionServices,
+                public session: SessionServices,
                 private cashRegisterService: CashRegisterService,
                 private datePipe: DatePipe) {
         super()
@@ -44,7 +44,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterService.existsAnyWorking();
         effect(() => {
             this.cashRegisterService.opened$.subscribe((opened) => {
-                this.caixaOpened = opened;
+                this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
             })
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {

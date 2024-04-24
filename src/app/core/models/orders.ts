@@ -22,6 +22,7 @@ export interface CreateOrderTO {
 }
 
 export interface CreatePaymentTransactionTO {
+    cashRegisterId: string
     orderId: string
     paymentPerProducts:PaymentPerProductTO[];
 }

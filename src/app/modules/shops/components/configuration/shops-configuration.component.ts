@@ -218,11 +218,11 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     }
 
     patchEnable(event:any, item: PrinterDto){
-        this.printersServices.update({data: {id: item.id, enable: event.checked}});
+        this.printersServices.update({data: {id: item.id, enabled: event.checked}});
     }
 
     patchCaixaEnable(event:any, item: any){
-        this.cashRegisterService.update({data: {id: item.id, enable: event.checked}});
+        this.cashRegisterService.update({data: {id: item.id, enabled: event.checked}});
     }
 
     saveVisuals() {

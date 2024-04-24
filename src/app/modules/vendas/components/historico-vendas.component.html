@@ -1,4 +1,9 @@
 <div class="card m-3">
+    <div class="align-items-center flex flex-auto gap-3 py-3">
+        <label class="block font-bold">Vencimiento</label>
+        <p-calendar styleClass="w-20rem" class="w-20rem" [(ngModel)]="rangeDates" selectionMode="range"
+                    [readonlyInput]="true"></p-calendar>
+    </div>
     <div class="grid">
         <div class="col-12 md:col-4" *ngFor="let metric of metrics">
             <div class="card flex w-full relative h-14rem overflow-hidden" (mouseenter)="show(btn)"
@@ -21,7 +26,6 @@
             </div>
         </div>
     </div>
-
     <p-table
         #dtOrders
         [value]="storeServices.listEntities$()"
@@ -48,30 +52,30 @@
                 <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                     <div class="flex align-items-center">
                         Data Criacao
-                        <p-columnFilter type="date" field="created" display="menu"
-                                        [showMatchModes]="false"
-                                        [showClearButton]="false"
-                                        [showApplyButton]="false"
-                                        [showButtons]="false"
-                                        [showOperator]="false"
-                                        [showAddButton]="false">
-                            <ng-template pTemplate="header">
-                                <div class="px-3 pt-3 pb-0">
-                                    <span class="font-bold">Data Criacao</span>
-                                </div>
-                            </ng-template>
-                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-calendar [(ngModel)]="rangeDates" selectionMode="range"
-                                            [readonlyInput]="true"></p-calendar>
-                                <div class="flex pt-3 justify-content-between gap-5">
-                                    <button pButton pRipple class="w-7 p-button-danger p-button-outlined"
-                                            label="Limpar"></button>
-                                    <button pButton pRipple class="w-7 p-button-primary p-button-outlined"
-                                            label="Aplicar" (click)="applyFilter('created')"></button>
-                                </div>
-                            </ng-template>
+                        <!--                        <p-columnFilter type="date" field="created" display="menu"-->
+                        <!--                                        [showMatchModes]="false"-->
+                        <!--                                        [showClearButton]="false"-->
+                        <!--                                        [showApplyButton]="false"-->
+                        <!--                                        [showButtons]="false"-->
+                        <!--                                        [showOperator]="false"-->
+                        <!--                                        [showAddButton]="false">-->
+                        <!--                            <ng-template pTemplate="header">-->
+                        <!--                                <div class="px-3 pt-3 pb-0">-->
+                        <!--                                    <span class="font-bold">Data Criacao</span>-->
+                        <!--                                </div>-->
+                        <!--                            </ng-template>-->
+                        <!--                            <ng-template pTemplate="filter" let-value let-filter="filterCallback">-->
+                        <!--                                <p-calendar [(ngModel)]="rangeDates" selectionMode="range"-->
+                        <!--                                            [readonlyInput]="true"></p-calendar>-->
+                        <!--                                <div class="flex pt-3 justify-content-between gap-5">-->
+                        <!--                                    <button pButton pRipple class="w-7 p-button-danger p-button-outlined"-->
+                        <!--                                            label="Limpar"></button>-->
+                        <!--                                    <button pButton pRipple class="w-7 p-button-primary p-button-outlined"-->
+                        <!--                                            label="Aplicar" (click)="applyFilter('created')"></button>-->
+                        <!--                                </div>-->
+                        <!--                            </ng-template>-->
 
-                        </p-columnFilter>
+                        <!--                        </p-columnFilter>-->
                     </div>
                 </th>
                 <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">Data
@@ -126,7 +130,7 @@
                     -
                 </td>
                 <td class="text-center">
-                    {{ order.created | date:'dd/MM/YYYY hh:mm' : '+0'}}
+                    {{ order.created | date:'dd/MM/YYYY hh:mm' : '+0' }}
                 </td>
                 <td class="text-center">
                     {{ order.state === 'FINISHED' ? (order.changeStateDate | date:'dd/MM/YYYY hh:mm' : '+0') : '-' }}
@@ -160,8 +164,10 @@
            [style]="{'width': '650px'}">
     <ng-template pTemplate="header">
         <div class="flex w-full justify-content-between">
-            <div> Detalhes do pedido Nº: <span class="mb-0 font-bold"> {{ storeServices.details$().code || '' }}</span></div>
-            <div> Usuario Criacao: <span class="mb-0 font-bold"> {{ storeServices.details$().creatorUser.name || '' }}</span></div>
+            <div> Detalhes do pedido Nº: <span class="mb-0 font-bold"> {{ storeServices.details$().code || '' }}</span>
+            </div>
+            <div> Usuario Criacao: <span
+                class="mb-0 font-bold"> {{ storeServices.details$().creatorUser.name || '' }}</span></div>
         </div>
 
     </ng-template>

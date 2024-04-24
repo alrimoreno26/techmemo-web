@@ -113,7 +113,7 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
             let data = Object.fromEntries(
                 Object.entries(send).filter(([key, value]) => value !== null && value !== undefined)
             );
-            this.service.create({data: data})
+            this.commercesService.create({data: data})
         }
     }
 

@@ -23,13 +23,13 @@ const routes: Routes = [
             },
             {
                 path: 'configurations',
-                data: {breadcrumb: 'Configurações'},
+                data: {breadcrumb: 'Configurações', roles: [domainEnum.CONFIGURATION]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/configuracion/configuracion.module').then(m => m.ConfiguracionModule)
             },
             {
                 path: 'loja',
-                data: {breadcrumb: 'Loja', roles: [domainEnum.ALL,domainEnum.PRODUCT]},
+                data: {breadcrumb: 'Loja', roles: [domainEnum.ALL]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/shops/shops.module').then(m => m.ShopsModule)
             },
@@ -47,7 +47,7 @@ const routes: Routes = [
             },
             {
                 path: 'financial',
-                data: {breadcrumb: 'Financeiro'},
+                data: {breadcrumb: 'Financeiro', roles: [domainEnum.CONFIGURATION]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/financial/financial.module').then(m => m.FinancialModule)
             },

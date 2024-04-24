@@ -1,8 +1,6 @@
 import {Component, effect, OnDestroy, OnInit} from '@angular/core';
 import {Subscription} from 'rxjs';
-import {Product} from 'src/app/demo/api/product';
 import {LayoutService} from 'src/app/layout/service/app.layout.service';
-import {ProductService} from 'src/app/demo/service/product.service';
 import {Table} from 'primeng/table';
 import {MenuItem} from 'primeng/api';
 import {StoreDashboardServices} from "../services/dashboard.services";
@@ -10,6 +8,7 @@ import {ReportsDTO} from "../../../core/models/reports";
 import {CommercesService} from "../../shops/service/commerces.service";
 import {SessionServices} from "../../../core/injects/session.services";
 import {AppConfig} from "../../../core/models/layout";
+import {AuthServices} from "../../../core/services/auth.services";
 
 @Component({
     selector: 'c-commerce-dashboard',
@@ -19,13 +18,13 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     stats: ReportsDTO;
 
-    products: Product[] = [];
+    products: any[] = [];
 
-    productsThisWeek: Product[] = [];
+    productsThisWeek: any[] = [];
 
-    productsLastWeek: Product[] = [];
+    productsLastWeek: any[] = [];
 
-    productsBestSellers: Product[] = [];
+    productsBestSellers: any[] = [];
 
     subscription!: Subscription;
 
@@ -53,10 +52,10 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     selectedOrderWeek!: any;
 
-    constructor(private productService: ProductService,
-                private layoutService: LayoutService,
+    constructor(private layoutService: LayoutService,
                 public store: StoreDashboardServices,
                 public session: SessionServices,
+                private authServices: AuthServices,
                 public commercesService: CommercesService) {
 
         this.subscription = this.layoutService.configUpdate$.subscribe(config => {
@@ -75,45 +74,19 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                 this.stats = this.store.stat$();
                 this.metrics = [
                     {
-                        title: 'Orders',
+                        title: 'Ordenes',
                         icon: 'pi pi-shopping-cart',
                         color_light: '#64B5F6',
                         color_dark: '#1976D2',
                         textContent: [
-                            {amount: this.stats.ordersByStates.totalActive, text: 'Ativas'},
-                            {amount: this.stats.ordersByStates.totalFinished, text: 'Concluídas'}
+                            {amount: this.stats.orderSummary.totalActive, text: 'Ativas'},
+                            {amount: this.stats.orderSummary.totalInPayment, text: 'En pagamento'},
+                            {amount: this.stats.orderSummary.totalPaid, text: 'Pagadas'},
+                            {amount: this.stats.orderSummary.totalClosed, text: 'Fechadas'},
+                            {amount: this.stats.orderSummary.totalFinished, text: 'Concluídas'},
+                            {amount: this.stats.orderSummary.averageOrders, text: 'Média'}
                         ]
                     },
-                    {
-                        title: 'Revenue',
-                        icon: 'pi pi-dollar',
-                        color_light: '#7986CB',
-                        color_dark: '#303F9F',
-                        textContent: [
-                            {amount: this.stats.ordersByStates.totalInPayment, text: 'En pagamento'},
-                            {amount: this.stats.ordersByStates.totalPaid, text: 'Pagadas'}
-                        ]
-                    },
-                    {
-                        title: 'Customers',
-                        icon: 'pi pi-users',
-                        color_light: '#4DB6AC',
-                        color_dark: '#00796B',
-                        textContent: [
-                            {amount: 8272, text: 'Active'},
-                            {amount: 25402, text: 'Registered'}
-                        ]
-                    },
-                    {
-                        title: 'Comments',
-                        icon: 'pi pi-users',
-                        color_light: '#4DD0E1',
-                        color_dark: '#0097A7',
-                        textContent: [
-                            {amount: 12, text: 'New'},
-                            {amount: 85, text: 'Responded'}
-                        ]
-                    }
                 ];
                 this.productsBestSellers = this.stats.mostSoldProducts;
                 this.expenses = [
@@ -166,12 +139,12 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
-        this.productService.getProducts().then(data => {
-            this.products = data;
-            this.productsThisWeek = data;
-        });
-
-        this.productService.getProductsMixed().then(data => this.productsLastWeek = data);
+        // this.productService.getProducts().then(data => {
+        //     this.products = data;
+        //     this.productsThisWeek = data;
+        // });
+        //
+        // this.productService.getProductsMixed().then(data => this.productsLastWeek = data);
 
         this.cols = [
             {field: 'vin', header: 'Vin'},

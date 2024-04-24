@@ -30,8 +30,11 @@ export class AppMenuComponent implements OnInit {
                 this.model.push(m);
             }
         });
-        if (this.sessionService.userLogged.role.operationArea === 'SUPER_ADMIN')
+        if (this.sessionService.userLogged.role.operationArea === 'SUPER_ADMIN'){
             this.model = this.model.slice(2)
+            this.model.find((m: any) => m.label === 'Loja').items.splice(1, 1);
+        }
+
         if(this.sessionService.userLogged.role.operationArea !== 'SUPER_ADMIN'){
             this.model.find((m: any) => m.label === 'Loja').items.shift();
         }

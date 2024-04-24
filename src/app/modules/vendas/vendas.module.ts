@@ -16,6 +16,7 @@ import {DividerModule} from "primeng/divider";
 import {TranslateModule} from "@ngx-translate/core";
 import {DropdownModule} from "primeng/dropdown";
 import {TagModule} from "primeng/tag";
+import {StoreDashboardServices} from "../dashboard/services/dashboard.services";
 
 @NgModule({
     declarations: [
@@ -41,6 +42,7 @@ import {TagModule} from "primeng/tag";
     ],
     providers:[
         StoreVendasServices,
+        StoreDashboardServices,
         DialogService
     ],
     exports:[],

@@ -30,6 +30,7 @@ export class CommercesService extends StoreComponentService<any> {
         switchMap(({data}) => this.services.create(data).pipe(
             tapResponse({
                 next: (response: any) => {
+                    this.setAdd(response);
                     this.patchState({dialog: false});
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)

@@ -2,6 +2,7 @@ import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {ShopsComponents} from "./shops.components";
 import {domainEnum} from "../../core/enums/role";
+import {SuperAdminGuard} from "../../core/guards/super.admin.guard";
 
 const routes: Routes = [
     {
@@ -9,6 +10,7 @@ const routes: Routes = [
             {
                 path: 'lista',
                 data: {breadcrumb: 'Todas as lojas', roles: [domainEnum.PRODUCT]},
+                canActivate: [SuperAdminGuard],
                 loadChildren: () => import('./components/list/shops-list.module').then(c => c.ShopsListModule)
             },
             {
