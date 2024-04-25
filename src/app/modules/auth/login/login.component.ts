@@ -80,7 +80,6 @@ export class LoginComponent implements OnInit {
 
     redirectByRoleLogin() {
         const user = this.sessionService.userLogged;
-        debugger
         if(user.commerces.length === 0) {
             this.router.navigateByUrl('/static/empty-store').then();
         } else {
