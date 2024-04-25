@@ -58,7 +58,8 @@ export const getCookie = (value: string): string => {
 };
 
 export const setCookie = (key: string, value: string, maxAge: number = 7200) => {
-    const domain = environment.production ? 'http://techmemo-app.s3-website-us-east-1.amazonaws.com' : 'localhost';
+    const domain = document.location.hostname.includes('techmemo-app.s3') ? 'techmemo-app' : 'localhost';
+    debugger
     environment.production ?
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; SameSite=None; Secure; Path=/;` :
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`;
