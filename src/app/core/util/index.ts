@@ -23,6 +23,7 @@ export const groupBy = (array: any[], key: string) => {
         return result;
     }, {});
 }
+
 export function getErrorMessage(
     error: any,
     fallbackMessage: string = 'Ops! Ocorreu um erro inesperado. Por favor, tente novamente mais tarde'
@@ -50,13 +51,14 @@ export function getErrorMessage(
     }
     return fallbackMessage;
 }
+
 export const getCookie = (value: string): string => {
     const cookie = document.cookie.split('; ').find(f => f.startsWith(value + '='));
     return cookie ? cookie.split('=')[1] : '';
 };
 
 export const setCookie = (key: string, value: string, maxAge: number = 7200) => {
-    const domain =  'localhost';
+    const domain = environment.production ? 'http://techmemo-app.s3-website-us-east-1.amazonaws.com' : 'localhost';
     environment.production ?
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; SameSite=None; Secure; Path=/;` :
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`;
