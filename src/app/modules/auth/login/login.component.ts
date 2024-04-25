@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
      * Form login
      */
     form: FormGroup;
-    private returnUrl: string;
+
 
     constructor(private service: AuthServices,
                 private sessionService: SessionServices,
@@ -56,10 +56,6 @@ export class LoginComponent implements OnInit {
             username: new FormControl<string>('', [Validators.required]),
             password: new FormControl<string>('', Validators.required)
         });
-
-        // get return url from route parameters or default to '/'
-        const {returnUrl} = this.route.snapshot.queryParams;
-        this.returnUrl = returnUrl || '/vendas/historico';
     }
 
     /**
@@ -84,12 +80,13 @@ export class LoginComponent implements OnInit {
 
     redirectByRoleLogin() {
         const user = this.sessionService.userLogged;
+        debugger
         if(user.commerces.length === 0) {
             this.router.navigateByUrl('/static/empty-store').then();
         } else {
             switch (user.role.operationArea) {
                 case 'ADMINISTRATOR_STORE':
-                    this.router.navigateByUrl('/loja/lista').then();
+                    this.router.navigateByUrl('/loja/configuration').then();
                     break;
                 case 'ATTENDANT':
                     this.router.navigateByUrl('/comandas').then();
