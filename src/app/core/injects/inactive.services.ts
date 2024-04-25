@@ -9,7 +9,7 @@ export class InactivityService {
     private userActivity: Subject<any> = new Subject();
     private inactivityTimeout: any;
     private returnUrl: string = ''; // Almacena la URL de retorno
-    private timerDuration = 5 * 60 * 1000;
+    private timerDuration = 10 * 60 * 1000;
     constructor(private router: Router) {
     }
 
