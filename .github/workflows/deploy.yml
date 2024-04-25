@@ -52,12 +52,31 @@ jobs:
             - name: Push the Docker image
               run: docker push armoreno2626/techmemo-web:latest
 
-    # Trabajo para la rama main
-    job_for_main:
-        needs: common_tasks
-        if: github.ref == 'refs/heads/main'
+#    # Trabajo para la rama main
+#    job_for_main:
+#        needs: common_tasks
+#        if: github.ref == 'refs/heads/main'
+#        runs-on: ubuntu-latest
+#        steps:
+#            - name: Checkout code
+#              uses: actions/checkout@v3
+#
+#            - name: Build the Angular project
+#              uses: actions/setup-node@v3
+#              with:
+#                  node-version: '20'
+#            - run: npm install
+#            - run: npm run build
+
+    # Trabajo de despliegue para ambas ramas
+    deploy:
         runs-on: ubuntu-latest
+#        needs:
+#            - job_for_main
         steps:
+            - name: Checkout code
+              uses: actions/checkout@v3
+
             - name: Checkout code
               uses: actions/checkout@v3
 
@@ -65,17 +84,8 @@ jobs:
               uses: actions/setup-node@v3
               with:
                   node-version: '20'
-            - run: npm install
-            - run: npm run build
-
-    # Trabajo de despliegue para ambas ramas
-    deploy:
-        runs-on: ubuntu-latest
-        needs:
-            - job_for_main
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
+            -   run: npm install
+            -   run: npm run build
 
             # Configurar credenciales de AWS para la implementación en S3
             - name: Configure AWS Credentials

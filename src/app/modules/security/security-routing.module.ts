@@ -12,7 +12,7 @@ const routes: Routes = [
             {
                 path: 'user',
                 canActivate: [canActivateControlGuard],
-                data: {breadcrumb: 'Usuários', roles: [domainEnum.ALL]},
+                data: {breadcrumb: 'Usuários', roles: [domainEnum.USER,domainEnum.ALL]},
                 loadChildren: () => import('./user/user.module').then(m => m.UserModule)
             },
             {

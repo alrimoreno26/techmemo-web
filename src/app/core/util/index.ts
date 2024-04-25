@@ -58,11 +58,14 @@ export const getCookie = (value: string): string => {
 };
 
 export const setCookie = (key: string, value: string, maxAge: number = 7200) => {
-    const domain = document.location.hostname.includes('techmemo-app.s3') ? 'techmemo-app' : 'localhost';
+    const domain = document.location.hostname.includes('techmemo-app.s3') ? 'techmemo-app.s3-website-us-east-1.amazonaws.com' : 'localhost';
     debugger
-    environment.production ?
-        document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; SameSite=None; Secure; Path=/;` :
+    if(domain === 'techmemo-app.s3-website-us-east-1.amazonaws.com'){
+        document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; SameSite=None; Secure; Path=/;`
+    } else {
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`;
+    }
+
 };
 
 export function formatDate(date: Date): string {
