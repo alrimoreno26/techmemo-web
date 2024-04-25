@@ -73,7 +73,6 @@ jobs:
         runs-on: ubuntu-latest
         needs:
             - job_for_main
-            - job_for_develop
         steps:
             - name: Checkout code
               uses: actions/checkout@v3
