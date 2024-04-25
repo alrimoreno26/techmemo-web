@@ -60,8 +60,10 @@ export const getCookie = (value: string): string => {
 export const setCookie = (key: string, value: string, maxAge: number = 7200) => {
     const domain = document.location.hostname.includes('techmemo-app.s3') ? 'techmemo-app.s3-website-us-east-1.amazonaws.com' : 'localhost';
     debugger
+    //TODO cuando haya ssl poner SameSite=None; Secure;
+    //SameSite=None; Secure;
     if(domain === 'techmemo-app.s3-website-us-east-1.amazonaws.com'){
-        document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; SameSite=None; Secure; Path=/;`
+        document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`
     } else {
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`;
     }

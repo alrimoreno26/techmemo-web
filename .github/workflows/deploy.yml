@@ -95,6 +95,10 @@ jobs:
                   aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
                   aws-region: us-east-1
 
+            # Eliminar el contenido existente del bucket S3
+            - name: Empty S3 bucket
+              run: aws s3 rm s3://techmemo-app --recursive
+
             # Copiar archivos compilados a S3
             - name: Sync to S3
               run: aws s3 sync ./dist/techmemo-web s3://techmemo-app
