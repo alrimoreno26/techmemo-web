@@ -25,6 +25,7 @@ import {DirectivesModule} from "../../../../core/directives/directives.module";
 import {DividerModule} from "primeng/divider";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {BadgeModule} from "primeng/badge";
+import {DropdownModule} from "primeng/dropdown";
 
 @NgModule({
     declarations: [
@@ -52,6 +53,7 @@ import {BadgeModule} from "primeng/badge";
         DividerModule,
         SelectButtonModule,
         BadgeModule,
+        DropdownModule,
     ],
     providers: [
         ProductService,

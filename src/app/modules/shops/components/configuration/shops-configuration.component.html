@@ -26,13 +26,21 @@
                         <ng-template [ngIf]="selectedItems=== 'dados'">
                             <div class="top">
                                 <div class="flex justify-content-between">
-                                    <h4 class="text-center">Configurações de dados da Loja</h4>
+                                    <div class="flex align-items-center gap-3">
+                                        <h4 class="text-center mb-0">Configurações de dados da Loja</h4>
+                                        <p-dropdown [options]="commercesService.listEntities$()"
+                                                    (onChange)="setNewCommerce()"
+                                                    [(ngModel)]="selectedStore" [ngModelOptions]="{standalone: true}" optionLabel="name"
+                                                    placeholder="Selecione sua loja"></p-dropdown>
+                                    </div>
+
                                     <p-button [disabled]="!onlineStore" (onClick)="goto()"
                                               label="Minha loja"></p-button>
                                 </div>
                                 <div class="grid">
                                     <div class="col-6">
                                         <div class="grid">
+
                                             <div class="col-12">
                                                 <h4 class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
                                                     <span>Dados Cadastrais</span>

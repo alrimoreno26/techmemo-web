@@ -1,5 +1,6 @@
 import {AddressDTO} from "./supplier";
 
+
 export interface CommerceDto {
     address?: AddressDTO
     amountTables?: number
@@ -43,4 +44,30 @@ export interface CashRegisterDto {
     id: string
     name: string
     working?: boolean
+}
+
+
+export interface ChashRegisterSummaryDto {
+    id: string,
+    openingValue: number,
+    closingValue: number,
+    totalSales: number,
+    totalSalesPaymentWithMoney: number,
+    totalSalesPaymentWithDebt: number,
+    totalSalesPaymentWithCredit: number,
+    totalSalesPaymentWithPix: number,
+    totalSalesPaymentWithOthers: number,
+    shiftTransactionBalance: number,
+    opening: boolean,
+    created: string,
+    closingDate: string,
+    adminUser: {
+        id: string,
+        name: string,
+    },
+    operatorUser: {
+        id: string,
+        name: string,
+    }
+
 }

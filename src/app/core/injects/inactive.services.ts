@@ -1,6 +1,8 @@
 import {Subject} from "rxjs";
 import {NavigationEnd, Router} from "@angular/router";
 import {Injectable} from "@angular/core";
+import {DialogService} from "primeng/dynamicdialog";
+import {DialogRegistryService} from "./dialog.registry.services";
 
 @Injectable({
     providedIn: 'root'
@@ -10,7 +12,7 @@ export class InactivityService {
     private inactivityTimeout: any;
     private returnUrl: string = ''; // Almacena la URL de retorno
     private timerDuration = 10 * 60 * 1000;
-    constructor(private router: Router) {
+    constructor(private router: Router, private dialogRegistryService: DialogRegistryService) {
     }
 
     setupInactivityTimer(): void {
@@ -29,6 +31,7 @@ export class InactivityService {
     startInactivityTimer(): void {
         if (this.returnUrl.includes('lockscreen') || this.returnUrl.includes('login') ) return;
         this.inactivityTimeout = setTimeout(() => {
+            this.dialogRegistryService.closeAllDialogs()
             this.router.navigate(['/lockscreen'], {queryParams: {returnUrl: this.returnUrl}});
         }, this.timerDuration);
     }

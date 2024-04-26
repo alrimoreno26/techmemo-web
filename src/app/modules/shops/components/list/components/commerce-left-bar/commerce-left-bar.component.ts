@@ -8,21 +8,17 @@ import {
     SimpleChanges,
     OnDestroy,
     ViewChild,
-    ElementRef,
     AfterViewInit,
     ChangeDetectorRef,
     effect
 } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { Listbox, ListboxFilterOptions } from 'primeng/listbox';
-import { ConfirmEventType, ConfirmationService, MenuItem, MessageService, TreeNode } from 'primeng/api';
-import { Observable, Subject, Subscription, filter, first, last, map, takeLast, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
+import { Listbox } from 'primeng/listbox';
+import { ConfirmEventType, ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import { Subject } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
-import * as XLSX from 'xlsx'
-import { Store, ActionsSubject } from '@ngrx/store';
-import { TranslateService } from '@ngx-translate/core';
-import { ofType } from '@ngrx/effects';
+import { TranslateService } from '@ngx-translate/core'
 import {cnpj} from "../../../../../../core/validators/cnpj.validator";
 import {CommercesService} from "../../../../service/commerces.service";
 
@@ -37,13 +33,9 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 
 	timeoutId: any;
 	organizationIdActive: string;
-	cnpjActive: string = "";
 
 	companyDataInfo: any | null;
 
-	organizationUsers: any[] = [];
-
-	organizationsChildrenListTreeNode: TreeNode[] = [];
 
 	companiesPageData: any | null;
 
@@ -81,22 +73,9 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 	skeletonCompaniesPaginateItemsArray = Array(4).fill(0);
 
 	displayModalAddCompany: boolean = false;
-	displayModalAddCompanyState: boolean = false;
 
 	addCompanyForm: FormGroup;
-	cnpjArrayBuffer: any;
 	cnpjArrayList: any[] = [];
-
-	cnpjListSelected: string[] = [];
-	newOrganizationCompanies: any[] = [];
-	companyActualValue: number = 0;
-	companyStateValue: number = 0;
-
-	activeIndex: number = 0;
-
-	cnpjListState: {cnpj: string, proccess: boolean, state: any}[] = [];
-
-	companySpeedItems: MenuItem[];
 
 	isSandboxMode: boolean = false;
 

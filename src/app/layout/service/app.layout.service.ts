@@ -67,11 +67,6 @@ export class LayoutService {
         this.configUpdate.next(this.config);
     }
 
-    setPDVClose(param:any) {
-        console.log(param)
-        this.closePDV.next(param);
-    }
-
 
     replaceThemeLink(href: string, targetId: string, onComplete?: Function) {
         const id = targetId;

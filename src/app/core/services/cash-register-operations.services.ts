@@ -3,6 +3,7 @@ import {HttpClient, HttpParams} from "@angular/common/http";
 import {buildURL} from "../util";
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
+import {ChashRegisterSummaryDto} from "../models/commerce";
 
 @Injectable({
     providedIn: 'root'
@@ -18,8 +19,10 @@ export class CashRegisterOperationsServices extends AbstractService<any> {
         return this.httpClient.post<any>(`${this.basePath}`, param);
     }
 
-    getOperationsById(cashRegisterId: string): Observable<any> {
-        const params: HttpParams = new HttpParams({fromObject: {cashRegisterId}});
-        return this.httpClient.post<any>(`${this.basePath}/closing-summary?cashRegisterId=${cashRegisterId}`,{});
+    getOperationsById(cashRegisterId: string): Observable<ChashRegisterSummaryDto> {
+        return this.httpClient.post<ChashRegisterSummaryDto>(`${this.basePath}/closing-summary?cashRegisterId=${cashRegisterId}`,{});
+    }
+    closeCashRegisterOperations(cashRegisterId: string): Observable<any> {
+        return this.httpClient.post<any>(`${this.basePath}/close?cashRegisterId=${cashRegisterId}`,{});
     }
 }

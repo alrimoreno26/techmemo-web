@@ -12,18 +12,22 @@ import {CommerceDto} from "../../../core/models/commerce";
 export class CommercesService extends StoreComponentService<any> {
 
     override serverSide = false;
+
+    changed$: Observable<any> = this.select(state => state.changed);
+
     constructor(private services: CommercesServices,
                 private sessionService: SessionServices,) {
-        const defaultEntity: EntityState<any> =
-            {entities: [], total: 0, dialog: false, loaded: false};
+        const defaultEntity: EntityState<any> & { changed: any } =
+            {entities: [], total: 0, dialog: false, loaded: false, changed: false};
         super(services, defaultEntity);
     }
 
     override finalizeLoad = () => {
         const {entities, total} = this.state();
+        const selected = entities.find((entity: CommerceDto) => entity.id === this.sessionService.userLogged.commerces[0].commerceId);
         this.setAll(entities);
-        this.sessionService.setTenantId(entities[0].id);
-        this.patchState({total: total, selected: entities[0]});
+        this.sessionService.setTenantId(selected.id);
+        this.patchState({total: total, selected: selected, changed: false});
     }
 
     override create = this.effect((trigger$: Observable<{ data: CommerceDto }>) => trigger$.pipe(
@@ -31,7 +35,7 @@ export class CommercesService extends StoreComponentService<any> {
             tapResponse({
                 next: (response: any) => {
                     this.setAdd(response);
-                    this.patchState({dialog: false});
+                    this.patchState({dialog: false, changed: false});
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)
             })
@@ -42,21 +46,27 @@ export class CommercesService extends StoreComponentService<any> {
         switchMap(({data}) => this.services.update(data, 'id').pipe(
             tapResponse({
                 next: (response: any) => {
-                    this.patchState({dialog: false});
+                    this.patchState({dialog: false, changed: false});
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)
             })
         ))
     ));
 
-    getById() {
-        return this.services.findOneById(this.sessionService.userLogged.commerces[0].commerceId).subscribe((response: any) => {
-            this.patchState({ selected: response});
+    getById(commerceId: string) {
+        return this.services.findOneById(commerceId).subscribe((response: any) => {
+            this.patchState({selected: response, loaded: !this.state().loaded});
         })
     }
 
-    closeModal() {
-        this.patchState({raw: [], dialog: false})
+    changeCommerceByID(commerceId: string) {
+        return this.services.findOneById(commerceId).subscribe((response: any) => {
+            console.log(response)
+            this.setSelected(response)
+            this.sessionService.setTenantId(response.id);
+            this.patchState({changed: true});
+        })
     }
+
 
 }

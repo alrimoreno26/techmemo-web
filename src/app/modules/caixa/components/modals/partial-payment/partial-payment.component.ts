@@ -1,6 +1,7 @@
 import {Component, effect, OnInit} from "@angular/core";
 import {CaixaService} from "../../../services/caixa.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-partial-payment',
@@ -13,8 +14,9 @@ export class MPartialPaymentComponent implements OnInit {
 
     constructor(public service: CaixaService,
                 public ref: DynamicDialogRef,
+                private dialogRegistryService: DialogRegistryService,
                 public config: DynamicDialogConfig) {
-
+        this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
             if (service.selectedEntity$()) {
                 const arrayPlano = this.service.selectedEntity$().map((p: any) =>

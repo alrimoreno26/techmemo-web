@@ -7,6 +7,7 @@ import {SecurityModel, UserAuthenticated} from "../../../../../core/models/user"
 import {AuthServices} from "../../../../../core/services/auth.services";
 import {ToastMessageService} from "../../../../../core/injects/toast-message.service";
 import {SessionServices} from "../../../../../core/injects/session.services";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-cancel-products',
@@ -22,8 +23,8 @@ export class MCancelProductsComponents implements OnInit {
                 private toastMessageService: ToastMessageService,
                 private ngZone: NgZone,
                 private sessionService: SessionServices,
-                public config: DynamicDialogConfig) {
-
+                public config: DynamicDialogConfig, private dialogRegistryService: DialogRegistryService) {
+        this.dialogRegistryService.addDialog(this.ref);
     }
 
     ngOnInit() {

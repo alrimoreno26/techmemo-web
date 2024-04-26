@@ -7,6 +7,7 @@ import {
     BaseModalComponentDirective
 } from "../../../../../standalone/data-table/directives/base.modal.component.directive";
 import {StoreTablesServices} from "../../../services/store.tables.services";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-comanda',
@@ -18,8 +19,9 @@ export class MComandaComponents extends BaseModalComponentDirective implements O
     selectedTable: any;
 
     constructor(public caixaService: CaixaService,
-                public tables: StoreTablesServices) {
+                public tables: StoreTablesServices,private dialogRegistryService: DialogRegistryService) {
         super(caixaService)
+        this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
             if(caixaService.orderCreate$()){
                 this.ref.close();

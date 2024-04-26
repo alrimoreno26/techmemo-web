@@ -50,5 +50,8 @@ export class CashRegisterService extends StoreComponentService<CashRegisterDto> 
         });
     }
 
+    setOpened(value: any): void {
+        this.patchState({opened: value});
+    }
 
 }

@@ -52,7 +52,7 @@ export const roleReducer = createReducer<State>(
         return adapter.addOne(entity, {...state, dialog: false});
     }),
     on(fromRoleActions.updateRoleSuccess, (state, {entity}) => {
-        return adapter.updateOne({id: entity.id, changes: entity}, {...state, dialog: false});
+        return {...state, dialog: false}
     }),
     on(fromRoleActions.deleteRoleSuccess, (state, {id}) => {
         return adapter.removeOne(id, state);

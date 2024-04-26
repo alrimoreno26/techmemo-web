@@ -5,6 +5,7 @@ import {filter} from 'rxjs/operators';
 import {CommonModule, NgForOf} from "@angular/common";
 import {ButtonModule} from "primeng/button";
 import {PipesModule} from "../../core/pipes/pipes.module";
+import {CommercesService} from "../../modules/shops/service/commerces.service";
 
 interface Breadcrumb {
     label: string;
@@ -25,7 +26,7 @@ export class BreadcrumbComponent {
 
     showBack = false;
 
-    constructor(private router: Router) {
+    constructor(private router: Router, public commercesService: CommercesService) {
         this.router.events.pipe(filter((event) => event instanceof NavigationEnd)).subscribe(event => {
             const root = this.router.routerState.snapshot.root;
             const breadcrumbs: Breadcrumb[] = [];

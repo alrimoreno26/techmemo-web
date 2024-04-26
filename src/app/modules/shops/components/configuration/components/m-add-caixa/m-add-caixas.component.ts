@@ -2,6 +2,7 @@ import {Component, effect, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {CashRegisterService} from "../../../../service/cash-register.service";
+import {DialogRegistryService} from "../../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-add-caixas',
@@ -11,10 +12,11 @@ export class MAddCaixasComponent implements OnInit {
 
     form: FormGroup
 
-    constructor(public service: CashRegisterService, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
+    constructor(public service: CashRegisterService, public ref: DynamicDialogRef, public config: DynamicDialogConfig, private dialogRegistryService: DialogRegistryService) {
 
         effect(() => {
             if (!this.service.dialog$()) {
+                this.dialogRegistryService.removeDialog(this.ref);
                 this.ref.close();
             }
         });

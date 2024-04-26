@@ -2,6 +2,7 @@ import {Component, effect, OnInit} from "@angular/core";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {PrintersService} from "../../../../service/printers.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogRegistryService} from "../../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-add-printers',
@@ -15,10 +16,11 @@ export class MAddPrintersComponent implements OnInit {
         {label: 'Caixa', value: 'POS'}
     ];
 
-    constructor(public service: PrintersService, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
+    constructor(private dialogRegistryService: DialogRegistryService, public service: PrintersService, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
 
         effect(() => {
             if (!this.service.dialog$()) {
+                this.dialogRegistryService.removeDialog(this.ref);
                 this.ref.close();
             }
         });

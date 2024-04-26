@@ -17,6 +17,8 @@ import {confirmDialog} from "../../../../core/rx/confirm";
 import {ConfirmServices} from "../../../../core/injects/confirm.services";
 import {CashRegisterService} from "../../service/cash-register.service";
 import {MAddCaixasComponent} from "./components/m-add-caixa/m-add-caixas.component";
+import {SessionServices} from "../../../../core/injects/session.services";
+import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -51,27 +53,65 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 public printersServices: PrintersService,
                 public cashRegisterService: CashRegisterService,
                 private layout: LayoutService,
-                private commercesService: CommercesService,
+                public session: SessionServices,
+                public commercesService: CommercesService,
                 private confirmationService: ConfirmServices,
+                private dialogRegistryService: DialogRegistryService,
                 private router: Router,
                 private cdRef: ChangeDetectorRef,) {
         super();
+        this.commercesService.loadAll({lazy: {pageNumber: 0, pageSize: 100}})
         effect(() => {
+
             if (!this.commercesService.selectedEntity$()) {
-                this.commercesService.getById();
+                this.commercesService.getById(this.session.userLogged.commerces[0].commerceId);
             } else {
+                this.printersServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                this.cashRegisterService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
                 this.selectedStore = this.commercesService.selectedEntity$();
                 this.onlineStore = this.selectedStore.hasOnlineCommerce;
+
+                let userConfig = {
+                    ripple: true,
+                    colorScheme: this.selectedStore.config ? this.selectedStore.config.colorSchemeType.toLowerCase() : 'light',
+                    menuMode: this.selectedStore.config ? this.selectedStore.config.menuType.toLowerCase() : 'slim',
+                    menuTheme: this.selectedStore.config ? this.selectedStore.config.componentTheme : 'darkgray',
+                    scale: this.selectedStore.config ? this.selectedStore.config.scale : 14,
+                    inputStyle: 'outlined',
+                    theme: this.selectedStore.config ? this.selectedStore.config.theme : 'blue',
+                };
+
+                const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
+                const newHref = themeLink.getAttribute('href')!.replace(this.layout.config.theme, userConfig.theme);
+
+                const id = 'theme-link';
+                const targetLink = <HTMLLinkElement>document.getElementById(id);
+                const cloneLinkElement = <HTMLLinkElement>targetLink.cloneNode(true);
+
+                cloneLinkElement.setAttribute('href', newHref);
+                cloneLinkElement.setAttribute('id', id + '-clone');
+
+                targetLink.parentNode!.insertBefore(cloneLinkElement, targetLink.nextSibling);
+                cloneLinkElement.setAttribute('id', id);
+                targetLink.remove();
+
+                this.layout.onConfigUpdate();
+
+
+                this.layout.userConfigVisuals(userConfig);
                 this.initForm()
             }
         });
 
     }
 
+    setNewCommerce() {
+        this.session.setTenantId(this.selectedStore.id)
+        this.commercesService.getById(this.selectedStore.id)
+    }
+
     ngOnInit() {
         this.initForm()
-        this.printersServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
-        this.cashRegisterService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         this.form.get('quantityTables')?.valueChanges.subscribe(() => {
             this.enableQuantity = true;
         })
@@ -192,7 +232,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             case 'dados':
                 this.saveDados()
                 break;
-            case 'visuals':
+            case 'visual':
                 this.saveVisuals();
                 break;
             case 'printers':
@@ -201,27 +241,30 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
     }
 
     addEditPrintersCashRegister(param: any, type: 'CAIXA' | 'POS') {
-        if(type === "CAIXA"){
+        let dialogRef;
+        if (type === "CAIXA") {
             this.printersServices.openModalAddOrEdit();
-            this.dialogService.open(MAddPrintersComponent, {
+            dialogRef = this.dialogService.open(MAddPrintersComponent, {
                 data: param,
                 width: '350px',
             });
+            this.dialogRegistryService.addDialog(dialogRef);
         } else {
             this.cashRegisterService.openModalAddOrEdit();
-            this.dialogService.open(MAddCaixasComponent, {
+            dialogRef = this.dialogService.open(MAddCaixasComponent, {
                 data: param,
                 width: '350px',
-            });
+            })
+            this.dialogRegistryService.addDialog(dialogRef);
         }
 
     }
 
-    patchEnable(event:any, item: PrinterDto){
+    patchEnable(event: any, item: PrinterDto) {
         this.printersServices.update({data: {id: item.id, enabled: event.checked}});
     }
 
-    patchCaixaEnable(event:any, item: any){
+    patchCaixaEnable(event: any, item: any) {
         this.cashRegisterService.update({data: {id: item.id, enabled: event.checked}});
     }
 
@@ -306,6 +349,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             confirmDialog(() => this.printersServices.delete({id}))
         ).subscribe();
     }
+
     deleteCashRegister(id: string) {
         this.confirmationService.confirm(
             'security.user.messages.confirmation',

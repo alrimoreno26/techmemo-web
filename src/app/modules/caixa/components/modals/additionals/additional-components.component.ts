@@ -10,6 +10,7 @@ import {CaixaService} from "../../../services/caixa.service";
 import {ActionsSubject} from "@ngrx/store";
 import {ofType} from "@ngrx/effects";
 import {fromOrdersListActions} from "../../../store/caixa.actions";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-additional',
@@ -40,7 +41,9 @@ export class AdditionalComponents implements OnInit, OnChanges {
                 public service: CaixaService,
                 private actions$: ActionsSubject,
                 public ref: DynamicDialogRef,
-                public config: DynamicDialogConfig) {
+                public config: DynamicDialogConfig,
+                private dialogRegistryService: DialogRegistryService) {
+        this.dialogRegistryService.addDialog(this.ref);
     }
 
     ngOnInit(): void {

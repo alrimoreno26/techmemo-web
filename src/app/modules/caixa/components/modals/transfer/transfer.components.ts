@@ -1,6 +1,7 @@
 import {Component, effect, OnInit} from "@angular/core";
 import {CaixaService} from "../../../services/caixa.service";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-transfer',
@@ -15,8 +16,8 @@ export class MTransferComponents implements OnInit {
     orders: any[] = [];
     selectedProducts!: any;
 
-    constructor(public ordersService: CaixaService, public ref: DynamicDialogRef, public config: DynamicDialogConfig) {
-
+    constructor(public ordersService: CaixaService, public ref: DynamicDialogRef, public config: DynamicDialogConfig,private dialogRegistryService: DialogRegistryService) {
+        this.dialogRegistryService.addDialog(this.ref);
         effect(async () => {
             if (!ordersService.loaded$()) {
                 ordersService.getOrders();

@@ -95,7 +95,8 @@
                     <ng-template pTemplate="body" let-product>
                         <tr>
                             <td>
-                                <img [src]=" product.image ? product.image : 'assets/layout/images/no-pictures.png'" class="w-5rem h-3rem shadow-5"
+                                <img [src]=" product.image ? product.image : 'assets/layout/images/no-pictures.png'"
+                                     class="w-5rem h-3rem shadow-5"
                                      alt="product.name">
                             </td>
                             <td>
@@ -103,7 +104,7 @@
                                 {{ product.name }}
                             </td>
                             <td class="text-center">
-                                {{ product.price }}
+                                {{ product.total | currency }}
                             </td>
                         </tr>
                     </ng-template>
@@ -116,78 +117,78 @@
             </div>
         </div>
 
-<!--        <div class="col-12 lg:col-4">-->
-<!--            <div class="card mt-3">-->
-<!--                <h4>Tasks</h4>-->
-<!--                <p>Overview of your pending tasks.</p>-->
-<!--                <div class="mt-4">-->
-<!--                    <span class="block mb-2"><span class="font-semibold">12 Orders</span> to fulfill</span>-->
-<!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-<!--                        <div class="w-7 h-full border-round" style="background-color: #64B5F6"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mt-4">-->
-<!--                    <span class="block mb-2"><span class="font-semibold">40+ Payments</span> to withdraw</span>-->
-<!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-<!--                        <div class="w-5 h-full border-round" style="background-color: #A5D6A7"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mt-4">-->
-<!--                    <span class="block mb-2"><span class="font-semibold">4 Repors</span> to revise</span>-->
-<!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-<!--                        <div class="w-8 h-full border-round" style="background-color: #7986CB"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mt-4">-->
-<!--                    <span class="block mb-2"><span class="font-semibold">6 Questions</span> to respond</span>-->
-<!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-<!--                        <div class="w-4 h-full border-round" style="background-color: #9575CD"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--                <div class="mt-4">-->
-<!--                    <span class="block mb-2"><span class="font-semibold">2 Chargebacks</span> to review</span>-->
-<!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-<!--                        <div class="w-6 h-full border-round" style="background-color: #4DB6AC"></div>-->
-<!--                    </div>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--        <div class="col-12 lg:col-4">-->
+        <!--            <div class="card mt-3">-->
+        <!--                <h4>Tasks</h4>-->
+        <!--                <p>Overview of your pending tasks.</p>-->
+        <!--                <div class="mt-4">-->
+        <!--                    <span class="block mb-2"><span class="font-semibold">12 Orders</span> to fulfill</span>-->
+        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
+        <!--                        <div class="w-7 h-full border-round" style="background-color: #64B5F6"></div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="mt-4">-->
+        <!--                    <span class="block mb-2"><span class="font-semibold">40+ Payments</span> to withdraw</span>-->
+        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
+        <!--                        <div class="w-5 h-full border-round" style="background-color: #A5D6A7"></div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="mt-4">-->
+        <!--                    <span class="block mb-2"><span class="font-semibold">4 Repors</span> to revise</span>-->
+        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
+        <!--                        <div class="w-8 h-full border-round" style="background-color: #7986CB"></div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="mt-4">-->
+        <!--                    <span class="block mb-2"><span class="font-semibold">6 Questions</span> to respond</span>-->
+        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
+        <!--                        <div class="w-4 h-full border-round" style="background-color: #9575CD"></div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--                <div class="mt-4">-->
+        <!--                    <span class="block mb-2"><span class="font-semibold">2 Chargebacks</span> to review</span>-->
+        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
+        <!--                        <div class="w-6 h-full border-round" style="background-color: #4DB6AC"></div>-->
+        <!--                    </div>-->
+        <!--                </div>-->
+        <!--            </div>-->
+        <!--        </div>-->
 
-<!--        <div class="col-12 lg:col-8">-->
-<!--            <div class="card mt-3">-->
-<!--                <h4>Revenue stream</h4>-->
-<!--                <p>Comparison of your revenue sources.</p>-->
-<!--                <div class="flex justify-content-center align-items-center">-->
-<!--                    <p-chart type="pie" [data]="revenueChart" [options]="revenueChartOptions"-->
-<!--                             [style]="{'width': '50%'}"></p-chart>-->
-<!--                </div>-->
-<!--            </div>-->
+        <!--        <div class="col-12 lg:col-8">-->
+        <!--            <div class="card mt-3">-->
+        <!--                <h4>Revenue stream</h4>-->
+        <!--                <p>Comparison of your revenue sources.</p>-->
+        <!--                <div class="flex justify-content-center align-items-center">-->
+        <!--                    <p-chart type="pie" [data]="revenueChart" [options]="revenueChartOptions"-->
+        <!--                             [style]="{'width': '50%'}"></p-chart>-->
+        <!--                </div>-->
+        <!--            </div>-->
 
-<!--            <div class="card mt-3">-->
-<!--                <h4>Team Members</h4>-->
-<!--                <ul class="list-none p-0 m-0">-->
-<!--                    <li *ngFor="let member of teamMembers; let i = index;" class="p-3 surface-border"-->
-<!--                        [ngClass]="{'border-bottom-1': i !== 4}">-->
-<!--                        <div class="flex justify-content-between align-items-center">-->
-<!--                            <div class="flex gap-2 align-items-center">-->
-<!--                                <img [src]="'assets/demo/images/avatar/'+ member.image +'.png'"-->
-<!--                                     class="w-4rem h-4rem border-circle" alt="member.name">-->
-<!--                                <div>-->
-<!--                                    <span class="block text-xl font-bold">{{ member.name }}</span>-->
-<!--                                    <span class="block">{{ member.desc }}</span>-->
-<!--                                </div>-->
-<!--                            </div>-->
-<!--                            <div class="flex gap-2">-->
-<!--                                <button pButton class="p-button-icon-only p-button-rounded p-button-success"-->
-<!--                                        icon="pi pi-envelope"></button>-->
-<!--                                <button pButton class="p-button-icon-only p-button-rounded p-button-warning"-->
-<!--                                        icon="pi pi-cog"></button>-->
-<!--                            </div>-->
-<!--                        </div>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--            </div>-->
-<!--        </div>-->
+        <!--            <div class="card mt-3">-->
+        <!--                <h4>Team Members</h4>-->
+        <!--                <ul class="list-none p-0 m-0">-->
+        <!--                    <li *ngFor="let member of teamMembers; let i = index;" class="p-3 surface-border"-->
+        <!--                        [ngClass]="{'border-bottom-1': i !== 4}">-->
+        <!--                        <div class="flex justify-content-between align-items-center">-->
+        <!--                            <div class="flex gap-2 align-items-center">-->
+        <!--                                <img [src]="'assets/demo/images/avatar/'+ member.image +'.png'"-->
+        <!--                                     class="w-4rem h-4rem border-circle" alt="member.name">-->
+        <!--                                <div>-->
+        <!--                                    <span class="block text-xl font-bold">{{ member.name }}</span>-->
+        <!--                                    <span class="block">{{ member.desc }}</span>-->
+        <!--                                </div>-->
+        <!--                            </div>-->
+        <!--                            <div class="flex gap-2">-->
+        <!--                                <button pButton class="p-button-icon-only p-button-rounded p-button-success"-->
+        <!--                                        icon="pi pi-envelope"></button>-->
+        <!--                                <button pButton class="p-button-icon-only p-button-rounded p-button-warning"-->
+        <!--                                        icon="pi pi-cog"></button>-->
+        <!--                            </div>-->
+        <!--                        </div>-->
+        <!--                    </li>-->
+        <!--                </ul>-->
+        <!--            </div>-->
+        <!--        </div>-->
     </div>
 
 </div>

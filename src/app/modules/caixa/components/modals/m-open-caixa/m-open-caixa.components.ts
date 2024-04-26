@@ -6,6 +6,7 @@ import {UserService} from "../../../../security/user/services/user.service";
 import {SessionServices} from "../../../../../core/injects/session.services";
 import {CashRegisterService} from "../../../../shops/service/cash-register.service";
 import {CashRegisterOperationsService} from "../../../../shops/service/cash-register-operations.service";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-open-caixa',
@@ -18,6 +19,7 @@ export class MOpenCaixaComponents implements OnInit {
     listCaixas: any[] = [];
 
     constructor(public session: SessionServices,
+                private dialogRegistryService: DialogRegistryService,
                 public cashRegisterService: CashRegisterService,
                 public cashRegisterOperations: CashRegisterOperationsService,
                 public ref: DynamicDialogRef,
@@ -28,11 +30,13 @@ export class MOpenCaixaComponents implements OnInit {
         effect(() => {
             this.cashRegisterService.opened$.subscribe((opened) => {
                 if (opened) {
+                    this.dialogRegistryService.removeDialog(this.ref);
                     this.ref.close();
                 }
             })
             this.cashRegisterOperations.opened$.subscribe((opened) => {
                 if (opened) {
+                    this.dialogRegistryService.removeDialog(this.ref);
                     this.ref.close();
                 }
             })
