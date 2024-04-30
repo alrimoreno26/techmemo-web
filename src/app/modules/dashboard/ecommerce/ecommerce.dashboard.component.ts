@@ -9,6 +9,12 @@ import {CommercesService} from "../../shops/service/commerces.service";
 import {SessionServices} from "../../../core/injects/session.services";
 import {AppConfig} from "../../../core/models/layout";
 import {AuthServices} from "../../../core/services/auth.services";
+import {CashRegisterService} from "../../shops/service/cash-register.service";
+import {CashRegisterOperationsService} from "../../shops/service/cash-register-operations.service";
+import {ChashRegisterSummaryDto} from "../../../core/models/commerce";
+import {ToastMessageService} from "../../../core/injects/toast-message.service";
+import {MOpenCaixaComponents} from "../../caixa/components/modals/m-open-caixa/m-open-caixa.components";
+import {DialogService} from "primeng/dynamicdialog";
 
 @Component({
     selector: 'c-commerce-dashboard',
@@ -38,33 +44,39 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     revenueChartOptions: any;
 
-    cols: any[] = [];
-
     config!: AppConfig;
-
-    orderWeek: any[] = [];
 
     metrics: any[] = [];
 
-    teamMembers: any[] = [];
-
     expenses: any = [];
 
-    selectedOrderWeek!: any;
+    caixasList: any = [];
+
+    sidebarVisible: boolean;
+
+    cashOperations: any = null;
 
     constructor(private layoutService: LayoutService,
                 public store: StoreDashboardServices,
+                public cashRegisterOperations: CashRegisterOperationsService,
+                private dialogService: DialogService,
+                private toastMessageService: ToastMessageService,
+                public caixas: CashRegisterService,
                 public session: SessionServices) {
 
         this.subscription = this.layoutService.configUpdate$.subscribe(config => {
             this.config = config;
             this.initCharts();
         });
+        this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         effect(() => {
-            if (this.session.getTenantId()) {
-                this.store.loadLowStock();
-                this.store.loadOrdersStats({startDate: '2024-01-01', endDate: '2024-12-31'});
+            if (this.cashRegisterOperations.selectedEntity$()) {
+                this.cashOperations = this.cashRegisterOperations.selectedEntity$() as ChashRegisterSummaryDto
             }
+            if (this.caixas.listEntities$().length > 0) {
+                this.caixasList = this.caixas.listEntities$().filter((c: any) => c.enabled);
+            }
+
         });
 
         effect(() => {
@@ -137,63 +149,23 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.cashRegisterOperations.opened$.subscribe((opened) => {
+            if(opened){
+                this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                this.toastMessageService.showMessage("success", 'Caixas', 'Caixa aberta, boas vendas!!!')
+            }
+        })
+        if (this.session.getTenantId()) {
+            this.store.loadLowStock();
+            this.store.loadOrdersStats({startDate: '2024-01-01', endDate: '2024-12-31'});
+            //
+        }
         // this.productService.getProducts().then(data => {
         //     this.products = data;
         //     this.productsThisWeek = data;
         // });
         //
         // this.productService.getProductsMixed().then(data => this.productsLastWeek = data);
-
-        this.cols = [
-            {field: 'vin', header: 'Vin'},
-            {field: 'year', header: 'Year'},
-            {field: 'brand', header: 'Brand'},
-            {field: 'color', header: 'Color'}
-        ];
-
-        this.items = [
-            {
-                label: 'Shipments',
-                items: [
-                    {label: 'Tracker', icon: 'pi pi-compass'},
-                    {label: 'Map', icon: 'pi pi-map-marker'},
-                    {label: 'Manage', icon: 'pi pi-pencil'}
-                ]
-            }
-        ];
-
-        this.orderWeek = [
-            {name: 'This Week', code: '0'},
-            {name: 'Last Week', code: '1'}
-        ];
-
-        this.teamMembers = [
-            {
-                name: 'Amy Elsner',
-                desc: 'Accounting',
-                image: 'amyelsner'
-            },
-            {
-                name: 'Anna Fali',
-                desc: 'Procurement',
-                image: 'annafali'
-            },
-            {
-                name: 'Bernardo Dominic',
-                desc: 'Finance',
-                image: 'bernardodominic'
-            },
-            {
-                name: 'Ivan Magalhaes',
-                desc: 'Sales',
-                image: 'ivanmagalhaes'
-            },
-            {
-                name: 'Xuxue Feng',
-                desc: 'Management',
-                image: 'xuxuefeng'
-            }
-        ];
 
         this.initCharts();
     }
@@ -371,6 +343,20 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                 },
             }
         };
+    }
+
+    seeInfo(caixa: any): void {
+        if (caixa.working) {
+            this.cashRegisterOperations.getOperationsById(caixa.id);
+            this.sidebarVisible = true;
+        } else {
+            this.dialogService.open(MOpenCaixaComponents, {
+                data: null,
+                width: '300px',
+            })
+            //
+        }
+
     }
 
     ngOnDestroy() {

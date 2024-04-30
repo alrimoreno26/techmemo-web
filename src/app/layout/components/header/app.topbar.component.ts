@@ -17,11 +17,20 @@ export class AppTopbarComponent {
 
     @Input() showMenu: boolean = true;
 
+    selectedStore: any = null;
     constructor(public layoutService: LayoutService,
                 public el: ElementRef,
+                public commercesService: CommercesService,
                 public session: SessionServices
                ) {
 
+        effect(() => {
+            if(this.commercesService.selectedEntity$()){
+                console.log(this.selectedStore)
+                this.selectedStore = this.commercesService.selectedEntity$();
+            }
+
+        });
     }
 
     onMenuButtonClick() {

@@ -25,9 +25,9 @@ export class CashRegisterOperationsService extends StoreComponentService<CashReg
     }
 
     getOperationsById(cashRegisterId: string): void {
-        this.patchState({opened: true});
         this.services.getOperationsById(cashRegisterId).subscribe((response: any) => {
             this.setSelected(response)
+            this.patchState({opened: null});
         })
     }
 

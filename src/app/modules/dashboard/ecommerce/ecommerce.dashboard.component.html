@@ -26,28 +26,46 @@
         </ng-template>
         <div class="col-12 xl:col-4">
             <div class="card h-full">
-                <h4 class="white-space-nowrap mb-2">Gastos</h4>
-                <div class="flex gap-3 w-full mt-4 align-items-center" *ngFor="let expense of expenses">
-                    <img [src]="'assets/demo/images/dashboard/'+ expense.image + '.svg'" [alt]="expense.title"
-                         class="w-3rem h-3rem">
-                    <div class="w-full">
-                        <div class="flex flex-wrap w-full justify-content-between align-items-center">
-                            <span class="font-semibold">{{ expense.title }}</span>
-                            <div class="flex">
-                                <span
-                                    class="font-semibold text-color-secondary pr-2 border-right-2 surface-border text-sm">{{ expense.value }}
-                                    %</span>
+                <h4 class="white-space-nowrap mb-2">Caixas da Loja</h4>
+                <p-table [value]="caixasList" [paginator]="true" [rows]="10" responsiveLayout="scroll">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Nome</th>
+                            <th class="text-center">Trabalhando</th>
+                            <th class="text-center">Informação</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-caixa>
+                        <tr>
+                            <td>
+                                <span class="p-column-title">Category</span>
+                                {{ caixa.name }}
+                            </td>
+                            <td class="text-center">
+                                <ng-template [ngIf]="caixa.working" [ngIfElse]="notEnable">
+                                    <i class="mdi mdi-check-circle-outline text-2xl text-green-700"></i>
+                                </ng-template>
+                                <ng-template #notEnable>
+                                    <i class="mdi mdi-close-circle-outline text-2xl text-red-700"></i>
+                                </ng-template>
+                            </td>
+                            <td class="text-center" (click)="seeInfo(caixa)">
+                                <ng-template [ngIf]="caixa.working" [ngIfElse]="working">
+                                    <i class="mdi mdi-eye-outline text-2xl text-primary" [pTooltip]="'Olhear Caixa'"></i>
+                                </ng-template>
+                                <ng-template #working>
+                                    <i class="mdi mdi-cash-register text-2xl text-primary cursor-pointer" [pTooltip]="'Abrir Caixa'"></i>
+                                </ng-template>
 
-                                <span class="font-semibold ml-2 text-sm">{{ expense.amount }}</span>
-                            </div>
-                        </div>
-                        <div class="border-round w-full overflow-hidden mt-2"
-                             style="height:7px; background-color: var(--surface-border)">
-                            <div class="border-left-round h-full" [style.background]="expense.background"
-                                 [style.width]="expense.value + '%'"></div>
-                        </div>
-                    </div>
-                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="emptymessage">
+                        <tr>
+                            <td colspan="3">Nenhuma caixa funcionando</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
             </div>
 
         </div>
@@ -116,79 +134,75 @@
                 </p-table>
             </div>
         </div>
-
-        <!--        <div class="col-12 lg:col-4">-->
-        <!--            <div class="card mt-3">-->
-        <!--                <h4>Tasks</h4>-->
-        <!--                <p>Overview of your pending tasks.</p>-->
-        <!--                <div class="mt-4">-->
-        <!--                    <span class="block mb-2"><span class="font-semibold">12 Orders</span> to fulfill</span>-->
-        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-        <!--                        <div class="w-7 h-full border-round" style="background-color: #64B5F6"></div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--                <div class="mt-4">-->
-        <!--                    <span class="block mb-2"><span class="font-semibold">40+ Payments</span> to withdraw</span>-->
-        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-        <!--                        <div class="w-5 h-full border-round" style="background-color: #A5D6A7"></div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--                <div class="mt-4">-->
-        <!--                    <span class="block mb-2"><span class="font-semibold">4 Repors</span> to revise</span>-->
-        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-        <!--                        <div class="w-8 h-full border-round" style="background-color: #7986CB"></div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--                <div class="mt-4">-->
-        <!--                    <span class="block mb-2"><span class="font-semibold">6 Questions</span> to respond</span>-->
-        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-        <!--                        <div class="w-4 h-full border-round" style="background-color: #9575CD"></div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--                <div class="mt-4">-->
-        <!--                    <span class="block mb-2"><span class="font-semibold">2 Chargebacks</span> to review</span>-->
-        <!--                    <div class="w-full border-round" style="height: 7px; background-color: var(&#45;&#45;surface-d)">-->
-        <!--                        <div class="w-6 h-full border-round" style="background-color: #4DB6AC"></div>-->
-        <!--                    </div>-->
-        <!--                </div>-->
-        <!--            </div>-->
-        <!--        </div>-->
-
-        <!--        <div class="col-12 lg:col-8">-->
-        <!--            <div class="card mt-3">-->
-        <!--                <h4>Revenue stream</h4>-->
-        <!--                <p>Comparison of your revenue sources.</p>-->
-        <!--                <div class="flex justify-content-center align-items-center">-->
-        <!--                    <p-chart type="pie" [data]="revenueChart" [options]="revenueChartOptions"-->
-        <!--                             [style]="{'width': '50%'}"></p-chart>-->
-        <!--                </div>-->
-        <!--            </div>-->
-
-        <!--            <div class="card mt-3">-->
-        <!--                <h4>Team Members</h4>-->
-        <!--                <ul class="list-none p-0 m-0">-->
-        <!--                    <li *ngFor="let member of teamMembers; let i = index;" class="p-3 surface-border"-->
-        <!--                        [ngClass]="{'border-bottom-1': i !== 4}">-->
-        <!--                        <div class="flex justify-content-between align-items-center">-->
-        <!--                            <div class="flex gap-2 align-items-center">-->
-        <!--                                <img [src]="'assets/demo/images/avatar/'+ member.image +'.png'"-->
-        <!--                                     class="w-4rem h-4rem border-circle" alt="member.name">-->
-        <!--                                <div>-->
-        <!--                                    <span class="block text-xl font-bold">{{ member.name }}</span>-->
-        <!--                                    <span class="block">{{ member.desc }}</span>-->
-        <!--                                </div>-->
-        <!--                            </div>-->
-        <!--                            <div class="flex gap-2">-->
-        <!--                                <button pButton class="p-button-icon-only p-button-rounded p-button-success"-->
-        <!--                                        icon="pi pi-envelope"></button>-->
-        <!--                                <button pButton class="p-button-icon-only p-button-rounded p-button-warning"-->
-        <!--                                        icon="pi pi-cog"></button>-->
-        <!--                            </div>-->
-        <!--                        </div>-->
-        <!--                    </li>-->
-        <!--                </ul>-->
-        <!--            </div>-->
-        <!--        </div>-->
     </div>
-
 </div>
+<p-sidebar [(visible)]="sidebarVisible" position="right" styleClass="w-30rem">
+    <ng-template pTemplate="header"><h5 class="mb-0">Resumo das operações</h5></ng-template>
+    <div class="grid mt-0">
+        @if (cashOperations !== null) {
+            <div class="col-12">
+        <span class="pl-2 text-2xl"
+              style="border-left: 5px double var(--primary-color);">Detalhes da operador de caixa</span>
+                <div class="mt-20 mb-30 w-100pr">
+                    <hr class="my-1">
+                    <div class="">
+                        <div class="flex gap-4 justify-content-between align-items-center">
+                            <h6 class="m-0">Operador de caixa:</h6>
+                            <p class="m-0">{{ cashOperations.operatorUser.name }}</p>
+                        </div>
+                        <div class="flex gap-4 justify-content-between align-items-center">
+                            <h6 class="m-0">Hora de abertura:</h6>
+                            <p class="m-0">{{ cashOperations.created | date:'dd/MM/YYYY hh:mm' }}</p>
+                        </div>
+                    </div>
+
+                    <hr class="my-1">
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="pl-2 text-2xl"
+                      style="border-left: 5px double var(--primary-color);">Relatório de Venda</span>
+                <div class="mt-20 mb-30 w-100pr">
+                    <hr class="my-1">
+                    <div class="flex gap-4 justify-content-between align-items-center">
+                        <h6 class="m-0">Venda Total:</h6>
+                        <p class="m-0">{{ cashOperations.totalValueSales | currency }}</p>
+                    </div>
+                    <hr class="my-1">
+                    <div class="flex gap-4 justify-content-between align-items-center">
+                        <h6 class="m-0">Venda total em dinheiro:</h6>
+                        <p class="m-0">{{ cashOperations.totalValueSalesPaymentWithMoney | currency }}</p>
+                    </div>
+                    <hr class="my-1">
+                    <div class="flex gap-4 justify-content-between align-items-center">
+                        <h6 class="m-0">Venda tarjeta total:</h6>
+                        <p class="m-0">{{ (cashOperations.totalValueSalesPaymentWithCredit + cashOperations.totalValueSalesPaymentWithDebt + cashOperations.totalValueSalesPaymentWithPix) | currency }}</p>
+                    </div>
+                    <hr class="my-1">
+                    <div class="flex gap-4 justify-content-between align-items-center">
+                        <h6 class="m-0">Outro pagamento recebido:</h6>
+                        <p class="m-0">{{ cashOperations.totalValueSalesPaymentWithOthers | currency }}</p>
+                    </div>
+                    <hr class="my-1">
+                </div>
+            </div>
+            <div class="col-12">
+                <span class="pl-2 text-2xl" style="border-left: 5px double var(--primary-color);">Dinheiro</span>
+                <div class="mt-20 mb-30 w-100pr">
+                    <hr class="my-1">
+                    <div class="flex gap-4 justify-content-between align-items-center">
+                        <h6 class="m-0">Dinheiro total das vendas:</h6>
+                        <p class="m-0 severity_successfull_text mr-6">{{ cashOperations.totalValueSales|currency }}</p>
+                    </div>
+                    <hr class="my-1">
+                    <div class="flex gap-4 justify-content-between align-items-center">
+                        <h6 class="m-0">Saldo de transações de turno:</h6>
+                        <p class="m-0 severity_danger_text mr-6">{{ cashOperations.shiftTransactionBalance|currency }}</p>
+                    </div>
+                    <hr class="my-1">
+                </div>
+            </div>
+        }
+
+    </div>
+</p-sidebar>

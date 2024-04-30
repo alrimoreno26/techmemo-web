@@ -31,19 +31,19 @@ export class MOpenCaixaComponents implements OnInit {
             this.cashRegisterService.opened$.subscribe((opened) => {
                 if (opened) {
                     this.dialogRegistryService.removeDialog(this.ref);
-                    this.ref.close();
+                    this.ref.close(true);
                 }
             })
             this.cashRegisterOperations.opened$.subscribe((opened) => {
                 if (opened) {
                     this.dialogRegistryService.removeDialog(this.ref);
-                    this.ref.close();
+                    this.ref.close(true);
                 }
             })
             this.userService.userBasic$.subscribe(user => {
                 this.listUser = user.filter((u: any) => u.operationArea === operationAreaRoleEnum.POINT_OF_SALE) ?? [];
             })
-            this.listCaixas = this.cashRegisterService.listEntities$() ?? [];
+            this.listCaixas = this.cashRegisterService.listEntities$().filter((x:any)=> x.enabled) ?? [];
 
         });
     }

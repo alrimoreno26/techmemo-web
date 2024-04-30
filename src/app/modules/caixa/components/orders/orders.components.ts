@@ -45,12 +45,16 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterService.existsAnyWorking();
         effect(() => {
             this.cashRegisterService.opened$.subscribe((opened) => {
-                //if (opened)
-                    this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
+                if(session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE'){
+                    this.caixaOpened =  true
+                } else if (opened)
+                    this.caixaOpened =  opened;
             })
             this.cashRegisterOperations.opened$.subscribe((opened) => {
-                //if (opened)
-                    this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
+                if(session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE'){
+                    this.caixaOpened =  true
+                } else if (opened)
+                    this.caixaOpened =  opened;
             })
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
