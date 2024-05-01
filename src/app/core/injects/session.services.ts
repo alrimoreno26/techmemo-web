@@ -38,6 +38,11 @@ export class SessionServices {
      * @private tenantSelected$ BehaviorSubject<{@link string}>
      */
     private tenantSelected$: BehaviorSubject<string> = new BehaviorSubject<any>(null);
+    /**
+     * Store the current shops
+     * @private currentStore$ BehaviorSubject<{@link string}>
+     */
+    private currentStore$: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
     constructor(private router: Router,
                 private ngZone: NgZone,
@@ -52,6 +57,9 @@ export class SessionServices {
         return this.loggedUser$.asObservable();
     }
 
+    get actualStore$(): Observable<any> {
+        return this.currentStore$.asObservable();
+    }
     /**
      * @return An {@link UserAuthenticated} object
      */
@@ -81,6 +89,10 @@ export class SessionServices {
      */
     getTenantId(): string {
         return this.tenantSelected$.getValue();
+    }
+
+    getCurrentStore(): any {
+        return this.currentStore$.getValue();
     }
 
     getAccessToken$(): Observable<string> {
@@ -204,7 +216,9 @@ export class SessionServices {
     setTenantId(tenantId: string) {
         this.tenantSelected$.next(tenantId);
     }
-
+    setCurrentStore(store: any) {
+        this.currentStore$.next(store);
+    }
     /**
      *  Set Basic Info for Permission use
      * @param user {@link UserAuthenticated}

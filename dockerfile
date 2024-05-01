@@ -3,7 +3,7 @@ FROM node:latest as node
 WORKDIR /app
 COPY . .
 RUN npm install --force
-RUN npm run build --production
+RUN npm run build --development
 
 # Use an official Nginx image as the base image
 FROM nginx

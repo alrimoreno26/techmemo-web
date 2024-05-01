@@ -33,6 +33,7 @@ export function initializeAppFactory(httpClient: HttpClient,
                     session.setTenantId(user.commerces[0].commerceId)
                     session.updateUser(user)
                     commercesService.getById(user.commerces[0].commerceId).subscribe((commerce: CommerceDto) => {
+                        session.setCurrentStore(commerce);
                         let userConfig = {
                             ripple: true,
                             colorScheme: commerce.config ? commerce.config.colorSchemeType.toLowerCase() : 'light',

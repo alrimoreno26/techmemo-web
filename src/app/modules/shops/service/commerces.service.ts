@@ -61,9 +61,9 @@ export class CommercesService extends StoreComponentService<any> {
 
     changeCommerceByID(commerceId: string) {
         return this.services.findOneById(commerceId).subscribe((response: any) => {
-            console.log(response)
             this.setSelected(response)
             this.sessionService.setTenantId(response.id);
+            this.sessionService.setCurrentStore(response);
             this.patchState({changed: true});
         })
     }

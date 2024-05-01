@@ -152,7 +152,6 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         this.cashRegisterOperations.opened$.subscribe((opened) => {
             if(opened){
                 this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
-                this.toastMessageService.showMessage("success", 'Caixas', 'Caixa aberta, boas vendas!!!')
             }
         })
         if (this.session.getTenantId()) {

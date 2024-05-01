@@ -52,7 +52,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         effect(() => {
             if (this.service.selectedEntity$() !== undefined) {
                 this.selectedEntity = this.service.selectedEntity$();
-                this.form.reset()
+                // this.form.reset()
                 this.initForm(this.selectedEntity);
             }
 
@@ -98,6 +98,8 @@ export class MProductComponent extends BaseModalComponentDirective implements On
                 })
             })
         }
+        console.log(data)
+        console.log(this.selectedEntity)
         this.form = new FormGroup({
             allowsAdditional: new FormControl<boolean>(data?.allowsAdditional),
             barCode: new FormControl<string>(data?.barCode),
@@ -110,7 +112,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             }, [Validators.required]),
             cst: new FormControl<number>(data?.cst, [Validators.required]),
             description: new FormControl<string>(data?.description),
-            enable: new FormControl<boolean>(data?.enable),
+            enabled: new FormControl<boolean>(data?.enabled),
             name: new FormControl<string>(data?.name, [Validators.required]),
             ncm: new FormControl<number>(data?.ncm, [Validators.required]),
             quantityStockAlert: new FormControl<number>(data?.quantityStockAlert),

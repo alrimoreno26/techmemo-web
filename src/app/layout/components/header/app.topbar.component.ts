@@ -18,19 +18,22 @@ export class AppTopbarComponent {
     @Input() showMenu: boolean = true;
 
     selectedStore: any = null;
+
+    lojas: any[] = [];
+    selectedCommerce: any
+
     constructor(public layoutService: LayoutService,
                 public el: ElementRef,
                 public commercesService: CommercesService,
                 public session: SessionServices
-               ) {
+    ) {
+        this.lojas = this.session.userLogged.commerces;
+        this.selectedCommerce = this.lojas.find((x: any) => x.commerceId === this.session.getCurrentStore().id)
+        console.log(this.session.getCurrentStore())
+    }
 
-        effect(() => {
-            if(this.commercesService.selectedEntity$()){
-                console.log(this.selectedStore)
-                this.selectedStore = this.commercesService.selectedEntity$();
-            }
-
-        });
+    changeCommerce(commerce: any) {
+        this.commercesService.changeCommerceByID(commerce.value.commerceId)
     }
 
     onMenuButtonClick() {
