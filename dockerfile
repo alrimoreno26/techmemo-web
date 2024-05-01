@@ -3,7 +3,9 @@ FROM node:latest as node
 WORKDIR /app
 COPY . .
 RUN npm install --force
-RUN npm run build --development
+ARG ENVIRONMENT
+ENV ENVIRONMENT=$ENVIRONMENT
+RUN if [ "$ENVIRONMENT" = "dev" ]; then npm run build --development; else npm run build; fi
 
 # Use an official Nginx image as the base image
 FROM nginx
