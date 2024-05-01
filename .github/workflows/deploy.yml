@@ -44,7 +44,7 @@ jobs:
               run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
             - name: Build the Docker image
-              run: docker build --build-arg ENVIRONMENT=dev -t techmemo-web .
+              run: docker build -t techmemo-web .
 
             - name: Create tag for build
               run: docker tag techmemo-web:latest armoreno2626/techmemo-web:latest
