@@ -18,7 +18,7 @@ export class BaseComponentDirective implements OnDestroy {
    */
   messageService: MessageServices = inject(MessageServices);
   /**
-   * Keep reference of dialog for use inside of component
+   * Keep reference of dialog for use inside of modals
    */
   dialog: DynamicDialogRef;
   /**

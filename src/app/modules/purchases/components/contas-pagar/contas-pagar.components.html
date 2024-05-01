@@ -1,0 +1,96 @@
+<div class="card m-3">
+    <div class="grid">
+        <div class="col-7">
+            <div class="align-items-center flex flex-auto gap-3">
+                <label class="block font-bold">Vencimiento</label>
+                <p-calendar styleClass="w-20rem" class="w-20rem" [(ngModel)]="rangeDates" selectionMode="range"
+                            dateFormat="dd/mm/yy"
+                            [readonlyInput]="true"></p-calendar>
+            </div>
+            <div class="align-items-center flex flex-auto gap-3">
+                <label class="block font-bold">Fornecedor</label>
+                <div class="search-container px-0 py-3 shadow-none w-full">
+                    <i class="mdi mdi-magnify"></i>
+                    <p-autoComplete class="w-full" styleClass="w-full" appFocus #input (completeMethod)="search($event)"
+                                    inputStyleClass="w-full"
+                                    placeholder="Pesquise por nome ou código de fornecedor"
+                                    field="name"
+                                    [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
+                                    [suggestions]="suggestions"></p-autoComplete>
+                </div>
+            </div>
+        </div>
+        <div class="col-5">
+            <p-panel>
+                <ng-template pTemplate="header">
+                    <span class="mb-0 font-bold">Tipo Parcela</span>
+                </ng-template>
+                <div class="flex flex-wrap gap-3">
+                    <div class="flex align-items-center">
+                        <p-radioButton name="todas" value="todas" [(ngModel)]="ingredient" inputId="ingredient1"></p-radioButton>
+                        <label class="ml-2">Todas</label>
+                    </div>
+
+                    <div class="flex align-items-center">
+                        <p-radioButton name="abertas" value="abertas" [(ngModel)]="ingredient" inputId="ingredient2"></p-radioButton>
+                        <label class="ml-2">Abertas</label>
+                    </div>
+
+                    <div class="flex align-items-center">
+                        <p-radioButton name="quitadas" value="quitadas" [(ngModel)]="ingredient" inputId="ingredient3"></p-radioButton>
+                        <label class="ml-2">Quitadas</label>
+                    </div>
+
+                    <div class="flex align-items-center">
+                        <p-radioButton name="provisao" value="provisao" [(ngModel)]="ingredient" inputId="ingredient4"></p-radioButton>
+                        <label class="ml-2">Provisao</label>
+                    </div>
+                </div>
+            </p-panel>
+        </div>
+        <div class="col-12 py-0">
+            <p-divider styleClass="m-1"></p-divider>
+        </div>
+        <div class="col-10">
+            <c-data-table [action]="true" [exportBtn]="false"
+                          [headers]="headersTable" [service]="service" [showCreate]="false">
+            </c-data-table>
+        </div>
+        <div class="col-2">
+            <p-panel>
+                <ng-template pTemplate="header">
+                    <span class="mb-0 text-2xl font-bold">Totais</span>
+                </ng-template>
+                <div class="flex w-full justify-content-end">
+                    <h5 class=" font-bold severity_danger mb-2 flex justify-content-end" style="width: 7rem !important;">
+                        A pagar</h5>
+                </div>
+                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                               [minFractionDigits]="2"
+                               [disabled]="true"></p-inputNumber>
+                <div class="flex w-full justify-content-end mt-2">
+                    <h5 class="mb-1 font-bold severity_successfull mb-2 flex justify-content-end"
+                        style="width: 7rem !important;">Pago</h5>
+                </div>
+                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                               [minFractionDigits]="2"
+                               [disabled]="true"></p-inputNumber>
+                <div class="flex w-full justify-content-end mt-2">
+                    <h5 class="mb-1 font-bold severity_warning mb-2 flex justify-content-end"
+                        style="width: 10rem !important;">Saldo a Pagar</h5>
+                </div>
+                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                               [minFractionDigits]="2"
+                               [disabled]="true"></p-inputNumber>
+                <div class="flex w-full justify-content-end mt-2">
+                    <h5 class="mb-1 font-bold severity_info mb-2 flex justify-content-end"
+                        style="width: 7rem !important;">Previsão</h5>
+                </div>
+                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                               [minFractionDigits]="2"
+                               [disabled]="true"></p-inputNumber>
+            </p-panel>
+        </div>
+    </div>
+
+</div>

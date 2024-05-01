@@ -27,7 +27,7 @@
         <div class="col-12 xl:col-4">
             <div class="card h-full">
                 <h4 class="white-space-nowrap mb-2">Caixas da Loja</h4>
-                <p-table [value]="caixasList" [paginator]="true" [rows]="10" responsiveLayout="scroll">
+                <p-table [value]="caixas.listEntities$()" [paginator]="true" [rows]="10" responsiveLayout="scroll">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nome</th>

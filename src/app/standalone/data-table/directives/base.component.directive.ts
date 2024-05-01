@@ -14,7 +14,7 @@ import {MessageServices} from '../../../core/injects/message.services';
 })
 export class BaseComponentDirective implements AfterViewInit, OnDestroy {
   /**
-   * View Child of Data Table component
+   * View Child of Data Table modals
    */
   @ViewChildren(DataTableComponent) datatable: QueryList<DataTableComponent>;
   /**
@@ -30,7 +30,7 @@ export class BaseComponentDirective implements AfterViewInit, OnDestroy {
    */
   messageService: MessageServices = inject(MessageServices);
   /**
-   * Keep reference of dialog for use inside of component
+   * Keep reference of dialog for use inside of modals
    */
   dialog: DynamicDialogRef;
   /**

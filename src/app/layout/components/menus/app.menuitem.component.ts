@@ -9,7 +9,7 @@ import { AppSidebarComponent } from '../sidebar/app.sidebar.component';
 import {DomHandler} from 'primeng/dom';
 
 @Component({
-    // eslint-disable-next-line @angular-eslint/component-selector
+    // eslint-disable-next-line @angular-eslint/modals-selector
     selector: '[app-menuitem]',
     template: `
     <ng-container>

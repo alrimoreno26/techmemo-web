@@ -34,7 +34,7 @@ $gutter: 1rem; //for primeflex grid system
         padding: 0.5rem 0.5rem !important;
     }
 
-    .p-listbox-list-wrapper{
+    .p-listbox-list-wrapper {
         max-height: 100% !important;
     }
 }
@@ -127,12 +127,20 @@ $gutter: 1rem; //for primeflex grid system
     padding: 0.3rem 10px !important;
 }
 
+.severity_warning {
+    color: #ffffff;
+    background: rgba(255, 138, 60);
+    border: 1px solid rgb(255, 138, 60);
+    width: 2rem !important;
+    padding: 0.3rem 10px !important;
+}
+
 .severity_info {
     color: #ffffff;
     background: #0ea5e9;
     border: 1px solid #0ea5e9;
     width: 2rem !important;
-    padding: 0.3rem 0 !important;
+    padding: 0.3rem 10px !important;
 }
 
 .custom-input-number {
@@ -147,7 +155,7 @@ $gutter: 1rem; //for primeflex grid system
 }
 
 app-print-nfe {
-    /* hide the printing component from @media screen */
+    /* hide the printing modals from @media screen */
     display: none;
 }
 

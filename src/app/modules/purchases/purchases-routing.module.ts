@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {PurchasesComponent} from "./purchases.component";
 import {domainEnum} from "../../core/enums/role";
+import {ContasPagarComponents} from "./components/contas-pagar/contas-pagar.components";
 
 const routes: Routes = [
     {
@@ -11,8 +12,13 @@ const routes: Routes = [
                 path: 'lista',
                 data: {breadcrumb: 'Listado'},
                 component: PurchasesComponent
-            }
-        ]
+            },
+        ],
+    },
+    {
+        path: 'contas-pagar',
+        data: {breadcrumb: 'Contas a Pagar'},
+        component: ContasPagarComponents
     }
 ]
 

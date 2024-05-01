@@ -68,7 +68,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
             this.config = config;
             this.initCharts();
         });
-        this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+
         effect(() => {
             if (this.cashRegisterOperations.selectedEntity$()) {
                 this.cashOperations = this.cashRegisterOperations.selectedEntity$() as ChashRegisterSummaryDto
@@ -149,6 +149,14 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit(): void {
+        this.session.actualStore$.subscribe((store) => {
+            if (store) {
+                this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                this.store.loadOrdersStats({startDate: '2024-01-01', endDate: '2024-12-31'});
+                this.store.loadLowStock();
+            }
+        })
+
         this.cashRegisterOperations.opened$.subscribe((opened) => {
             if(opened){
                 this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})

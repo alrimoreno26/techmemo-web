@@ -28,8 +28,9 @@ export class AppTopbarComponent {
                 public session: SessionServices
     ) {
         this.lojas = this.session.userLogged.commerces;
-        this.selectedCommerce = this.lojas.find((x: any) => x.commerceId === this.session.getCurrentStore().id)
-        console.log(this.session.getCurrentStore())
+        if(this.session.getCurrentStore()){
+            this.selectedCommerce = this.lojas.find((x: any) => x.commerceId === this.session.getCurrentStore().id)
+        }
     }
 
     changeCommerce(commerce: any) {

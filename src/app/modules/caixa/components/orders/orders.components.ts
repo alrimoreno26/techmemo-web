@@ -30,6 +30,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     fromTable: any;
 
     caixaOpened: any;
+    actualStore: any;
 
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
@@ -43,18 +44,19 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         super()
         this.tableService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         this.cashRegisterService.existsAnyWorking();
+        this.actualStore = this.session.getCurrentStore().id;
         effect(() => {
             this.cashRegisterService.opened$.subscribe((opened) => {
-                if(session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE'){
-                    this.caixaOpened =  true
+                if (session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+                    this.caixaOpened = true
                 } else if (opened)
-                    this.caixaOpened =  opened;
+                    this.caixaOpened = opened;
             })
             this.cashRegisterOperations.opened$.subscribe((opened) => {
-                if(session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE'){
-                    this.caixaOpened =  true
+                if (session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+                    this.caixaOpened = true
                 } else if (opened)
-                    this.caixaOpened =  opened;
+                    this.caixaOpened = opened;
             })
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
@@ -74,6 +76,13 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     ngOnInit() {
+        this.session.actualStore$.subscribe((store) => {
+            if (store.id !== this.actualStore) {
+                this.actualStore = store.id;
+                this.loadComanda()
+                this.loadMesas()
+            }
+        })
     }
 
     loadComanda() {

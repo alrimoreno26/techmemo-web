@@ -10,7 +10,7 @@ export class SpinnerService {
    */
   loadingMap: Map<string, boolean> = new Map<string, boolean>();
   /**
-   * Controls to show or hide the block component
+   * Controls to show or hide the block modals
    */
   block: boolean;
 

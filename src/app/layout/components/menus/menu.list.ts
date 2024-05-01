@@ -77,6 +77,12 @@ export const menuList: any[] = [
         roles: [domainEnum.PRODUCT],
         items: [
             {
+                label: 'Contas a Pagar',
+                roles: [domainEnum.PRODUCT],
+                icon: 'mdi mdi-cash-clock mdi-24px',
+                routerLink: ['compras/contas-pagar']
+            },
+            {
                 label: 'Compras',
                 roles: [domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-multiple mdi-24px',

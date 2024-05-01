@@ -2,7 +2,7 @@ import {Component, effect, OnInit} from '@angular/core';
 import {BaseComponentDirective} from "../../standalone/data-table/directives/base.component.directive";
 import {StorePurchasesServices} from "./services/store.purchases.services";
 import {HeadersTable} from "../../standalone/data-table/models";
-import {MPurchasesComponent} from "./component/m-purchases.component";
+import {MPurchasesComponent} from "./modals/m-purchases.component";
 import {SupplierService} from "../inventory/forncedores/services/supplier.service";
 
 @Component({
