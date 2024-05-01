@@ -5,7 +5,7 @@ COPY . .
 RUN npm install --force
 ARG ENVIRONMENT
 ENV ENVIRONMENT=$ENVIRONMENT
-RUN if [ "$ENVIRONMENT" = "dev" ]; then npm run build --configuration --development; else npm run build; fi
+RUN if [ "$ENVIRONMENT" = "dev" ]; then npm run build:dev; else npm run build; fi
 
 # Use an official Nginx image as the base image
 FROM nginx
