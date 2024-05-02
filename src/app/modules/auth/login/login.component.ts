@@ -5,6 +5,7 @@ import {AuthServices} from "../../../core/services/auth.services";
 import {SessionServices} from "../../../core/injects/session.services";
 import {SecurityModel, UserAuthenticated} from "../../../core/models/user";
 import * as CryptoJS from 'crypto-js';
+import {CommercesServices} from "../../../core/services/commerces.services";
 
 @Component({
     selector: 'app-login',
@@ -47,6 +48,7 @@ export class LoginComponent implements OnInit {
     constructor(private service: AuthServices,
                 private sessionService: SessionServices,
                 private route: ActivatedRoute,
+                public commercesService: CommercesServices,
                 private router: Router,
                 private ngZone: NgZone) {
     }
@@ -71,7 +73,11 @@ export class LoginComponent implements OnInit {
                 this.sessionService.setUserLogged(res);
                 this.ngZone.run(() => this.service.profile().subscribe((user: UserAuthenticated) => {
                     this.sessionService.addBasicInfo(user);
-                    this.redirectByRoleLogin()
+                    this.commercesService.getById(user.commerces[0].commerceId).subscribe((commerce) => {
+                        this.sessionService.setCurrentStore(commerce);
+                        this.redirectByRoleLogin()
+                    });
+
                 }));
             },
             () => {

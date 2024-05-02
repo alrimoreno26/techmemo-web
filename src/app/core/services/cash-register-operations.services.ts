@@ -22,7 +22,11 @@ export class CashRegisterOperationsServices extends AbstractService<any> {
     getOperationsById(cashRegisterId: string): Observable<ChashRegisterSummaryDto> {
         return this.httpClient.post<ChashRegisterSummaryDto>(`${this.basePath}/closing-summary?cashRegisterId=${cashRegisterId}`,{});
     }
-    closeCashRegisterOperations(cashRegisterId: string): Observable<any> {
-        return this.httpClient.post<any>(`${this.basePath}/close?cashRegisterId=${cashRegisterId}`,{});
+    closeCashRegisterOperations(value:number, cashRegisterId: string): Observable<any> {
+        const body = {
+            cashRegisterId: cashRegisterId,
+            value: value
+        }
+        return this.httpClient.post<any>(`${this.basePath}/close`,body);
     }
 }

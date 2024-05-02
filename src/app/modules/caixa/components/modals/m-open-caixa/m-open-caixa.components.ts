@@ -25,6 +25,7 @@ export class MOpenCaixaComponents implements OnInit {
                 public ref: DynamicDialogRef,
                 public config: DynamicDialogConfig,
                 public userService: UserService) {
+        this.dialogRegistryService.addDialog(this.ref);
         this.userService.loadBasic({pageNumber: 0, pageSize: 10})
         this.cashRegisterService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         effect(() => {

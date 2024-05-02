@@ -6,7 +6,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {StorePurchasesServices} from "./services/store.purchases.services";
 import {PurchasesRoutingModule} from "./purchases-routing.module";
 import {CommonModule} from "@angular/common";
-import {MPurchasesComponent} from "./modals/m-purchases.component";
+import {MPurchasesComponent} from "./modals/m-purchases/m-purchases.component";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {AutoCompleteModule} from "primeng/autocomplete";
@@ -28,12 +28,16 @@ import {StoreContasPagarServices} from "./services/store.contas-pagar.services";
 import {PanelModule} from "primeng/panel";
 import {RadioButtonModule} from "primeng/radiobutton";
 import {DividerModule} from "primeng/divider";
+import {MContasPagarComponent} from "./modals/m-contas-pagar/m-contas-pagar.component";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 @NgModule({
     declarations: [
         PurchasesComponent,
         ContasPagarComponents,
-        MPurchasesComponent
+        MPurchasesComponent,
+        MContasPagarComponent
     ],
     imports: [
         CommonModule,
@@ -55,7 +59,9 @@ import {DividerModule} from "primeng/divider";
         InputNumberModule,
         PanelModule,
         RadioButtonModule,
-        DividerModule
+        DividerModule,
+        InputSwitchModule,
+        InputTextareaModule
     ],
     providers:[
         StoreContasPagarServices,

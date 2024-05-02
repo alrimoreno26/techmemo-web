@@ -1,6 +1,6 @@
-<ng-template dialog-header><span class="p-dialog-title">Fechamento de Caixa</span></ng-template>
+<ng-template dialog-header><span class="p-dialog-title">{{ titleModal }}</span></ng-template>
 <div class="grid mt-0">
-    @if (cashOperations !== null) {
+    @if (cashOperations) {
         <div class="col-12">
         <span class="pl-2 text-2xl"
               style="border-left: 5px double var(--primary-color);">Detalhes da operador de caixa</span>
@@ -20,54 +20,28 @@
                 <hr class="my-1">
             </div>
         </div>
-        <!--    <div class="col-6">-->
-            <!--        <span class="pl-2 text-2xl" style="border-left: 5px double var(&#45;&#45;primary-color);">Detalhes do caixa</span>-->
-            <!--        <div class="mt-20 mb-30 w-100pr">-->
-            <!--            <hr class="my-1">-->
-            <!--            <div class="flex gap-4 justify-content-between align-items-center">-->
-            <!--                <h6 class="m-0">Total de clientes:</h6>-->
-            <!--                <p class="m-0">0</p>-->
-            <!--            </div>-->
-            <!--            <hr class="my-1">-->
-            <!--            <div class="flex gap-4 justify-content-between align-items-center">-->
-            <!--                <h6 class="m-0">Média por cliente:</h6>-->
-            <!--                <p class="m-0">{{ 0 | currency }}</p>-->
-            <!--            </div>-->
-            <!--            <hr class="my-1">-->
-            <!--            <div class="flex gap-4 justify-content-between align-items-center">-->
-            <!--                <h6 class="m-0">Total de vendas canceladas:</h6>-->
-            <!--                <p class="m-0">{{ 0 | currency }}</p>-->
-            <!--            </div>-->
-            <!--            <hr class="my-1">-->
-            <!--            <div class="flex gap-4 justify-content-between align-items-center">-->
-            <!--                <h6 class="m-0">Total de itens cancelados:</h6>-->
-            <!--                <p class="m-0">0</p>-->
-            <!--            </div>-->
-            <!--            <hr class="my-1">-->
-            <!--        </div>-->
-            <!--    </div>-->
         <div class="col-6">
             <span class="pl-2 text-2xl" style="border-left: 5px double var(--primary-color);">Relatório de Venda</span>
             <div class="mt-20 mb-30 w-100pr">
                 <hr class="my-1">
                 <div class="flex gap-4 justify-content-between align-items-center">
                     <h6 class="m-0">Venda Total:</h6>
-                    <p class="m-0">{{ cashOperations.totalSales | currency }}</p>
+                    <p class="m-0">{{ cashOperations.totalValue | currency }}</p>
                 </div>
                 <hr class="my-1">
                 <div class="flex gap-4 justify-content-between align-items-center">
                     <h6 class="m-0">Venda total em dinheiro:</h6>
-                    <p class="m-0">{{ cashOperations.totalSalesPaymentWithMoney | currency }}</p>
+                    <p class="m-0">{{ cashOperations.totalValueSalesPaymentWithMoney | currency }}</p>
                 </div>
                 <hr class="my-1">
                 <div class="flex gap-4 justify-content-between align-items-center">
                     <h6 class="m-0">Venda tarjeta total:</h6>
-                    <p class="m-0">{{ (cashOperations.totalSalesPaymentWithCredit + cashOperations.totalSalesPaymentWithDebt + cashOperations.totalSalesPaymentWithPix) | currency }}</p>
+                    <p class="m-0">{{ (cashOperations.totalValueSalesPaymentWithCredit + cashOperations.totalValueSalesPaymentWithDebt + cashOperations.totalValueSalesPaymentWithPix) | currency }}</p>
                 </div>
                 <hr class="my-1">
                 <div class="flex gap-4 justify-content-between align-items-center">
                     <h6 class="m-0">Outro pagamento recebido:</h6>
-                    <p class="m-0">{{ cashOperations.totalSalesPaymentWithOthers | currency }}</p>
+                    <p class="m-0">{{ cashOperations.totalValueSalesPaymentWithOthers | currency }}</p>
                 </div>
                 <hr class="my-1">
             </div>
@@ -79,7 +53,7 @@
                 <hr class="my-1">
                 <div class="flex gap-4 justify-content-between align-items-center">
                     <h6 class="m-0">Dinheiro total das vendas:</h6>
-                    <p class="m-0 severity_successfull_text mr-6">{{ cashOperations.totalSales|currency }}</p>
+                    <p class="m-0 severity_successfull_text mr-6">{{ cashOperations.totalValue|currency }}</p>
                 </div>
                 <hr class="my-1">
                 <div class="flex gap-4 justify-content-between align-items-center">
@@ -89,19 +63,31 @@
                 <hr class="my-1">
                 <div class="flex gap-4 justify-content-between align-items-center">
                     <h6 class="m-0">Fim do dinheiro em caixa:</h6>
-                    <p class="m-0 severity_successfull_text mr-6">{{ (cashOperations.openingValue + cashOperations.totalSalesPaymentWithMoney - cashOperations.shiftTransactionBalance)|currency }}</p>
+                    <p class="m-0 severity_successfull_text mr-6">{{ (cashOperations.openingValue + cashOperations.totalValueSalesPaymentWithMoney - cashOperations.shiftTransactionBalance)|currency }}</p>
                 </div>
                 <hr class="my-1">
             </div>
         </div>
+    } @else {
+        <div class="col-12">
+            <h6 class="m-0 pb-2">Insira a quantia final de dinheiro na caixa:</h6>
+            <p-inputNumber [(ngModel)]="closingValue"
+                           inputId="locale-user"
+                           [minFractionDigits]="2"
+            ></p-inputNumber>
+        </div>
+
     }
 
 </div>
 <ng-template dialog-footer>
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
-            (click)="ref.close()"
+            (click)="fechar()"
             icon="mdi mdi-close"></button>
-    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Fechar Caixa"
-            (click)="fecharCaixa()"
-            icon="mdi mdi-check"></button>
+    @if (!closingCaixa) {
+        <button pButton pRipple class="p-button-primary flex-1 border-round" label="Fechar Caixa"
+                (click)="fecharCaixa()"
+                icon="mdi mdi-check"></button>
+    }
+
 </ng-template>

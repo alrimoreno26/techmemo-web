@@ -14,6 +14,7 @@ import {MCloseCaixaComponents} from "../modals/m-close-caixa/m-close-caixa.compo
 import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CashRegisterService} from "../../../shops/service/cash-register.service";
 import {CashRegisterOperationsService} from "../../../shops/service/cash-register-operations.service";
+import {MExtractionMoneyComponents} from "../modals/m-extraction-money/m-extraction-money.components";
 
 @Component({
     selector: 'app-orders',
@@ -46,18 +47,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterService.existsAnyWorking();
         this.actualStore = this.session.getCurrentStore().id;
         effect(() => {
-            this.cashRegisterService.opened$.subscribe((opened) => {
-                if (session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
-                    this.caixaOpened = true
-                } else if (opened)
-                    this.caixaOpened = opened;
-            })
-            this.cashRegisterOperations.opened$.subscribe((opened) => {
-                if (session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
-                    this.caixaOpened = true
-                } else if (opened)
-                    this.caixaOpened = opened;
-            })
+
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
                     let tableId = tableService.listEntities$()?.find(f => f.number.toString() === this.service.selectedEntity$()[0].tableNumber)?.id;
@@ -76,6 +66,19 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     ngOnInit() {
+        this.cashRegisterService.opened$.subscribe((opened) => {
+            if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+                this.caixaOpened = true
+            } else if (opened)
+                this.caixaOpened = opened;
+        })
+        this.cashRegisterOperations.opened$.subscribe((opened) => {
+            if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+                this.caixaOpened = true
+            } else {
+                this.caixaOpened = opened;
+            }
+        })
         this.session.actualStore$.subscribe((store) => {
             if (store.id !== this.actualStore) {
                 this.actualStore = store.id;
@@ -163,7 +166,12 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     closeCaixa() {
         this.dialogService.open(MCloseCaixaComponents, {
             data: null,
-            width: '700px',
+        });
+    }
+    extractionCaixa() {
+        this.dialogService.open(MExtractionMoneyComponents, {
+            data: null,
+            width: '300px',
         });
     }
 

@@ -1,0 +1,136 @@
+<ng-template dialog-header>
+    Nova Conta a Pagar
+</ng-template>
+<div formResponsive width="850px">
+    <div class="grid">
+        <div class="col-8">
+            <div class="col-12 pb-1 pt-3">
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold w-4">Fornecedor</label>
+                    <div class="search-container-single px-0 py-0 shadow-none w-full">
+                        <i class="mdi mdi-magnify"></i>
+                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                        (completeMethod)="search($event)"
+                                        inputStyleClass="w-full"
+                                        placeholder="Pesquise por nome ou código de fornecedor"
+                                        field="name"
+                                        [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
+                                        [suggestions]="suggestions"></p-autoComplete>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 pb-1">
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold w-4">Class Financiera</label>
+                    <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
+                                [options]="paymentMethodService.listEntities$()" [(ngModel)]="selected"
+                                optionLabel="description"
+                                placeholder="Class Financiera"></p-dropdown>
+                </div>
+            </div>
+            <div class="col-12 pb-1">
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold w-4">Tipo Pagamento</label>
+                    <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
+                                [options]="paymentMethodService.listEntities$()" [(ngModel)]="selected"
+                                optionLabel="description"
+                                placeholder="Tipo Pagamento"></p-dropdown>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="flex">
+                    <div class="align-items-center flex flex-auto ">
+                        <label class="block font-bold w-4">Doc/Fatura</label>
+                        <p-inputNumber [(ngModel)]="fatura" inputStyleClass="w-7rem"></p-inputNumber>
+                    </div>
+                    <div>
+                        <p-inputNumber [(ngModel)]="fatura" inputStyleClass="w-7rem"
+                                       [disabled]="true"></p-inputNumber>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 pb-1">
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold w-3">Observação</label>
+                    <textarea rows="3" cols="50" [autoResize]="true" [(ngModel)]="description"
+                              pInputTextarea></textarea>
+                </div>
+            </div>
+        </div>
+        <div class="col-4 px-0">
+            <p-panel>
+                <ng-template pTemplate="header">
+                    <span class="mb-0 font-bold">Parcelas</span>
+                </ng-template>
+                <div class="align-items-center flex flex-auto gap-3 pb-3">
+                    <label class="block font-bold w-full">Multiples Parcelas</label>
+                    <p-inputSwitch [(ngModel)]="parcelas"></p-inputSwitch>
+                </div>
+                @if (parcelas) {
+                    <div class="align-items-center flex flex-auto gap-3 pb-3">
+                        <label class="block font-bold w-full"># Parcelas</label>
+                        <p-inputNumber [(ngModel)]="qParcelas" inputStyleClass="w-5rem"></p-inputNumber>
+                    </div>
+                    <div class="align-items-center flex flex-auto gap-3 justify-content-between  pb-3">
+                        <label class="block font-bold">Vencimiento</label>
+                        <div class="flex flex-column">
+                            <div class="pb-2">
+                                <p-radioButton name="fixo" value="fixo" [(ngModel)]="vencimiento"
+                                               inputId="fixo"></p-radioButton>
+                                <label class="ml-2">Dias Fixo</label>
+                            </div>
+                            <div>
+                                <p-radioButton name="corrigos" value="corrigos" [(ngModel)]="vencimiento"
+                                               inputId="corrigos"></p-radioButton>
+                                <label class="ml-2">Dias Corrigos</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="align-items-center flex flex-auto gap-3">
+                        <label class="block font-bold w-full">Vencimiento 1 Parcela</label>
+                        <p-calendar [(ngModel)]="rangeDates"
+                                    [appendTo]="'body'"
+                                    dateFormat="dd/mm/yy"
+                                    [readonlyInput]="true"></p-calendar>
+                    </div>
+                }
+
+            </p-panel>
+        </div>
+        <div class="col-12">
+            <p-table [value]="listParcelas" [scrollable]="true" scrollHeight="400px">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th>Parcela</th>
+                        <th>Data Vencimiento</th>
+                        <th>Valor</th>
+                        <th>Observação</th>
+                        <th>Parcela provisão</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>{{ product.parcela }}</td>
+                        <td>{{ product.vencimento | date:'dd/MM/YYYY' : '+0' }}</td>
+                        <td>{{ product.value }}</td>
+                        <td>{{ product.quantity }}</td>
+                        <td></td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
+</div>
+<ng-template dialog-footer>
+    <div class="pt-2">
+        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+                icon="mdi mdi-close"></button>
+        <button pButton pRipple class="p-button-info flex-1 p-button-outlined" label="Gerar Parcelas"
+                (click)="gerarParcelas()"
+                icon="mdi mdi-close"></button>
+        <button pButton pRipple class="p-button-primary flex-1 border-round" label="Cadastrar Contas"
+                [disabled]="listParcelas.length === 0"
+                icon="mdi mdi-check"></button>
+    </div>
+</ng-template>
+

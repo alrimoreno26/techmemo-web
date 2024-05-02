@@ -1,14 +1,14 @@
 import {Component, OnInit} from "@angular/core";
-import {StorePurchasesServices} from "../services/store.purchases.services";
+import {StorePurchasesServices} from "../../services/store.purchases.services";
 import {
     BaseModalStoreComponentDirective
-} from "../../../standalone/data-table/directives/base.modal.store.component.directive";
+} from "../../../../standalone/data-table/directives/base.modal.store.component.directive";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
-import {Stock_TransferStore} from "../../inventory/stock_transfer/store/stock_transfer.store";
-import {SupplierService} from "../../inventory/forncedores/services/supplier.service";
-import {MFornecedoresComponent} from "../../inventory/forncedores/components/m-fornecedores/m-fornecedores.component";
+import {Stock_TransferStore} from "../../../inventory/stock_transfer/store/stock_transfer.store";
+import {SupplierService} from "../../../inventory/forncedores/services/supplier.service";
+import {MFornecedoresComponent} from "../../../inventory/forncedores/components/m-fornecedores/m-fornecedores.component";
 import {DialogService} from "primeng/dynamicdialog";
-import {PaymentMethodService} from "../../financial/service/payment-method.service";
+import {PaymentMethodService} from "../../../financial/service/payment-method.service";
 
 @Component({
     templateUrl: './m-purchases.component.html',

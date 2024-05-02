@@ -7,7 +7,7 @@ import * as CryptoJS from "crypto-js";
 import {SecurityModel, UserAuthenticated} from "../../../core/models/user";
 
 @Component({
-    selector:'app-lock',
+    selector: 'app-lock',
     templateUrl: './lock.component.html',
     styles: [`
         i {
@@ -52,10 +52,15 @@ export class LockComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        this.lockForm = new FormGroup({
-            username: new FormControl<string>(this.sessionService.userLogged.username, [Validators.required]),
-            password: new FormControl<string>('', Validators.required)
-        });
+        if (this.sessionService.userLogged === null) {
+            this.router.navigateByUrl('/auth/login').then();
+        } else {
+            this.lockForm = new FormGroup({
+                username: new FormControl<string>(this.sessionService.userLogged.username, [Validators.required]),
+                password: new FormControl<string>('', Validators.required)
+            });
+        }
+
     }
 
     login(): void {

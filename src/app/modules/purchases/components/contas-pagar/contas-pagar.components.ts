@@ -3,12 +3,15 @@ import {BaseComponentDirective} from "../../../../standalone/data-table/directiv
 import {HeadersTable} from "../../../../standalone/data-table/models";
 import {StoreContasPagarServices} from "../../services/store.contas-pagar.services";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
+import {MContasPagarComponent} from "../../modals/m-contas-pagar/m-contas-pagar.component";
 
 @Component({
     selector: 'c-contas-pagar',
     templateUrl: './contas-pagar.components.html',
 })
 export class ContasPagarComponents extends BaseComponentDirective implements OnInit{
+
+    override modalContent = MContasPagarComponent;
 
     apagar= 0;
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), 11, 31)];

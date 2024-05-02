@@ -69,6 +69,7 @@ import {LayoutService} from "../../layout/service/app.layout.service";
 import {reducer} from "../security/user/store/user.reducers";
 import {UserEffects} from "../security/user/store/user.effects";
 import {RoleEffects} from "../security/roles/store/role.effects";
+import {MExtractionMoneyComponents} from "./components/modals/m-extraction-money/m-extraction-money.components";
 
 @NgModule({
     imports: [
@@ -129,7 +130,8 @@ import {RoleEffects} from "../security/roles/store/role.effects";
         MCancelProductsComponents,
         AdditionalComponents,
         MOpenCaixaComponents,
-        MCloseCaixaComponents
+        MCloseCaixaComponents,
+        MExtractionMoneyComponents
     ],
     providers: [
         PaymentMethodService,

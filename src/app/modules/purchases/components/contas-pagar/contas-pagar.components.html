@@ -9,7 +9,7 @@
             </div>
             <div class="align-items-center flex flex-auto gap-3">
                 <label class="block font-bold">Fornecedor</label>
-                <div class="search-container px-0 py-3 shadow-none w-full">
+                <div class="search-container-single px-0 py-3 shadow-none w-full">
                     <i class="mdi mdi-magnify"></i>
                     <p-autoComplete class="w-full" styleClass="w-full" appFocus #input (completeMethod)="search($event)"
                                     inputStyleClass="w-full"
@@ -53,7 +53,7 @@
         </div>
         <div class="col-10">
             <c-data-table [action]="true" [exportBtn]="false"
-                          [headers]="headersTable" [service]="service" [showCreate]="false">
+                          [headers]="headersTable" [service]="service" [showCreate]="true">
             </c-data-table>
         </div>
         <div class="col-2">
