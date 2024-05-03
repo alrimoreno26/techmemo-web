@@ -43,6 +43,7 @@ export class KeypadComponents implements OnInit {
     productsPagamento: any[] = [];
 
     cashRegisterId = '';
+
     constructor(private service: CaixaService,
                 private messageService: MessageServices,
                 public cashService: CashRegisterService,
@@ -102,6 +103,9 @@ export class KeypadComponents implements OnInit {
                 ) || 0;
                 console.log(this.paymentsDone)
                 console.log(this.service.selectedEntity$())
+                if (totales === this.pagamento) {
+                    this.disableAllFields = true;
+                }
                 console.log(totales)
                 console.log(this.pagamento)
                 this.remaining_amount = totales - this.pagamento;

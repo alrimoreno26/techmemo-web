@@ -15,6 +15,7 @@ import {ChashRegisterSummaryDto} from "../../../core/models/commerce";
 import {ToastMessageService} from "../../../core/injects/toast-message.service";
 import {MOpenCaixaComponents} from "../../caixa/components/modals/m-open-caixa/m-open-caixa.components";
 import {DialogService} from "primeng/dynamicdialog";
+import {formatDate} from "../../../core/util";
 
 @Component({
     selector: 'c-commerce-dashboard',
@@ -24,25 +25,11 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
     stats: ReportsDTO;
 
-    products: any[] = [];
-
-    productsThisWeek: any[] = [];
-
-    productsLastWeek: any[] = [];
-
     productsBestSellers: any[] = [];
 
     subscription!: Subscription;
 
     items: MenuItem[] = [];
-
-    ordersChart: any;
-
-    ordersChartOptions: any;
-
-    revenueChart: any;
-
-    revenueChartOptions: any;
 
     config!: AppConfig;
 
@@ -53,8 +40,15 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
     caixasList: any = [];
 
     sidebarVisible: boolean;
+    sidebarOption = 'info';
 
     cashOperations: any = null;
+
+    historicalCashOperations: any[] = [];
+
+    expandedRows = {};
+
+    rangeDates: Date[] = [new Date(), new Date()];
 
     constructor(private layoutService: LayoutService,
                 public store: StoreDashboardServices,
@@ -66,12 +60,24 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
 
         this.subscription = this.layoutService.configUpdate$.subscribe(config => {
             this.config = config;
-            this.initCharts();
         });
 
         effect(() => {
             if (this.cashRegisterOperations.selectedEntity$()) {
+                this.cashOperations = null;
+                this.historicalCashOperations = [];
                 this.cashOperations = this.cashRegisterOperations.selectedEntity$() as ChashRegisterSummaryDto
+            }
+            if (this.cashRegisterOperations.listEntities$()) {
+                if (this.cashRegisterOperations.listEntities$().length > 0 && this.sidebarOption === 'historical') {
+                    this.cashOperations = null;
+                    this.historicalCashOperations = [];
+
+                    this.cashRegisterOperations.listEntities$().forEach((x: any, i: number) => {
+                        this.historicalCashOperations.push({...x, id: i})
+                    })
+                }
+
             }
             if (this.caixas.listEntities$().length > 0) {
                 this.caixasList = this.caixas.listEntities$().filter((c: any) => c.enabled);
@@ -93,8 +99,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                             {amount: this.stats.orderSummary.totalInPayment, text: 'En pagamento'},
                             {amount: this.stats.orderSummary.totalPaid, text: 'Pagadas'},
                             {amount: this.stats.orderSummary.totalClosed, text: 'Fechadas'},
-                            {amount: this.stats.orderSummary.totalFinished, text: 'Concluídas'},
-                            {amount: this.stats.orderSummary.averageOrders, text: 'Média'}
+                            {amount: this.stats.orderSummary.totalFinished, text: 'Concluídas'}
                         ]
                     },
                 ];
@@ -148,225 +153,87 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         });
     }
 
+    applyFilter() {
+        const startDate = formatDate(this.rangeDates[0]);
+        const endDate = this.rangeDates[1] !== null ? formatDate(this.rangeDates[1]) : formatDate(this.rangeDates[0]);
+        this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+        this.store.loadOrdersStats({
+            startDate,
+            endDate
+        });
+        this.store.loadLowStock();
+    }
+
     ngOnInit(): void {
         this.session.actualStore$.subscribe((store) => {
             if (store) {
                 this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
-                this.store.loadOrdersStats({startDate: '2024-01-01', endDate: '2024-12-31'});
+                this.store.loadOrdersStats({
+                    startDate: formatDate(this.rangeDates[0]),
+                    endDate: formatDate(this.rangeDates[1])
+                });
                 this.store.loadLowStock();
             }
         })
 
         this.cashRegisterOperations.opened$.subscribe((opened) => {
-            if(opened){
+            if (opened) {
                 this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
             }
         })
-        if (this.session.getTenantId()) {
-            this.store.loadLowStock();
-            this.store.loadOrdersStats({startDate: '2024-01-01', endDate: '2024-12-31'});
-            //
-        }
-        // this.productService.getProducts().then(data => {
-        //     this.products = data;
-        //     this.productsThisWeek = data;
-        // });
-        //
-        // this.productService.getProductsMixed().then(data => this.productsLastWeek = data);
 
-        this.initCharts();
-    }
-
-    initCharts() {
-        const documentStyle = getComputedStyle(document.documentElement);
-        const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-        this.ordersChart = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [{
-                label: 'New',
-                data: [2, 7, 20, 9, 16, 9, 5],
-                backgroundColor: [
-                    'rgba(100, 181, 246, 0.2)',
-                ],
-                borderColor: [
-                    '#64B5F6',
-                ],
-                borderWidth: 3,
-                fill: true,
-                tension: .4
-            }]
-        };
-
-        this.ordersChartOptions = {
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: textColor
-                    }
-                }
-            },
-            hover: {
-                mode: 'index'
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: [surfaceBorder],
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary,
-                        min: 0,
-                        max: 20
-                    },
-                    grid: {
-                        color: [surfaceBorder],
-                        drawBorder: false
-                    }
-                }
-            }
-        };
-
-        this.revenueChart = {
-            labels: ['Direct', 'Promoted', 'Affiliate'],
-            datasets: [{
-                data: [40, 35, 25],
-                backgroundColor: ['#64B5F6', '#7986CB', '#4DB6AC'],
-                borderColor: [surfaceBorder]
-            }]
-        };
-
-        this.revenueChartOptions = {
-            plugins: {
-                legend: {
-                    display: true,
-                    labels: {
-                        color: textColor
-                    }
-                }
-            }
-        }
-
-    }
-
-    onGlobalFilter(table: Table, event: Event) {
-        table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
-    }
-
-    changeDataset(event: any) {
-        const dataSet = [
-            [2, 7, 20, 9, 16, 9, 5],
-            [2, 4, 9, 20, 16, 12, 20],
-            [2, 17, 7, 15, 4, 20, 8],
-            [2, 2, 20, 4, 17, 16, 20]
-        ];
-
-        this.ordersChart.datasets[0].data = dataSet[parseInt(event.currentTarget.getAttribute('data-index'))];
-        this.ordersChart.datasets[0].label = event.currentTarget.getAttribute('data-label');
-        this.ordersChart.datasets[0].borderColor = event.currentTarget.getAttribute('data-stroke');
-        this.ordersChart.datasets[0].backgroundColor = event.currentTarget.getAttribute('data-fill');
-
-    }
-
-    recentSales(event: any) {
-        if ((event.target as HTMLInputElement).value === '0') {
-            this.products = this.productsThisWeek;
-        } else {
-            this.products = this.productsLastWeek;
-        }
-    }
-
-    updateChartOptions() {
-        if (this.config.colorScheme === 'dark')
-            this.applyDarkTheme();
-        else
-            this.applyLightTheme();
-
-    }
-
-    applyDarkTheme() {
-        this.ordersChartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#ebedef'
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#ebedef'
-                    },
-                    grid: {
-                        color: 'rgba(160, 167, 181, .3)',
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: '#ebedef'
-                    },
-                    grid: {
-                        color: 'rgba(160, 167, 181, .3)',
-                    }
-                },
-            }
-        };
-    }
-
-    applyLightTheme() {
-        this.ordersChartOptions = {
-            plugins: {
-                legend: {
-                    labels: {
-                        color: '#495057'
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: '#495057'
-                    },
-                    grid: {
-                        color: '#ebedef',
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: '#495057'
-                    },
-                    grid: {
-                        color: '#ebedef',
-                    }
-                },
-            }
-        };
     }
 
     seeInfo(caixa: any): void {
         if (caixa.working) {
             this.cashRegisterOperations.getOperationsById(caixa.id);
+            this.sidebarOption = 'info';
             this.sidebarVisible = true;
         } else {
             this.dialogService.open(MOpenCaixaComponents, {
                 data: null,
                 width: '300px',
             })
-            //
         }
+    }
 
+    historical(caixa: any): void {
+        this.sidebarOption = 'historical';
+        this.cashRegisterOperations.loadAll({
+            lazy: {
+                pageNumber: 0,
+                pageSize: 100,
+                cashRegisterId: caixa.id,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1])
+            }
+        })
+        this.sidebarVisible = true;
     }
 
     ngOnDestroy() {
         this.subscription.unsubscribe();
+    }
+
+    getSeverity(operations: any) {
+        if (operations.closingDate === null) {
+            return 'warning';
+        } else {
+            return 'success'
+        }
+    }
+
+    getValue(operations: any) {
+        if (operations.closingDate === null) {
+            return 'trabalhando';
+        } else {
+            return 'fechada'
+        }
+    }
+
+    closingSidebar() {
+        this.sidebarOption = 'info';
+        this.cashOperations = null;
+        this.historicalCashOperations = [];
     }
 }

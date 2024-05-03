@@ -18,4 +18,7 @@ export class CashRegisterExtractionsService extends StoreComponentService<any> {
         super(services, defaultEntity);
     }
 
+    override finalizeAdd = () => {
+        this.patchState({dialog: false});
+    };
 }

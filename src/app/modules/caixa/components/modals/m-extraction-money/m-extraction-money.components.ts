@@ -8,6 +8,7 @@ import {CashRegisterService} from "../../../../shops/service/cash-register.servi
 import {CashRegisterOperationsService} from "../../../../shops/service/cash-register-operations.service";
 import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 import {CashRegisterExtractionsService} from "../../../../shops/service/cash-register-extractions.service";
+import {ToastMessageService} from "../../../../../core/injects/toast-message.service";
 
 @Component({
     selector: 'm-extraction-money',
@@ -22,9 +23,17 @@ export class MExtractionMoneyComponents implements OnInit {
                 public ref: DynamicDialogRef,
                 public cashRegisterOperations: CashRegisterOperationsService,
                 public service: CashRegisterExtractionsService,
+                private toastMessageService: ToastMessageService,
                 public cashService: CashRegisterService,
                 public config: DynamicDialogConfig,) {
         this.dialogRegistryService.addDialog(this.ref);
+        effect(() => {
+            if(!this.service.dialog$()){
+                this.toastMessageService.showMessage("success", 'Sucesso', 'Extração realizada corretamente')
+                this.dialogRegistryService.removeDialog(this.ref)
+                this.ref.close()
+            }
+        });
     }
 
     ngOnInit() {

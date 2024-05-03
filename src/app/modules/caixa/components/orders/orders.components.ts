@@ -15,6 +15,7 @@ import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CashRegisterService} from "../../../shops/service/cash-register.service";
 import {CashRegisterOperationsService} from "../../../shops/service/cash-register-operations.service";
 import {MExtractionMoneyComponents} from "../modals/m-extraction-money/m-extraction-money.components";
+import {CashRegisterExtractionsService} from "../../../shops/service/cash-register-extractions.service";
 
 @Component({
     selector: 'app-orders',
@@ -39,6 +40,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
                 public layoutService: LayoutService,
                 private toastMessageService: ToastMessageService,
                 public cashRegisterOperations: CashRegisterOperationsService,
+                public cashRegisterExtractionsService: CashRegisterExtractionsService,
                 public session: SessionServices,
                 private cashRegisterService: CashRegisterService,
                 private datePipe: DatePipe) {
@@ -75,7 +77,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterOperations.opened$.subscribe((opened) => {
             if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
                 this.caixaOpened = true
-            } else {
+            } else if (opened) {
                 this.caixaOpened = opened;
             }
         })
@@ -169,6 +171,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         });
     }
     extractionCaixa() {
+        this.cashRegisterExtractionsService.openModalAddOrEdit();
         this.dialogService.open(MExtractionMoneyComponents, {
             data: null,
             width: '300px',

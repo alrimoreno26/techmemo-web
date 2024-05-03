@@ -21,6 +21,8 @@ import {EffectsModule} from "@ngrx/effects";
 import {CaixaEffects} from "../../caixa/store/caixa.effects";
 import {ProductEffects} from "../../inventory/product/store/product.effects";
 import {UserEffects} from "../../security/user/store/user.effects";
+import {CalendarModule} from "primeng/calendar";
+import {TagModule} from "primeng/tag";
 
 @NgModule({
     imports: [
@@ -36,6 +38,8 @@ import {UserEffects} from "../../security/user/store/user.effects";
         SidebarModule,
         StoreModule.forFeature('user', reducer),
         EffectsModule.forFeature([UserEffects]),
+        CalendarModule,
+        TagModule,
     ],
     exports: [
         EcommerceDashboardComponent
