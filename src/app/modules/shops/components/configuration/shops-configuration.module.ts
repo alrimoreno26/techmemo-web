@@ -26,6 +26,7 @@ import {DividerModule} from "primeng/divider";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {BadgeModule} from "primeng/badge";
 import {DropdownModule} from "primeng/dropdown";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
     declarations: [
@@ -54,6 +55,7 @@ import {DropdownModule} from "primeng/dropdown";
         SelectButtonModule,
         BadgeModule,
         DropdownModule,
+        TranslateModule,
     ],
     providers: [
         ProductService,

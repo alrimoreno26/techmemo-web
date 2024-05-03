@@ -263,7 +263,7 @@
                                                         <img alt="Card" src="assets/layout/images/elgin.jpeg"
                                                              [height]="150"/>
                                                     </ng-template>
-                                                    <p-badge value="{{printer.area}}"
+                                                    <p-badge value="{{printer.area | translate}}"
                                                              [severity]="printer.area === 'POS' ? 'success' : 'warning'"></p-badge>
                                                     <div class="align-items-center flex flex-auto gap-3 pt-2">
                                                         <label class="block font-bold">Activa</label>
