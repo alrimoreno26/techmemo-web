@@ -16,6 +16,7 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
 import {CommercesServices} from "./services/commerces.services";
 import {LayoutService} from "../layout/service/app.layout.service";
 import {InactivityService} from "./injects/inactive.services";
+import {switchMap, tap, timer} from "rxjs";
 
 registerLocaleData(localePt, 'pt');
 export function inactivityServiceFactory(inactivityService: InactivityService): () => Promise<any> {
@@ -56,20 +57,21 @@ export function inactivityServiceFactory(inactivityService: InactivityService): 
     ]
 })
 export class CoreModule {
-    constructor(ws: WebSocketServices) {
-        // timer(2000).pipe(
-        //     tap(() => {
-        //         const state = ws.state.getValue();
-        //         const tok = 'aaaa';
-        //         if (tok === null && state !== SocketClientState.DISCONNECTED) {
-        //             ws.socketDisconnect();
-        //         } else if (state === SocketClientState.CONNECTED) {
-        //             ws.socketDisconnect();
-        //             ws.onConnection(tok);
-        //         } else if (tok) {
-        //             ws.onConnection(tok);
-        //         }
-        //     })
-        // ).subscribe();
+    constructor(ws: WebSocketServices, session: SessionServices,) {
+        timer(2000).pipe(
+            switchMap(() => session.getAccessToken$().pipe(
+                tap((tok) => {
+                    const state = ws.state.getValue();
+                    if (tok === null && state !== SocketClientState.DISCONNECTED) {
+                        ws.socketDisconnect();
+                    } else if (state === SocketClientState.CONNECTED) {
+                        ws.socketDisconnect();
+                        ws.onConnection(tok);
+                    } else if (tok) {
+                        ws.onConnection(tok);
+                    }
+                })
+            ))
+        ).subscribe();
     }
 }

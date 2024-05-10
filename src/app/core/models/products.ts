@@ -66,6 +66,7 @@ export interface ProductDto {
     soldPerUnits: boolean,
     showInMenu: boolean,
     stockAmount: number,
+    amount: number,
     suppliers: SupplierDTO[]
     unitMeasurement: UnitsMeasurementsDTO
     valuePerUnits: number,

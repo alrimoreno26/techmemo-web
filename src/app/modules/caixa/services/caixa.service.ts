@@ -116,4 +116,8 @@ export class CaixaService extends BaseStoreServices<any> {
         this.store.dispatch(fromOrdersListActions.changeFieldStateOrders({id,params}))
     }
 
+    ordersKitchen(data: Partial<any>){
+        this.store.dispatch(fromOrdersListActions.ordersFromKitchen({lazy: data}))
+    }
+
 }

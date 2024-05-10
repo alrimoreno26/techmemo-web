@@ -67,4 +67,9 @@ export class OrdersService extends AbstractService<any> {
     changeFieldState(id: string, params: any) {
         return this.httpClient.patch<any>(`${this.basePath}/${id}`, params)
     }
+
+    pendingPrepare(queryParams: any) {
+        const params: HttpParams = new HttpParams({fromObject: queryParams});
+        return this.httpClient.get<any>(`${this.basePath}/pendings?${params}`)
+    }
 }

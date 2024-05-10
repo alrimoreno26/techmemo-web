@@ -197,6 +197,18 @@ export class CaixaEffects {
         )
     );
 
+    ordersFromKitchen$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.ordersFromKitchen),
+            switchMap(({lazy}) =>
+                this.service.pendingPrepare(lazy).pipe(
+                    map((data) => fromOrdersListActions.ordersFromKitchenSuccess(data)),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
     constructor(private actions$: Actions,
                 private service: OrdersService,
                 private caixaService: CaixaService,

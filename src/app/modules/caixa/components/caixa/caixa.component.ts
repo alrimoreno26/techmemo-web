@@ -63,6 +63,7 @@ export class CaixaComponent implements OnInit {
                 private dialogService: DialogService,
                 private productService: ProductService,
                 private toastMessageService: ToastMessageService,
+                public client: HttpClient,
                 private storeTablesServices: StoreTablesServices,
                 private router: Router,
                 public cashService: CashRegisterService,
@@ -142,7 +143,7 @@ export class CaixaComponent implements OnInit {
                                 amount: this.selectedItemAmount,
                             },
                             modal: true,
-                            style: {'width': '60vw', 'height': '60vw'},
+                            style: {'width': '65vw', 'height': '70vw'},
                             draggable: false,
                             resizable: false
                         }).onClose.subscribe(() => {
@@ -226,7 +227,7 @@ export class CaixaComponent implements OnInit {
             this.dialogService.open(MTransferComponents, {
                 data: this.service.selectedEntity$()[this.activeOrder],
                 modal: true,
-                style: {'width': '60vw'},
+                style: {'width': '65vw'},
                 draggable: false,
                 resizable: false
             })
@@ -324,10 +325,12 @@ export class CaixaComponent implements OnInit {
         this.dialogService.open(AdditionalComponents, {
             data: {
                 product: product,
+                amount: product.amount,
+                activeOrder: this.activeOrder,
                 additionalSelected: product.additionals
             },
             modal: true,
-            style: {'width': '60vw', 'height': '60vw'},
+            style: {'width': '65vw', 'height': '70vw'},
             draggable: false,
             resizable: false
         })
@@ -419,6 +422,10 @@ export class CaixaComponent implements OnInit {
 
     setDisabled() {
         return this.value === 'on';
+    }
+
+    printCozinha(){
+        this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
     }
 
     protected readonly isObject = isObject;

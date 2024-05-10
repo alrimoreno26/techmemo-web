@@ -40,7 +40,7 @@ export class WebSocketServices {
     onConnection(accessToken: string): void {
         if (this.state.value !== SocketClientState.CONNECTED) {
             const websocketUrl = environment.websocket;
-            this.client = Stomp.over(new SockJS(websocketUrl));
+            this.client = Stomp.over(new WebSocket(websocketUrl));
             this.state = new BehaviorSubject<SocketClientState>(SocketClientState.ATTEMPTING);
             this.client.connect(
                 {},

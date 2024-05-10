@@ -24,7 +24,7 @@ export interface CreateOrderTO {
 export interface CreatePaymentTransactionTO {
     cashRegisterId: string
     orderId: string
-    paymentPerProducts:PaymentPerProductTO[];
+    paymentPerProducts: PaymentPerProductTO[];
 }
 
 export interface PaymentPerProductTO {
@@ -42,3 +42,33 @@ export interface CreatePaymentTO {
 }
 
 
+export interface AdditionalLightTO {
+    id: string;
+    name: string | null;
+    unitMeasurementCode: string | null;
+    soldPerUnits: boolean;
+    amount: number;
+}
+
+export interface ProductLightTO {
+    id: string;
+    name: string | null;
+    unitMeasurementCode: string | null;
+    soldPerUnits: boolean;
+    amount: number;
+    type: string | null;
+    state: 'PENDING' | 'IN_PREPARATION' | 'READY';
+    code?: string;
+    created?: string;
+    additionals: AdditionalLightTO[];
+}
+
+export interface OrderLightTO {
+    id: string;
+    code: string;
+    tableNumber: string | null;
+    state: string;
+    type: string;
+    created: string;
+    products: ProductLightTO[];
+}

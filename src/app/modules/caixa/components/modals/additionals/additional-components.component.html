@@ -1,7 +1,16 @@
 <!--<p-dialog [(visible)]="showAdditional" [modal]="true" [style]="{ width: '60vw', height:'60vw' }" [draggable]="false"-->
 <!--          [resizable]="false">-->
-    <ng-template dialog-header><span class="p-dialog-title">Detalhes do Producto</span></ng-template>
-    <div class="flex h-full">
+<ng-template dialog-header><span class="p-dialog-title">Detalhes do Producto</span></ng-template>
+<div class="flex flex-column h-full">
+    @if (this.config.data.amount > 1) {
+        <div class="pb-3">
+            <p-steps [activeIndex]="activeIndex"
+                     (activeIndexChange)="onActiveIndexChange($event)"
+                     [model]="amountItems"/>
+        </div>
+
+    }
+    <div class="flex">
         <div class="flex-1">
             <p-tabView>
                 <p-tabPanel class="p-1" header="Adicional">
@@ -47,10 +56,10 @@
                                     </td>
                                     <td>
                                         <div class="p-inputgroup h-2rem">
-                                            <button type="button" pButton icon="pi pi-plus"
+                                            <button type="button" pButton icon="mdi mdi-plus"
                                                     (click)="addElementClick($event,item)"
                                                     class="p-button-success p-button-sm"></button>
-                                            <button type="button" pButton icon="pi pi-minus"
+                                            <button type="button" pButton icon="mdi mdi-minus"
                                                     (click)="removeElementbyId($event,item)"
                                                     class="p-button-danger"></button>
                                         </div>
@@ -100,10 +109,10 @@
                                 </td>
                                 <td>
                                     <div class="p-inputgroup h-2rem">
-                                        <button type="button" pButton icon="pi pi-plus"
+                                        <button type="button" pButton icon="mdi mdi-plus"
                                                 (click)="addElementClick($event,item)"
                                                 class="p-button-success p-button-sm"></button>
-                                        <button type="button" pButton icon="pi pi-minus"
+                                        <button type="button" pButton icon="mdi mdi-minus"
                                                 (click)="removeElementbyId($event,item)"
                                                 class="p-button-danger"></button>
                                     </div>
@@ -124,7 +133,7 @@
                     <p class="mb-0 font-bold">{{ item.name }}</p>
                     <div class="align-items-center flex gap-2">
                         <p class="mb-0  font-bold uppercase">{{ item.salePrice | currency }}</p>
-                        <p-button icon="pi pi-minus" class="mr-2" styleClass="p-button-danger p-button-sm"
+                        <p-button icon="mdi mdi-minus" class="mr-2" styleClass="p-button-danger p-button-sm"
                                   (click)="removeElement($event, i)"
                         ></p-button>
                     </div>
@@ -136,11 +145,17 @@
         </div>
     </div>
 
-    <ng-template dialog-footer>
-        <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
-                icon="mdi mdi-close"></button>
-        <button pButton pRipple class="p-button-primary flex-1 border-round" label="Adicionar"
-                (click)="addManyAdditionalProduct()"
-                icon="pi pi-fw pi-plus"></button>
-    </ng-template>
+</div>
+
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
+            icon="mdi mdi-close"></button>
+    @if (this.config.data.amount > 1) {
+        <p-button styleClass="px-2" icon="mdi mdi-chevron-double-left" (onClick)="stepper('-')"/>
+        <p-button styleClass="px-2" icon="mdi mdi-chevron-double-right"(onClick)="stepper('+')"/>
+    }
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Adicionar"
+            (click)="addManyAdditionalProduct()"
+            icon="mdi mdi-plus"></button>
+</ng-template>
 <!--</p-dialog>-->

@@ -58,6 +58,13 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
+        label: 'Cozinha',
+        icon: 'mdi mdi-chef-hat mdi-24px',
+        roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
+        routerLink: ['cozinha'],
+    },
+    {separator: true},
+    {
         label: 'Vendas',
         roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
         icon: 'mdi mdi-cash-check mdi-24px',

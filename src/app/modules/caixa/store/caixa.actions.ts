@@ -45,6 +45,9 @@ export enum EntityActionTypes {
     ChangeFieldStateOrders = '[Orders] Change Field State Orders',
     ChangeFieldStateOrdersSuccess = '[Orders] Change Field State Orders Success',
 
+    OrdersFromKitchen = '[Orders] Orders From Kitchen',
+    OrdersFromKitchenSuccess = '[Orders] Orders From Kitchen Success',
+
     OpenAddOrEdit = '[Orders] Open Add Or Edit Dialog',
 
 }
@@ -98,6 +101,8 @@ export const makePaymentsOrders = createAction(EntityActionTypes.MakePaymentsOrd
 export const makePaymentsOrdersSuccess = createAction(EntityActionTypes.MakePaymentsOrdersSuccess, props<{ entity: any[] }>());
 export const changeFieldStateOrders = createAction(EntityActionTypes.ChangeFieldStateOrders, props<{ id: string, params: any }>());
 export const changeFieldStateOrdersSuccess = createAction(EntityActionTypes.ChangeFieldStateOrdersSuccess, props<{ entity: any[] }>());
+export const ordersFromKitchen = createAction(EntityActionTypes.OrdersFromKitchen, props<{  lazy: Partial<LazyLoadData> }>());
+export const ordersFromKitchenSuccess = createAction(EntityActionTypes.OrdersFromKitchenSuccess, props<{   data: LazyResultData<any> }>());
 
 export const fromOrdersListActions = {
     loadOrdersList,
@@ -129,5 +134,7 @@ export const fromOrdersListActions = {
     makePaymentsOrdersSuccess,
     changeFieldStateOrders,
     changeFieldStateOrdersSuccess,
-    loadNewProductsOrders
+    loadNewProductsOrders,
+    ordersFromKitchen,
+    ordersFromKitchenSuccess
 };

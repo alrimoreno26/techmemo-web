@@ -15,6 +15,7 @@ import {CellPhonePipe} from "./cell-phone.pipe";
 import {SanitizeHtmlPipe} from "./sanitaize-html.pipe";
 import {SeverityPipe} from "./severity.pipe";
 import {ClientNamePipe} from "./client-name.pipe";
+import {TimeAgoPipe} from "./time-ago.pipe";
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import {ClientNamePipe} from "./client-name.pipe";
         CellPhonePipe,
         SanitizeHtmlPipe,
         ClientNamePipe,
-        SeverityPipe
+        SeverityPipe,
+        TimeAgoPipe
     ],
     imports: [
         CommonModule
@@ -53,7 +55,8 @@ import {ClientNamePipe} from "./client-name.pipe";
         CellPhonePipe,
         SanitizeHtmlPipe,
         ClientNamePipe,
-        SeverityPipe
+        SeverityPipe,
+        TimeAgoPipe
     ],
     providers: [
         CepPipe,

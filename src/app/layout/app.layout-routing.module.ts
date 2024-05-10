@@ -16,6 +16,12 @@ const routes: Routes = [
                 loadChildren: () => import('../modules/dashboard/dashboards.module').then(m => m.DashboardsModule)
             },
             {
+                path: 'cozinha',
+                data: {breadcrumb: 'Cozinha', roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PAYMENT,domainEnum.PRODUCT]},
+                canActivate: [canActivateControlGuard],
+                loadChildren: () => import('../modules/kitchen/kitchen.module').then(m => m.KitchenModule)
+            },
+            {
                 path: 'inventory',
                 data: {breadcrumb: 'Inventário', roles: [domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],

@@ -70,6 +70,7 @@ import {reducer} from "../security/user/store/user.reducers";
 import {UserEffects} from "../security/user/store/user.effects";
 import {RoleEffects} from "../security/roles/store/role.effects";
 import {MExtractionMoneyComponents} from "./components/modals/m-extraction-money/m-extraction-money.components";
+import {StepsModule} from "primeng/steps";
 
 @NgModule({
     imports: [
@@ -94,7 +95,7 @@ import {MExtractionMoneyComponents} from "./components/modals/m-extraction-money
         StoreModule.forFeature('orders', ordersReducer),
         StoreModule.forFeature('product', reducerProduct),
         StoreModule.forFeature('user', reducer),
-        EffectsModule.forFeature([CaixaEffects, ProductEffects,UserEffects]),
+        EffectsModule.forFeature([CaixaEffects, ProductEffects, UserEffects]),
 
         MCancellationComponent,
         DividerModule,
@@ -117,6 +118,7 @@ import {MExtractionMoneyComponents} from "./components/modals/m-extraction-money
         InputSwitchModule,
         InputGroupModule,
         InputGroupAddonModule,
+        StepsModule,
     ],
     declarations: [
         CaixaComponent,
