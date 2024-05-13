@@ -127,14 +127,12 @@ export class AdditionalComponents implements OnInit, OnChanges {
 
     addElement(event: any, item: any) {
         event.stopPropagation();
-        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id});
-        console.log(this.listProducts)
+        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id,amount:1});
     }
 
     addElementClick(event: any, item: any) {
         event.stopPropagation();
-        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id});
-        console.log(this.listProducts)
+        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id,amount:1});
     }
 
     removeElement(event: any, item: any) {
