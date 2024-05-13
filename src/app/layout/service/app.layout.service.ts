@@ -112,6 +112,9 @@ export class LayoutService {
     isSlim() {
         return this.config.menuMode === 'slim';
     }
+    isDrawer() {
+        return this.config.menuMode === 'drawer';
+    }
 
     isCompact() {
         return this.config.menuMode === 'compact';

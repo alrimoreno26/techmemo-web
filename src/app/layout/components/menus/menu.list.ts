@@ -44,27 +44,6 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
-        label: 'Financeiro',
-        icon: 'mdi mdi-cash-register mdi-24px',
-        roles: [domainEnum.CONFIGURATION],
-        items: [
-            {
-                label: 'Meios de pagamento',
-                roles: [domainEnum.CONFIGURATION],
-                icon: 'mdi mdi-cash-plus mdi-24px',
-                routerLink: ['financial/payment-method']
-            }
-        ]
-    },
-    {separator: true},
-    {
-        label: 'Cozinha',
-        icon: 'mdi mdi-chef-hat mdi-24px',
-        roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
-        routerLink: ['cozinha'],
-    },
-    {separator: true},
-    {
         label: 'Vendas',
         roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
         icon: 'mdi mdi-cash-check mdi-24px',
@@ -74,6 +53,33 @@ export const menuList: any[] = [
                 roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-check mdi-24px',
                 routerLink: ['vendas/historico']
+            }
+        ]
+    },
+    {separator: true},
+    {
+        label: 'Cozinha',
+        icon: 'mdi mdi-chef-hat mdi-24px',
+        roles: [domainEnum.KITCHEN,domainEnum.ALL],
+        routerLink: ['cozinha'],
+    },
+    {separator: true},
+    {
+        label: 'Loja',
+        icon: 'mdi mdi-office-building-outline mdi-24px',
+        roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
+        items: [
+            {
+                label: 'Lista',
+                icon: 'mdi mdi mdi-storefront mdi-24px',
+                roles: [domainEnum.CONFIGURATION],
+                routerLink: ['loja/lista']
+            },
+            {
+                label: 'Configurações',
+                icon: 'mdi mdi-storefront-edit-outline mdi-24px',
+                roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
+                routerLink: ['loja/configuration']
             }
         ]
     },
@@ -99,21 +105,15 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
-        label: 'Loja',
-        icon: 'mdi mdi-office-building-outline mdi-24px',
-        roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
+        label: 'Financeiro',
+        icon: 'mdi mdi-cash-register mdi-24px',
+        roles: [domainEnum.CONFIGURATION],
         items: [
             {
-                label: 'Lista',
-                icon: 'mdi mdi mdi-storefront mdi-24px',
+                label: 'Meios de pagamento',
                 roles: [domainEnum.CONFIGURATION],
-                routerLink: ['loja/lista']
-            },
-            {
-                label: 'Configurações',
-                icon: 'mdi mdi-storefront-edit-outline mdi-24px',
-                roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
-                routerLink: ['loja/configuration']
+                icon: 'mdi mdi-cash-plus mdi-24px',
+                routerLink: ['financial/payment-method']
             }
         ]
     },

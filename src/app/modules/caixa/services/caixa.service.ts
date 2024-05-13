@@ -7,7 +7,7 @@ import {
     selectAllEntities,
     selectedEntity,
     selectedTotalElement,
-    selectEntityLoaded
+    selectEntityLoaded, sentKitchen
 } from "../store/caixa.selectors";
 import {fromOrdersListActions} from "../store/caixa.actions";
 import {CreateOrderTO, CreatePaymentTransactionTO} from "../../../core/models/orders";
@@ -22,6 +22,7 @@ export class CaixaService extends BaseStoreServices<any> {
     override lazyLoadOnInit = false;
 
     orderCreate$: Signal<boolean>
+    sentKitchen$: Signal<boolean>
     orderProducts$: Signal<ProductLightDto[] | undefined> = this.store.selectSignal(orderProduct);
 
     finalizeSubject = new BehaviorSubject<boolean>(false);
@@ -39,6 +40,7 @@ export class CaixaService extends BaseStoreServices<any> {
         this.dialog$ = this.store.selectSignal(getDialog);
         this.selectedEntity$ = this.store.selectSignal(selectedEntity);
         this.orderCreate$ = this.store.selectSignal(orderCreate);
+        this.sentKitchen$ = this.store.selectSignal(sentKitchen);
     }
 
     setFinalizeValue(newValue: boolean): void {
@@ -88,6 +90,9 @@ export class CaixaService extends BaseStoreServices<any> {
     addProductsOrders(id: string, params: any) {
         this.store.dispatch(fromOrdersListActions.addProductsOrders({id, params}));
     }
+    updateProductsOrders(id: string, orderId: any, params: any) {
+        this.store.dispatch(fromOrdersListActions.updateProductsOrders({id,orderId, params}));
+    }
 
     deleteProductsOrders(id: string, entity: DeleteOrderProductDto) {
         this.store.dispatch(fromOrdersListActions.deleteProductsOrders({id, entity}));
@@ -118,6 +123,9 @@ export class CaixaService extends BaseStoreServices<any> {
 
     ordersKitchen(data: Partial<any>){
         this.store.dispatch(fromOrdersListActions.ordersFromKitchen({lazy: data}))
+    }
+    sentOrdersKitchen(id: string){
+        this.store.dispatch(fromOrdersListActions.sentOrdersFromKitchen({id}))
     }
 
 }

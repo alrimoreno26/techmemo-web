@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
         let {username, password} = this.form.value;
 
         password = CryptoJS.enc.Base64.stringify(CryptoJS.enc.Utf8.parse(password));
-        this.ngZone.run(() => this.service.login({username,password}).subscribe(
+        this.ngZone.run(() => this.service.login({username, password}).subscribe(
             (res: SecurityModel) => {
                 this.sessionService.setUserLogged(res);
                 this.ngZone.run(() => this.service.profile().subscribe((user: UserAuthenticated) => {
@@ -86,7 +86,7 @@ export class LoginComponent implements OnInit {
 
     redirectByRoleLogin() {
         const user = this.sessionService.userLogged;
-        if(user.commerces.length === 0) {
+        if (user.commerces.length === 0) {
             this.router.navigateByUrl('/static/empty-store').then();
         } else {
             switch (user.role.operationArea) {
@@ -95,6 +95,9 @@ export class LoginComponent implements OnInit {
                     break;
                 case 'ATTENDANT':
                     this.router.navigateByUrl('/comandas').then();
+                    break;
+                case 'KITCHEN':
+                    this.router.navigateByUrl('/cozinha').then();
                     break;
                 case 'SUPER_ADMIN':
                     this.router.navigateByUrl('/loja/lista').then();

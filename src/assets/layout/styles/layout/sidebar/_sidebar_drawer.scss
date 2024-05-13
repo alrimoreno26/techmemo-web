@@ -33,7 +33,7 @@
                     gap: 1rem;
                     padding: 1rem 0.5rem;
                     border-bottom: var(--d-menu-separator-border);
-                    
+
                     .logo {
                         width: 100%;
                         border: none;
@@ -78,7 +78,7 @@
                             opacity: 0;
                             white-space: nowrap;
                             transition: all 0.1s;
-                            min-height: 2.92rem;
+                            //min-height: 2.92rem;
 
                             > span {
                                 margin-right: auto;
@@ -126,7 +126,7 @@
             }
 
             &.layout-sidebar-active {
-             
+
                 .layout-sidebar {
                     width: 16rem;
 
@@ -162,7 +162,7 @@
                                 font-size: 0.857rem;
                                 text-transform: uppercase;
                                 font-weight: 700;
-                                padding: 0.5rem 0 1rem 0;
+                                padding: 0.5rem 0 0.5rem 0;
                                 opacity: 1;
                                 transition: all 0.3s;
                                 > .layout-menuitem-root-icon {

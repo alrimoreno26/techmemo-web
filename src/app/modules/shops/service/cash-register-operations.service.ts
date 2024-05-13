@@ -22,7 +22,6 @@ export class CashRegisterOperationsService extends StoreComponentService<CashReg
 
     openCaixa(param: any): void {
         this.services.openCaixa(param).subscribe((response: any) => {
-            debugger
             this.patchState({opened: true, cashRegisterId: param.cashRegisterId});
         });
     }

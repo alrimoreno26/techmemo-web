@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {of} from "rxjs";
 import {
-    fromOrdersListActions
+    fromOrdersListActions, getProductInOrderByID, sentOrdersFromKitchen, updateProductsOrders
 } from "./caixa.actions";
 import {OrdersService} from "../../../core/services/comanda.service";
 import {StoreTablesServices} from "../services/store.tables.services";
@@ -126,6 +126,20 @@ export class CaixaEffects {
         )
     );
 
+    getProductInOrderByID$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.getProductInOrderByID),
+            switchMap(({id}) =>
+                this.service.getProductOrder(id).pipe(
+                    switchMap((data) => {
+                        return of(fromOrdersListActions.getProductInOrderByIDSuccess({entity: data}))
+                    }),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
     payments$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromOrdersListActions.makePaymentsOrders),
@@ -185,6 +199,22 @@ export class CaixaEffects {
         )
     );
 
+    updateProductsOrders$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.updateProductsOrders),
+            switchMap(({id, orderId, params}) =>
+                this.service.updateProductsOrders(id, params[0]).pipe(
+                    switchMap((response) => {
+                        return of(
+                            fromOrdersListActions.getByID({path: [], id: orderId})
+                        )
+                    }),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
     deleteProductsOrders$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromOrdersListActions.deleteProductsOrders),
@@ -203,6 +233,18 @@ export class CaixaEffects {
             switchMap(({lazy}) =>
                 this.service.pendingPrepare(lazy).pipe(
                     map((data) => fromOrdersListActions.ordersFromKitchenSuccess(data)),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
+    sentOrdersFromKitchen$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.sentOrdersFromKitchen),
+            switchMap(({id}) =>
+                this.service.sentDataToKitchen(id).pipe(
+                    map((data) => fromOrdersListActions.sentOrdersFromKitchenSuccess()),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
                 )
             )

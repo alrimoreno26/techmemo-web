@@ -94,6 +94,6 @@ export class WebSocketServices {
         this.addNotification(target, message);
     }
     private handlePrint(target: targetNotifyEnum, message: WsMessage): void {
-        console.log(message)
+        this.store.dispatch(fromNotifyActions.sentToKitchen({sent: true}))
     }
 }

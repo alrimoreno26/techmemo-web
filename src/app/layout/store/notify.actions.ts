@@ -26,6 +26,7 @@ export enum EntityActionTypes {
     SetFilter = '[Notify] Set Filter by target',
 
     WeightScale = '[Notify] Set Weight Scale',
+    SentToKitchen = '[Notify] Sent To Kitchen',
 }
 
 export const loadNotify = createAction(EntityActionTypes.LoadNotify, props<{ lazy: LazyLoadData }>());
@@ -52,6 +53,7 @@ export const markAsReadAllSuccess = createAction(EntityActionTypes.MarkAsReadAll
 export const openAddOrEdit = createAction(EntityActionTypes.OpenAddOrEdit);
 export const setFilter = createAction(EntityActionTypes.SetFilter, props<{ filter: number }>());
 export const weightScale = createAction(EntityActionTypes.WeightScale, props<{ weight: string }>());
+export const sentToKitchen = createAction(EntityActionTypes.SentToKitchen, props<{ sent: boolean }>());
 
 export const fromNotifyActions = {
     loadNotify,
@@ -69,6 +71,7 @@ export const fromNotifyActions = {
     markAsReadAllSuccess,
     setFilter,
     weightScale,
+    sentToKitchen,
     deleteAll,
     deleteAllSuccess
 };

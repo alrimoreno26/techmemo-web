@@ -16,6 +16,7 @@ export enum domainEnum {
     ORDER = 'ORDER',
     POS = 'POS',
     PAYMENT = 'PAYMENT',
+    KITCHEN = 'KITCHEN',
     REPORT = 'REPORT',
 }
 
@@ -36,6 +37,7 @@ export enum operationAreaRoleEnum {
     ADMINISTRATOR_STORE = 'ADMINISTRATOR_STORE',
     POINT_OF_SALE = 'POINT_OF_SALE',
     ATTENDANT = 'ATTENDANT',
+    KITCHEN = 'KITCHEN',
     WAITER = 'WAITER'
 }
 

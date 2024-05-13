@@ -19,7 +19,6 @@ import {DialogRegistryService} from "../../../../../core/injects/dialog.registry
 export class AdditionalComponents implements OnInit, OnChanges {
 
     product: ProductDto;
-    additionalSelected: any[] = [];
 
     subscriptions: Subscription[] = [];
 
@@ -47,7 +46,7 @@ export class AdditionalComponents implements OnInit, OnChanges {
                 private dialogRegistryService: DialogRegistryService) {
         this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
-            if(service.orderCreate$()){
+            if (service.orderCreate$()) {
                 this.ref.close();
             }
         });
@@ -57,9 +56,16 @@ export class AdditionalComponents implements OnInit, OnChanges {
         console.log(this.config)
         this.product = this.config.data.product;
         this.amountItems = Array.from({length: this.config.data.amount}, (_, index) => {
+            this.listProducts.push({
+                amount: 1,
+                id: this.product.id,
+                additionals: []
+            });
             return {label: this.product.name};
         });
-        this.additionalSelected = this.config.data?.additionalSelected ? cloneDeep(this.config.data?.additionalSelected) : [];
+        console.log(this.listProducts);
+
+        this.listProducts[this.activeIndex].additionals = this.config.data?.additionalSelected ? cloneDeep(this.config.data?.additionalSelected) : [];
         const params1: HttpParams = new HttpParams({fromObject: this.additionalsParams});
         const params2: HttpParams = new HttpParams({fromObject: this.comboParams});
         forkJoin({
@@ -69,15 +75,6 @@ export class AdditionalComponents implements OnInit, OnChanges {
             this.additionals = result1;
             this.combos = result2;
         })
-
-        // this.subscriptions.push(
-        //     this.actions$
-        //         .pipe(ofType(fromOrdersListActions.addProductsOrdersSuccess))
-        //         .subscribe((x) => {
-        //             console.log(x)
-        //             this.ref.close()
-        //         })
-        // );
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -97,89 +94,60 @@ export class AdditionalComponents implements OnInit, OnChanges {
         }
     }
 
+    getAdditionalForProduct() {
+        return this.config.data.amount > 1 ? this.listProducts[this.activeIndex].additionals : this.listProducts[0].additionals;
+    }
+
     onActiveIndexChange(event: number) {
         this.activeIndex = event;
     }
 
     stepper(direction: string) {
-        const updateListProducts = () => {
-            this.listProducts[this.activeIndex] = {
-                amount: 1,
-                id: this.product.id,
-                additionals: this.additionalSelected.map((el: any) => ({id: el.id ? el.id : el.productId, amount: 1}))
-            };
-        };
-
         if (direction === '+') {
-            if (this.listProducts[this.activeIndex + 1]?.additionals.length > 0) {
-                this.additionalSelected = this.obtenerInterseccion(this.additionals.content, this.listProducts[this.activeIndex + 1].additionals, 'id');
-            } else {
-                updateListProducts();
-                this.additionalSelected = [];
-            }
             this.activeIndex++;
         } else {
-            updateListProducts();
             this.activeIndex--;
-            if (this.activeIndex === 0) {
-                this.additionalSelected = this.config.data?.additionalSelected ? cloneDeep(this.config.data?.additionalSelected) : this.listProducts[0].additionals;
-            } else {
-                this.additionalSelected = this.obtenerInterseccion(this.additionals.content, this.listProducts[this.activeIndex].additionals, 'id');
-            }
         }
-    }
-
-    obtenerInterseccion(array1: any[], array2: any[], id: string) {
-        const idCount = array2.reduce((acc, item) => {
-            acc[item[id]] = (acc[item[id]] || 0) + 1;
-            return acc;
-        }, {});
-
-        const result = [];
-        for (const item of array1) {
-            if (idCount[item[id]] && idCount[item[id]] > 0) {
-                result.push(item);
-                idCount[item[id]]--;
-            }
-        }
-        return result;
     }
 
     addManyAdditionalProduct() {
-        const params = [{
-            amount: this.config.data.amount,
-            id: this.product.id,
-            additionals: this.additionalSelected.map((el: any) => ({id: el.id, amount: 1}))
-        }];
+        const newArray = this.listProducts.map(item => {
+            const newAdditionals = item.additionals.map((additional: any) => {
+                return {...additional, id: additional.productId, productId: undefined};
+            });
 
-        if (this.config.data.amount > 1) {
+            return {...item, additionals: newAdditionals};
+        });
+        if (this.config.data.created) {
             this.service.addProductsOrders(this.service.selectedEntity$()[this.config.data.activeOrder].id, this.listProducts);
         } else {
-            this.service.addProductsOrders(this.service.selectedEntity$()[this.config.data.activeOrder].id, params);
+            this.service.updateProductsOrders(this.product.id,this.service.selectedEntity$()[this.config.data.activeOrder].id, newArray);
         }
     }
 
     addElement(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected.push(item);
+        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id});
+        console.log(this.listProducts)
     }
 
     addElementClick(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected.push(item);
+        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id});
+        console.log(this.listProducts)
     }
 
     removeElement(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected.splice(item, 1);
+        this.listProducts[this.activeIndex].additionals.splice(item, 1);
     }
 
     removeElementbyId(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected = this.additionalSelected.filter((ad: any) => ad.id !== item.id)
+        this.listProducts[this.activeIndex].additionals = this.listProducts[this.activeIndex].additionals.filter((ad: any) => ad.productId !== item.id)
     }
 
     totalAdditionals(): number {
-        return (this.product?.salePrice || 0) + this.additionalSelected.reduce((total, item) => total + item.salePrice, 0);
+        return (this.product?.salePrice || 0) + this.listProducts[this.activeIndex].additionals.reduce((total: any, item: any) => total + item.salePrice, 0);
     }
 }

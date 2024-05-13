@@ -29,11 +29,8 @@
                         }
                     </ul>
                     <div class="flex gap-3 mt-1">
-                        @if (order.state === 'PENDING') {
-                            <p-button label="Começar" class="w-full" styleClass="w-full"/>
-                        }
                         @if (order.state === 'IN_PREPARATION') {
-                            <p-button label="Concluído" class="w-full" styleClass="w-full"/>
+                            <p-button label="Começar" class="w-full" styleClass="w-full"/>
                         }
                     </div>
                 </div>

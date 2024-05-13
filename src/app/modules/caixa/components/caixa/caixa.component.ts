@@ -102,6 +102,10 @@ export class CaixaComponent implements OnInit {
                 this.service.setSelected(null);
                 this.router.navigate(['/comandas'])
             }
+
+            if (this.service.sentKitchen$()) {
+                this.toastMessageService.showMessage("success", 'INFO', 'Pedido enviado para a cozinha')
+            }
         })
         effect(async () => {
             this.getOrders();
@@ -140,6 +144,7 @@ export class CaixaComponent implements OnInit {
                             data: {
                                 product: this.selectedItem,
                                 activeOrder: this.activeOrder,
+                                created: true,
                                 amount: this.selectedItemAmount,
                             },
                             modal: true,
@@ -326,6 +331,7 @@ export class CaixaComponent implements OnInit {
             data: {
                 product: product,
                 amount: product.amount,
+                created: false,
                 activeOrder: this.activeOrder,
                 additionalSelected: product.additionals
             },
@@ -425,7 +431,8 @@ export class CaixaComponent implements OnInit {
     }
 
     printCozinha(){
-        this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
+        this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder].id);
+        //this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
     }
 
     protected readonly isObject = isObject;

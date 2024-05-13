@@ -17,7 +17,7 @@ const routes: Routes = [
             },
             {
                 path: 'cozinha',
-                data: {breadcrumb: 'Cozinha', roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PAYMENT,domainEnum.PRODUCT]},
+                data: {breadcrumb: 'Cozinha', roles: [domainEnum.KITCHEN]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/kitchen/kitchen.module').then(m => m.KitchenModule)
             },

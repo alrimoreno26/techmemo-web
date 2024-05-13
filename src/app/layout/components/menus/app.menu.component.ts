@@ -25,10 +25,13 @@ export class AppMenuComponent implements OnInit {
                 const children = m.items.filter((c: any) => this.menuAccess(c.roles));
                 if (children.length) {
                     this.model.push({...m, items: children});
+                    this.model.push({separator: true});
                 }
             } else if (item) {
                 this.model.push(m);
+                this.model.push({separator: true});
             }
+
         });
         if (this.sessionService.userLogged.role.operationArea === 'SUPER_ADMIN'){
             this.model = this.model.slice(2)

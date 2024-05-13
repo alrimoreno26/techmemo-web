@@ -1,7 +1,7 @@
 import {Action, createReducer, on} from '@ngrx/store';
 import {createEntityAdapter, EntityAdapter, EntityState} from '@ngrx/entity';
 
-import {fromNotifyActions, weightScale} from './notify.actions';
+import {fromNotifyActions, sentToKitchen, weightScale} from './notify.actions';
 
 export const ENTITY_FEATURE_KEY = 'notify';
 
@@ -13,6 +13,7 @@ export interface State extends EntityState<any> {
     error?: Error | any;
     filter: number;
     weightScale: string;
+    kitchen: boolean;
 }
 
 export interface NotifyPartialState {
@@ -32,7 +33,8 @@ export const initialState: State = adapter.getInitialState({
     dialog: false,
     error: null,
     filter: 0,
-    weightScale: ""
+    weightScale: "",
+    kitchen: false,
 });
 
 export const notifyReducer = createReducer<State>(
@@ -72,6 +74,9 @@ export const notifyReducer = createReducer<State>(
     }),
     on(fromNotifyActions.weightScale, (state, {weight}) => {
         return {...state, weightScale: weight};
+    }),
+    on(fromNotifyActions.sentToKitchen, (state, {sent}) => {
+        return {...state, kitchen: sent};
     })
 );
 

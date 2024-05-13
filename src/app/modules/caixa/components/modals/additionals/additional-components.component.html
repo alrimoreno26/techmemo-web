@@ -1,5 +1,3 @@
-<!--<p-dialog [(visible)]="showAdditional" [modal]="true" [style]="{ width: '60vw', height:'60vw' }" [draggable]="false"-->
-<!--          [resizable]="false">-->
 <ng-template dialog-header><span class="p-dialog-title">Detalhes do Producto</span></ng-template>
 <div class="flex flex-column h-full">
     @if (this.config.data.amount > 1) {
@@ -129,7 +127,8 @@
                 <p class="mb-0  font-bold uppercase">{{ product.salePrice | currency }}</p>
             </div>
             <div class="flex flex-column gap-3 flex-1 mb-4">
-                <div class="flex justify-content-between w-full" *ngFor="let item of additionalSelected; let i = index">
+                <div class="flex justify-content-between w-full"
+                     *ngFor="let item of getAdditionalForProduct(); let i = index">
                     <p class="mb-0 font-bold">{{ item.name }}</p>
                     <div class="align-items-center flex gap-2">
                         <p class="mb-0  font-bold uppercase">{{ item.salePrice | currency }}</p>
@@ -152,10 +151,10 @@
             icon="mdi mdi-close"></button>
     @if (this.config.data.amount > 1) {
         <p-button styleClass="px-2" icon="mdi mdi-chevron-double-left" (onClick)="stepper('-')"/>
-        <p-button styleClass="px-2" icon="mdi mdi-chevron-double-right"(onClick)="stepper('+')"/>
+        <p-button styleClass="px-2" icon="mdi mdi-chevron-double-right" (onClick)="stepper('+')"/>
     }
     <button pButton pRipple class="p-button-primary flex-1 border-round" label="Adicionar"
             (click)="addManyAdditionalProduct()"
             icon="mdi mdi-plus"></button>
 </ng-template>
-<!--</p-dialog>-->
+

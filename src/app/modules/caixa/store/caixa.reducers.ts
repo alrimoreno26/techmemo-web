@@ -13,6 +13,7 @@ export interface State extends EntityState<any> {
     orderCreate: boolean;
     orderProducts?: any[];
     kitchen: any[];
+    sentKitchen: boolean;
     selected?: any;
     error?: Error | any;
 }
@@ -33,6 +34,7 @@ export const initialState: State = adapter.getInitialState({
     kitchen: [],
     loaded: false,
     dialog: false,
+    sentKitchen: false,
     totalElements: 0,
     error: null
 });
@@ -63,7 +65,8 @@ export const ordersReducer = createReducer<State>(
             ...state,
             selected: isArray(entity) ? entity : [entity],
             orderProducts: isArray(entity) ? entity[0]?.products || [] : entity.products || [],
-            orderCreate: false
+            orderCreate: false,
+            sentKitchen: false
         };
     }),
     on(fromOrdersListActions.setSelectedOrders, (state, {entity}) => {
@@ -78,6 +81,21 @@ export const ordersReducer = createReducer<State>(
             orderProducts: selected[0].products,
             orderCreate: false
         };
+    }),
+    on(fromOrdersListActions.updateProductsOrdersSuccess, (state, {entity}) => {
+        return {...state, sentKitchen: false};
+    }),
+    on(fromOrdersListActions.sentOrdersFromKitchenSuccess, (state) => {
+        return {...state, sentKitchen: true};
+    }),
+    on(fromOrdersListActions.getProductInOrderByIDSuccess, (state, {entity}) => {
+        const tempProduct = state.orderProducts?.map(item => {
+            if (item.id === entity.id) {
+                return entity;
+            }
+            return item;
+        });
+        return {...state};
     }),
     on(fromOrdersListActions.deleteProductsOrders, (state, {entity}) => {
         const excludedValues: number[] = [];
