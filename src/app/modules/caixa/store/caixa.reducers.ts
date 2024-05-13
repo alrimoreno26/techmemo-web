@@ -78,6 +78,7 @@ export const ordersReducer = createReducer<State>(
         return {
             ...state,
             selected,
+            sentKitchen: false,
             orderProducts: selected[0].products,
             orderCreate: false
         };

@@ -21,8 +21,8 @@ export class StoreKitchenService extends StoreComponentService<ProductLightTO> {
     loadKitchenOrders(params: any) {
         this.kitchenService.pendingPrepare(params).subscribe((response: any) => {
             const allProducts: any[] = [];
-            response.content.forEach((order:OrderLightTO) => {
-                const { code, created, products } = order;
+            response.content.forEach((order: OrderLightTO) => {
+                const {code, created, products} = order;
                 const productsWithCodeAndCreated = products.map(product => ({
                     code,
                     created,
@@ -32,5 +32,11 @@ export class StoreKitchenService extends StoreComponentService<ProductLightTO> {
             });
             this.patchState({entities: allProducts})
         })
+    }
+
+    modifyState(id: string, params: any) {
+        this.kitchenService.updateProductsOrders(id, params).subscribe((response: any) => {
+            this.loadKitchenOrders({pageNumber: 0, pageSize: 100});
+        });
     }
 }

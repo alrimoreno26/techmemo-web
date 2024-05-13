@@ -57,7 +57,7 @@ export interface ProductLightTO {
     soldPerUnits: boolean;
     amount: number;
     type: string | null;
-    state: 'PENDING' | 'IN_PREPARATION' | 'READY';
+    state: 'SENT_TO_KITCHEN' | 'IN_PREPARATION' | 'READY';
     code?: string;
     created?: string;
     additionals: AdditionalLightTO[];

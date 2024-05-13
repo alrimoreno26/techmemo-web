@@ -29,8 +29,11 @@
                         }
                     </ul>
                     <div class="flex gap-3 mt-1">
+                        @if (order.state === 'SENT_TO_KITCHEN') {
+                            <p-button (onClick)="modifyState(order,'IN_PREPARATION')" label="Começar" class="w-full" styleClass="w-full"/>
+                        }
                         @if (order.state === 'IN_PREPARATION') {
-                            <p-button label="Começar" class="w-full" styleClass="w-full"/>
+                            <p-button (onClick)="modifyState(order,'READY')" label="Concluido" class="w-full" styleClass="w-full"/>
                         }
                     </div>
                 </div>

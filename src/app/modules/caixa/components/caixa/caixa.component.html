@@ -121,7 +121,7 @@
                                                       (onClick)="deleteFromOrder(product)">
                                             </p-button>
                                             <p-button styleClass="border-round-3xl severity_info small"
-                                                      [disabled]="product.additionals.length === 0 || pagamento || product.amount === product.amountPaid"
+                                                      [disabled]="pagamento || product.amount === product.amountPaid"
                                                       icon="mdi mdi-magnify"
                                                       (onClick)="lookAdditional(product)">
                                             </p-button>
