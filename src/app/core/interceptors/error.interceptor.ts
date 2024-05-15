@@ -2,7 +2,7 @@ import {Injectable, Injector} from '@angular/core';
 import {Router} from '@angular/router';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {TranslateService} from '@ngx-translate/core';
-import {BehaviorSubject, finalize, Observable, switchMap, throwError} from 'rxjs';
+import {BehaviorSubject, finalize, Observable, switchMap, tap, throwError} from 'rxjs';
 import {catchError, filter, take} from 'rxjs/operators';
 import {MessageServices} from '../injects/message.services';
 import {SessionServices} from "../injects/session.services";
@@ -56,7 +56,23 @@ export class ErrorInterceptor implements HttpInterceptor {
                 return this.refreshTokenSubject.pipe(
                   filter((result) => result !== null),
                   take(1),
-                  switchMap(() => next.handle(this.addAuthToken(request)))
+                    switchMap((result) => {
+                        // Almacena result en un estado temporal
+                        const tempResult = result;
+                        return next.handle(this.addAuthToken(request)).pipe(
+                            tap({
+                                next: () => {},
+                                error: () => {},
+                                complete: () => {
+                                    if (tempResult === null) {
+                                        // Redireccionar a la página deseada cuando result es null
+                                        this.router.navigate(['/static/access-denied']).then();
+                                    }
+                                }
+                            })
+                        );
+                    })
+
                 );
               } else {
                 this.refreshTokenInProgress = true;
