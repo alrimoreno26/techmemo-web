@@ -35,11 +35,16 @@ export class TokenInterceptor implements HttpInterceptor {
         }
         if (isNotRefresh) {
             requestToken = this.sessionService.getRefreshToken().token;
-            request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${requestToken}`
-                }
-            });
+            if(requestToken === "") {
+                this.sessionService.clearSession()
+            } else {
+                request = request.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${requestToken}`
+                    }
+                });
+            }
+
         }
         return next.handle(request);
     }

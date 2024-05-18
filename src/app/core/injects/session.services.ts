@@ -80,7 +80,7 @@ export class SessionServices {
      * @return An {String} whit access token
      */
     getDeleteToken(): string {
-        return this.currentToken$.getValue();
+        return this.deleteToken$.getValue();
     }
 
     /**

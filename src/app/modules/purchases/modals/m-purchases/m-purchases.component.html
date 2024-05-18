@@ -75,7 +75,7 @@
                                                    optionValue="id"
                                                    placeholder="Selecione um provedor">
                                         <ng-template let-value pTemplate="selectedItems">
-                                            <ng-template [ngIf]="value === null || value.length === 0">
+                                            <ng-template [ngIf]="value === null">
                                                 <span>Selecione um provedor</span>
                                             </ng-template>
                                             <ng-template [ngIf]="value !== null">

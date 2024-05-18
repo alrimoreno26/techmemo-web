@@ -200,9 +200,9 @@
         "tooltip": {
             "refresh": "Atualizar dados da tabela",
             "print": "Imprimir dados da tabela",
-            "create": "Criar um novo {{value}}",
-            "edit": "Editar {{value}}",
-            "delete": "Excluir {{value}}"
+            "create": "Criar um novo",
+            "edit": "Editar",
+            "delete": "Excluir"
         }
     },
     "login": {

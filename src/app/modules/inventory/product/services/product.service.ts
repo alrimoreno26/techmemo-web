@@ -14,7 +14,6 @@ import {UnidadeService} from "../../../configuracion/unidade/services/unidade.se
 import {SupplierService} from "../../forncedores/services/supplier.service";
 import {StoreCategoryService} from "../../category/services/store.category.service";
 import {ProductsCreateDto} from "../../../../core/models/products";
-import {fromSupplierListActions} from "../../forncedores/store/fornecedores.actions";
 
 @Injectable({providedIn: 'platform'})
 export class ProductService extends BaseStoreServices<any> {

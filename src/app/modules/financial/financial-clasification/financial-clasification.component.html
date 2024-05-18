@@ -1,0 +1,10 @@
+<div class="card m-3">
+    <c-data-table [action]="true" [exportBtn]="false"
+                  [headers]="headersTable" [service]="service" [showCreate]="true">
+        <ng-template let-data tableRow="type">
+            <p-badge [value]="data.type | translate" [severity]="data.type | severity"></p-badge>
+        </ng-template>
+
+    </c-data-table>
+</div>
+

@@ -1,0 +1,31 @@
+<ng-template dialog-header>Cadastro de Classificador Financeiro</ng-template>
+<form [formGroup]="form">
+    <div formResponsive width="380px">
+        <div class="grid grid-nogutter formgrid flex-wrap gap-3 p-fluid">
+            <div class="col-12 lg:col-12 field">
+                <input pInputText type="text" formControlName="name" placeholder="Nome do Classificador Financeiro">
+            </div>
+            <div class="grid col">
+                <div class="align-items-center col-12 field flex lg:col-6">
+                    <input pInputText type="text" formControlName="code" placeholder="Codigo do Classificador">
+                </div>
+                <div class="align-items-center col-12 field pl-0 flex lg:col-6">
+                    <p-selectButton
+                        class="w-full"
+                        [options]="stateOptions"
+                        styleClass="w-full"
+                        formControlName="type"
+                        optionLabel="label"
+                        optionValue="value" />
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
+            icon="mdi mdi-close"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" [disabled]="form.invalid" label="Salvar"
+            (click)="save()"
+            icon="mdi mdi-check"></button>
+</ng-template>

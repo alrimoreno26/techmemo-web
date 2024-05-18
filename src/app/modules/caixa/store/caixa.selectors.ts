@@ -22,3 +22,4 @@ export const orderCreate = createSelector(getEntityState, state => state.orderCr
 export const orderProduct = createSelector(getEntityState, state => state.orderProducts);
 export const orderKitchen = createSelector(getEntityState, state => state.kitchen);
 export const sentKitchen = createSelector(getEntityState, state => state.sentKitchen);
+export const dialogTransfer = createSelector(getEntityState, state => state.dialogTransfer);

@@ -222,6 +222,8 @@
                     <div class="flex gap-4 justify-content-between align-items-center">
                         <h6 class="m-0">Saldo de transações de turno:</h6>
                         <p class="m-0 severity_danger_text flex flex-1 justify-content-end">{{ cashOperations.totalValueExtraction|currency }}</p>
+                        <i class="mdi mdi-eye-outline text-2xl text-primary cursor-pointer"
+                           (click)="seeExtractions(op, $event)"></i>
                     </div>
                     <hr class="my-1">
                 </div>
@@ -253,7 +255,9 @@
                             <td>{{ operations.operatorUser.name }}</td>
                             <td>{{ operations.created | date:'dd/MM/YYYY hh:mm' }}</td>
                             <td>{{ operations.closingDate | date:'dd/MM/YYYY hh:mm' }}</td>
-                            <td><p-tag [value]="getValue(operations)" [severity]="getSeverity(operations)" /></td>
+                            <td>
+                                <p-tag [value]="getValue(operations)" [severity]="getSeverity(operations)"/>
+                            </td>
                         </tr>
                     </ng-template>
                     <ng-template pTemplate="rowexpansion" let-operation>
@@ -297,6 +301,9 @@
                                         <div class="flex gap-4 justify-content-between align-items-center">
                                             <h6 class="m-0">Saldo de transações de turno:</h6>
                                             <p class="m-0 severity_danger_text flex flex-1 justify-content-end">{{ operation.totalValueExtraction|currency }}</p>
+                                            <i class="mdi mdi-eye-outline text-2xl text-primary cursor-pointer"
+                                               (click)="seeExtractions(op, $event)"></i>
+
                                         </div>
                                         <hr class="my-1">
                                     </div>
@@ -304,8 +311,29 @@
                             </td>
                         </tr>
                     </ng-template>
+
                 </p-table>
             </div>
         }
+        <p-overlayPanel #op>
+            <div class="flex flex-column gap-3 w-25rem">
+                <p-table [value]="cashRegisterExtractionsService.listEntities$() || []">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Data</th>
+                            <th>Quem autorizou</th>
+                            <th>Valor</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-extract>
+                        <tr>
+                            <td>{{ extract.created| date:'dd/MM/YYYY hh:mm' }}</td>
+                            <td>{{ extract.userAdminName }}</td>
+                            <td>{{ extract.value | currency }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </p-overlayPanel>
     </div>
 </p-sidebar>

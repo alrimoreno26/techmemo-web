@@ -58,6 +58,8 @@ export enum EntityActionTypes {
 
     OpenAddOrEdit = '[Orders] Open Add Or Edit Dialog',
 
+    OpenCustomDialog = '[Orders] Open Custom Dialog',
+
 }
 
 export const loadOrdersList = createAction(EntityActionTypes.LoadOrdersList, props<{
@@ -109,6 +111,7 @@ export const joinTablesSuccess = createAction(EntityActionTypes.JoinTablesSucces
 export const transferProductsOrders = createAction(EntityActionTypes.TransferProductsOrders, props<{ entity: any }>());
 export const transferProductsOrdersSuccess = createAction(EntityActionTypes.TransferProductsOrdersSuccess, props<{ entity: any }>());
 export const openAddOrEdit = createAction(EntityActionTypes.OpenAddOrEdit);
+export const openCustomDialog = createAction(EntityActionTypes.OpenCustomDialog, props<{ modal: string, show: boolean }>());
 export const loadNewProductsOrders = createAction(EntityActionTypes.LoadNewProductsOrders, props<{ pos: number }>());
 export const makePaymentsOrders = createAction(EntityActionTypes.MakePaymentsOrders, props<{ params: CreatePaymentTransactionTO[] }>());
 export const makePaymentsOrdersSuccess = createAction(EntityActionTypes.MakePaymentsOrdersSuccess, props<{ entity: any[] }>());
@@ -145,6 +148,7 @@ export const fromOrdersListActions = {
     deleteProductsOrders,
     deleteProductsOrdersSuccess,
     openAddOrEdit,
+    openCustomDialog,
     joinTables,
     joinTablesSuccess,
     transferProductsOrders,

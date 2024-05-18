@@ -23,6 +23,10 @@ import {ProductEffects} from "../../inventory/product/store/product.effects";
 import {UserEffects} from "../../security/user/store/user.effects";
 import {CalendarModule} from "primeng/calendar";
 import {TagModule} from "primeng/tag";
+import {OverlayPanelModule} from "primeng/overlaypanel";
+import {InputGroupModule} from "primeng/inputgroup";
+import {ChipsModule} from "primeng/chips";
+import {InputGroupAddonModule} from "primeng/inputgroupaddon";
 
 @NgModule({
     imports: [
@@ -40,6 +44,10 @@ import {TagModule} from "primeng/tag";
         EffectsModule.forFeature([UserEffects]),
         CalendarModule,
         TagModule,
+        OverlayPanelModule,
+        InputGroupModule,
+        ChipsModule,
+        InputGroupAddonModule,
     ],
     exports: [
         EcommerceDashboardComponent

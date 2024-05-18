@@ -18,6 +18,13 @@ export class CashRegisterExtractionsService extends StoreComponentService<any> {
         super(services, defaultEntity);
     }
 
+    getById(params: any) {
+        this.services.findByCriteria(['filter'], params).subscribe((data: any) => {
+            this.setAll(data.content)
+        })
+    }
+
+
     override finalizeAdd = () => {
         this.patchState({dialog: false});
     };

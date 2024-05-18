@@ -6,6 +6,7 @@ import {SessionServices} from "../../../core/injects/session.services";
 import {SecurityModel, UserAuthenticated} from "../../../core/models/user";
 import * as CryptoJS from 'crypto-js';
 import {CommercesServices} from "../../../core/services/commerces.services";
+import {LayoutService} from "../../../layout/service/app.layout.service";
 
 @Component({
     selector: 'app-login',
@@ -49,6 +50,7 @@ export class LoginComponent implements OnInit {
                 private sessionService: SessionServices,
                 private route: ActivatedRoute,
                 public commercesService: CommercesServices,
+                private layout: LayoutService,
                 private router: Router,
                 private ngZone: NgZone) {
     }
@@ -73,8 +75,36 @@ export class LoginComponent implements OnInit {
                 this.sessionService.setUserLogged(res);
                 this.ngZone.run(() => this.service.profile().subscribe((user: UserAuthenticated) => {
                     this.sessionService.addBasicInfo(user);
-                    this.commercesService.getById(user.commerces[0].commerceId).subscribe((commerce) => {
+                    this.commercesService.getById(user.commerces[0].commerceId).subscribe((commerce:any) => {
                         this.sessionService.setCurrentStore(commerce);
+                        let userConfig = {
+                            ripple: true,
+                            colorScheme: commerce.config ? commerce.config.colorSchemeType.toLowerCase() : 'light',
+                            menuMode: commerce.config ? commerce.config.menuType.toLowerCase() : 'slim',
+                            menuTheme: commerce.config ? commerce.config.componentTheme : 'darkgray',
+                            scale: commerce.config ? commerce.config.scale : 14,
+                            inputStyle: 'outlined',
+                            theme: commerce.config ? commerce.config.theme : 'blue',
+                        };
+
+                        const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
+                        const newHref = themeLink.getAttribute('href')!.replace(this.layout.config.theme, userConfig.theme);
+
+                        const id = 'theme-link';
+                        const targetLink = <HTMLLinkElement>document.getElementById(id);
+                        const cloneLinkElement = <HTMLLinkElement>targetLink.cloneNode(true);
+
+                        cloneLinkElement.setAttribute('href', newHref);
+                        cloneLinkElement.setAttribute('id', id + '-clone');
+
+                        targetLink.parentNode!.insertBefore(cloneLinkElement, targetLink.nextSibling);
+                        cloneLinkElement.setAttribute('id', id);
+                        targetLink.remove();
+
+                        this.layout.onConfigUpdate();
+
+
+                        this.layout.userConfigVisuals(userConfig);
                         this.redirectByRoleLogin()
                     });
 

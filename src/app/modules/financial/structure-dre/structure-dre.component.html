@@ -1,0 +1,28 @@
+<div class="card m-3">
+    <div class="grid">
+        <div class="col-12 lg:col-5">
+            <p-tree
+                [value]="files"
+                class="w-full md:w-30rem"
+                [draggableNodes]="true"
+                [droppableNodes]="true"
+                draggableScope="self"
+                droppableScope="self"
+                selectionMode="single"
+                [(selection)]="selectedFile"
+                [contextMenu]="cm"
+                [filter]="true"
+                (onNodeContextMenuSelect)="onNodeContextMenuSelect($event)"
+                (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnSelect()"
+                filterMode="strict"
+                filterPlaceholder="Strict Filter"/>
+            <p-contextMenu #cm [model]="menuItems"/>
+        </div>
+        <div class="col-12 lg:col-7">
+            <p-fieldset legend="Visualização parcial do DRE">
+                <c-single-dre/>
+            </p-fieldset>
+        </div>
+    </div>
+</div>
+

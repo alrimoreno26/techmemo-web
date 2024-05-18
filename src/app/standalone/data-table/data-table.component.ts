@@ -179,9 +179,9 @@ export class DataTableComponent implements OnInit, OnDestroy {
      */
     loadCustomLazy($event: TableLazyLoadEvent): void {
         const {first, rows, globalFilter, sortField, sortOrder} = $event;
-        if($event.filters){
+        if($event?.filters){
             // @ts-ignore
-            let value = $event?.filters?.type[0]?.value
+            let value = Object.keys($event.filters).length > 0 ? $event?.filters?.type[0]?.value : '';
             this.service.loadAll({
                 pageNumber: first as number / (rows as number),
                 pageSize: rows ? rows : 25,

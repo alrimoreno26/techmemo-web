@@ -26,9 +26,16 @@ export class MTransferComponents implements OnInit {
                 this.orders = this.ordersService.listEntities$()?.filter(od => (od.id !== this.config.data.id && od.state === 'ACTIVE')) || [];
             }
         }, {allowSignalWrites: true})
+        effect(() => {
+            if(!this.ordersService.dialogTransfer$()) {
+                this.ref.close();
+            }
+        });
+
     }
 
     ngOnInit() {
+
         this.config.data.products.filter((x:any) => !x.paid).forEach((p: any) => {
             if (p.amount > 1) {
                 this.targetProducts = Array.from({length: p.amount}, () => ({

@@ -110,6 +110,24 @@ export const menuList: any[] = [
         roles: [domainEnum.CONFIGURATION],
         items: [
             {
+                label: 'Classificação financeira',
+                roles: [domainEnum.ALL],
+                icon: 'mdi mdi-graph mdi-24px',
+                routerLink: ['financial/financial-clasification']
+            },
+            {
+                label: 'Estrutura DRE',
+                roles: [domainEnum.ALL],
+                icon: 'mdi mdi-cash-edit mdi-24px',
+                routerLink: ['financial/structure-dre']
+            },
+            {
+                label: 'DRE',
+                roles: [domainEnum.ALL],
+                icon: 'mdi mdi-cash-check mdi-24px',
+                routerLink: ['financial/payment-method']
+            },
+            {
                 label: 'Meios de pagamento',
                 roles: [domainEnum.CONFIGURATION],
                 icon: 'mdi mdi-cash-plus mdi-24px',

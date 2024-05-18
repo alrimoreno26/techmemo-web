@@ -178,7 +178,9 @@ export class CaixaEffects {
                 this.service.transferProducts(entity).pipe(
                     switchMap((response) => {
                         return of(
-                            fromOrdersListActions.transferProductsOrdersSuccess({entity: response})
+                            fromOrdersListActions.transferProductsOrdersSuccess({entity: response}),
+                            fromOrdersListActions.openCustomDialog({modal: 'trasnfer', show: false}),
+                            fromOrdersListActions.getByID({path: [], id: entity.sourceOrderId})
                         )
                     }),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))

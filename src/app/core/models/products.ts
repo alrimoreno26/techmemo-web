@@ -96,4 +96,5 @@ export interface ProductLightDto {
     salePrice: number,
     totalAdditionalsValue: number,
     amount: number,
+    weight: number,
 }

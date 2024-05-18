@@ -16,6 +16,8 @@ import {ToastMessageService} from "../../../core/injects/toast-message.service";
 import {MOpenCaixaComponents} from "../../caixa/components/modals/m-open-caixa/m-open-caixa.components";
 import {DialogService} from "primeng/dynamicdialog";
 import {formatDate} from "../../../core/util";
+import {CashRegisterExtractionsService} from "../../shops/service/cash-register-extractions.service";
+import {OverlayPanel} from "primeng/overlaypanel";
 
 @Component({
     selector: 'c-commerce-dashboard',
@@ -40,6 +42,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
     caixasList: any = [];
 
     sidebarVisible: boolean;
+    caixaId: string;
     sidebarOption = 'info';
 
     cashOperations: any = null;
@@ -53,6 +56,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
     constructor(private layoutService: LayoutService,
                 public store: StoreDashboardServices,
                 public cashRegisterOperations: CashRegisterOperationsService,
+                public cashRegisterExtractionsService: CashRegisterExtractionsService,
                 private dialogService: DialogService,
                 private toastMessageService: ToastMessageService,
                 public caixas: CashRegisterService,
@@ -188,6 +192,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         if (caixa.working) {
             this.cashRegisterOperations.getOperationsById(caixa.id);
             this.sidebarOption = 'info';
+            this.caixaId = caixa.id;
             this.sidebarVisible = true;
         } else {
             this.dialogService.open(MOpenCaixaComponents, {
@@ -235,5 +240,15 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         this.sidebarOption = 'info';
         this.cashOperations = null;
         this.historicalCashOperations = [];
+    }
+
+    seeExtractions(op: OverlayPanel, event: any){
+        const params={
+            startDate: formatDate(this.rangeDates[0]),
+            cashRegisterId: this.caixaId
+        }
+        this.cashRegisterExtractionsService.getById(params)
+        console.log(this.caixaId)
+        op.toggle(event);
     }
 }

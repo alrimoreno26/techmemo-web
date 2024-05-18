@@ -1,0 +1,64 @@
+<div class="my-4">
+    <h1>Nombre aqui</h1>
+    <ng-template
+        [ngTemplateOutletContext]="{$implicit: service.indexesAndIndicators, columns: service.columnsIndex, empty: true, columnsSec: service.columnsIndexSec}"
+        [ngTemplateOutlet]="treeTable"></ng-template>
+</div>
+<ng-template #treeTable let-columns="columns" let-columnsSec="columnsSec" let-data let-empty="empty">
+    <p-treeTable [columns]="columns" [frozenColumns]="[{header: 'k', field: 'name'}]" [scrollable]="true"
+                 [value]="data" class="balanceK-table" frozenWidth="400px">
+        <ng-template let-columns pTemplate="colgroup">
+            <colgroup>
+                @for (col of columns | colHeader; track col) {
+                    <col [style.width.px]="col.width">
+                }
+            </colgroup>
+        </ng-template>
+        <ng-template let-column pTemplate="frozenheader">
+            <tr>
+                @for (col of column | colHeader; track col) {
+                    <th>
+                        {{ ('methodK.balanceK.' + col.header) | translate }}
+                    </th>
+                }
+            </tr>
+            <!--        @if (columnsSec.length) {-->
+            <!--            <tr>-->
+            <!--                <th></th>-->
+            <!--            </tr>-->
+            <!--        }-->
+        </ng-template>
+        <ng-template let-rowData="rowData" let-rowNode pTemplate="frozenbody">
+            <tr class="balance-{{rowData.class}}" [ngClass]="{'bg-leaf' : rowData | leafCheck}">
+                <td fontNameCol>
+                    <p-treeTableToggler [rowNode]="rowNode"></p-treeTableToggler>
+                    {{ rowData.name }}
+                </td>
+            </tr>
+        </ng-template>
+        <ng-template let-columns pTemplate="header">
+            <tr>
+                @for (col of columns | colHeader | extraHeader; track col) {
+                    <th>
+                        <div class="white-space-nowrap flex align-items-center justify-content-center">
+                            {{ col.header }}
+                        </div>
+                    </th>
+                }
+            </tr>
+        </ng-template>
+        <ng-template let-columns="columns" let-node="node" let-rowData="rowData" pTemplate="body">
+            <tr class="balance-{{rowData.class}}" [ngClass]="{'bg-leaf' : rowData | leafCheck}">
+                @for (col of columns | colHeader | extraHeader; track col) {
+                    <td class="text-center white-space-nowrap">
+                        @if (!node.leaf) {
+                            <span></span>
+                        } @else {
+                            valor
+                        }
+                    </td>
+                }
+            </tr>
+        </ng-template>
+    </p-treeTable>
+</ng-template>

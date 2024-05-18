@@ -229,6 +229,7 @@ export class CaixaComponent implements OnInit {
 
     transferOrders() {
         if (this.service.selectedEntity$()[this.activeOrder].products.length > 0) {
+            this.service.openCustomDialog('transfer', true);
             this.dialogService.open(MTransferComponents, {
                 data: this.service.selectedEntity$()[this.activeOrder],
                 modal: true,
@@ -344,7 +345,7 @@ export class CaixaComponent implements OnInit {
 
     addElementComanda(event: ProductLightDto): void {
         const params = [
-            {id: event.id, amount: this.selectedItemAmount, additionals: []}
+            {id: event.id, amount: this.selectedItemAmount, additionals: [], weight:event.weight}
         ];
         this.service.addProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, params)
         this.resetAllValues();
@@ -368,12 +369,13 @@ export class CaixaComponent implements OnInit {
     }
 
     confirmWeight() {
+        debugger
         this.visible = false;
-        if (this.itemFinded !== null) {
+        if (this.selectedItem !== null) {
             let item = {
                 count: this.selectedItemAmount,
-                ...this.itemFinded,
-                peso_liquido: Number(this.weightScale),
+                ...this.selectedItem,
+                weight: Number(this.weightScale),
             }
             this.addElementComanda(item);
         }

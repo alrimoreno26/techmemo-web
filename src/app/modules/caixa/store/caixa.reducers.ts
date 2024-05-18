@@ -16,6 +16,7 @@ export interface State extends EntityState<any> {
     sentKitchen: boolean;
     selected?: any;
     error?: Error | any;
+    dialogTransfer: boolean;
 }
 
 export interface OrdersPartialState {
@@ -35,6 +36,7 @@ export const initialState: State = adapter.getInitialState({
     loaded: false,
     dialog: false,
     sentKitchen: false,
+    dialogTransfer: false,
     totalElements: 0,
     error: null
 });
@@ -143,7 +145,7 @@ export const ordersReducer = createReducer<State>(
         return {...state, selected};
     }),
     on(fromOrdersListActions.transferProductsOrdersSuccess, (state, {entity}) => {
-        return {...state};
+        return {...state, dialogTransfer: false};
     }),
     on(fromOrdersListActions.openAddOrEdit, (state) => {
         return {...state, dialog: true, orderCreate: false};
@@ -153,6 +155,13 @@ export const ordersReducer = createReducer<State>(
     }),
     on(fromOrdersListActions.ordersFromKitchenSuccess, (state, {data}) => {
         return {...state, kitchen: data.content};
+    }),
+    on(fromOrdersListActions.openCustomDialog, (state, {modal,show}) => {
+        let tempState = {...state};
+        if(modal === 'transfer'){
+            tempState = {...tempState, dialogTransfer: show};
+        }
+        return {...tempState};
     }),
 );
 
