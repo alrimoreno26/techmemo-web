@@ -47,9 +47,6 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
                 private financeService: FinancialClasificationService) {
         super(storeService);
         this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
-        effect(() => {
-            console.log(this.supplierService.autocomplete$())
-        });
     }
 
     ngOnInit(): void {
