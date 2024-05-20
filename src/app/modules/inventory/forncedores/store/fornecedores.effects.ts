@@ -20,6 +20,18 @@ export class FornecedoresEffects {
         )
     );
 
+    autocompleteSupplierList$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromSupplierListActions.autocompleteSupplierList),
+            switchMap(({lazy}) =>
+                this.service.findAllPaginateFilter(lazy).pipe(
+                    map((data) => fromSupplierListActions.autocompleteSupplierListSuccess({data})),
+                    catchError(error => of(fromSupplierListActions.SupplierListFailRequest({error})))
+                )
+            )
+        )
+    );
+
     createSupplier$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromSupplierListActions.createSupplier),

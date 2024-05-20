@@ -31,6 +31,7 @@ import {DividerModule} from "primeng/divider";
 import {MContasPagarComponent} from "./modals/m-contas-pagar/m-contas-pagar.component";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {FinancialClasificationService} from "../financial/service/financial-clasification.service";
 
 @NgModule({
     declarations: [
@@ -68,7 +69,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
         StorePurchasesServices,
         Stock_TransferStore,
         PaymentMethodService,
-        SupplierService
+        SupplierService,
+        FinancialClasificationService
     ],
     exports:[],
 })

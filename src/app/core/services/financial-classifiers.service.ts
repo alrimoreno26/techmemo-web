@@ -5,6 +5,7 @@ import {Injectable} from "@angular/core";
 import {Observable} from "rxjs";
 import {LazyResultData} from "../../standalone/data-table/models";
 import {SupplierDTO} from "../models/supplier";
+import {silentIt} from "../interceptors/spinner.interceptor";
 @Injectable({
     providedIn: 'root'
 })
@@ -18,4 +19,10 @@ export class FinancialClassifiersService extends AbstractService<any> {
         const params: HttpParams = new HttpParams({fromObject: queryParams});
         return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}?${params}`);
     }
+
+    autocomplete(queryParams: any): Observable<LazyResultData<any>> {
+        const params: HttpParams = new HttpParams({fromObject: queryParams});
+        return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}?${params}`,{context: silentIt()});
+    }
+
 }

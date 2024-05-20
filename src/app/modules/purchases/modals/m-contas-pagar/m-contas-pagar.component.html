@@ -10,22 +10,32 @@
                     <div class="search-container-single px-0 py-0 shadow-none w-full">
                         <i class="mdi mdi-magnify"></i>
                         <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
-                                        (completeMethod)="search($event)"
+                                        (completeMethod)="searchF($event)"
                                         inputStyleClass="w-full"
+                                        (input)="searchFornecedor($event)"
+                                        [dropdown]="true"
                                         placeholder="Pesquise por nome ou código de fornecedor"
                                         field="name"
-                                        [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
-                                        [suggestions]="suggestions"></p-autoComplete>
+                                        [(ngModel)]="selectedF" [ngModelOptions]="{standalone: true}"
+                                        [suggestions]="suggestionsF"></p-autoComplete>
                     </div>
                 </div>
             </div>
             <div class="col-12 pb-1">
                 <div class="align-items-center flex flex-auto gap-3">
                     <label class="block font-bold w-4">Class Financiera</label>
-                    <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
-                                [options]="paymentMethodService.listEntities$()" [(ngModel)]="selected"
-                                optionLabel="description"
-                                placeholder="Class Financiera"></p-dropdown>
+                    <div class="search-container-single px-0 py-0 shadow-none w-full">
+                        <i class="mdi mdi-magnify"></i>
+                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                        (completeMethod)="search($event)"
+                                        inputStyleClass="w-full"
+                                        (input)="searchClassifiers($event)"
+                                        [dropdown]="true"
+                                        placeholder="Class Financiera"
+                                        field="name"
+                                        [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
+                                        [suggestions]="suggestions"></p-autoComplete>
+                    </div>
                 </div>
             </div>
             <div class="col-12 pb-1">

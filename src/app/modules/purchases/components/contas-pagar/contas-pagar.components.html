@@ -14,6 +14,7 @@
                     <p-autoComplete class="w-full" styleClass="w-full" appFocus #input (completeMethod)="search($event)"
                                     inputStyleClass="w-full"
                                     placeholder="Pesquise por nome ou código de fornecedor"
+                                    (input)="searchClassifiers($event)"
                                     field="name"
                                     [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
                                     [suggestions]="suggestions"></p-autoComplete>

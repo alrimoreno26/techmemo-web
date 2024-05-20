@@ -6,6 +6,8 @@ import {ProductDto} from "../../../../core/models/products";
 export enum EntityActionTypes {
     LoadSupplierList = '[Supplier] Load Supplier List',
     LoadSupplierListSuccess = '[Supplier] Load Supplier List Success',
+    AutocompleteSupplierList = '[Supplier] Load Autocomplete Supplier List',
+    AutocompleteSupplierListSuccess = '[Supplier] Load Autocomplete Supplier List Success',
     SupplierListFailRequest = '[Supplier] Supplier Fail Request',
 
     GetByID = '[Supplier] Get By ID',
@@ -28,6 +30,13 @@ export const loadSupplierList = createAction(EntityActionTypes.LoadSupplierList,
     lazy: Partial<LazyLoadData>
 }>());
 export const loadSupplierListSuccess = createAction(EntityActionTypes.LoadSupplierListSuccess, props<{
+    data: LazyResultData<any>
+}>());
+
+export const autocompleteSupplierList = createAction(EntityActionTypes.AutocompleteSupplierList, props<{
+    lazy: Partial<LazyLoadData>
+}>());
+export const autocompleteSupplierListSuccess = createAction(EntityActionTypes.AutocompleteSupplierListSuccess, props<{
     data: LazyResultData<any>
 }>());
 export const SupplierListFailRequest = createAction(EntityActionTypes.SupplierListFailRequest, props<{
@@ -61,5 +70,7 @@ export const fromSupplierListActions = {
     setSelectedSupplier,
     getByID,
     getByIDSuccess,
-    openAddOrEdit
+    openAddOrEdit,
+    autocompleteSupplierList,
+    autocompleteSupplierListSuccess
 };

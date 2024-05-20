@@ -1,10 +1,12 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, effect, OnInit} from "@angular/core";
 import {
     BaseModalStoreComponentDirective
 } from "../../../../standalone/data-table/directives/base.modal.store.component.directive";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {PaymentMethodService} from "../../../financial/service/payment-method.service";
 import {StoreContasPagarServices} from "../../services/store.contas-pagar.services";
+import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
+import {SupplierService} from "../../../inventory/forncedores/services/supplier.service";
 
 @Component({
     templateUrl: './m-contas-pagar.component.html',
@@ -17,29 +19,46 @@ import {StoreContasPagarServices} from "../../services/store.contas-pagar.servic
 })
 export class MContasPagarComponent extends BaseModalStoreComponentDirective implements OnInit {
 
-    selectedItem: any;
+
     selected: any;
-    suggestions: any[] = [];
+
     fatura = 288.39;
     description = '';
     parcelas = false;
     qParcelas = 0;
     vencimiento = 'fixo';
+
     rangeDates: Date = new Date()
     listParcelas: any[] = []
 
-    constructor(private storeService: StoreContasPagarServices, public paymentMethodService: PaymentMethodService) {
+    // Autocomplete classfiers
+    selectedItem: any;
+    searchText = '';
+    suggestions: any[] = [];
+
+    // Autocomplete forncedores
+    selectedF: any;
+    searchTextF = '';
+    suggestionsF: any[] = [];
+
+    constructor(private storeService: StoreContasPagarServices,
+                public paymentMethodService: PaymentMethodService,
+                private supplierService: SupplierService,
+                private financeService: FinancialClasificationService) {
         super(storeService);
         this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
+        effect(() => {
+            console.log(this.supplierService.autocomplete$())
+        });
     }
 
     ngOnInit(): void {
-
-    }
-
-
-    search(event: AutoCompleteCompleteEvent) {
-
+        this.financeService.autocompleteSearch({
+            pageNumber: 0,
+            pageSize: 50,
+        })
+        this.supplierService.autocomplete({  pageNumber: 0,
+            pageSize: 50,})
     }
 
     gerarParcelas() {
@@ -72,5 +91,28 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
         }
     }
 
+    search(event: AutoCompleteCompleteEvent) {
+        if (this.financeService.autocomplete$()) {
+            this.suggestions = this.financeService.autocomplete$()?.map((item: any) => item) ?? [];
+        }
+    }
 
+    searchF(event: AutoCompleteCompleteEvent) {
+        if (this.supplierService.autocomplete$()) {
+            this.suggestionsF = this.supplierService.autocomplete$()?.map((item: any) => item) ?? [];
+        }
+    }
+
+    searchClassifiers(event: { target: { value: string; } } | any) {
+        this.searchText = event.target.value;
+        this.financeService.autocompleteSearch({
+            filter: this.searchText,
+        });
+    }
+    searchFornecedor(event: { target: { value: string; } } | any) {
+        this.searchText = event.target.value;
+        this.supplierService.autocomplete({
+            filter: this.searchText,
+        });
+    }
 }

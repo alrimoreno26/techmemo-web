@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Signal} from "@angular/core";
 import {ClassifierDto, PaymentStructureTO} from "../../../core/models/financial";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {FinancialClassifiersService} from "../../../core/services/financial-classifiers.service";
@@ -13,13 +13,15 @@ import {HttpErrorResponse} from "@angular/common/http";
 @Injectable({providedIn: 'platform'})
 export class FinancialClasificationService extends StoreComponentService<ClassifierDto> {
 
+    autocomplete$: Signal<any | null> = this.selectSignal(state => state.autocomplete);
+
     override serverSide = true;
     override lazyLoadOnInit = false;
     override pageSize = 25;
 
     constructor(private services: FinancialClassifiersService) {
-        const defaultEntity: EntityState<ClassifierDto> =
-            {entities: [], total: 0, dialog: false, loaded: false};
+        const defaultEntity: EntityState<ClassifierDto> & { autocomplete: any } =
+            {entities: [], total: 0, dialog: false, loaded: false, autocomplete: []};
         super(services, defaultEntity);
     }
 
@@ -37,6 +39,12 @@ export class FinancialClasificationService extends StoreComponentService<Classif
             );
         })
     ));
+
+    autocompleteSearch(lazy: any) {
+        this.services.autocomplete(lazy).subscribe(data => {
+            this.patchState({autocomplete: data.content});
+        });
+    }
 
     // override finalizeLoad = () => {
     //     const {content, totalElements} = this.state().entities;
