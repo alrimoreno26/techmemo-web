@@ -1,5 +1,4 @@
 <div class="my-4">
-    <h1>Nombre aqui</h1>
     <ng-template
         [ngTemplateOutletContext]="{$implicit: service.indexesAndIndicators, columns: service.columnsIndex, empty: true, columnsSec: service.columnsIndexSec}"
         [ngTemplateOutlet]="treeTable"></ng-template>
@@ -18,15 +17,15 @@
             <tr>
                 @for (col of column | colHeader; track col) {
                     <th>
-                        {{ ('methodK.balanceK.' + col.header) | translate }}
+                        Contas
                     </th>
                 }
             </tr>
-            <!--        @if (columnsSec.length) {-->
-            <!--            <tr>-->
-            <!--                <th></th>-->
-            <!--            </tr>-->
-            <!--        }-->
+            @if (columnsSec.length) {
+                <tr>
+                    <th></th>
+                </tr>
+            }
         </ng-template>
         <ng-template let-rowData="rowData" let-rowNode pTemplate="frozenbody">
             <tr class="balance-{{rowData.class}}" [ngClass]="{'bg-leaf' : rowData | leafCheck}">
@@ -46,15 +45,27 @@
                     </th>
                 }
             </tr>
+            @if (columnsSec.length) {
+                <tr>
+                    @for (col of columnsSec | colHeader; track col) {
+                        <th [attr.colspan]="col.colSpan" [class]="col.class" class="text-center">
+                            {{ col.header | translate }}
+                        </th>
+                    }
+                </tr>
+            }
         </ng-template>
         <ng-template let-columns="columns" let-node="node" let-rowData="rowData" pTemplate="body">
             <tr class="balance-{{rowData.class}}" [ngClass]="{'bg-leaf' : rowData | leafCheck}">
                 @for (col of columns | colHeader | extraHeader; track col) {
                     <td class="text-center white-space-nowrap">
-                        @if (!node.leaf) {
+                        @if (empty && !node.leaf) {
                             <span></span>
                         } @else {
-                            valor
+                            <span [cnpj]="cnpj" [data]="rowData" [field]="col.field" [source]="col.source"
+                                  [index]="empty" traceBalance>
+                              123
+                            </span>
                         }
                     </td>
                 }

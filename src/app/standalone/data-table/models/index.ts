@@ -33,17 +33,21 @@ export interface HeadersTable {
     // obligatorios
     field: string;
     header: string;
-    visible: boolean;
     export?: boolean;
     // opcionales
-    pipe?: pipe;
+    pipe?: string;
     extraVal?: string;
     filter?: boolean;
+    visible?: boolean;
+    colSpan?: number;
     class?: string;
     width?: number;
     sort?: boolean;
     sortField?: string;
+    source?: string;
     context?: Array<MenuItem>;
+    traceabilityId?: string;
+    related?: Array<{ id: string; endDate: string; }>;
     cFunc?: (data: any) => {};
 }
 

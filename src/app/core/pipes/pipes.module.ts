@@ -20,6 +20,7 @@ import {ColHeaderPipe} from "../../standalone/data-table/pipes/col-header.pipe";
 import {ColSpanPipe} from "../../standalone/data-table/pipes/col-span.pipe";
 import {LeafCheckPipe} from "./leaf-check.pipe";
 import {ExtraHeaderPipe} from "./extra-header.pipe";
+import {NumberKPipe} from "./number-decimal.pipe";
 
 
 @NgModule({
@@ -43,7 +44,8 @@ import {ExtraHeaderPipe} from "./extra-header.pipe";
         ColHeaderPipe,
         ColSpanPipe,
         LeafCheckPipe,
-        ExtraHeaderPipe
+        ExtraHeaderPipe,
+        NumberKPipe
     ],
     imports: [
         CommonModule
@@ -68,7 +70,8 @@ import {ExtraHeaderPipe} from "./extra-header.pipe";
         ColHeaderPipe,
         ColSpanPipe,
         LeafCheckPipe,
-        ExtraHeaderPipe
+        ExtraHeaderPipe,
+        NumberKPipe
     ],
     providers: [
         CepPipe,

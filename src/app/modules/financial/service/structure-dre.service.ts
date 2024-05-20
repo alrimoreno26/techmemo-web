@@ -26,384 +26,213 @@ export class StructureDreService extends StoreComponentService<any> {
     columnsIndexSec: HeadersTable[] = [];
 
     indexesAndIndicators: TreeNode[] = [];
-    responseAPI = [
-        {
-            "code": "10",
-            "rootCode": "null",
-            "name": "CAPITAL DE GIRO",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": false,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "10.1",
-            "rootCode": "null",
-            "name": "Ativo Circulante Cíclico",
-            "value": 1252179870,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "10.2",
-            "rootCode": "null",
-            "name": "Passivo Circulante Cíclico",
-            "value": 487701657,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "10.3",
-            "rootCode": "null",
-            "name": "Necessidade de Capital de Giro",
-            "value": 764478213,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "10.4",
-            "rootCode": "null",
-            "name": "Saldo de Terouraria",
-            "value": -292101605,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "10.5",
-            "rootCode": "null",
-            "name": "Relação Necessidade/Receita Op. Líquida",
-            "value": -7650.294166947286,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "10.6",
-            "rootCode": "null",
-            "name": "Saldo em Tesouraria Sobre Vendas",
-            "value": -5235.81480194891,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "11",
-            "rootCode": "null",
-            "name": "DEMAIS ÍNDICES",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": false,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "11.1",
-            "rootCode": "null",
-            "name": "Capital Circulante Líquido",
-            "value": 472376608,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "11.2",
-            "rootCode": "null",
-            "name": "Dívida Líquida",
-            "value": 466275809,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "11.3",
-            "rootCode": "null",
-            "name": "Dívida Líquida/EBITDA",
-            "value": -1.797897988962385,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "6",
-            "rootCode": "null",
-            "name": "ÍNDICES DE LIQUIDEZ",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": false,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "6.1",
-            "rootCode": "null",
-            "name": "Liquidez Geral",
-            "value": 1.3069,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "6.2",
-            "rootCode": "null",
-            "name": "Liquidez Corrente",
-            "value": 1.5505001324021876,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "6.3",
-            "rootCode": "null",
-            "name": "Liquidez Seca",
-            "value": 1.0422,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "6.4",
-            "rootCode": "null",
-            "name": "Solvência Geral",
-            "value": 1.6518,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "7",
-            "rootCode": "null",
-            "name": "ESTRUTURA DE CAPITAL",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": false,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "7.1",
-            "rootCode": "null",
-            "name": "Participação de Capital de Terceiros",
-            "value": 552.5581,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "7.2",
-            "rootCode": "null",
-            "name": "Endividamento Geral",
-            "value": 84.6757,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "7.3",
-            "rootCode": "null",
-            "name": "Endividamento Oneroso",
-            "value": 246.2566,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "7.4",
-            "rootCode": "null",
-            "name": "Composição do Endividamento",
-            "value": 76.3629,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "7.5",
-            "rootCode": "null",
-            "name": "Nível de Desconto de Duplicatas",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "7.6",
-            "rootCode": "null",
-            "name": "Imobilização do Patrimônio Líquido",
-            "value": 190.56604280163023,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "8",
-            "rootCode": "null",
-            "name": "RENTABILIDADE",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": false,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "8.1",
-            "rootCode": "null",
-            "name": "Margem Bruta",
-            "value": -4681.142835326014,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "8.2",
-            "rootCode": "null",
-            "name": "Margem Líquida",
-            "value": 2613.452322398288,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "8.3",
-            "rootCode": "null",
-            "name": "Retorno Sobre Ativo",
-            "value": -19.679407756384386,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "8.4",
-            "rootCode": "null",
-            "name": "Retorno Sobre PL",
-            "value": -128.41957042824671,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "9",
-            "rootCode": "null",
-            "name": "CICLO FINANCEIRO",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": false,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "9.1",
-            "rootCode": "null",
-            "name": "Prazo Médio de Estoques",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "9.2",
-            "rootCode": "null",
-            "name": "Prazo Médio de Recebimentos",
-            "value": 51583.7625,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "9.3",
-            "rootCode": "null",
-            "name": "Prazo Médio de Pagamentos",
-            "value": 0,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "9.4",
-            "rootCode": "null",
-            "name": "Ciclo Financeiro",
-            "value": 51583.7625,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        },
-        {
-            "code": "9.5",
-            "rootCode": "null",
-            "name": "Ciclo do Ativo",
-            "value": -0.005383706935626373,
-            "percentVA": 0,
-            "percentHA": 0,
-            "sheet": true,
-            "type": "INDEXES_AND_INDICATORS"
-        }
-    ]
+    responseAPI: any[] = []
 
     constructor(private services: StructureDreServices) {
         const defaultEntity: EntityState<any> =
             {entities: [], total: 0, dialog: false, loaded: false};
         super(services, defaultEntity);
+        this.services.getAll().subscribe((data: any) => {
+            this.setAll(data);
+            this.buildTable(data, true);
+        })
     }
 
-    buildTree() {
+    buildTable(balances: any[], notCompare: boolean = true, structure?: boolean) {
         this.columns = [];
         this.columnsSec = [];
         this.columnsIndexSec = [];
-        let ext = '';
-
+        const activesList: any[] = [];
+        const passiveList: any[] = [];
+        const demonstrationsList: any[] = [];
         const indexesAndIndicatorsList: any[] = [];
-        const date = new Date();
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const base = `${year}${month}${ext}`;
-        const value = base + 'Value';
-        const va = base + 'VA';
-        const ha = base + 'HA';
-        const trace = base + 'Trace';
-        this.responseAPI?.forEach((p: any, i) => {
-         if (i >= indexesAndIndicatorsList.length) {
-                indexesAndIndicatorsList.push({
-                    name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: true,
-                    prefix: p.prefix, suffix: p.suffix, position: p.position,
-                    code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
-                });
+        let partial: boolean = false;
+        let project: boolean = false;
+        balances.forEach((b, r) => {
+
+            const date = new Date(b.endDate + 'T00:00');
+            const year = date.getFullYear();
+            const month = date.getMonth();
+            let ext = '';
+
+            if (notCompare) {
+                if (month <= 10) {
+                    partial = true;
+                    ext = 'Pa';
+                } else if (partial && b.traceabilityId === null) {
+                    project = true;
+                    ext = 'Pj';
+                }
+            } else if (!notCompare) {
+                ext = 'cmp' + r;
+            }
+            const base = `${year}${month}${ext}`;
+            const value = base + 'Value';
+            const va = base + 'VA';
+            const ha = base + 'HA';
+            const trace = base + 'Trace';
+            this.columns.push({
+                header: b.endDate,
+                field: value,
+                pipe: 'number',
+                width: 140,
+                source: b.source,
+                traceabilityId: b.traceabilityId ?? undefined,
+                related: b.relatedTraceabilities && b.relatedTraceabilities.length > 0 ? b.relatedTraceabilities : undefined
+            });
+
+            if ((r == 0 || (partial && !project)) || !notCompare) {
+                this.columns.push({header: 'AV', field: va, pipe: 'percent', width: 70});
+            } else {
+                this.columns.push({header: 'AV', field: va, pipe: 'percent', width: 70});
+                this.columns.push({header: 'AH', field: ha, pipe: 'percent', width: 70});
             }
 
-            indexesAndIndicatorsList[i][value] = p.value;
-            indexesAndIndicatorsList[i][va] = p.percentVA;
-            indexesAndIndicatorsList[i][ha] = p.percentHA;
-            indexesAndIndicatorsList[i][trace] = Math.random();
+            b.actives.forEach((p: any, i:number) => {
+                if (r === 0) {
+                    activesList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                } else if (r !== 0 && i >= activesList.length) {
+                    activesList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                }
+
+                activesList[i][value] = p.value;
+                activesList[i][va] = p.percentVA;
+                activesList[i][ha] = p.percentHA;
+                activesList[i][trace] = b.traceabilityId;
+            });
+            b.passives.forEach((p: any, i:number) => {
+                if (r === 0) {
+                    passiveList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                } else if (r !== 0 && i >= passiveList.length) {
+                    passiveList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                }
+
+                passiveList[i][value] = p.value;
+                passiveList[i][va] = p.percentVA;
+                passiveList[i][ha] = p.percentHA;
+                passiveList[i][trace] = b.traceabilityId;
+            });
+            b.demonstrations.forEach((p: any, i:number) => {
+                if (r === 0) {
+                    demonstrationsList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                } else if (r !== 0 && i >= demonstrationsList.length) {
+                    demonstrationsList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                }
+
+                demonstrationsList[i][value] = p.value;
+                demonstrationsList[i][va] = p.percentVA;
+                demonstrationsList[i][ha] = p.percentHA;
+                demonstrationsList[i][trace] = b.traceabilityId;
+            });
+            b?.indexesAndIndicators?.forEach((p: any, i:number) => {
+                if (r === 0) {
+                    indexesAndIndicatorsList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                } else if (r !== 0 && i >= indexesAndIndicatorsList.length) {
+                    indexesAndIndicatorsList.push({
+                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: true,
+                        prefix: p.prefix, suffix: p.suffix, position: p.position,
+                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
+                    });
+                }
+
+                indexesAndIndicatorsList[i][value] = p.value;
+                indexesAndIndicatorsList[i][va] = p.percentVA;
+                indexesAndIndicatorsList[i][ha] = p.percentHA;
+                indexesAndIndicatorsList[i][trace] = b.traceabilityId;
+            });
         });
+        structure ?
+            this.newView(activesList, passiveList, demonstrationsList, indexesAndIndicatorsList) :
+            this.currentView(activesList, passiveList, demonstrationsList, indexesAndIndicatorsList);
+
+        this.columnsIndex = this.columns.filter(f => f.header !== 'AV' && f.header !== 'AH');
+
+        if (partial && project) {
+            this.columnsSec = [
+                {header: '', colSpan: (this.columnsIndex.length - 1) * 3 - 4, field: '', width: 0, pipe: ''},
+                {header: 'methodK.balanceK.partial', colSpan: 2, field: '', width: 0, pipe: '', class: 'border-1'},
+                {header: 'methodK.balanceK.projected', colSpan: 3, field: '', width: 0, pipe: '', class: 'border-1'}
+            ];
+            this.columnsIndexSec = [
+                {header: '', colSpan: this.columnsIndex.length - 2, field: '', width: 0, pipe: ''},
+                {header: 'methodK.balanceK.partial', field: '', width: 0, pipe: ''},
+                {header: 'methodK.balanceK.projected', field: '', width: 0, pipe: ''}
+            ];
+        } else if (partial) {
+            this.columnsSec = [
+                {header: '', colSpan: (this.columnsIndex.length - 1) * 3 - 1, field: '', width: 0, pipe: ''},
+                {header: 'methodK.balanceK.partial', colSpan: 2, field: '', width: 0, pipe: '', class: 'border-1'}
+            ];
+            this.columnsIndexSec = [
+                {header: '', colSpan: this.columnsIndex.length - 1, field: '', width: 0, pipe: ''},
+                {header: 'methodK.balanceK.partial', field: '', width: 0, pipe: ''}
+            ];
+        } else if (project) {
+            this.columnsSec = [
+                {header: '', colSpan: (this.columnsIndex.length - 1) * 3 - 1, field: '', width: 0, pipe: ''},
+                {header: 'methodK.balanceK.projected', colSpan: 3, field: '', width: 0, pipe: '', class: 'border-1'}
+            ];
+            this.columnsIndexSec = [
+                {header: '', colSpan: this.columnsIndex.length - 1, field: '', width: 0, pipe: ''},
+                {header: 'methodK.balanceK.projected', field: '', width: 0, pipe: ''}
+            ];
+        }
+
+
+        // if (notCompare) {
+        //     this.checkMistMatch(balances, structure);
+        // }
+    }
+
+    private currentView(activesList: any[] = [], passiveList: any[] = [],
+                        demonstrationsList: any[] = [], indexesAndIndicatorsList: any[] = []): void {
+
+        const actives: TreeNode[] = this.buildTreeNode(activesList, activesList.filter(f => f.code.length <= 2), 'active');
+        const passives: TreeNode[] = this.buildTreeNode(passiveList, passiveList.filter(f => f.code.length <= 2), 'passive');
+        const demonstrations: TreeNode[] = this.buildTreeNode(demonstrationsList, demonstrationsList.filter(f => f.code.length <= 2), 'dre');
+
+        this.indexesAndIndicators = this.buildTreeNode(indexesAndIndicatorsList, indexesAndIndicatorsList.filter(f => f.code.length <= 2), 'index');
+    }
+
+    private newView(activesList: any[] = [], passiveList: any[] = [],
+                    demonstrationsList: any[] = [], indexesAndIndicatorsList: any[] = []): void {
+
+        activesList = activesList.filter(f => f.visualize);
+        passiveList = passiveList.filter(f => f.visualize);
+        demonstrationsList = demonstrationsList.filter(f => f.visualize);
+        indexesAndIndicatorsList = indexesAndIndicatorsList.filter(f => f.visualize);
+
+        const actives: TreeNode[] = this.buildTreeNodeNew(activesList, activesList.filter(f => !f.parent), 'active', 0);
+        const passives: TreeNode[] = this.buildTreeNodeNew(passiveList, passiveList.filter(f => !f.parent), 'passive', 0);
+        const demonstrations: TreeNode[] = this.buildTreeNodeNew(demonstrationsList, demonstrationsList.filter(f => !f.parent), 'dre', 0);
 
         this.indexesAndIndicators = this.buildTreeNodeNew(indexesAndIndicatorsList, indexesAndIndicatorsList.filter(f => !f.parent), 'index', 0);
     }

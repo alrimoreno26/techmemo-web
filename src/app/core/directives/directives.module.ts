@@ -11,6 +11,7 @@ import {ToastTranslateDirective} from "./toast-translate.directive";
 import {BaseComponentDirective} from "./base.component.directive";
 import {BaseModalStoreComponentDirective} from "./base.modal.store.component.directive";
 import {FontNameColDirective} from "./font-name-col.directive";
+import {TraceBalanceDirective} from "./trace-balance.directive";
 
 
 @NgModule({
@@ -25,6 +26,7 @@ import {FontNameColDirective} from "./font-name-col.directive";
         ConfirmTranslateDirective,
         ToastTranslateDirective,
         FontNameColDirective,
+        TraceBalanceDirective
     ],
     imports: [
         CommonModule
@@ -37,7 +39,8 @@ import {FontNameColDirective} from "./font-name-col.directive";
         DialogHeaderDirective,
         ConfirmTranslateDirective,
         ToastTranslateDirective,
-        FontNameColDirective
+        FontNameColDirective,
+        TraceBalanceDirective
     ]
 })
 export class DirectivesModule {

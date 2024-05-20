@@ -36,7 +36,7 @@ export const fornecedoresReducer = createReducer<State>(
     on(fromSupplierListActions.loadSupplierListSuccess, (state, {data}) => {
         const dataWithName = data.content.map((element) => ({
             ...element,
-            identification: element.type === 'COMPANY' ? element.fantasyName : element.name + ' ' + element.lastName
+            identification: element.type === 'COMPANY' ? element.name : element.name + ' ' + element.lastName
         }));
         return adapter.setAll(dataWithName, {...state, loaded: true, totalElements: data.totalElements});
     }),
