@@ -1,4 +1,4 @@
-import {Component, effect, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {
     BaseModalStoreComponentDirective
 } from "../../../../standalone/data-table/directives/base.modal.store.component.directive";

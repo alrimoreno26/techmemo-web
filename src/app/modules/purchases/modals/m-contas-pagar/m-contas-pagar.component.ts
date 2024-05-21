@@ -1,4 +1,4 @@
-import {Component, effect, OnInit} from "@angular/core";
+import {Component, OnInit} from "@angular/core";
 import {
     BaseModalStoreComponentDirective
 } from "../../../../standalone/data-table/directives/base.modal.store.component.directive";
@@ -92,7 +92,6 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     gerarParcelas() {
         if (this.mParcelas) {
             this.paymentInstallments = [];
-            const monthlyPayment = this.purchaseValue / this.qParcelas;
             let currentDate = this.rangeDates;
             for (let i = 0; i < this.qParcelas; i++) {
 

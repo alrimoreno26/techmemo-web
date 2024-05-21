@@ -4,9 +4,8 @@ import {HeadersTable} from "../../../../standalone/data-table/models";
 import {StoreContasPagarServices} from "../../services/store.contas-pagar.services";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {MContasPagarComponent} from "../../modals/m-contas-pagar/m-contas-pagar.component";
-import {FinancialClassifiersService} from "../../../../core/services/financial-classifiers.service";
 import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
-import {TableRowCollapseEvent, TableRowExpandEvent} from "primeng/table";
+import {TableRowExpandEvent} from "primeng/table";
 import {formatDate} from "../../../../core/util";
 
 @Component({

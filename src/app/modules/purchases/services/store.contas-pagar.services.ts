@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
-import {OrdersTO} from "../../../core/models/orders";
 import {ContasPagarService} from "../../../core/services/contas-pagar.service";
 import {Observable} from "rxjs";
 import {LazyLoadData} from "../../../standalone/data-table/models";
@@ -8,7 +7,6 @@ import {switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 import {BillLigthDto} from "../../../core/models/bills";
-import {CommerceDto} from "../../../core/models/commerce";
 
 @Injectable({providedIn: 'platform'})
 export class StoreContasPagarServices extends StoreComponentService<BillLigthDto> {
