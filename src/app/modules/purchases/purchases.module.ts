@@ -32,6 +32,8 @@ import {MContasPagarComponent} from "./modals/m-contas-pagar/m-contas-pagar.comp
 import {InputSwitchModule} from "primeng/inputswitch";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import {FinancialClasificationService} from "../financial/service/financial-clasification.service";
+import {InputTextModule} from "primeng/inputtext";
+import {TagModule} from "primeng/tag";
 
 @NgModule({
     declarations: [
@@ -62,7 +64,9 @@ import {FinancialClasificationService} from "../financial/service/financial-clas
         RadioButtonModule,
         DividerModule,
         InputSwitchModule,
-        InputTextareaModule
+        InputTextareaModule,
+        InputTextModule,
+        TagModule
     ],
     providers:[
         StoreContasPagarServices,

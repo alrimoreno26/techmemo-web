@@ -58,20 +58,20 @@ export function inactivityServiceFactory(inactivityService: InactivityService): 
 })
 export class CoreModule {
     constructor(ws: WebSocketServices, session: SessionServices,) {
-        timer(2000).pipe(
-            switchMap(() => session.getAccessToken$().pipe(
-                tap((tok) => {
-                    const state = ws.state.getValue();
-                    if (tok === null && state !== SocketClientState.DISCONNECTED) {
-                        ws.socketDisconnect();
-                    } else if (state === SocketClientState.CONNECTED) {
-                        ws.socketDisconnect();
-                        ws.onConnection(tok);
-                    } else if (tok) {
-                        ws.onConnection(tok);
-                    }
-                })
-            ))
-        ).subscribe();
+        // timer(2000).pipe(
+        //     switchMap(() => session.getAccessToken$().pipe(
+        //         tap((tok) => {
+        //             const state = ws.state.getValue();
+        //             if (tok === null && state !== SocketClientState.DISCONNECTED) {
+        //                 ws.socketDisconnect();
+        //             } else if (state === SocketClientState.CONNECTED) {
+        //                 ws.socketDisconnect();
+        //                 ws.onConnection(tok);
+        //             } else if (tok) {
+        //                 ws.onConnection(tok);
+        //             }
+        //         })
+        //     ))
+        // ).subscribe();
     }
 }

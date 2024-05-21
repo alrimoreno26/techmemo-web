@@ -25,6 +25,7 @@ export class SeverityPipe implements PipeTransform {
                 return 'warning';
             case 'CLOSED':
             case 'CANCELLED':
+            case 'UNPAID':
             case 'EXPENSES':
                 return 'danger';
             default:

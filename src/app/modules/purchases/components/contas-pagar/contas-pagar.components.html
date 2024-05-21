@@ -28,22 +28,23 @@
                 </ng-template>
                 <div class="flex flex-wrap gap-3">
                     <div class="flex align-items-center">
-                        <p-radioButton name="todas" value="todas" [(ngModel)]="ingredient" inputId="ingredient1"></p-radioButton>
+                        <p-radioButton name="todas" value="ALL" [(ngModel)]="type" inputId="all"
+                                       (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">Todas</label>
                     </div>
-
                     <div class="flex align-items-center">
-                        <p-radioButton name="abertas" value="abertas" [(ngModel)]="ingredient" inputId="ingredient2"></p-radioButton>
+                        <p-radioButton name="abertas" value="UNPAID" [(ngModel)]="type" inputId="abertas"
+                                       (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">Abertas</label>
                     </div>
-
                     <div class="flex align-items-center">
-                        <p-radioButton name="quitadas" value="quitadas" [(ngModel)]="ingredient" inputId="ingredient3"></p-radioButton>
+                        <p-radioButton name="quitadas" value="PAID" [(ngModel)]="type" inputId="quitadas"
+                                       (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">Quitadas</label>
                     </div>
-
                     <div class="flex align-items-center">
-                        <p-radioButton name="provisao" value="provisao" [(ngModel)]="ingredient" inputId="ingredient4"></p-radioButton>
+                        <p-radioButton name="provisao" value="PROVISION" [(ngModel)]="type" inputId="provisao"
+                                       (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">Provisao</label>
                     </div>
                 </div>
@@ -52,10 +53,99 @@
         <div class="col-12 py-0">
             <p-divider styleClass="m-1"></p-divider>
         </div>
+        <div class="col-10 pb-0 pt-3 text-right">
+            <button pButton pRipple class="p-button-primary flex-1 border-round"
+                    label="Nova Conta A Pagar"
+                    (click)="novaConta()"
+                    icon="mdi mdi-plus"></button>
+        </div>
         <div class="col-10">
-            <c-data-table [action]="true" [exportBtn]="false"
-                          [headers]="headersTable" [service]="service" [showCreate]="true">
-            </c-data-table>
+            <p-table [value]="service.listEntities$()"
+                     rowGroupMode="subheader" dataKey="bigId"
+                     groupRowsBy="bigId" [tableStyle]="{ 'min-width': '60rem' }"
+                     (onRowExpand)="onRowExpand($event)">
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 5rem"></th>
+                        <th>Documento</th>
+                        <th># Parcelas</th>
+                        <th>1er Parcela</th>
+                        <th>Parcela Fixas</th>
+                        <th>Valor Total Parcelas</th>
+                        <th>Estado</th>
+                        <th>Ações</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="groupheader" let-rowIndex="rowIndex" let-product let-expanded="expanded">
+                    <tr>
+                        <td>
+                            <p-button type="button" pRipple [pRowToggler]="product" [text]="true" [rounded]="true"
+                                      [plain]="true"
+                                      [icon]="expanded ? 'mdi mdi-chevron-down' : 'mdi mdi-chevron-right'"/>
+                        </td>
+                        <td class="custom-td text-center"><p class="mb-0 pr-6">{{ product.purchaseCode }}</p></td>
+                        <td class="custom-td text-center"><p
+                            class="mb-0 pr-6">{{ product.amountPaymentInstallments }}</p></td>
+                        <td class="custom-td"><p class="mb-0">{{ product.firstPaymentInstallmentDate | date }}</p></td>
+                        <td class="custom-td text-center">
+                            <ng-template [ngIf]="product.monthlyPaymentInstallments" [ngIfElse]="notEnable">
+                                <i class="mdi mdi-check-circle-outline text-2xl text-green-700 pr-6"></i>
+                            </ng-template>
+                            <ng-template #notEnable>
+                                <i class="mdi mdi-close-circle-outline text-2xl text-red-700-700 pr-6"></i>
+                            </ng-template>
+                        </td>
+                        <td class="custom-td text-center">
+                            <p class="mb-0 pr-6">{{ product.purchaseValue | currency }}</p>
+                        </td>
+                        <td class="custom-td text-center">
+                            <p-tag value="{{product.state | translate}}" [severity]="product.state | severity"/>
+                        </td>
+                        <td>
+                            <button class="p-button-rounded p-button-text" icon="mdi mdi-pencil mdi-24px"
+                                    pButton
+                                    type="button"></button>
+                            <button class="p-button-rounded p-button-text p-button-danger"
+                                    icon="mdi mdi-delete mdi-24px"
+                                    pButton
+                                    type="button"></button>
+                        </td>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="rowexpansion" let-installments>
+                    <tr>
+                        <td colspan="8">
+                            <p-table [value]="installments.paymentInstallments" dataKey="id">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Code</th>
+                                        <th># Parcela</th>
+                                        <th>Data da Parcela</th>
+                                        <th>Doc Fornecedor</th>
+                                        <th>Fornecedor</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-order let-rowIndex="rowIndex">
+                                    <tr [ngClass]="containerClass(order)">
+                                        <td>{{ order.purchaseCode }}</td>
+                                        <td>{{ rowIndex + 1 }}</td>
+                                        <td>{{ order.expirationDate | date }}</td>
+                                        <td>{{ order.supplierDocument | cpfCnpj }}</td>
+                                        <td> {{ order.supplierName }} {{ order.supplierLastName }}</td>
+                                        <td> {{ order.value | currency }}</td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="emptymessage">
+                                    <tr>
+                                        <td colspan="6">There are no order for this product yet.</td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
         </div>
         <div class="col-2">
             <p-panel>
@@ -63,7 +153,8 @@
                     <span class="mb-0 text-2xl font-bold">Totais</span>
                 </ng-template>
                 <div class="flex w-full justify-content-end">
-                    <h5 class=" font-bold severity_danger mb-2 flex justify-content-end" style="width: 7rem !important;">
+                    <h5 class=" font-bold severity_danger mb-2 flex justify-content-end"
+                        style="width: 7rem !important;">
                         A pagar</h5>
                 </div>
                 <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"

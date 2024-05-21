@@ -3,131 +3,211 @@
 </ng-template>
 <div formResponsive width="850px">
     <div class="grid">
-        <div class="col-8">
-            <div class="col-12 pb-1 pt-3">
-                <div class="align-items-center flex flex-auto gap-3">
-                    <label class="block font-bold w-4">Fornecedor</label>
-                    <div class="search-container-single px-0 py-0 shadow-none w-full">
-                        <i class="mdi mdi-magnify"></i>
-                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
-                                        (completeMethod)="searchF($event)"
-                                        inputStyleClass="w-full"
-                                        (input)="searchFornecedor($event)"
-                                        [dropdown]="true"
-                                        placeholder="Pesquise por nome ou código de fornecedor"
-                                        field="name"
-                                        [(ngModel)]="selectedF" [ngModelOptions]="{standalone: true}"
-                                        [suggestions]="suggestionsF"></p-autoComplete>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 pb-1">
-                <div class="align-items-center flex flex-auto gap-3">
-                    <label class="block font-bold w-4">Class Financiera</label>
-                    <div class="search-container-single px-0 py-0 shadow-none w-full">
-                        <i class="mdi mdi-magnify"></i>
-                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
-                                        (completeMethod)="search($event)"
-                                        inputStyleClass="w-full"
-                                        (input)="searchClassifiers($event)"
-                                        [dropdown]="true"
-                                        placeholder="Class Financiera"
-                                        field="name"
-                                        [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
-                                        [suggestions]="suggestions"></p-autoComplete>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 pb-1">
-                <div class="align-items-center flex flex-auto gap-3">
-                    <label class="block font-bold w-4">Tipo Pagamento</label>
-                    <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
-                                [options]="paymentMethodService.listEntities$()" [(ngModel)]="selected"
-                                optionLabel="description"
-                                placeholder="Tipo Pagamento"></p-dropdown>
-                </div>
-            </div>
-            <div class="col-12">
-                <div class="flex">
-                    <div class="align-items-center flex flex-auto ">
-                        <label class="block font-bold w-4">Doc/Fatura</label>
-                        <p-inputNumber [(ngModel)]="fatura" inputStyleClass="w-7rem"></p-inputNumber>
-                    </div>
-                    <div>
-                        <p-inputNumber [(ngModel)]="fatura" inputStyleClass="w-7rem"
-                                       [disabled]="true"></p-inputNumber>
-                    </div>
-                </div>
-            </div>
-            <div class="col-12 pb-1">
-                <div class="align-items-center flex flex-auto gap-3">
-                    <label class="block font-bold w-3">Observação</label>
-                    <textarea rows="3" cols="50" [autoResize]="true" [(ngModel)]="description"
-                              pInputTextarea></textarea>
-                </div>
-            </div>
-        </div>
-        <div class="col-4 px-0">
-            <p-panel>
-                <ng-template pTemplate="header">
-                    <span class="mb-0 font-bold">Parcelas</span>
-                </ng-template>
-                <div class="align-items-center flex flex-auto gap-3 pb-3">
-                    <label class="block font-bold w-full">Multiples Parcelas</label>
-                    <p-inputSwitch [(ngModel)]="parcelas"></p-inputSwitch>
-                </div>
-                @if (parcelas) {
-                    <div class="align-items-center flex flex-auto gap-3 pb-3">
-                        <label class="block font-bold w-full"># Parcelas</label>
-                        <p-inputNumber [(ngModel)]="qParcelas" inputStyleClass="w-5rem"></p-inputNumber>
-                    </div>
-                    <div class="align-items-center flex flex-auto gap-3 justify-content-between  pb-3">
-                        <label class="block font-bold">Vencimiento</label>
-                        <div class="flex flex-column">
-                            <div class="pb-2">
-                                <p-radioButton name="fixo" value="fixo" [(ngModel)]="vencimiento"
-                                               inputId="fixo"></p-radioButton>
-                                <label class="ml-2">Dias Fixo</label>
-                            </div>
-                            <div>
-                                <p-radioButton name="corrigos" value="corrigos" [(ngModel)]="vencimiento"
-                                               inputId="corrigos"></p-radioButton>
-                                <label class="ml-2">Dias Corrigos</label>
-                            </div>
+        <form [formGroup]="form" class="flex w-full">
+            <div class="col-8">
+                <div class="col-12 pb-1 pt-3">
+                    <div class="align-items-center flex flex-auto gap-3">
+                        <label class="block font-bold w-4">Fornecedor</label>
+                        <div class="search-container-single px-0 py-0 shadow-none w-full">
+                            <i class="mdi mdi-magnify"></i>
+                            <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                            formControlName="supplierId"
+                                            (completeMethod)="searchF($event)"
+                                            inputStyleClass="w-full"
+                                            (input)="searchFornecedor($event)"
+                                            field="name"
+                                            [dropdown]="true"
+                                            placeholder="Pesquise por nome ou código de fornecedor"
+                                            [suggestions]="suggestionsF"></p-autoComplete>
                         </div>
                     </div>
+                </div>
+                <div class="col-12 pb-1">
                     <div class="align-items-center flex flex-auto gap-3">
-                        <label class="block font-bold w-full">Vencimiento 1 Parcela</label>
-                        <p-calendar [(ngModel)]="rangeDates"
-                                    [appendTo]="'body'"
-                                    dateFormat="dd/mm/yy"
-                                    [readonlyInput]="true"></p-calendar>
+                        <label class="block font-bold w-4">Class Financiera</label>
+                        <div class="search-container-single px-0 py-0 shadow-none w-full">
+                            <i class="mdi mdi-magnify"></i>
+                            <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                            (completeMethod)="search($event)"
+                                            formControlName="classifierId"
+                                            inputStyleClass="w-full"
+                                            (input)="searchClassifiers($event)"
+                                            [dropdown]="true"
+                                            field="name"
+                                            placeholder="Class Financiera"
+                                            [suggestions]="suggestions"></p-autoComplete>
+                        </div>
                     </div>
-                }
+                </div>
+                <div class="col-12 pb-1">
+                    <div class="align-items-center flex flex-auto gap-3">
+                        <label class="block font-bold w-4">Tipo Pagamento</label>
+                        <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
+                                    [options]="paymentMethodService.listEntities$()"
+                                    formControlName="paymentStructureId"
+                                    optionLabel="description"
+                                    placeholder="Tipo Pagamento"></p-dropdown>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="flex">
+                        <div class="align-items-center flex flex-auto ">
+                            <label class="block font-bold w-4">Doc/Fatura</label>
+                            <p-inputNumber formControlName="purchaseCode" inputStyleClass="w-7rem"></p-inputNumber>
+                        </div>
+                        <div>
+                            <p-inputNumber formControlName="purchaseCode" inputStyleClass="w-7rem"
+                                           [disabled]="true"></p-inputNumber>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 pb-1">
+                    <div class="align-items-center flex flex-auto gap-3">
+                        <label class="block font-bold w-3">Observação</label>
+                        <textarea rows="3" cols="50" [autoResize]="true" formControlName="description"
+                                  pInputTextarea></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 px-0">
+                <p-panel>
+                    <ng-template pTemplate="header">
+                        <span class="mb-0 font-bold">Parcelas</span>
+                    </ng-template>
+                    <div class="align-items-center flex flex-auto gap-3 pb-3">
+                        <label class="block font-bold w-full">Multiples Parcelas</label>
+                        <p-inputSwitch [(ngModel)]="mParcelas" [ngModelOptions]="{standalone: true}"></p-inputSwitch>
+                    </div>
+                    <div class="align-items-center flex flex-auto gap-3 pb-3">
+                        <label class="block font-bold w-full">São parcelas provisórias</label>
+                        <p-inputSwitch formControlName="provision"></p-inputSwitch>
+                    </div>
+                    @if (mParcelas) {
+                        <div class="align-items-center flex flex-auto gap-3 pb-3">
+                            <label class="block font-bold w-full"># Parcelas</label>
+                            <p-inputNumber [(ngModel)]="qParcelas" [ngModelOptions]="{standalone: true}"
+                                           inputStyleClass="w-5rem"></p-inputNumber>
+                        </div>
+                        <div class="align-items-center flex flex-auto gap-3 justify-content-between  pb-3">
+                            <label class="block font-bold">Vencimiento</label>
+                            <div class="flex flex-column">
+                                <div class="pb-2">
+                                    <p-radioButton [value]="true" formControlName="monthlyPaymentInstallments"
+                                                   [inputId]="'fixo'"></p-radioButton>
+                                    <label class="ml-2">Dias Fixo</label>
+                                </div>
+                                <div>
+                                    <p-radioButton [value]="false" formControlName="monthlyPaymentInstallments"
+                                                   [inputId]="'corrigos'"></p-radioButton>
+                                    <label class="ml-2">Dias Corrigos</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="align-items-center flex flex-auto gap-3">
+                            <label class="block font-bold w-full">Vencimiento 1 Parcela</label>
+                            <p-calendar [(ngModel)]="rangeDates"
+                                        [ngModelOptions]="{standalone: true}"
+                                        [appendTo]="'body'"
+                                        dateFormat="dd/mm/yy"
+                                        [readonlyInput]="true"></p-calendar>
+                        </div>
+                    }
 
-            </p-panel>
+                </p-panel>
+            </div>
+        </form>
+        <div class="col-12 py-0">
+            <div class="flex justify-content-end">
+                <div class="flex gap-2">
+                    <button pButton pRipple class="p-button-primary flex-1 border-round"
+                            label="Cadastrar Nova Parcelas"
+                            (click)="addParcela()"
+                            icon="mdi mdi-plus"></button>
+                </div>
+            </div>
         </div>
         <div class="col-12">
-            <p-table [value]="listParcelas" [scrollable]="true" scrollHeight="350px" styleClass="'p-datatable-sm'">
+            <p-table [value]="paymentInstallments"
+                     dataKey="doc" editMode="row"
+                     [scrollable]="true" scrollHeight="300px" styleClass="'p-datatable-sm'">
                 <ng-template pTemplate="header">
                     <tr>
-                        <th>Parcela</th>
+                        <th>Doc</th>
                         <th>Data Vencimiento</th>
                         <th>Valor</th>
                         <th>Observação</th>
-                        <th>Parcela provisão</th>
+                        <th style="width:20%"></th>
                     </tr>
                 </ng-template>
-                <ng-template pTemplate="body" let-product>
-                    <tr>
-                        <td>{{ product.parcela }}</td>
-                        <td>{{ product.vencimento | date:'dd/MM/YYYY' : '+0' }}</td>
-                        <td>{{ product.value }}</td>
-                        <td>{{ product.quantity }}</td>
-                        <td class="flex justify-content-center">
-                            <p-tableCheckbox [value]="product" />
+                <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
+                    <tr [pEditableRow]="product">
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input
+                                        pInputText
+                                        type="text"
+                                        [(ngModel)]="product.doc"/>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ product.doc }}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>{{ product.expirationDate | date:'dd/MM/YYYY' : '+0' }}</td>
+                        <td>
+                            <p-cellEditor>
+                                <ng-template pTemplate="input">
+                                    <input
+                                        pInputText
+                                        type="number"
+                                        [(ngModel)]="product.value"/>
+                                </ng-template>
+                                <ng-template pTemplate="output">
+                                    {{ product.value | currency}}
+                                </ng-template>
+                            </p-cellEditor>
+                        </td>
+                        <td>{{ product.description }}</td>
+                        <td>
+                            <div class="flex align-items-center justify-content-center gap-2">
+                                <button
+                                    *ngIf="!editing"
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    pInitEditableRow
+                                    icon="mdi mdi-pencil"
+                                    (click)="onRowEditInit(product)"
+                                    class="p-button-rounded p-button-text">
+                                </button>
+                                <button
+                                    *ngIf="editing"
+                                    pButton
+                                    pRipple
+                                    type="button"
+                                    pSaveEditableRow
+                                    icon="mdi mdi-check"
+                                    (click)="onRowEditSave(product)"
+                                    class="p-button-rounded p-button-text p-button-success mr-2">
+                                </button>
+                                <button
+                                    *ngIf="editing"
+                                    pButton pRipple
+                                    type="button"
+                                    pCancelEditableRow
+                                    icon="mdi mdi-trash-can-outline"
+                                    (click)="onRowEditCancel(product, ri)"
+                                    class="p-button-rounded p-button-text p-button-danger">
+                                </button>
+                            </div>
                         </td>
                     </tr>
+                </ng-template>
+                <ng-template pTemplate="summary">
+                    <div class="flex justify-content-center">
+                        Total {{ totalPaymentsInstall |currency }}.
+                    </div>
                 </ng-template>
             </p-table>
         </div>
@@ -141,7 +221,8 @@
                 (click)="gerarParcelas()"
                 icon="mdi mdi-close"></button>
         <button pButton pRipple class="p-button-primary flex-1 border-round" label="Cadastrar Contas"
-                [disabled]="listParcelas.length === 0"
+                [disabled]="paymentInstallments.length === 0"
+                (click)="save()"
                 icon="mdi mdi-check"></button>
     </div>
 </ng-template>

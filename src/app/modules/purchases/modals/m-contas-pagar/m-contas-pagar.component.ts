@@ -7,6 +7,10 @@ import {PaymentMethodService} from "../../../financial/service/payment-method.se
 import {StoreContasPagarServices} from "../../services/store.contas-pagar.services";
 import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
 import {SupplierService} from "../../../inventory/forncedores/services/supplier.service";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {formatDate} from "../../../../core/util";
+import {CreateBillPaymentInstallmentDto} from "../../../../core/models/bills";
+import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
 
 @Component({
     templateUrl: './m-contas-pagar.component.html',
@@ -26,10 +30,11 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     description = '';
     parcelas = false;
     qParcelas = 0;
-    vencimiento = 'fixo';
+    mParcelas: boolean = false;
+    totalPaymentsInstall: number = 0;
 
     rangeDates: Date = new Date()
-    listParcelas: any[] = []
+    paymentInstallments: any[] = []
 
     // Autocomplete classfiers
     selectedItem: any;
@@ -41,51 +46,79 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     searchTextF = '';
     suggestionsF: any[] = [];
 
+    clonedProducts: { [s: string]: any } = {};
+
+
     constructor(private storeService: StoreContasPagarServices,
                 public paymentMethodService: PaymentMethodService,
                 private supplierService: SupplierService,
+                private dialogRegistryService: DialogRegistryService,
                 private financeService: FinancialClasificationService) {
         super(storeService);
+        this.dialogRegistryService.addDialog(this.ref);
         this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
     }
 
     ngOnInit(): void {
+        const {data} = this.config;
+        this.form = new FormGroup({
+            classifierId: new FormControl<string>(data?.classifierId, Validators.required),
+            description: new FormControl<string>(data?.description, Validators.required),
+            monthlyPaymentInstallments: new FormControl<boolean>(data?.monthlyPaymentInstallments || true, Validators.required),
+            paymentStructureId: new FormControl<string>(data?.paymentStructureId, Validators.required),
+            provision: new FormControl<boolean>(data?.provision, Validators.required),
+            purchaseCode: new FormControl<string>(data?.purchaseCode),
+            supplierId: new FormControl<string>(data?.supplierId, Validators.required)
+        });
+        this.paymentInstallments = data?.paymentInstallments ?? [];
+        this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate) : this.rangeDates = new Date();
+        this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
+        this.qParcelas > 1 ? this.mParcelas = true : this.parcelas = false;
+
         this.financeService.autocompleteSearch({
             pageNumber: 0,
             pageSize: 50,
         })
-        this.supplierService.autocomplete({  pageNumber: 0,
-            pageSize: 50,})
+        this.supplierService.autocomplete({
+            pageNumber: 0,
+            pageSize: 50,
+        })
+    }
+
+    getFC(key: string) {
+        return this.form.get(key)?.value;
     }
 
     gerarParcelas() {
-        if (this.parcelas) {
-            this.listParcelas = [];
+        if (this.mParcelas) {
+            this.paymentInstallments = [];
             const monthlyPayment = this.fatura / this.qParcelas;
             let currentDate = this.rangeDates;
             for (let i = 0; i < this.qParcelas; i++) {
 
-                if (this.vencimiento !== 'fixo') {
+                if (!this.form.get('monthlyPaymentInstallments')?.value) {
                     currentDate.setDate(currentDate.getDate() + 1);
                 } else {
-                    currentDate.setMonth(currentDate.getMonth() + 1);
+                    if (i !== 0) {
+                        currentDate.setMonth(currentDate.getMonth() + 1);
+                    }
+
                 }
                 let tempDate = new Date(currentDate);
-                this.listParcelas.push({
-                    parcela: i + 1,
-                    value: monthlyPayment,
-                    vencimento: tempDate,
+                this.paymentInstallments.push({
+                    value: 0,
+                    expirationDate: tempDate,
                     description: this.description
                 })
             }
         } else {
-            this.listParcelas.push({
-                parcela: 1,
-                value: this.fatura,
-                vencimento: this.rangeDates.setMonth(this.rangeDates.getMonth() + 1),
-                description: this.description
+            this.paymentInstallments.push({
+                value: 0,
+                expirationDate: this.rangeDates.setMonth(this.rangeDates.getMonth() + 1),
+                description: this.description,
             })
         }
+        this.reduceTotalPaymentsInstall();
     }
 
     search(event: AutoCompleteCompleteEvent) {
@@ -106,10 +139,63 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
             filter: this.searchText,
         });
     }
+
     searchFornecedor(event: { target: { value: string; } } | any) {
         this.searchText = event.target.value;
         this.supplierService.autocomplete({
             filter: this.searchText,
         });
+    }
+
+    addParcela() {
+        const parcela: any = {
+            value: 0,
+            expirationDate: new Date(),
+            description: '',
+        }
+        this.paymentInstallments.push(parcela)
+        this.onRowEditInit(parcela)
+
+    }
+
+    onRowEditInit(product: any) {
+        this.clonedProducts[product.id as string] = {...product};
+    }
+
+    onRowEditSave(product: any) {
+        if (product.price > 0) {
+            delete this.clonedProducts[product.id as string];
+            console.log({severity: 'success', summary: 'Success', detail: 'Product is updated'});
+        } else {
+            console.log({severity: 'error', summary: 'Error', detail: 'Invalid Price'});
+        }
+        this.reduceTotalPaymentsInstall();
+    }
+
+    onRowEditCancel(product: any, index: number) {
+        this.paymentInstallments[index] = this.clonedProducts[product.id as string];
+        delete this.clonedProducts[product.id as string];
+        this.reduceTotalPaymentsInstall();
+    }
+
+    reduceTotalPaymentsInstall() {
+        this.totalPaymentsInstall = this.paymentInstallments.reduce((acc, curr) => acc + curr.value, 0)
+    }
+
+    override save() {
+        const bills = {
+            classifierId: this.form.get('classifierId')?.value.id,
+            description: this.form.get('description')?.value,
+            monthlyPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value,
+            paymentInstallments: this.paymentInstallments.map((item: CreateBillPaymentInstallmentDto) => {
+                return {...item, expirationDate: formatDate(new Date(item.expirationDate))}
+            }),
+            paymentStructureId: this.form.get('paymentStructureId')?.value?.id,
+            provision: this.form.get('provision')?.value,
+            purchaseCode: this.form.get('purchaseCode')?.value,
+            supplierId: this.form.get('supplierId')?.value.id,
+        }
+
+        this.storeService.create({data: bills});
     }
 }
