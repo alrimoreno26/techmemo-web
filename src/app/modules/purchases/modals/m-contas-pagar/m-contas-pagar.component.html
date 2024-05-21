@@ -51,13 +51,14 @@
                 </div>
                 <div class="col-12">
                     <div class="flex">
-                        <div class="align-items-center flex flex-auto ">
-                            <label class="block font-bold w-4">Doc/Fatura</label>
+                        <div class="align-items-center flex flex-1 gap-7">
+                            <label class="block font-bold w-4"># Fatura</label>
                             <p-inputNumber formControlName="purchaseCode" inputStyleClass="w-7rem"></p-inputNumber>
                         </div>
-                        <div>
-                            <p-inputNumber formControlName="purchaseCode" inputStyleClass="w-7rem"
-                                           [disabled]="true"></p-inputNumber>
+                        <div class="align-items-center flex flex-1 justify-content-end">
+                            <label class="block font-bold w-4">Valor Fatura</label>
+                            <p-inputNumber [(ngModel)]="purchaseValue" [ngModelOptions]="{standalone: true}" inputStyleClass="w-7rem"
+                                           ></p-inputNumber>
                         </div>
                     </div>
                 </div>
@@ -221,7 +222,7 @@
                 (click)="gerarParcelas()"
                 icon="mdi mdi-close"></button>
         <button pButton pRipple class="p-button-primary flex-1 border-round" label="Cadastrar Contas"
-                [disabled]="paymentInstallments.length === 0"
+                [disabled]="this.form.invalid"
                 (click)="save()"
                 icon="mdi mdi-check"></button>
     </div>

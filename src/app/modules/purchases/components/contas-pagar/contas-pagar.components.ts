@@ -7,6 +7,7 @@ import {MContasPagarComponent} from "../../modals/m-contas-pagar/m-contas-pagar.
 import {FinancialClassifiersService} from "../../../../core/services/financial-classifiers.service";
 import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
 import {TableRowCollapseEvent, TableRowExpandEvent} from "primeng/table";
+import {formatDate} from "../../../../core/util";
 
 @Component({
     selector: 'c-contas-pagar',
@@ -17,18 +18,25 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     override modalContent = MContasPagarComponent;
 
     apagar = 0;
-    rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), 11, 31)];
+    rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
     type: string = 'ALL';
     selectedItem: any;
     suggestions: any[] = [];
 
     searchText = '';
 
-    expandedRows = {};
+    first= 0;
+    size= 20;
 
     constructor(public service: StoreContasPagarServices, private financeService: FinancialClasificationService) {
         super()
-        this.service.loadAll({pageNumber: 0, pageSize: 50})
+        this.service.loadAll({
+            pageNumber: this.first,
+            pageSize: this.size,
+            type: this.type,
+            startDate: formatDate(this.rangeDates[0]),
+            endDate: formatDate(this.rangeDates[1])
+        })
     }
 
     override headersTable: HeadersTable[] = [
@@ -43,7 +51,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     ngOnInit() {
     }
 
-    novaConta(){
+    novaConta() {
         this.service.openModalAddOrEdit();
         this.dialogService.open(MContasPagarComponent, {})
     }
@@ -55,7 +63,25 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     }
 
     changeFilterType() {
-        this.service.loadAll({type: this.type, pageNumber: 0, pageSize: 50})
+        this.service.loadAll({
+            type: this.type,
+            startDate: formatDate(this.rangeDates[0]),
+            endDate: formatDate(this.rangeDates[1]),
+            pageNumber: this.first,
+            pageSize: this.size,
+        })
+    }
+
+    pageChange(event:any) {
+        this.size = event.rows;
+        this.first = event.first;
+        this.service.loadAll({
+            type: this.type,
+            startDate: formatDate(this.rangeDates[0]),
+            endDate: formatDate(this.rangeDates[1]),
+            pageNumber: this.first,
+            pageSize: this.size,
+        })
     }
 
     searchClassifiers(event: { target: { value: string; } } | any) {
@@ -66,23 +92,28 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     }
 
     onRowExpand(event: TableRowExpandEvent) {
-        if(event.data.paymentInstallments.length === 0) {
+        if (event.data.paymentInstallments.length === 0) {
             this.service.setSelected(event.data);
             const id = event.data.id;
             this.service.loadInstallmentsBill({billId: id, type: this.type, pageNumber: 0, pageSize: 50})
         }
     }
 
-    containerClass(installments: any){
-        if(!installments.paid && !installments.provision) {
+    containerClass(installments: any) {
+        if (!installments.paid && !installments.provision) {
             return ''
-        } else if(installments.provision && !installments.paid) {
+        } else if (installments.provision && !installments.paid) {
             return 'bg-yellow-100'
-        }
-        else {
+        } else {
             return 'bg-green-100'
         }
-
+    }
+    contasClass(installments: any) {
+     if (installments.provision) {
+            return 'bg-yellow-100'
+        } else {
+            return ''
+        }
     }
 
 }

@@ -26,7 +26,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
 
     selected: any;
 
-    fatura = 288.39;
+    purchaseValue:number = 0;
     description = '';
     parcelas = false;
     qParcelas = 0;
@@ -63,11 +63,11 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
         const {data} = this.config;
         this.form = new FormGroup({
             classifierId: new FormControl<string>(data?.classifierId, Validators.required),
-            description: new FormControl<string>(data?.description, Validators.required),
+            description: new FormControl<string>(data?.description),
             monthlyPaymentInstallments: new FormControl<boolean>(data?.monthlyPaymentInstallments || true, Validators.required),
             paymentStructureId: new FormControl<string>(data?.paymentStructureId, Validators.required),
-            provision: new FormControl<boolean>(data?.provision, Validators.required),
-            purchaseCode: new FormControl<string>(data?.purchaseCode),
+            provision: new FormControl<boolean>(data?.provision || false, Validators.required),
+            purchaseCode: new FormControl<string>({value:data?.purchaseCode, disabled: true}),
             supplierId: new FormControl<string>(data?.supplierId, Validators.required)
         });
         this.paymentInstallments = data?.paymentInstallments ?? [];
@@ -92,7 +92,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     gerarParcelas() {
         if (this.mParcelas) {
             this.paymentInstallments = [];
-            const monthlyPayment = this.fatura / this.qParcelas;
+            const monthlyPayment = this.purchaseValue / this.qParcelas;
             let currentDate = this.rangeDates;
             for (let i = 0; i < this.qParcelas; i++) {
 
@@ -183,19 +183,22 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     }
 
     override save() {
-        const bills = {
-            classifierId: this.form.get('classifierId')?.value.id,
-            description: this.form.get('description')?.value,
-            monthlyPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value,
-            paymentInstallments: this.paymentInstallments.map((item: CreateBillPaymentInstallmentDto) => {
-                return {...item, expirationDate: formatDate(new Date(item.expirationDate))}
-            }),
-            paymentStructureId: this.form.get('paymentStructureId')?.value?.id,
-            provision: this.form.get('provision')?.value,
-            purchaseCode: this.form.get('purchaseCode')?.value,
-            supplierId: this.form.get('supplierId')?.value.id,
+        if(this.form.invalid){
+            const bills = {
+                classifierId: this.form.get('classifierId')?.value.id,
+                description: this.form.get('description')?.value,
+                monthlyPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value,
+                paymentInstallments: this.paymentInstallments.map((item: CreateBillPaymentInstallmentDto) => {
+                    return {...item, expirationDate: formatDate(new Date(item.expirationDate))}
+                }),
+                paymentStructureId: this.form.get('paymentStructureId')?.value?.id,
+                provision: this.form.get('provision')?.value,
+                purchaseCode: this.form.get('purchaseCode')?.value,
+                supplierId: this.form.get('supplierId')?.value.id,
+            }
+
+            this.storeService.create({data: bills});
         }
 
-        this.storeService.create({data: bills});
     }
 }

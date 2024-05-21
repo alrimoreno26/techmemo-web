@@ -34,13 +34,16 @@ import {InputTextareaModule} from "primeng/inputtextarea";
 import {FinancialClasificationService} from "../financial/service/financial-clasification.service";
 import {InputTextModule} from "primeng/inputtext";
 import {TagModule} from "primeng/tag";
+import {MEditParcelasComponent} from "./modals/m-edit-parcelas/m-edit-parcelas.component";
+import {PaginatorModule} from "primeng/paginator";
 
 @NgModule({
     declarations: [
         PurchasesComponent,
         ContasPagarComponents,
         MPurchasesComponent,
-        MContasPagarComponent
+        MContasPagarComponent,
+        MEditParcelasComponent
     ],
     imports: [
         CommonModule,
@@ -66,7 +69,8 @@ import {TagModule} from "primeng/tag";
         InputSwitchModule,
         InputTextareaModule,
         InputTextModule,
-        TagModule
+        TagModule,
+        PaginatorModule
     ],
     providers:[
         StoreContasPagarServices,
