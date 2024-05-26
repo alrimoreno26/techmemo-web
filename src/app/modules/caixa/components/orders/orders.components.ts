@@ -60,6 +60,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
             }
             if (tableService.listEntities$()) {
+                this.table_union= [];
                 this.free = tableService.listEntities$()?.filter(f => f.state === tableState.FREE).length || 0;
                 this.busy = tableService.listEntities$()?.filter(f => f.state === tableState.BUSY || f.state === tableState.BUSY_WITH_UNION).length || 0;
             }
@@ -105,26 +106,32 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         if (event.target.classList.contains('p-checkbox-box') || event.target.classList.contains('p-checkbox-icon')) {
             event.stopPropagation();
         } else {
-            switch (table.state) {
-                case tableState.FREE:
-                    this.fromTable = table.id;
-                    this.service.openModalAddOrEdit();
-                    this.dialogService.open(MComandaComponents, {
-                        data: {id: table.id},
-                        width: '350px',
-                    })
-                    break;
-                case tableState.BUSY_WITH_UNION:
-                    this.router.navigate([`/comandas/table-union/${table.unionTableId}`]).then();
-                    break;
-                default:
-                    this.router.navigate([`/comandas/table/${table.id}`]).then();
-            }
-            if (table.state === tableState.FREE) {
+            if(!this.caixaOpened){
+                this.toastMessageService.showMessage("warn", 'INFO', 'Caixa fechado')
+                return;
+            } else{
+                switch (table.state) {
+                    case tableState.FREE:
+                        this.fromTable = table.id;
+                        this.service.openModalAddOrEdit();
+                        this.dialogService.open(MComandaComponents, {
+                            data: {id: table.id},
+                            width: '350px',
+                        })
+                        break;
+                    case tableState.BUSY_WITH_UNION:
+                        this.router.navigate([`/comandas/table-union/${table.unionTableId}`]).then();
+                        break;
+                    default:
+                        this.router.navigate([`/comandas/table/${table.id}`]).then();
+                }
+                if (table.state === tableState.FREE) {
 
-            } else {
+                } else {
 
+                }
             }
+
 
         }
 

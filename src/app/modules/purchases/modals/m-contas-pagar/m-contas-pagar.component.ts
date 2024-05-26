@@ -92,6 +92,11 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     gerarParcelas() {
         if (this.mParcelas) {
             this.paymentInstallments = [];
+            let monthlyPayment = 0;
+            if(this.purchaseValue > 0){
+                monthlyPayment = this.purchaseValue / this.qParcelas;
+            }
+
             let currentDate = this.rangeDates;
             for (let i = 0; i < this.qParcelas; i++) {
 
@@ -105,7 +110,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
                 }
                 let tempDate = new Date(currentDate);
                 this.paymentInstallments.push({
-                    value: 0,
+                    value: monthlyPayment,
                     expirationDate: tempDate,
                     description: this.description
                 })
@@ -182,7 +187,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     }
 
     override save() {
-        if(this.form.invalid){
+        if(this.form.valid){
             const bills = {
                 classifierId: this.form.get('classifierId')?.value.id,
                 description: this.form.get('description')?.value,

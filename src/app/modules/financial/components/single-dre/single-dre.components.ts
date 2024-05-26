@@ -13,6 +13,7 @@ export class SingleDreComponents{
     constructor(public service: StructureDreService) {
         // this.service.buildTree()
         console.log(this.service.columns)
+        console.log(service.indexesAndIndicators)
     }
 
 }

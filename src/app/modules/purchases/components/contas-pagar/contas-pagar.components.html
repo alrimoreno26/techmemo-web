@@ -90,7 +90,8 @@
                             <td class="custom-td text-center"><p class="mb-0 pr-6">{{ product.purchaseCode }}</p></td>
                             <td class="custom-td text-center"><p
                                 class="mb-0 pr-6">{{ product.amountPaymentInstallments }}</p></td>
-                            <td class="custom-td"><p class="mb-0">{{ product.firstPaymentInstallmentDate | date }}</p></td>
+                            <td class="custom-td"><p class="mb-0">{{ product.firstPaymentInstallmentDate | date }}</p>
+                            </td>
                             <td class="custom-td text-center">
                                 <ng-template [ngIf]="product.monthlyPaymentInstallments" [ngIfElse]="notEnable">
                                     <i class="mdi mdi-check-circle-outline text-2xl text-green-700 pr-6"></i>
@@ -107,10 +108,6 @@
                             </td>
                             <td>
                                 <button class="p-button-rounded p-button-text" icon="mdi mdi-pencil mdi-24px"
-                                        pButton
-                                        type="button"></button>
-                                <button class="p-button-rounded p-button-text p-button-danger"
-                                        icon="mdi mdi-delete mdi-24px"
                                         pButton
                                         type="button"></button>
                             </td>
@@ -131,20 +128,24 @@
                                             <th></th>
                                         </tr>
                                     </ng-template>
-                                    <ng-template pTemplate="body" let-order let-rowIndex="rowIndex">
-                                        <tr [ngClass]="containerClass(order)">
-                                            <td>{{ order.purchaseCode }}</td>
+                                    <ng-template pTemplate="body" let-installment let-rowIndex="rowIndex">
+                                        <tr [ngClass]="containerClass(installment)">
+                                            <td>{{ installment.purchaseCode }}</td>
                                             <td>{{ rowIndex + 1 }}</td>
-                                            <td>{{ order.expirationDate | date }}</td>
-                                            <td>{{ order.supplierDocument | cpfCnpj }}</td>
-                                            <td> {{ order.supplierName }} {{ order.supplierLastName }}</td>
-                                            <td> {{ order.value | currency }}</td>
+                                            <td>{{ installment.expirationDate | date }}</td>
+                                            <td>{{ installment.supplierDocument | cpfCnpj }}</td>
+                                            <td> {{ installment.supplierName }} {{ installment.supplierLastName }}</td>
+                                            <td> {{ installment.value | currency }}</td>
                                             <td>
-                                                <button class="p-button-rounded p-button-text" icon="mdi mdi-pencil mdi-24px"
+                                                <button class="p-button-rounded p-button-text"
+                                                        icon="mdi mdi-pencil mdi-24px"
                                                         pButton
+                                                        [disabled]="installment.paid"
+                                                        (click)="editInstallment(installments.id,installment)"
                                                         type="button"></button>
                                                 <button class="p-button-rounded p-button-text p-button-danger"
                                                         icon="mdi mdi-delete mdi-24px"
+                                                        [disabled]="installment.paid"
                                                         pButton
                                                         type="button"></button>
                                             </td>
@@ -172,7 +173,7 @@
                     [first]="first"
                     [rows]="size"
                     [totalRecords]="service.total$()"
-                    [rowsPerPageOptions]="[20, 50, 100]" />
+                    [rowsPerPageOptions]="[20, 50, 100]"/>
             </div>
 
         </div>
@@ -186,29 +187,45 @@
                         style="width: 7rem !important;">
                         A pagar</h5>
                 </div>
-                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                <p-inputNumber [(ngModel)]="totalValuePay" inputStyleClass="w-full" inputId="locale-user"
                                [minFractionDigits]="2"
+                               currency="BRL"
+                               locale="pt-BR"
+                               mode="currency"
                                [disabled]="true"></p-inputNumber>
+
                 <div class="flex w-full justify-content-end mt-2">
                     <h5 class="mb-1 font-bold severity_successfull mb-2 flex justify-content-end"
                         style="width: 7rem !important;">Pago</h5>
                 </div>
-                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                <p-inputNumber [(ngModel)]="totalValuePaid" inputStyleClass="w-full" inputId="locale-user"
                                [minFractionDigits]="2"
+                               currency="BRL"
+                               locale="pt-BR"
+                               mode="currency"
                                [disabled]="true"></p-inputNumber>
+
                 <div class="flex w-full justify-content-end mt-2">
                     <h5 class="mb-1 font-bold severity_warning mb-2 flex justify-content-end"
                         style="width: 10rem !important;">Saldo a Pagar</h5>
                 </div>
-                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                <p-inputNumber [(ngModel)]="totalValueToPay" inputStyleClass="w-full" inputId="locale-user"
                                [minFractionDigits]="2"
+                               currency="BRL"
+                               locale="pt-BR"
+                               mode="currency"
                                [disabled]="true"></p-inputNumber>
+
                 <div class="flex w-full justify-content-end mt-2">
                     <h5 class="mb-1 font-bold severity_info mb-2 flex justify-content-end"
                         style="width: 7rem !important;">Previsão</h5>
                 </div>
-                <p-inputNumber [(ngModel)]="apagar" inputStyleClass="w-full" inputId="locale-user"
+                <p-inputNumber [(ngModel)]="totalValueProvisionType" inputStyleClass="w-full"
                                [minFractionDigits]="2"
+                               currency="BRL"
+                               locale="pt-BR"
+                               mode="currency"
+                               inputId="locale-user"
                                [disabled]="true"></p-inputNumber>
             </p-panel>
         </div>

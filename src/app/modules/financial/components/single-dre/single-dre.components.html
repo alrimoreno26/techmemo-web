@@ -60,11 +60,14 @@
                 @for (col of columns | colHeader | extraHeader; track col) {
                     <td class="text-center white-space-nowrap">
                         @if (empty && !node.leaf) {
-                            <span></span>
+                            <span [cnpj]="cnpj" [data]="rowData" [field]="col.field" [source]="col.source"
+                                  [index]="empty" traceBalance>
+                               {{ rowData | numberK: col.field: [1,2] : empty }}
+                            </span>
                         } @else {
                             <span [cnpj]="cnpj" [data]="rowData" [field]="col.field" [source]="col.source"
                                   [index]="empty" traceBalance>
-                              123
+                               {{ rowData | numberK: col.field: [1,2] : empty }}
                             </span>
                         }
                     </td>

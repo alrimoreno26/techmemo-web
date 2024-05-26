@@ -7,6 +7,7 @@ import {StoreContasPagarServices} from "../../services/store.contas-pagar.servic
 import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
 import {SupplierService} from "../../../inventory/forncedores/services/supplier.service";
 import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
     templateUrl: './m-edit-parcelas.component.html',
@@ -20,7 +21,6 @@ import {DialogRegistryService} from "../../../../core/injects/dialog.registry.se
 export class MEditParcelasComponent extends BaseModalStoreComponentDirective implements OnInit {
 
 
-
     constructor(private storeService: StoreContasPagarServices,
                 public paymentMethodService: PaymentMethodService,
                 private supplierService: SupplierService,
@@ -32,11 +32,24 @@ export class MEditParcelasComponent extends BaseModalStoreComponentDirective imp
     }
 
     ngOnInit(): void {
-
+        console.log(this.config.data)
+        this.form = new FormGroup({
+            purchaseCode: new FormControl<string>(this.config.data?.installmment.purchaseCode, [Validators.required]),
+            expirationDate: new FormControl<string>(this.config.data?.installmment.expirationDate, [Validators.required]),
+            value: new FormControl<string>(this.config.data?.installmment.value, [Validators.required]),
+            description: new FormControl<string>(this.config.data?.installmment.description)
+        });
     }
 
-    getFC(key: string) {
-        return this.form.get(key)?.value;
+    close() {
+        this.dialogRegistryService.removeDialog(this.ref)
+        this.ref.close()
     }
 
+    override save() {
+        if (this.form.valid) {
+            const data = this.form.value
+            this.storeService.saveInstallmentsBill(this.config.data.id,this.config.data.installmment.id, data);
+        }
+    }
 }

@@ -58,3 +58,10 @@ export interface CreateBillPaymentInstallmentDto {
     value: number
 }
 
+export interface BillSummaryDto {
+    totalValuePaid: number;
+    totalValueProvisionType: number;
+    totalValuePay: number;
+    totalValueToPay: number;
+}
+

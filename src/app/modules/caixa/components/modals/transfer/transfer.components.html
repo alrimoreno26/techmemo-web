@@ -15,15 +15,14 @@
                 </ng-template>
                 <ng-template let-option pTemplate="item">
                     <ng-template [ngIf]="option.clientName" [ngIfElse]="byTable">
-                        <span>Order do -->{{ option.clientName }} -->Mesa numero {{ option.tableNumber }}</span>
+                        <span>Mesa numero {{ option.tableNumber }}-->{{ option.clientName }}</span>
                     </ng-template>
                     <ng-template #byTable>
-                        <span>Mesa numero {{ option.tableNumber }}</span>
+                        <span>{{option.tableNumber === null ? 'Comanda '+option.code : 'Mesa numero ' +option.tableNumber }}</span>
                     </ng-template>
 
                 </ng-template>
             </p-dropdown>
-            <p-button label="Nova Comanda" icon="pi pi-plus"></p-button>
         </div>
     </div>
     <div class="pt-3">

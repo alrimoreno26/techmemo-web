@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, effect, OnInit} from "@angular/core";
 import {BaseComponentDirective} from "../../../../standalone/data-table/directives/base.component.directive";
 import {HeadersTable} from "../../../../standalone/data-table/models";
 import {StoreContasPagarServices} from "../../services/store.contas-pagar.services";
@@ -7,6 +7,8 @@ import {MContasPagarComponent} from "../../modals/m-contas-pagar/m-contas-pagar.
 import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
 import {TableRowExpandEvent} from "primeng/table";
 import {formatDate} from "../../../../core/util";
+import {BillSummaryDto} from "../../../../core/models/bills";
+import {MEditParcelasComponent} from "../../modals/m-edit-parcelas/m-edit-parcelas.component";
 
 @Component({
     selector: 'c-contas-pagar',
@@ -16,7 +18,6 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
 
     override modalContent = MContasPagarComponent;
 
-    apagar = 0;
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
     type: string = 'ALL';
     selectedItem: any;
@@ -26,9 +27,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
 
     first= 0;
     size= 20;
+    totalValuePaid= 0;
+    totalValueProvisionType= 0;
+    totalValuePay= 0;
+    totalValueToPay= 0;
 
     constructor(public service: StoreContasPagarServices, private financeService: FinancialClasificationService) {
         super()
+
+
         this.service.loadAll({
             pageNumber: this.first,
             pageSize: this.size,
@@ -36,6 +43,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
             startDate: formatDate(this.rangeDates[0]),
             endDate: formatDate(this.rangeDates[1])
         })
+        effect(() => {
+            console.log(this.service.listEntities$());
+            if(this.service.summary$()){
+                this.totalValuePaid= this.service.summary$().totalValuePaid;
+                this.totalValueProvisionType= this.service.summary$().totalValueProvisionType;
+                this.totalValuePay= this.service.summary$().totalValuePay;
+                this.totalValueToPay= this.service.summary$().totalValueToPay;
+            }
+        });
     }
 
     override headersTable: HeadersTable[] = [
@@ -48,6 +64,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     ];
 
     ngOnInit() {
+        this.service.loadSummary();
     }
 
     novaConta() {
@@ -62,6 +79,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     }
 
     changeFilterType() {
+        this.service.loadSummary();
         this.service.loadAll({
             type: this.type,
             startDate: formatDate(this.rangeDates[0]),
@@ -74,6 +92,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     pageChange(event:any) {
         this.size = event.rows;
         this.first = event.first;
+        this.service.loadSummary();
         this.service.loadAll({
             type: this.type,
             startDate: formatDate(this.rangeDates[0]),
@@ -113,6 +132,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         } else {
             return ''
         }
+    }
+
+    editInstallment(contaId:any,installmment: any){
+        this.service.openModalAddOrEdit();
+        this.dialogService.open(MEditParcelasComponent,{
+            data: {id: contaId, installmment: installmment}
+        }).onClose.subscribe(() => {
+            this.service.loadSummary();
+        })
     }
 
 }

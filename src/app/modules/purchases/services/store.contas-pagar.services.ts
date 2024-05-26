@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Signal} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {ContasPagarService} from "../../../core/services/contas-pagar.service";
 import {Observable} from "rxjs";
@@ -11,11 +11,13 @@ import {BillLigthDto} from "../../../core/models/bills";
 @Injectable({providedIn: 'platform'})
 export class StoreContasPagarServices extends StoreComponentService<BillLigthDto> {
 
+    summary$: Signal<any | null> = this.selectSignal(state => state.summary);
+
     override serverSide = true;
     override lazyLoadOnInit = true;
 
     constructor(private contasPagarService: ContasPagarService) {
-        const defaultEntity: EntityState<BillLigthDto> =
+        const defaultEntity: EntityState<BillLigthDto> & { summary?: any } =
             {entities: [], total: 0, dialog: false, loaded: false};
         super(contasPagarService, defaultEntity);
     }
@@ -49,14 +51,35 @@ export class StoreContasPagarServices extends StoreComponentService<BillLigthDto
 
     loadInstallmentsBill(queryParams: any) {
         this.contasPagarService.loadInstallmentsBill(queryParams).subscribe((data) => {
-            const { selected, entities } = this.state();
+            const {selected, entities} = this.state();
 
             const updatedEntities = entities.map((entity: any) =>
                 entity.id === selected.id
-                    ? { ...entity, paymentInstallments: data.content }
+                    ? {...entity, paymentInstallments: data.content}
                     : entity
             );
+            selected.paymentInstallments = data.content;
+            this.setSelected(selected)
             this.setAll(updatedEntities);
+        })
+    }
+
+    loadSummary() {
+        this.contasPagarService.billsSummary().subscribe((data) => {
+            const temp = {
+                totalValuePaid: data.totalValuePaid,
+                totalValueProvisionType: data.totalValueProvisionType,
+                totalValuePay: data.totalValueToPay + data.totalValuePaid,
+                totalValueToPay: data.totalValueToPay,
+            }
+            this.patchState({summary: temp});
+        })
+    }
+
+    saveInstallmentsBill(contaId:any, id: string, data: any) {
+        this.contasPagarService.saveInstallmentsBill(id, data).subscribe(() => {
+            this.patchState({dialog: false});
+            this.loadInstallmentsBill({billId: contaId, type: 'ALL', pageNumber: 0, pageSize: 50})
         })
     }
 }

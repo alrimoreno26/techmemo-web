@@ -231,7 +231,11 @@ export class CaixaComponent implements OnInit {
         if (this.service.selectedEntity$()[this.activeOrder].products.length > 0) {
             this.service.openCustomDialog('transfer', true);
             this.dialogService.open(MTransferComponents, {
-                data: this.service.selectedEntity$()[this.activeOrder],
+                data: {
+                    order: this.service.selectedEntity$()[this.activeOrder],
+                    activeRouteOrder: this.activeRouteOrder,
+                    byRoute:this.activeRoute
+                },
                 modal: true,
                 style: {'width': '65vw'},
                 draggable: false,
@@ -369,7 +373,6 @@ export class CaixaComponent implements OnInit {
     }
 
     confirmWeight() {
-        debugger
         this.visible = false;
         if (this.selectedItem !== null) {
             let item = {

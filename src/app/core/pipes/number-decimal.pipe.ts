@@ -24,32 +24,7 @@ export class NumberKPipe implements PipeTransform {
 
   endCell(value: any, index: boolean, end: boolean): string {
     const {code, prefix, suffix} = value;
-    if (index && code) {
-      if (code.startsWith('7') || code.startsWith('8')) {
-        return '%';
-      } else if (code.startsWith('10')) {
-        if (code.startsWith('10.5') || code.startsWith('10.6')) {
-          return '%';
-        } else {
-          this.elementRef.nativeElement.parentElement.className = 'text-center pl-8';
-        }
-      } else if (code.startsWith('11')) {
-        if (code.startsWith('11.3')) {
-          return 'x';
-        } else {
-          this.elementRef.nativeElement.parentElement.className = 'text-center pl-8';
-        }
-      }
-    } else if (index && (prefix || suffix)) {
-      if (prefix) {
-        this.elementRef.nativeElement.parentElement.className = 'text-center pl-8';
-      }
-      if (suffix) {
-        return ' ' + suffix;
-      }
-    } else if (end) {
-      return '%'
-    }
+
     return '';
   }
 

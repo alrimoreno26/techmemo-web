@@ -33,6 +33,7 @@ export class StructureDreService extends StoreComponentService<any> {
             {entities: [], total: 0, dialog: false, loaded: false};
         super(services, defaultEntity);
         this.services.getAll().subscribe((data: any) => {
+            console.log(data)
             this.setAll(data);
             this.buildTable(data, true);
         })
@@ -178,22 +179,22 @@ export class StructureDreService extends StoreComponentService<any> {
         if (partial && project) {
             this.columnsSec = [
                 {header: '', colSpan: (this.columnsIndex.length - 1) * 3 - 4, field: '', width: 0, pipe: ''},
-                {header: 'methodK.balanceK.partial', colSpan: 2, field: '', width: 0, pipe: '', class: 'border-1'},
+                // {header: 'methodK.balanceK.partial', colSpan: 2, field: '', width: 0, pipe: '', class: 'border-1'},
                 {header: 'methodK.balanceK.projected', colSpan: 3, field: '', width: 0, pipe: '', class: 'border-1'}
             ];
             this.columnsIndexSec = [
                 {header: '', colSpan: this.columnsIndex.length - 2, field: '', width: 0, pipe: ''},
-                {header: 'methodK.balanceK.partial', field: '', width: 0, pipe: ''},
+                // {header: 'methodK.balanceK.partial', field: '', width: 0, pipe: ''},
                 {header: 'methodK.balanceK.projected', field: '', width: 0, pipe: ''}
             ];
         } else if (partial) {
             this.columnsSec = [
                 {header: '', colSpan: (this.columnsIndex.length - 1) * 3 - 1, field: '', width: 0, pipe: ''},
-                {header: 'methodK.balanceK.partial', colSpan: 2, field: '', width: 0, pipe: '', class: 'border-1'}
+                // {header: 'methodK.balanceK.partial', colSpan: 2, field: '', width: 0, pipe: '', class: 'border-1'}
             ];
             this.columnsIndexSec = [
                 {header: '', colSpan: this.columnsIndex.length - 1, field: '', width: 0, pipe: ''},
-                {header: 'methodK.balanceK.partial', field: '', width: 0, pipe: ''}
+                // {header: 'methodK.balanceK.partial', field: '', width: 0, pipe: ''}
             ];
         } else if (project) {
             this.columnsSec = [
