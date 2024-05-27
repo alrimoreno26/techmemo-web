@@ -129,7 +129,7 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
 
     addProduct() {
         this.productService.openModalAddOrEdit()
-        this.dialogService.open(MProductComponent, {}).onClose.subscribe((data: any) => {
+        this.dialogService.open(MProductComponent, {data: {suppliers: [this.form.get('supplierId')?.value]}}).onClose.subscribe((data: any) => {
             const temp = cloneDeep(this.productService.temporalCreated$())
             this.productList.push({
                 name: temp.name,

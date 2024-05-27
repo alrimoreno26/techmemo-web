@@ -83,6 +83,7 @@
         <div class="col-4">
             <div class="flex gap-3">
                 <button pButton pRipple class="p-button-outlined" label="Producto do Inventario"
+                        [disabled]="form.get('supplierId')?.value === null"
                         (click)="addProduct()"
                         icon="mdi mdi-plus mdi-24px"></button>
                 <button pButton pRipple class="p-button-outlined" label="Novo Producto"
