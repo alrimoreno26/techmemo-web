@@ -6,7 +6,7 @@ import {
     getDialog,
     selectAllEntities, selectedEntity,
     selectedTotalElement,
-    selectEntityLoaded
+    selectEntityLoaded, temporalCreated
 } from "../store/product.selectors";
 import {fromProductListActions} from "../store/product.actions";
 import {BaseStoreServices} from "../../../../standalone/data-table/class/base.store.services";
@@ -24,6 +24,7 @@ export class ProductService extends BaseStoreServices<any> {
 
     additionals$: Signal<any>;
     autocomplete$: Signal<any>;
+    temporalCreated$: Signal<any>;
 
     constructor(private store: Store<ProductPartialState>,
                 public unitService: UnidadeService,
@@ -41,6 +42,7 @@ export class ProductService extends BaseStoreServices<any> {
         this.selectedEntity$ = this.store.selectSignal(selectedEntity);
         this.additionals$ = this.store.selectSignal(getAdditional);
         this.autocomplete$ = this.store.selectSignal(getAutocomplete);
+        this.temporalCreated$ = this.store.selectSignal(temporalCreated);
     }
 
     autocomplete(data: Partial<any>): void {

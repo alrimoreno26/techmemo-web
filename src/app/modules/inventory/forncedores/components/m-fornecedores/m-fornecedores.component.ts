@@ -59,7 +59,7 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
     }
 
     initForm(data: any): void {
-        if (Object.keys(data).includes('products')) {
+        if (data !== undefined && Object.keys(data).includes('products')) {
             this.supplier = data;
         } else {
             this.supplier = {

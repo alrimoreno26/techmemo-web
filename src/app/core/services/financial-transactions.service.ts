@@ -10,7 +10,7 @@ import {SupplierDTO} from "../models/supplier";
 @Injectable({
     providedIn: 'root'
 })
-export class PurchasesService extends AbstractService<any> {
+export class FinancialTransactionsService extends AbstractService<any> {
 
     constructor(private httpClient: HttpClient) {
         super(httpClient, buildURL('/v1/financial-transactions'));

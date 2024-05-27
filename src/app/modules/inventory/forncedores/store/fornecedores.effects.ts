@@ -24,7 +24,7 @@ export class FornecedoresEffects {
         this.actions$.pipe(
             ofType(fromSupplierListActions.autocompleteSupplierList),
             switchMap(({lazy}) =>
-                this.service.findAllPaginateFilter(lazy).pipe(
+                this.service.autocompleteSuplpiers(lazy).pipe(
                     map((data) => fromSupplierListActions.autocompleteSupplierListSuccess({data})),
                     catchError(error => of(fromSupplierListActions.SupplierListFailRequest({error})))
                 )

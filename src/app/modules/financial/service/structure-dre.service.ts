@@ -1,14 +1,6 @@
 import {Injectable} from "@angular/core";
-import {ClassifierDto, PaymentStructureTO} from "../../../core/models/financial";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
-import {FinancialClassifiersService} from "../../../core/services/financial-classifiers.service";
-import {CommerceDto} from "../../../core/models/commerce";
-import {HeadersTable, LazyLoadData} from "../../../standalone/data-table/models";
-import {fromUserActions} from "../../security/user/store/user.actions";
-import {Observable} from "rxjs";
-import {switchMap} from "rxjs/operators";
-import {tapResponse} from "@ngrx/component-store";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HeadersTable} from "../../../standalone/data-table/models";
 import {StructureDreServices} from "../../../core/services/structure-dre.service";
 import {TreeNode} from "primeng/api";
 import {keys, orderBy, sumBy} from "lodash";
@@ -43,9 +35,6 @@ export class StructureDreService extends StoreComponentService<any> {
         this.columns = [];
         this.columnsSec = [];
         this.columnsIndexSec = [];
-        const activesList: any[] = [];
-        const passiveList: any[] = [];
-        const demonstrationsList: any[] = [];
         const indexesAndIndicatorsList: any[] = [];
         let partial: boolean = false;
         let project: boolean = false;
@@ -89,66 +78,6 @@ export class StructureDreService extends StoreComponentService<any> {
                 this.columns.push({header: 'AH', field: ha, pipe: 'percent', width: 70});
             }
 
-            b.actives.forEach((p: any, i:number) => {
-                if (r === 0) {
-                    activesList.push({
-                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
-                        prefix: p.prefix, suffix: p.suffix, position: p.position,
-                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
-                    });
-                } else if (r !== 0 && i >= activesList.length) {
-                    activesList.push({
-                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
-                        prefix: p.prefix, suffix: p.suffix, position: p.position,
-                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
-                    });
-                }
-
-                activesList[i][value] = p.value;
-                activesList[i][va] = p.percentVA;
-                activesList[i][ha] = p.percentHA;
-                activesList[i][trace] = b.traceabilityId;
-            });
-            b.passives.forEach((p: any, i:number) => {
-                if (r === 0) {
-                    passiveList.push({
-                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
-                        prefix: p.prefix, suffix: p.suffix, position: p.position,
-                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
-                    });
-                } else if (r !== 0 && i >= passiveList.length) {
-                    passiveList.push({
-                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
-                        prefix: p.prefix, suffix: p.suffix, position: p.position,
-                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
-                    });
-                }
-
-                passiveList[i][value] = p.value;
-                passiveList[i][va] = p.percentVA;
-                passiveList[i][ha] = p.percentHA;
-                passiveList[i][trace] = b.traceabilityId;
-            });
-            b.demonstrations.forEach((p: any, i:number) => {
-                if (r === 0) {
-                    demonstrationsList.push({
-                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
-                        prefix: p.prefix, suffix: p.suffix, position: p.position,
-                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
-                    });
-                } else if (r !== 0 && i >= demonstrationsList.length) {
-                    demonstrationsList.push({
-                        name: p.name, leaf: p.sheet, sheet: p.sheet, visualize: p.visualize,
-                        prefix: p.prefix, suffix: p.suffix, position: p.position,
-                        code: p.code, rootCode: p.rootCode, id: p.balanceFormatId, parent: p.balanceFormatParentId
-                    });
-                }
-
-                demonstrationsList[i][value] = p.value;
-                demonstrationsList[i][va] = p.percentVA;
-                demonstrationsList[i][ha] = p.percentHA;
-                demonstrationsList[i][trace] = b.traceabilityId;
-            });
             b?.indexesAndIndicators?.forEach((p: any, i:number) => {
                 if (r === 0) {
                     indexesAndIndicatorsList.push({
@@ -171,8 +100,8 @@ export class StructureDreService extends StoreComponentService<any> {
             });
         });
         structure ?
-            this.newView(activesList, passiveList, demonstrationsList, indexesAndIndicatorsList) :
-            this.currentView(activesList, passiveList, demonstrationsList, indexesAndIndicatorsList);
+            this.newView(indexesAndIndicatorsList) :
+            this.currentView(indexesAndIndicatorsList);
 
         this.columnsIndex = this.columns.filter(f => f.header !== 'AV' && f.header !== 'AH');
 
@@ -206,19 +135,9 @@ export class StructureDreService extends StoreComponentService<any> {
                 {header: 'methodK.balanceK.projected', field: '', width: 0, pipe: ''}
             ];
         }
-
-
-        // if (notCompare) {
-        //     this.checkMistMatch(balances, structure);
-        // }
     }
 
-    private currentView(activesList: any[] = [], passiveList: any[] = [],
-                        demonstrationsList: any[] = [], indexesAndIndicatorsList: any[] = []): void {
-
-        const actives: TreeNode[] = this.buildTreeNode(activesList, activesList.filter(f => f.code.length <= 2), 'active');
-        const passives: TreeNode[] = this.buildTreeNode(passiveList, passiveList.filter(f => f.code.length <= 2), 'passive');
-        const demonstrations: TreeNode[] = this.buildTreeNode(demonstrationsList, demonstrationsList.filter(f => f.code.length <= 2), 'dre');
+    private currentView(indexesAndIndicatorsList: any[] = []): void {
 
         this.indexesAndIndicators = this.buildTreeNode(indexesAndIndicatorsList, indexesAndIndicatorsList.filter(f => f.code.length <= 2), 'index');
     }
@@ -226,14 +145,7 @@ export class StructureDreService extends StoreComponentService<any> {
     private newView(activesList: any[] = [], passiveList: any[] = [],
                     demonstrationsList: any[] = [], indexesAndIndicatorsList: any[] = []): void {
 
-        activesList = activesList.filter(f => f.visualize);
-        passiveList = passiveList.filter(f => f.visualize);
-        demonstrationsList = demonstrationsList.filter(f => f.visualize);
         indexesAndIndicatorsList = indexesAndIndicatorsList.filter(f => f.visualize);
-
-        const actives: TreeNode[] = this.buildTreeNodeNew(activesList, activesList.filter(f => !f.parent), 'active', 0);
-        const passives: TreeNode[] = this.buildTreeNodeNew(passiveList, passiveList.filter(f => !f.parent), 'passive', 0);
-        const demonstrations: TreeNode[] = this.buildTreeNodeNew(demonstrationsList, demonstrationsList.filter(f => !f.parent), 'dre', 0);
 
         this.indexesAndIndicators = this.buildTreeNodeNew(indexesAndIndicatorsList, indexesAndIndicatorsList.filter(f => !f.parent), 'index', 0);
     }

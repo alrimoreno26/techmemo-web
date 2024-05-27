@@ -36,6 +36,16 @@ import {InputTextModule} from "primeng/inputtext";
 import {TagModule} from "primeng/tag";
 import {MEditParcelasComponent} from "./modals/m-edit-parcelas/m-edit-parcelas.component";
 import {PaginatorModule} from "primeng/paginator";
+import {SelectButtonModule} from "primeng/selectbutton";
+import {FinancialTransactionsServices} from "./services/financial-transactions.services";
+import {ProductService} from "../inventory/product/services/product.service";
+import {reducerProduct} from "../inventory/product/store/product.reducers";
+import {reducerUnitsMeasurements} from "../configuracion/unidade/store/unidade.reducers";
+import {ProductEffects} from "../inventory/product/store/product.effects";
+import {UnidadeEffects} from "../configuracion/unidade/store/unidade.effects";
+import {UnidadeService} from "../configuracion/unidade/services/unidade.service";
+import {StoreCategoryService} from "../inventory/category/services/store.category.service";
+import {MNewProductComponent} from "./modals/m-new-product/m-new-product.component";
 
 @NgModule({
     declarations: [
@@ -43,7 +53,8 @@ import {PaginatorModule} from "primeng/paginator";
         ContasPagarComponents,
         MPurchasesComponent,
         MContasPagarComponent,
-        MEditParcelasComponent
+        MEditParcelasComponent,
+        MNewProductComponent
     ],
     imports: [
         CommonModule,
@@ -51,8 +62,10 @@ import {PaginatorModule} from "primeng/paginator";
         PipesModule,
         TranslateModule,
         PurchasesRoutingModule,
+        StoreModule.forFeature('product', reducerProduct),
+        StoreModule.forFeature('unitsMeasurements', reducerUnitsMeasurements),
         StoreModule.forFeature('fornecedores', reducerFornecedores),
-        EffectsModule.forFeature([FornecedoresEffects]),
+        EffectsModule.forFeature([ProductEffects, UnidadeEffects, FornecedoresEffects]),
         ButtonModule,
         RippleModule,
         AutoCompleteModule,
@@ -70,7 +83,8 @@ import {PaginatorModule} from "primeng/paginator";
         InputTextareaModule,
         InputTextModule,
         TagModule,
-        PaginatorModule
+        PaginatorModule,
+        SelectButtonModule
     ],
     providers:[
         StoreContasPagarServices,
@@ -78,7 +92,11 @@ import {PaginatorModule} from "primeng/paginator";
         Stock_TransferStore,
         PaymentMethodService,
         SupplierService,
-        FinancialClasificationService
+        ProductService,
+        StoreCategoryService,
+        UnidadeService,
+        FinancialClasificationService,
+        FinancialTransactionsServices
     ],
     exports:[],
 })

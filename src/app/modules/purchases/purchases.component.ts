@@ -15,7 +15,9 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
 
     constructor(public service: StorePurchasesServices, public supplierService: SupplierService) {
         super()
-
+        effect(() => {
+            console.log( this.service.listEntities$())
+        });
         // this.service.openModalAddOrEdit()
     }
 
@@ -26,11 +28,11 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
     }
 
     override headersTable: HeadersTable[] = [
-        {header: 'Code', field: 'name', class: 'text-center', visible: true},
-        {header: 'Fornecedor', field: 'code', class: 'text-center', visible: true},
-        {header: 'Total Producto', field: 'type', class: 'text-center', visible: true},
-        {header: 'Total Compra', field: 'costPrice', pipe: 'currency', class: 'text-center', visible: true},
-        {header: 'Fecha Compra', sort: true, field: 'cfop', class: 'text-center', visible: true},
+        {header: 'Code', field: 'code', class: 'text-center', visible: true},
+        {header: 'Fornecedor', field: 'supplier', pipe: 'deep', extraVal: 'name', class: 'text-center', visible: true},
+        {header: 'Total Producto', field: 'amount', class: 'text-center', visible: true},
+        {header: 'Total Compra', field: 'totalValue', pipe: 'currency', class: 'text-center', visible: true},
+        {header: 'Fecha Compra', sort: true, field: 'created', pipe:'date', class: 'text-center', visible: true},
         {header: 'Estado', field: 'created', class: 'text-center', visible: true},
         {header: 'Ações', field: 'action', class: 'text-center', visible: true}
     ];

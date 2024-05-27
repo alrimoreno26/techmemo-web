@@ -36,7 +36,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
 
     products: ProductFilterDto[] = []
     technicalSheetProducts: any[] = [];
-
     selectedEntity: any = {};
 
     suggestions: any[] = [];
@@ -70,6 +69,10 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         this.initForm(data);
     }
 
+    close(){
+        this.ref.close()
+    }
+
     fillSelected(data: any): any {
         this.selectedAdditional = []
         this.products.forEach((p: any) => {
@@ -98,8 +101,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
                 })
             })
         }
-        console.log(data)
-        console.log(this.selectedEntity)
         this.form = new FormGroup({
             allowsAdditional: new FormControl<boolean>(data?.allowsAdditional),
             barCode: new FormControl<string>(data?.barCode),
@@ -181,7 +182,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     override save(): void {
         const value: any = this.form.value;
         let additionalProducts: any[] = [];
-        let technicalSheetProducts: any[] = [];
         if (this.typeProduct === productType.COMBO) {
             this.selectedAdditional.forEach((ad: any) => {
                 additionalProducts.push({
