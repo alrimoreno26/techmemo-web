@@ -110,7 +110,7 @@
                         </div>
                     </div>
                     <div class="col-12">
-                        <p-table [value]="productList" [scrollable]="true"
+                        <p-table [value]="products" [scrollable]="true"
                                  [styleClass]="'p-datatable-sm'">
                             <ng-template pTemplate="header">
                                 <tr>
@@ -134,6 +134,7 @@
                                     <td class="custom-td">{{ (product.costPrice * product.amount)| currency }}</td>
                                     <td>
                                         <p-button styleClass="border-round-3xl severity_danger small"
+                                                  (onClick)="deleteProduct(product.id)"
                                                   icon="mdi mdi-close">
                                         </p-button>
                                     </td>
@@ -174,7 +175,7 @@
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
             icon="mdi mdi-close"></button>
     @if (this.stepActive === 0) {
-        <p-button [disabled]="form.invalid && productList.length === 0" label="Continuar a Pagamento"
+        <p-button [disabled]="form.invalid && products.length === 0" label="Continuar a Pagamento"
                   (onClick)="save()"/>
     }
 </ng-template>

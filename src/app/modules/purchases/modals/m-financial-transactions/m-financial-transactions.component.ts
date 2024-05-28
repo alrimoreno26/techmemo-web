@@ -20,12 +20,13 @@ import {MNewProductComponent} from "../m-new-product/m-new-product.component";
 import {MProductComponent} from "../../../inventory/product/components/m-product/m-product.component";
 import {cloneDeep} from "lodash";
 import {InstallmentsComponent} from "../../components/c-installsments/installments.component";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
-    templateUrl: './m-purchases.component.html',
-    styleUrl: '/m-purchases.component.scss',
+    templateUrl: './m-financial-transactions.component.html',
+    styleUrl: '/m-financial-transactions.component.scss',
 })
-export class MPurchasesComponent extends BaseModalStoreComponentDirective implements OnInit {
+export class MFinancialTransactionsComponent extends BaseModalStoreComponentDirective implements OnInit {
 
     @ViewChild(InstallmentsComponent) child!: InstallmentsComponent;
     stepActive = 0;
@@ -44,7 +45,8 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
     searchTextProducts = '';
     suggestionsProducts: any[] = [];
 
-    productList: any[] = [];
+    private productsSubject: BehaviorSubject<any[]> = new BehaviorSubject<any[]>([]);
+    products$ = this.productsSubject.asObservable();
     totalProducts = 0;
 
     data: any;
@@ -61,6 +63,9 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
                 public stockTransferStore: Stock_TransferStore) {
         super(storeService);
         this.dialogRegistryService.addDialog(this.ref);
+        this.products$.subscribe(products => {
+            this.reduceTotalPayments();
+        });
         if (!paymentMethodService.loaded$()) {
             this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
         }
@@ -75,7 +80,6 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
             }
         });
         effect(() => {
-            console.log(this.storeService.selectedEntity$())
             if (this.storeService.selectedEntity$() !== undefined) {
                 this.initForm(this.storeService.selectedEntity$());
             }
@@ -93,14 +97,22 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
         this.initForm(data);
     }
 
+    set products(products: any[]) {
+        this.productsSubject.next(products);
+    }
+
+    get products(): any[] {
+        return this.productsSubject.getValue();
+    }
+
     initForm(data: any) {
         this.form = new FormGroup({
             id: new FormControl(data?.id),
             supplierId: new FormControl(data?.supplier, Validators.required),
             classifierId: new FormControl(data?.classifier, Validators.required),
-            type: new FormControl(data?.type || 'EXPENSES', Validators.required),
+            type: new FormControl({value: data?.type || 'EXPENSES', disabled: true}, Validators.required),
         });
-        this.productList = data?.products ?? [];
+        this.products = data?.products ?? [];
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -108,14 +120,15 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
         switch (event.key) {
             case 'Enter':
                 if (this.selectedItem !== undefined) {
-                    this.productList.push({
+                    const updatedProducts = [...this.products, {
                         ...this.selectedItem,
                         amount: this.selectedItemAmount,
                         valueToPaid: this.selectedItem.salePrice * this.selectedItemAmount
-                    });
+                    }];
+                    this.products = updatedProducts;
                     this.selectedItem = undefined;
                     this.selectedItemAmount = 1;
-                    this.form.get('products')?.setValue(this.productList);
+                    this.form.get('products')?.setValue(this.products);
                     this.reduceTotalPayments();
                 }
                 break;
@@ -125,29 +138,37 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
     novoProducto() {
         this.storeFinancialTransactions.openModalAddOrEdit();
         this.dialogService.open(MNewProductComponent, {}).onClose.subscribe((data: any) => {
-            this.productList.push({
+            const updatedProducts = [...this.products, {
                 name: data.data.productName,
                 soldPerUnits: true,
                 costPrice: data.data.value,
                 amount: data.data.amount
-            });
-            this.reduceTotalPayments();
+            }];
+            this.products = updatedProducts;
         });
-        this.reduceTotalPayments();
     }
 
     addProduct() {
-        this.productService.openModalAddOrEdit()
+        this.productService.openModalAddOrEdit();
         this.dialogService.open(MProductComponent, {data: {suppliers: [this.form.get('supplierId')?.value]}}).onClose.subscribe((data: any) => {
-            const temp = cloneDeep(this.productService.temporalCreated$())
-            this.productList.push({
+            const temp = cloneDeep(this.productService.temporalCreated$());
+            const updatedProducts = [...this.products, {
                 name: temp.name,
                 soldPerUnits: temp.soldPerUnits,
                 costPrice: temp.costPrice,
                 amount: temp.stockAmount
-            });
+            }];
+            this.products = updatedProducts;
         });
-        this.reduceTotalPayments();
+    }
+
+    deleteProduct(product: number) {
+        const index = this.products.findIndex(p => p.id === product);
+        if (index !== -1) {
+            const updatedProducts = [...this.products];
+            updatedProducts.splice(index, 1);
+            this.products = updatedProducts;
+        }
     }
 
 
@@ -201,13 +222,13 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
     }
 
     reduceTotalPayments() {
-        this.totalProducts = this.productList.reduce((acc, curr) => acc + (curr.costPrice * curr.amount), 0)
+        this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.costPrice * curr.amount), 0)
     }
 
     override save() {
         const send = {
             classifierId: this.form.get('classifierId')?.value.id,
-            products: this.productList.map((item: any) => {
+            products: this.products.map((item: any) => {
                 return {
                     amount: item.amount,
                     productId: item.id,

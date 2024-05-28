@@ -140,6 +140,8 @@
     "PENDING_APPROVAL": "Aprovação pendente",
     "APPROVED": "Aprovado",
     "CANCELED": "Cancelado",
+    "EXPENSES": "Gasto",
+    "BILLING": "Renda",
     "CLOSED": "Fechado",
     "FINISHED": "Terminada",
     "networkError": {

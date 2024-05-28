@@ -19,6 +19,7 @@ import {TableModule} from "primeng/table";
 import {DividerModule} from "primeng/divider";
 import {DialogModule} from "primeng/dialog";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
+import {FinancialClasificationService} from "../../financial/service/financial-clasification.service";
 
 
 @NgModule({
@@ -39,6 +40,7 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
         ConfirmDialogModule,
     ],
     providers:[
+        FinancialClasificationService,
         StoreCategoryService,
         ConfirmServices,
         ConfirmationService,

@@ -9,8 +9,16 @@
                     </div>
                     <div class="col-12 lg:col-6 field">
                         <p class="align-items-center block flex font-bold justify-content-end gap-3 surface-border text-900">
-                            <span>Plano de Conta</span>
-                            <p-dropdown [options]="[]" placeholder="Plano de Conta"></p-dropdown>
+                            <span>Classificação financeira</span>
+                            <p-dropdown
+                                [options]="financialClasificationService.listEntities$()"
+                                appendTo="body"
+                                [filter]="true"
+                                filterBy="name"
+                                optionLabel="name"
+                                formControlName="classifier"
+                                placeholder="Classificação financeira">
+                            </p-dropdown>
                         </p>
                     </div>
                     <div class="col-12 field mb-0">

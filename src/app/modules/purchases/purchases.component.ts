@@ -2,7 +2,7 @@ import {Component, effect, OnInit} from '@angular/core';
 import {BaseComponentDirective} from "../../standalone/data-table/directives/base.component.directive";
 import {StorePurchasesServices} from "./services/store.purchases.services";
 import {HeadersTable} from "../../standalone/data-table/models";
-import {MPurchasesComponent} from "./modals/m-purchases/m-purchases.component";
+import {MFinancialTransactionsComponent} from "./modals/m-financial-transactions/m-financial-transactions.component";
 import {SupplierService} from "../inventory/forncedores/services/supplier.service";
 import {productType} from "../../core/enums/product";
 
@@ -12,7 +12,7 @@ import {productType} from "../../core/enums/product";
 })
 export class PurchasesComponent extends BaseComponentDirective implements OnInit {
 
-    override modalContent = MPurchasesComponent;
+    override modalContent = MFinancialTransactionsComponent;
 
     constructor(public service: StorePurchasesServices, public supplierService: SupplierService) {
         super()
@@ -33,6 +33,13 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
         {header: 'Estado', field: 'state', class: 'text-center', visible: true},
         {header: 'Ações', field: 'action', class: 'text-center', visible: true}
     ];
+
+    customCrear(evt: any): void {
+        this.service.openModalAddOrEdit()
+        this.dialogService.open(MFinancialTransactionsComponent, {
+            data: {type: 'EXPENSES'}
+        })
+    }
 
     customEdit(evt: any): void {
         this.service.getById(evt.id);

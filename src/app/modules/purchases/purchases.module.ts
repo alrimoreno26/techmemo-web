@@ -6,7 +6,7 @@ import {TranslateModule} from "@ngx-translate/core";
 import {StorePurchasesServices} from "./services/store.purchases.services";
 import {PurchasesRoutingModule} from "./purchases-routing.module";
 import {CommonModule} from "@angular/common";
-import {MPurchasesComponent} from "./modals/m-purchases/m-purchases.component";
+import {MFinancialTransactionsComponent} from "./modals/m-financial-transactions/m-financial-transactions.component";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
 import {AutoCompleteModule} from "primeng/autocomplete";
@@ -54,7 +54,7 @@ import {BadgeModule} from "primeng/badge";
     declarations: [
         PurchasesComponent,
         ContasPagarComponents,
-        MPurchasesComponent,
+        MFinancialTransactionsComponent,
         MContasPagarComponent,
         MEditParcelasComponent,
         InstallmentsComponent,
