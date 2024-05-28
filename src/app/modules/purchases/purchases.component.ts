@@ -4,12 +4,13 @@ import {StorePurchasesServices} from "./services/store.purchases.services";
 import {HeadersTable} from "../../standalone/data-table/models";
 import {MPurchasesComponent} from "./modals/m-purchases/m-purchases.component";
 import {SupplierService} from "../inventory/forncedores/services/supplier.service";
+import {productType} from "../../core/enums/product";
 
 @Component({
     selector: 'c-purchases',
     templateUrl: './purchases.component.html',
 })
-export class PurchasesComponent extends BaseComponentDirective implements OnInit{
+export class PurchasesComponent extends BaseComponentDirective implements OnInit {
 
     override modalContent = MPurchasesComponent;
 
@@ -28,8 +29,12 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
         {header: 'Fornecedor', field: 'supplierName', class: 'text-center', visible: true},
         {header: 'Qtd Producto', field: 'amountProducts', class: 'text-center', visible: true},
         {header: 'Total Compra', field: 'totalValue', pipe: 'currency', class: 'text-center', visible: true},
-        {header: 'Fecha Compra', sort: true, field: 'created', pipe:'date', class: 'text-center', visible: true},
+        {header: 'Fecha Compra', sort: true, field: 'created', pipe: 'date', class: 'text-center', visible: true},
         {header: 'Estado', field: 'state', class: 'text-center', visible: true},
         {header: 'Ações', field: 'action', class: 'text-center', visible: true}
     ];
+
+    customEdit(evt: any): void {
+        this.service.getById(evt.id);
+    }
 }

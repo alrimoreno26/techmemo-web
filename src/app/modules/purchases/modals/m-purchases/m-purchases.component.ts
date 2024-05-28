@@ -74,6 +74,12 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
                 this.stepActive++;
             }
         });
+        effect(() => {
+            console.log(this.storeService.selectedEntity$())
+            if (this.storeService.selectedEntity$() !== undefined) {
+                this.initForm(this.storeService.selectedEntity$());
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -84,13 +90,17 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
         this.supplierService.autocomplete({
             filter: this.searchTextClassifiers,
         });
+        this.initForm(data);
+    }
+
+    initForm(data: any) {
         this.form = new FormGroup({
             id: new FormControl(data?.id),
             supplierId: new FormControl(data?.supplier, Validators.required),
-            classifierId: new FormControl(data?.transactionType, Validators.required),
-            products: new FormControl(data?.products, Validators.required),
-            type: new FormControl('EXPENSES', Validators.required),
+            classifierId: new FormControl(data?.classifier, Validators.required),
+            type: new FormControl(data?.type || 'EXPENSES', Validators.required),
         });
+        this.productList = data?.products ?? [];
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -121,6 +131,7 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
                 costPrice: data.data.value,
                 amount: data.data.amount
             });
+            this.reduceTotalPayments();
         });
         this.reduceTotalPayments();
     }
@@ -190,7 +201,7 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
     }
 
     reduceTotalPayments() {
-        this.totalProducts = this.productList.reduce((acc, curr) => acc + curr.valueToPaid, 0)
+        this.totalProducts = this.productList.reduce((acc, curr) => acc + (curr.costPrice * curr.amount), 0)
     }
 
     override save() {

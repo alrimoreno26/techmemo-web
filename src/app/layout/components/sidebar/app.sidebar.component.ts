@@ -9,7 +9,6 @@ export class AppSidebarComponent implements OnDestroy {
     timeout: any = null;
     @ViewChild('menuContainer') menuContainer!: ElementRef;
     constructor(public layoutService: LayoutService, public el: ElementRef) {
-        console.log(this.layoutService.config)
     }
 
     get logoColor() {

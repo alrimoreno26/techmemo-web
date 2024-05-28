@@ -43,4 +43,11 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         })
     }
+
+    getById(id:string){
+        this.purchasesService.findOneById(id).subscribe((response) => {
+            this.setSelected(response);
+            this.patchState({dialog: true, selected: response})
+        });
+    }
 }
