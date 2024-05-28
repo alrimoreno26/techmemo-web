@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from "@angular/core";
+import {Component, effect, HostListener, OnInit, ViewChild} from "@angular/core";
 import {StorePurchasesServices} from "../../services/store.purchases.services";
 import {
     BaseModalStoreComponentDirective
@@ -12,32 +12,23 @@ import {
 import {DialogService} from "primeng/dynamicdialog";
 import {PaymentMethodService} from "../../../financial/service/payment-method.service";
 import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
-import {supplierType} from "../../../../core/models/supplier";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {FinancialTransactionsServices} from "../../services/financial-transactions.services";
 import {ProductService} from "../../../inventory/product/services/product.service";
-import {AdditionalComponents} from "../../../caixa/components/modals/additionals/additional-components.component";
-import {HttpHeaders} from "@angular/common/http";
 import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
 import {MNewProductComponent} from "../m-new-product/m-new-product.component";
 import {MProductComponent} from "../../../inventory/product/components/m-product/m-product.component";
 import {cloneDeep} from "lodash";
+import {InstallmentsComponent} from "../../components/c-installsments/installments.component";
 
 @Component({
     templateUrl: './m-purchases.component.html',
-    styles: [`
-        ::ng-deep .p-dialog .p-dialog-content {
-            overflow: hidden;
-        }
-
-        ::ng-deep .p-dialog .p-divider-content {
-            width: 300px;
-        }
-    `]
+    styleUrl: '/m-purchases.component.scss',
 })
 export class MPurchasesComponent extends BaseModalStoreComponentDirective implements OnInit {
 
-    selectedPayment: any;
+    @ViewChild(InstallmentsComponent) child!: InstallmentsComponent;
+    stepActive = 0;
 
     // Autocomplete classfiers
     searchTextClassifiers = '';
@@ -56,11 +47,8 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
     productList: any[] = [];
     totalProducts = 0;
 
+    data: any;
 
-    transactionTypes: any[] = [
-        {label: 'Contas a pagar', value: 'EXPENSES'},
-        {label: 'Renda a recebir', value: 'BILLING'}
-    ];
 
     constructor(private storeService: StorePurchasesServices,
                 public supplierService: SupplierService,
@@ -76,6 +64,16 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
         if (!paymentMethodService.loaded$()) {
             this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
         }
+        effect(() => {
+            if (storeFinancialTransactions.goToPay$()) {
+                this.data = {
+                    ...storeFinancialTransactions.goToPay$(),
+                    classifierId: this.form.get('classifierId')?.value.id,
+                    supplierId: this.form.get('supplierId')?.value.id
+                };
+                this.stepActive++;
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -212,5 +210,17 @@ export class MPurchasesComponent extends BaseModalStoreComponentDirective implem
             type: this.form.get('type')?.value,
         }
         this.storeFinancialTransactions.create({data: send});
+    }
+
+    savePayment() {
+        this.child.save();
+    }
+
+    confirmInstallment(event: any) {
+        this.storeService.createInstallmentsByFinancialTransactions(event);
+    }
+
+    decreaseStepActive() {
+        this.stepActive--;
     }
 }

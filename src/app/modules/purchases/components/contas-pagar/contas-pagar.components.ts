@@ -55,11 +55,11 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     }
 
     override headersTable: HeadersTable[] = [
-        {header: 'Documento', field: 'purchaseCode', class: 'text-center', visible: true},
+        {header: 'Documento', field: 'code', class: 'text-center', visible: true},
         {header: '# Parcelas', field: 'amountPaymentInstallments', class: 'text-center', visible: true},
         {header: '1er Parcela', field: 'firstPaymentInstallmentDate', class: 'text-center', visible: true},
         {header: 'Parcela Fixas', field: 'monthlyPaymentInstallments', class: 'text-center', visible: true},
-        {header: 'Valor Total Parcelas', field: 'purchaseValue', pipe: 'currency', class: 'text-center', visible: true},
+        {header: 'Valor Total Parcelas', field: 'value', pipe: 'currency', class: 'text-center', visible: true},
         {header: 'Ações', field: 'action', class: 'text-center', visible: true}
     ];
 

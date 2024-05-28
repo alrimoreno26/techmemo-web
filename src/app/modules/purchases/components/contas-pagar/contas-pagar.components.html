@@ -87,7 +87,7 @@
                                           [plain]="true"
                                           [icon]="expanded ? 'mdi mdi-chevron-down' : 'mdi mdi-chevron-right'"/>
                             </td>
-                            <td class="custom-td text-center"><p class="mb-0 pr-6">{{ product.purchaseCode }}</p></td>
+                            <td class="custom-td text-center"><p class="mb-0 pr-6">{{ product.code }}</p></td>
                             <td class="custom-td text-center"><p
                                 class="mb-0 pr-6">{{ product.amountPaymentInstallments }}</p></td>
                             <td class="custom-td"><p class="mb-0">{{ product.firstPaymentInstallmentDate | date }}</p>
@@ -101,7 +101,7 @@
                                 </ng-template>
                             </td>
                             <td class="custom-td text-center">
-                                <p class="mb-0 pr-6">{{ product.purchaseValue | currency }}</p>
+                                <p class="mb-0 pr-6">{{ product.value | currency }}</p>
                             </td>
                             <td class="custom-td text-center">
                                 <p-tag value="{{product.state | translate}}" [severity]="product.state | severity"/>
@@ -130,7 +130,7 @@
                                     </ng-template>
                                     <ng-template pTemplate="body" let-installment let-rowIndex="rowIndex">
                                         <tr [ngClass]="containerClass(installment)">
-                                            <td>{{ installment.purchaseCode }}</td>
+                                            <td>{{ installment.code }}</td>
                                             <td>{{ rowIndex + 1 }}</td>
                                             <td>{{ installment.expirationDate | date }}</td>
                                             <td>{{ installment.supplierDocument | cpfCnpj }}</td>

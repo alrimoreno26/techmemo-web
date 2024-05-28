@@ -18,18 +18,7 @@
                                  rowGroupMode="subheader"
                                  selectionMode="single"
                                  [styleClass]="'p-datatable-sm'"
-                                 [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
                                  groupRowsBy="categoryName" [tableStyle]="{'min-width': '30rem'}">
-                            <ng-template pTemplate="caption">
-                                <div class="flex">
-                                    <span class="p-input-icon-left">
-                                        <i class="pi pi-search"></i>
-                                        <input pInputText type="text"
-                                               (input)="dt1.filterGlobal($event.target, 'contains')"
-                                               placeholder="Producto"/>
-                                    </span>
-                                </div>
-                            </ng-template>
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>Descrição do Producto</th>

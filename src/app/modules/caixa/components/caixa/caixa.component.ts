@@ -140,6 +140,7 @@ export class CaixaComponent implements OnInit {
             case 'Enter':
                 if (this.selectedItem !== undefined) {
                     if (this.selectedItem.allowsAdditional) {
+                        this.service.openCustomDialog('additional', true);
                         this.dialogService.open(AdditionalComponents, {
                             data: {
                                 product: this.selectedItem,
@@ -332,6 +333,7 @@ export class CaixaComponent implements OnInit {
     }
 
     lookAdditional(product: any) {
+        this.service.openCustomDialog('additional', true);
         this.dialogService.open(AdditionalComponents, {
             data: {
                 product: product,

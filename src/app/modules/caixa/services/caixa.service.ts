@@ -3,6 +3,7 @@ import {Store} from "@ngrx/store";
 import {BaseStoreServices} from "../../../standalone/data-table/class/base.store.services";
 import {OrdersPartialState} from "../store/caixa.reducers";
 import {
+    dialogAdditional,
     dialogTransfer,
     getDialog, orderCreate, orderProduct,
     selectAllEntities,
@@ -25,6 +26,7 @@ export class CaixaService extends BaseStoreServices<any> {
     orderCreate$: Signal<boolean>
     sentKitchen$: Signal<boolean>
     dialogTransfer$: Signal<boolean>
+    dialogAdditional$: Signal<boolean>
     orderProducts$: Signal<ProductLightDto[] | undefined> = this.store.selectSignal(orderProduct);
 
     finalizeSubject = new BehaviorSubject<boolean>(false);
@@ -44,6 +46,7 @@ export class CaixaService extends BaseStoreServices<any> {
         this.orderCreate$ = this.store.selectSignal(orderCreate);
         this.sentKitchen$ = this.store.selectSignal(sentKitchen);
         this.dialogTransfer$ = this.store.selectSignal(dialogTransfer);
+        this.dialogAdditional$ = this.store.selectSignal(dialogAdditional);
     }
 
     setFinalizeValue(newValue: boolean): void {

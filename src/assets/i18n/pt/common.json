@@ -136,6 +136,10 @@
     "KITCHEN": "Cocina",
     "PIX": "PIX",
     "OTHERS": "Outros pagamento",
+    "TYPING": "Em preparação",
+    "PENDING_APPROVAL": "Aprovação pendente",
+    "APPROVED": "Aprovado",
+    "CANCELED": "Cancelado",
     "CLOSED": "Fechado",
     "FINISHED": "Terminada",
     "networkError": {

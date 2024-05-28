@@ -36,4 +36,11 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             );
         })
     ));
+
+    createInstallmentsByFinancialTransactions(data: any) {
+        this.purchasesService.createInstallmentsByFinancialTransactions(data).subscribe((response) => {
+            this.patchState({dialog: false});
+            this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+        })
+    }
 }

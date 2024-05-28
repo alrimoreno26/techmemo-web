@@ -23,3 +23,4 @@ export const orderProduct = createSelector(getEntityState, state => state.orderP
 export const orderKitchen = createSelector(getEntityState, state => state.kitchen);
 export const sentKitchen = createSelector(getEntityState, state => state.sentKitchen);
 export const dialogTransfer = createSelector(getEntityState, state => state.dialogTransfer);
+export const dialogAdditional = createSelector(getEntityState, state => state.dialogAdditional);

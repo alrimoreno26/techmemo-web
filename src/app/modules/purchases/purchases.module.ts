@@ -46,6 +46,9 @@ import {UnidadeEffects} from "../configuracion/unidade/store/unidade.effects";
 import {UnidadeService} from "../configuracion/unidade/services/unidade.service";
 import {StoreCategoryService} from "../inventory/category/services/store.category.service";
 import {MNewProductComponent} from "./modals/m-new-product/m-new-product.component";
+import {StepperModule} from "primeng/stepper";
+import {InstallmentsComponent} from "./components/c-installsments/installments.component";
+import {BadgeModule} from "primeng/badge";
 
 @NgModule({
     declarations: [
@@ -54,6 +57,7 @@ import {MNewProductComponent} from "./modals/m-new-product/m-new-product.compone
         MPurchasesComponent,
         MContasPagarComponent,
         MEditParcelasComponent,
+        InstallmentsComponent,
         MNewProductComponent
     ],
     imports: [
@@ -84,7 +88,9 @@ import {MNewProductComponent} from "./modals/m-new-product/m-new-product.compone
         InputTextModule,
         TagModule,
         PaginatorModule,
-        SelectButtonModule
+        SelectButtonModule,
+        StepperModule,
+        BadgeModule
     ],
     providers:[
         StoreContasPagarServices,

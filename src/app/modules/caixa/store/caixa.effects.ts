@@ -211,6 +211,7 @@ export class CaixaEffects {
                 this.service.updateProductsOrders(id, params[0]).pipe(
                     switchMap((response) => {
                         return of(
+                            fromOrdersListActions.openCustomDialog({modal: 'additional', show: false}),
                             fromOrdersListActions.getByID({path: [], id: orderId})
                         )
                     }),

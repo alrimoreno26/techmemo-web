@@ -15,4 +15,8 @@ export class PurchasesService extends AbstractService<any> {
     constructor(private httpClient: HttpClient) {
         super(httpClient, buildURL('/v1/financial-transactions'));
     }
+
+    createInstallmentsByFinancialTransactions(params: any): Observable<any> {
+        return this.httpClient.post<any>(buildURL('/v1/bills'), params);
+    }
 }

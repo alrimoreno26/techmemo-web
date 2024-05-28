@@ -17,6 +17,7 @@ export interface State extends EntityState<any> {
     selected?: any;
     error?: Error | any;
     dialogTransfer: boolean;
+    dialogAdditional: boolean;
 }
 
 export interface OrdersPartialState {
@@ -37,6 +38,7 @@ export const initialState: State = adapter.getInitialState({
     dialog: false,
     sentKitchen: false,
     dialogTransfer: false,
+    dialogAdditional: false,
     totalElements: 0,
     error: null
 });
@@ -51,13 +53,13 @@ export const ordersReducer = createReducer<State>(
         });
     }),
     on(fromOrdersListActions.createOrdersSuccess, (state, {entity}) => {
-        return {...state, dialog: false, selected: [entity], orderCreate: true};
+        return {...state, dialog: false, selected: [entity], orderCreate: true, dialogAdditional: false};
     }),
     on(fromOrdersListActions.createInTableOrdersSuccess, (state, {entity}) => {
         return {...state, dialog: false, orderCreate: true};
     }),
     on(fromOrdersListActions.updateOrdersSuccess, (state, {entity}) => {
-        return adapter.updateOne({id: entity.id, changes: entity}, {...state, dialog: false});
+        return adapter.updateOne({id: entity.id, changes: entity}, {...state, dialog: false, dialogAdditional: false});
     }),
     on(fromOrdersListActions.deleteOrdersSuccess, (state, {id}) => {
         return adapter.removeOne(id, state);
@@ -81,12 +83,14 @@ export const ordersReducer = createReducer<State>(
             ...state,
             selected,
             sentKitchen: false,
+            dialogAdditional: false,
             orderProducts: selected[0].products,
             orderCreate: false
         };
     }),
     on(fromOrdersListActions.updateProductsOrdersSuccess, (state, {entity}) => {
-        return {...state, sentKitchen: false};
+        debugger
+        return {...state, sentKitchen: false, dialogAdditional: false,};
     }),
     on(fromOrdersListActions.sentOrdersFromKitchenSuccess, (state) => {
         return {...state, sentKitchen: true};
@@ -160,6 +164,9 @@ export const ordersReducer = createReducer<State>(
         let tempState = {...state};
         if(modal === 'transfer'){
             tempState = {...tempState, dialogTransfer: show};
+        }
+        if(modal === 'additional'){
+            tempState = {...tempState, dialogAdditional: show};
         }
         return {...tempState};
     }),
