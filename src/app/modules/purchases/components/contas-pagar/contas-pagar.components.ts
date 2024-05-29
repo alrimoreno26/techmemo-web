@@ -71,6 +71,16 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         this.dialogService.open(MContasPagarComponent, {})
     }
 
+    refreshContentData(){
+        this.service.loadAll({
+            pageNumber: this.first,
+            pageSize: this.size,
+            type: this.type,
+            startDate: formatDate(this.rangeDates[0]),
+            endDate: formatDate(this.rangeDates[1])
+        })
+    }
+
     search(event: AutoCompleteCompleteEvent) {
         if (this.financeService.autocomplete$()) {
             this.suggestions = this.financeService.autocomplete$()?.map((item: any) => item) ?? [];

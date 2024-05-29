@@ -21,7 +21,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
 
     selected: any;
 
-    qtDias:number = 1;
+    consecutiveDaysPaymentInstallments:number = 1;
     purchaseValue:number = 0;
     description = '';
     parcelas = false;
@@ -97,7 +97,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
             for (let i = 0; i < this.qParcelas; i++) {
 
                 if (!this.form.get('monthlyPaymentInstallments')?.value) {
-                    currentDate.setDate(currentDate.getDate() + this.qtDias);
+                    currentDate.setDate(currentDate.getDate() + this.consecutiveDaysPaymentInstallments);
                 } else {
                     if (i !== 0) {
                         currentDate.setMonth(currentDate.getMonth() + 1);
@@ -194,6 +194,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
                 paymentStructureId: this.form.get('paymentStructureId')?.value?.id,
                 provision: this.form.get('provision')?.value,
                 purchaseCode: this.form.get('purchaseCode')?.value,
+                consecutiveDaysPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value ? null : this.consecutiveDaysPaymentInstallments,
                 supplierId: this.form.get('supplierId')?.value.id,
             }
 

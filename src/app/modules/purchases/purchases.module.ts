@@ -49,6 +49,7 @@ import {MNewProductComponent} from "./modals/m-new-product/m-new-product.compone
 import {StepperModule} from "primeng/stepper";
 import {InstallmentsComponent} from "./components/c-installsments/installments.component";
 import {BadgeModule} from "primeng/badge";
+import {TooltipModule} from "primeng/tooltip";
 
 @NgModule({
     declarations: [
@@ -90,7 +91,8 @@ import {BadgeModule} from "primeng/badge";
         PaginatorModule,
         SelectButtonModule,
         StepperModule,
-        BadgeModule
+        BadgeModule,
+        TooltipModule
     ],
     providers:[
         StoreContasPagarServices,
