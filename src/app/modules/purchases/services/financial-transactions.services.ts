@@ -1,9 +1,5 @@
 import {Injectable, Signal} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
-import {OrdersService} from "../../../core/services/comanda.service";
-import {OrdersTO} from "../../../core/models/orders";
-import {SupplierService} from "../../inventory/forncedores/services/supplier.service";
-import {PurchasesService} from "../../../core/services/purchases.service";
 import {FinancialTransactionsService} from "../../../core/services/financial-transactions.service";
 
 @Injectable({providedIn: 'platform'})

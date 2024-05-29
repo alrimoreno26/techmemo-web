@@ -7,7 +7,6 @@ import {MContasPagarComponent} from "../../modals/m-contas-pagar/m-contas-pagar.
 import {FinancialClasificationService} from "../../../financial/service/financial-clasification.service";
 import {TableRowExpandEvent} from "primeng/table";
 import {formatDate} from "../../../../core/util";
-import {BillSummaryDto} from "../../../../core/models/bills";
 import {MEditParcelasComponent} from "../../modals/m-edit-parcelas/m-edit-parcelas.component";
 
 @Component({

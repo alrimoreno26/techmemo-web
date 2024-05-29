@@ -8,8 +8,6 @@ import {cloneDeep, isObject} from "lodash";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {CaixaService} from "../../../services/caixa.service";
 import {ActionsSubject} from "@ngrx/store";
-import {ofType} from "@ngrx/effects";
-import {fromOrdersListActions} from "../../../store/caixa.actions";
 import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({

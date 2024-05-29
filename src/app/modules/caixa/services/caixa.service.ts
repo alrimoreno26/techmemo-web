@@ -11,7 +11,7 @@ import {
     selectedTotalElement,
     selectEntityLoaded, sentKitchen
 } from "../store/caixa.selectors";
-import {fromOrdersListActions, openCustomDialog} from "../store/caixa.actions";
+import {fromOrdersListActions} from "../store/caixa.actions";
 import {CreateOrderTO, CreatePaymentTransactionTO} from "../../../core/models/orders";
 import {DeleteOrderProductDto, ProductLightDto} from "../../../core/models/products";
 import {BehaviorSubject, Observable} from "rxjs";

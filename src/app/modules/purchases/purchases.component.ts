@@ -1,10 +1,9 @@
-import {Component, effect, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BaseComponentDirective} from "../../standalone/data-table/directives/base.component.directive";
 import {StorePurchasesServices} from "./services/store.purchases.services";
 import {HeadersTable} from "../../standalone/data-table/models";
 import {MFinancialTransactionsComponent} from "./modals/m-financial-transactions/m-financial-transactions.component";
 import {SupplierService} from "../inventory/forncedores/services/supplier.service";
-import {productType} from "../../core/enums/product";
 
 @Component({
     selector: 'c-purchases',

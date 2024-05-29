@@ -138,13 +138,12 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     novoProducto() {
         this.storeFinancialTransactions.openModalAddOrEdit();
         this.dialogService.open(MNewProductComponent, {}).onClose.subscribe((data: any) => {
-            const updatedProducts = [...this.products, {
+            this.products = [...this.products, {
                 name: data.data.productName,
                 soldPerUnits: true,
                 costPrice: data.data.value,
                 amount: data.data.amount
             }];
-            this.products = updatedProducts;
         });
     }
 
@@ -152,13 +151,12 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.productService.openModalAddOrEdit();
         this.dialogService.open(MProductComponent, {data: {suppliers: [this.form.get('supplierId')?.value]}}).onClose.subscribe((data: any) => {
             const temp = cloneDeep(this.productService.temporalCreated$());
-            const updatedProducts = [...this.products, {
+            this.products = [...this.products, {
                 name: temp.name,
                 soldPerUnits: temp.soldPerUnits,
                 costPrice: temp.costPrice,
                 amount: temp.stockAmount
             }];
-            this.products = updatedProducts;
         });
     }
 
