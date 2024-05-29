@@ -38,6 +38,7 @@ export interface HeadersTable {
     pipe?: string;
     extraVal?: string;
     filter?: boolean;
+    filterValue?: Array<any>;
     visible?: boolean;
     colSpan?: number;
     class?: string;

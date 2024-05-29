@@ -1,0 +1,113 @@
+<ng-template dialog-header>Conta Bancaria</ng-template>
+<form [formGroup]="form">
+    <div class="form-layout grid">
+        <div class="col-12">
+            <!--Banco-->
+            <div class="banco pb-3">
+                <div class="form-label">
+                    {{ "addBankAccountModal.bankLabel" | translate }}
+                </div>
+                <div class="m-b-26px">
+                    <p-dropdown
+                        [options]="brazilActiveBanks"
+                        [(ngModel)]="banks"
+                        [ngModelOptions]="{standalone: true}"
+                        optionLabel="ShortName"
+                        optionValue="COMPE"
+                        [appendTo]="'body'"
+                        filterBy="ShortName"
+                        [style]="{'width': '100%'}"
+                        (onChange)="onChangeBank($event)"
+                    >
+                        <ng-template let-bank pTemplate="item">
+                            <div class="flex bank-item">
+                                <img src="assets/images/banks/{{bank.Icon}}" width="16"/>
+                                <div class="pl-2">{{ bank.ShortName }}</div>
+                            </div>
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            </div>
+            <div class=" pb-3">
+                <div class="form-label">
+                    {{ "addBankAccountModal.accountTypeLabel" | translate }}
+                </div>
+                <p-dropdown
+                    [options]="accountType"
+                    formControlName="accountType"
+                    optionLabel="name"
+                    optionValue="code"
+                    [appendTo]="'body'"
+                    [style]="{'width': '100%'}"
+                >
+                    <ng-template let-account pTemplate="item">
+                        <div class="flex bank-item">
+                            <div class="pl-2">{{ account.name }} ({{ account.code }})</div>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+            <!--Account Number-->
+            <div class="accountNumber  pb-3">
+                <div class="form-label">
+                    {{ "addBankAccountModal.agencyLabel" | translate }}
+                </div>
+                <p-inputMask
+                    id="bankBranch"
+                    formControlName="bankBranch"
+                    mask="{{agencyNumberMask}}"
+                    class="w-full"
+                    [style]="{'width':'100%'}"
+                    (keyup)="verifyBankCount()"
+                >
+                </p-inputMask>
+            </div>
+            <div class="accountNumber  pb-3">
+                <div class="form-label">
+                    {{ "addBankAccountModal.accountNumberLabel" | translate }}
+                </div>
+                <p-inputMask
+                    id="accountNumber"
+                    formControlName="accountNumber"
+                    mask="{{accountNumberMask}}"
+                    class="w-full"
+                    [style]="{'width':'100%'}"
+                    (keyup)="verifyBankCount()"
+                >
+                </p-inputMask>
+            </div>
+            <div class="accountNumber pb-3">
+                <div class="form-label">
+                    {{ "addBankAccountModal.bankISPBLabel" | translate }}
+                </div>
+                <p-inputNumber
+                    id="codeIspb"
+                    formControlName="codeIspb"
+                    [style]="{'width':'100%'}"
+                    class="w-full"
+                >
+                </p-inputNumber>
+            </div>
+            <div class="accountNumber pb-3">
+                <div class="form-label">
+                    {{ "addBankAccountModal.paymentAccountLabel" | translate }}
+                </div>
+                <p-inputNumber
+                    id="paymentAccountNumber"
+                    formControlName="paymentAccountNumber"
+                    [style]="{'width':'100%'}"
+                    class="w-full"
+                >
+                </p-inputNumber>
+            </div>
+        </div>
+    </div>
+</form>
+<ng-template dialog-footer>
+    <button  pButton pRipple type="button"
+             (click)="clearBankData()" label="Limpar"
+             class="p-button-text p-button-plain"></button>
+    <p-button (click)="addBankData()" label="{{'common.save' | translate}}"
+    >
+    </p-button>
+</ng-template>

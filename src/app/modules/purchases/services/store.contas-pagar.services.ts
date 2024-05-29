@@ -29,10 +29,6 @@ export class StoreContasPagarServices extends StoreComponentService<BillLigthDto
                     next: (result) => {
                         const {totalElements} = result;
                         const content = result.content.map((item: any, i: number) => {
-                            const uuid = item.id;
-                            const bigIntValue = BigInt(
-                                "0x" + uuid.replace(/-/g, "")
-                            );
                             return {
                                 ...item,
                                 bigId: Math.random(),
@@ -62,6 +58,10 @@ export class StoreContasPagarServices extends StoreComponentService<BillLigthDto
             this.setSelected(selected)
             this.setAll(updatedEntities);
         })
+    }
+
+    getBillsByFinancialTransactions(id: any): Observable<any> {
+        return this.contasPagarService.loadBillsByFinancial(id);
     }
 
     loadSummary() {

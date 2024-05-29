@@ -19,6 +19,7 @@ import {CashRegisterService} from "../../service/cash-register.service";
 import {MAddCaixasComponent} from "./components/m-add-caixa/m-add-caixas.component";
 import {SessionServices} from "../../../../core/injects/session.services";
 import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
+import {MAddBanksComponent} from "./components/m-add-banks/m-add-banks.component";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -140,6 +141,18 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                         label: 'Dados gerais ',
                         value: 'dados',
                         icon: 'mdi mdi-store-cog-outline mdi-24px',
+
+                    },
+                ]
+            },
+            {
+                label: 'Contas Correntes',
+                value: 'bancos',
+                items: [
+                    {
+                        label: 'Bancos',
+                        value: 'bank',
+                        icon: 'mdi mdi-bank-plus mdi-24px',
 
                     },
                 ]
@@ -273,7 +286,14 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             })
             this.dialogRegistryService.addDialog(dialogRef);
         }
+    }
 
+    addEditContaCorrente(){
+        let dialogRef;
+        dialogRef = this.dialogService.open(MAddBanksComponent, {
+            data: null,
+            width: '350px',
+        })
     }
 
     patchEnable(event: any, item: PrinterDto) {

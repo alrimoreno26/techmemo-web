@@ -142,6 +142,7 @@
     "CANCELED": "Cancelado",
     "EXPENSES": "Gasto",
     "BILLING": "Renda",
+    "RECEIVED": "Recebido",
     "CLOSED": "Fechado",
     "FINISHED": "Terminada",
     "networkError": {
@@ -211,6 +212,14 @@
             "edit": "Editar",
             "delete": "Excluir"
         }
+    },
+    "addBankAccountModal": {
+        "bankLabel": "Banco",
+        "accountTypeLabel": "Tipo de Conta",
+        "agencyLabel": "Agência",
+        "accountNumberLabel": "Número da conta",
+        "bankISPBLabel": "ISPB do Banco",
+        "paymentAccountLabel": "Conta de Pagamento"
     },
     "login": {
         "email": "Email",

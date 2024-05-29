@@ -76,3 +76,54 @@ export function formatDate(date: Date): string {
     const day = ('0' + date.getDate()).slice(-2);
     return `${year}-${month}-${day}`;
 }
+
+export const BrazilActiveBanks: Array<any> = [
+    {
+        "COMPE": "001",
+        "ISPB": "00000000",
+        "Document": "00.000.000/0001-91",
+        "LongName": "Banco do Brasil S.A.",
+        "ShortName": "BCO DO BRASIL S.A.",
+        "Icon": "banco-do-brasil.svg"
+    },
+    {
+        "COMPE": "033",
+        "ISPB": "90400888",
+        "Document": "90.400.888/0001-42",
+        "LongName": "BANCO SANTANDER (BRASIL) S.A.",
+        "ShortName": "BCO SANTANDER (BRASIL) S.A.",
+        "Icon": "santander.svg"
+    },
+    {
+        "COMPE": "104",
+        "ISPB": "00360305",
+        "Document": "00.360.305/0001-04",
+        "LongName": "Caixa Econômica Federal",
+        "ShortName": "CAIXA ECONOMICA FEDERAL",
+        "Icon": "caixa.svg"
+    },
+    {
+        "COMPE": "237",
+        "ISPB": "60746948",
+        "Document": "60.746.948/0001-12",
+        "LongName": "Banco Bradesco S.A.",
+        "ShortName": "BCO BRADESCO S.A.",
+        "Icon": "bradesco.svg"
+    },
+    {
+        "COMPE": "341",
+        "ISPB": "60701190",
+        "Document": "60.701.190/0001-04",
+        "LongName": "ITAÚ UNIBANCO S.A.",
+        "ShortName": "ITAÚ UNIBANCO S.A.",
+        "Icon": "itau.svg"
+    },
+    {
+        "COMPE": "745",
+        "ISPB": "33479023",
+        "Document": "33.479.023/0001-80",
+        "LongName": "Banco Citibank S.A.",
+        "ShortName": "BCO CITIBANK S.A.",
+        "Icon": "city-bank.svg"
+    },
+];

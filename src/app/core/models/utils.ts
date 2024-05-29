@@ -3,3 +3,9 @@ export interface Options {
   value: string | number | null;
   name: string;
 }
+
+export interface LightsDTO {
+    id:string
+    name:string
+    type:string
+}

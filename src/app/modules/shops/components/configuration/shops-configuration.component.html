@@ -345,6 +345,15 @@
 
                             </div>
                         </ng-template>
+                        <ng-template [ngIf]="selectedItems=== 'bank'">
+                            <div class="top">
+                                <div class="flex justify-content-between">
+                                    <h4 class="text-center">Configurações das contas</h4>
+                                    <p-button label="Nova"
+                                              (onClick)="addEditContaCorrente()"></p-button>
+                                </div>
+                            </div>
+                        </ng-template>
 
                         <ng-template #blank>
                             <div class="flex justify-content-center">

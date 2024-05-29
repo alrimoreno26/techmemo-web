@@ -15,18 +15,13 @@ import {DialogRegistryService} from "../../../../core/injects/dialog.registry.se
 @Component({
     selector:'m-contas-pagar',
     templateUrl: './m-contas-pagar.component.html',
-    styles: [`
-        ::ng-deep .p-dialog .p-dialog-content {
-            height: auto;
-            overflow: hidden;
-        }
-    `]
 })
 export class MContasPagarComponent extends BaseModalStoreComponentDirective implements OnInit {
 
 
     selected: any;
 
+    qtDias:number = 1;
     purchaseValue:number = 0;
     description = '';
     parcelas = false;
@@ -102,7 +97,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
             for (let i = 0; i < this.qParcelas; i++) {
 
                 if (!this.form.get('monthlyPaymentInstallments')?.value) {
-                    currentDate.setDate(currentDate.getDate() + 1);
+                    currentDate.setDate(currentDate.getDate() + this.qtDias);
                 } else {
                     if (i !== 0) {
                         currentDate.setMonth(currentDate.getMonth() + 1);
@@ -205,5 +200,14 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
             this.storeService.create({data: bills});
         }
 
+    }
+
+    validatePaymentInstallments(): boolean {
+        for (const installment of this.paymentInstallments) {
+            if (installment.value <= 0) {
+                return false;
+            }
+        }
+        return true; // Si todos los valores son válidos, retorna true.
     }
 }

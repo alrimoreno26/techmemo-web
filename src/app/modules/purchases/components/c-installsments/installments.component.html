@@ -1,14 +1,6 @@
-<div class="grid">
+<div class="grid pt-3">
     <div class="col-5 p-0">
         <form [formGroup]="form" class="w-full">
-<!--            <div class="col-12">-->
-<!--                <div class="col-12 px-0">-->
-<!--                    <div class="flex flex-column">-->
-<!--                    -->
-<!--                    </div>-->
-<!--                </div>-->
-
-<!--            </div>-->
             <div class="col-12 px-0 pt-0">
                 <p-panel>
                     <ng-template pTemplate="header">
@@ -31,9 +23,10 @@
                     <div class="align-items-center flex flex-auto gap-3 pb-3">
                         <label class="block font-bold w-4">Tipo Pagamento</label>
                         <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
-                                    [options]="paymentMethodService.listEntities$()"
+                                    [options]="paymentMethodService.lightEntities$()"
                                     formControlName="paymentStructureId"
                                     optionLabel="description"
+                                    [showClear]="true"
                                     placeholder="Tipo Pagamento"></p-dropdown>
                     </div>
 
@@ -89,7 +82,7 @@
         </form>
     </div>
     <div class="col-7 pt-0">
-        <div class="col-12 p-0">
+        <div class="col-12 p-0 pb-2">
             <div class="flex justify-content-end">
                 <div class="flex gap-2">
                     <button pButton pRipple class="p-button-primary flex-1 border-round"
@@ -101,7 +94,7 @@
         </div>
         <p-table [value]="paymentInstallments"
                  dataKey="doc" editMode="row"
-                 [scrollable]="true" scrollHeight="300px" styleClass="'p-datatable-sm'">
+                 [scrollable]="true"  styleClass="p-datatable-sm" [style]="{ 'min-height': '300px', 'max-height': '500px' }">
             <ng-template pTemplate="header">
                 <tr>
                     <th>Doc</th>

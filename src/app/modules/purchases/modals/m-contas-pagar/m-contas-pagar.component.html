@@ -106,6 +106,13 @@
                                 </div>
                             </div>
                         </div>
+                        @if(!getFC('monthlyPaymentInstallments')){
+                            <div class="align-items-center flex flex-auto gap-3 pb-3">
+                                <label class="block font-bold w-full">Qtd Dias</label>
+                                <p-inputNumber [(ngModel)]="qtDias" [ngModelOptions]="{standalone: true}"
+                                               inputStyleClass="w-5rem"></p-inputNumber>
+                            </div>
+                        }
                         <div class="align-items-center flex flex-auto gap-3">
                             <label class="block font-bold w-full">Vencimiento 1 Parcela</label>
                             <p-calendar [(ngModel)]="rangeDates"
@@ -225,7 +232,7 @@
                 (click)="gerarParcelas()"
                 icon="mdi mdi-cash-plus"></button>
         <button pButton pRipple class="p-button-primary flex-1 border-round" label="Cadastrar Contas"
-                [disabled]="this.form.invalid"
+                [disabled]="this.form.invalid && validatePaymentInstallments"
                 (click)="save()"
                 icon="mdi mdi-check"></button>
     </div>

@@ -4,6 +4,8 @@ import {StorePurchasesServices} from "./services/store.purchases.services";
 import {HeadersTable} from "../../standalone/data-table/models";
 import {MFinancialTransactionsComponent} from "./modals/m-financial-transactions/m-financial-transactions.component";
 import {SupplierService} from "../inventory/forncedores/services/supplier.service";
+import {formatDate} from "../../core/util";
+import {FinancialTransactionsEnum} from "../../core/enums/commerce";
 
 @Component({
     selector: 'c-purchases',
@@ -12,6 +14,8 @@ import {SupplierService} from "../inventory/forncedores/services/supplier.servic
 export class PurchasesComponent extends BaseComponentDirective implements OnInit {
 
     override modalContent = MFinancialTransactionsComponent;
+    rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
+    type: string = 'ALL';
 
     constructor(public service: StorePurchasesServices, public supplierService: SupplierService) {
         super()
@@ -43,4 +47,34 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
     customEdit(evt: any): void {
         this.service.getById(evt.id);
     }
+
+    applyFilter() {
+        this.service.loadAll({
+            pageNumber: 0,
+            pageSize: 25,
+            startDate: formatDate(this.rangeDates[0]),
+            endDate: formatDate(this.rangeDates[1])
+        })
+    }
+    changeFilterType(){
+        if(this.type === 'ALL'){
+            this.service.loadAll({
+                pageNumber: 0,
+                pageSize: 25,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1])
+            })
+        } else {
+            this.service.loadAll({
+                pageNumber: 0,
+                pageSize: 25,
+                state: this.type,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1])
+            })
+        }
+
+    }
+
+    protected readonly FinancialTransactionsEnum = FinancialTransactionsEnum;
 }

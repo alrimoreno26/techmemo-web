@@ -22,9 +22,7 @@ export class FinancialTransactionsServices extends StoreComponentService<any> {
         this.setAdd({data});
     }
 
-    createInstallmentsByFinancialTransactions(data: any) {
-        this.storeFinancialTransactions.createInstallmentsByFinancialTransactions(data).subscribe((response) => {
-            this.patchState({goToPay: null, dialog: false});
-        })
+    preEdit(item:any) {
+        this.patchState({goToPay: {...item}})
     }
 }

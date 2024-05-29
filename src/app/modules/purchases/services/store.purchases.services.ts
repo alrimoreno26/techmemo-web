@@ -7,14 +7,16 @@ import {LazyLoadData} from "../../../standalone/data-table/models";
 import {switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
+import {StoreContasPagarServices} from "./store.contas-pagar.services";
 
 @Injectable({providedIn: 'platform'})
 export class StorePurchasesServices extends StoreComponentService<any> {
 
     override serverSide = true;
     override lazyLoadOnInit = true;
-    constructor(private purchasesService: PurchasesService) {
-        const defaultEntity: EntityState<OrdersTO> =
+
+    constructor(private purchasesService: PurchasesService, private storeContasPagarServices: StoreContasPagarServices) {
+        const defaultEntity: EntityState<any> =
             {entities: [], total: 0, dialog: false, loaded: false};
         super(purchasesService, defaultEntity);
     }
@@ -41,10 +43,15 @@ export class StorePurchasesServices extends StoreComponentService<any> {
         })
     }
 
-    getById(id:string){
+    getById(id: string) {
         this.purchasesService.findOneById(id).subscribe((response) => {
-            this.setSelected(response);
-            this.patchState({dialog: true, selected: response})
+            this.storeContasPagarServices.getBillsByFinancialTransactions(response.billId).subscribe((data) => {
+                response.paymentInstallments = data;
+                this.setSelected(response);
+                this.patchState({dialog: true, selected: response})
+            });
+
+
         });
     }
 }

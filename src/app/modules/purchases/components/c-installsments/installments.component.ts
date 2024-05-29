@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
+import {Component, effect, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {StoreContasPagarServices} from "../../services/store.contas-pagar.services";
 import {PaymentMethodService} from "../../../financial/service/payment-method.service";
 import {SupplierService} from "../../../inventory/forncedores/services/supplier.service";
@@ -14,6 +14,10 @@ import {FinancialTransactionsServices} from "../../services/financial-transactio
     styles: [`
         ::ng-deep .p-dialog .p-dialog-content {
             padding: 0 1.5rem 0 1.5rem;
+        }
+        ::ng-deep .p-datatable-wrapper {
+            min-height: 300px;
+            max-height: 500px;
         }
     `]
 })
@@ -44,34 +48,26 @@ export class InstallmentsComponent implements OnInit {
                 private supplierService: SupplierService,
                 private financialTransactionsServices: FinancialTransactionsServices,
                 private financeService: FinancialClasificationService) {
-        this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
+        this.paymentMethodService.loadLight()
     }
 
     ngOnInit(): void {
-        console.log(this.config)
+
         this.form = new FormGroup({
             classifierId: new FormControl<string>(this.config?.classifierId, Validators.required),
-            description: new FormControl<string>(this.config?.description),
+            description: new FormControl<string>(this.config?.paymentInstallments?.description),
             monthlyPaymentInstallments: new FormControl<boolean>(this.config?.monthlyPaymentInstallments || true, Validators.required),
-            paymentStructureId: new FormControl<string>(this.config?.paymentStructureId, Validators.required),
-            provision: new FormControl<boolean>(this.config?.provision || false, Validators.required),
+            paymentStructureId: new FormControl<any>(this.config?.paymentInstallments?.paymentStructure, Validators.required),
+            provision: new FormControl<boolean>(this.config?.paymentInstallments?.provision || false, Validators.required),
             purchaseCode: new FormControl<string>({value: this.config?.code, disabled: true}),
             purchaseValue: new FormControl<string>({value: this.config?.totalValue, disabled: true}),
             supplierId: new FormControl<string>(this.config?.supplierId, Validators.required)
         });
-        this.paymentInstallments = this.config?.data?.paymentInstallments ?? [];
-        this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate) : this.rangeDates = new Date();
+        this.paymentInstallments = this.config?.paymentInstallments?.paymentInstallments ?? [];
+        this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate+ 'T00:00') : this.rangeDates = new Date();
         this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
         this.qParcelas > 1 ? this.mParcelas = true : this.parcelas = false;
-
-        this.financeService.autocompleteSearch({
-            pageNumber: 0,
-            pageSize: 50,
-        })
-        this.supplierService.autocomplete({
-            pageNumber: 0,
-            pageSize: 50,
-        })
+        this.reduceTotalPaymentsInstall();
     }
 
     getFC(key: string) {

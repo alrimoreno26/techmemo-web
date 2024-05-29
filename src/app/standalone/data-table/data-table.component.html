@@ -14,7 +14,7 @@
     ></p-splitButton>
     <div>
     <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
+      <i class="mdi mdi-magnify"></i>
       <input #inputSearch (input)="setGlobalFilter($event, dt)" pInputText
              placeholder="Vamos pesquisar" type="text"/>
     </span>
@@ -46,8 +46,8 @@
                                 </div>
                             </ng-template>
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-dropdown [(ngModel)]="selectedType" [options]="[productType.ADDITIONAL,productType.COMBO,productType.SIMPLE]" placeholder="Classificação de produto" [filter]="false"
-                                               (onChange)="filter($event.value)">
+                                <p-dropdown [(ngModel)]="selectedType" [options]="item.filterValue" placeholder="Estado" [filter]="false"
+                                               (onChange)="filter($event.value, item.field)">
                                     <ng-template pTemplate="selectedItem">
                                         <div class="inline-block vertical-align-middle">
                                             <span class="ml-1 mt-1">{{ selectedType | translate}}</span>

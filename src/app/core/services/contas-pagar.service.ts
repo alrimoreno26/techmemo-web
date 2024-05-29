@@ -16,6 +16,10 @@ export class ContasPagarService extends AbstractService<any> {
         super(httpClient, buildURL('/v1/bills'));
     }
 
+    loadBillsByFinancial(id: any): Observable<LazyResultData<any>> {
+        return this.client.get<LazyResultData<any>>(`${this.basePath}/${id}`);
+    }
+
     loadInstallmentsBill(queryParams: any): Observable<LazyResultData<any>> {
         const params: HttpParams = new HttpParams({fromObject: queryParams});
         return this.client.get<LazyResultData<any>>(buildURL('/v1/bill-payment-installments'), {params});

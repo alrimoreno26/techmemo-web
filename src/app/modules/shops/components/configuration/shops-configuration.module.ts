@@ -27,11 +27,14 @@ import {SelectButtonModule} from "primeng/selectbutton";
 import {BadgeModule} from "primeng/badge";
 import {DropdownModule} from "primeng/dropdown";
 import {TranslateModule} from "@ngx-translate/core";
+import {MAddBanksComponent} from "./components/m-add-banks/m-add-banks.component";
+import {AccountValidateService} from "../../../../core/injects/offer-operation-bank-account-validate.service";
 
 @NgModule({
     declarations: [
         ShopsConfigurationComponent,
         MAddPrintersComponent,
+        MAddBanksComponent,
         MAddCaixasComponent
     ],
     imports: [
@@ -58,6 +61,7 @@ import {TranslateModule} from "@ngx-translate/core";
         TranslateModule,
     ],
     providers: [
+        AccountValidateService,
         ProductService,
         CommercesService,
         StoreCategoryService,

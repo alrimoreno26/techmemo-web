@@ -21,6 +21,7 @@ import {MProductComponent} from "../../../inventory/product/components/m-product
 import {cloneDeep} from "lodash";
 import {InstallmentsComponent} from "../../components/c-installsments/installments.component";
 import {BehaviorSubject} from "rxjs";
+import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 
 @Component({
     templateUrl: './m-financial-transactions.component.html',
@@ -50,6 +51,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     totalProducts = 0;
 
     data: any;
+    editing: boolean = false
 
 
     constructor(private storeService: StorePurchasesServices,
@@ -60,6 +62,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                 public paymentMethodService: PaymentMethodService,
                 private dialogRegistryService: DialogRegistryService,
                 private financeService: FinancialClasificationService,
+                private toastMessageService: ToastMessageService,
                 public stockTransferStore: Stock_TransferStore) {
         super(storeService);
         this.dialogRegistryService.addDialog(this.ref);
@@ -81,7 +84,11 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         });
         effect(() => {
             if (this.storeService.selectedEntity$() !== undefined) {
-                this.initForm(this.storeService.selectedEntity$());
+                this.editing = true;
+                if(this.storeService.selectedEntity$().createdFromBill){
+                    console.log('entrou')
+                }
+                // this.initForm(this.storeService.selectedEntity$());
             }
         });
     }
@@ -112,7 +119,21 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             classifierId: new FormControl(data?.classifier, Validators.required),
             type: new FormControl({value: data?.type || 'EXPENSES', disabled: true}, Validators.required),
         });
-        this.products = data?.products ?? [];
+        this.products = data?.products?.map((item: any) => {
+            return {
+                name: item.productName,
+                soldPerUnits: item.unitMeasurementCode === null,
+                costPrice: item.value,
+                amount: item.amount
+            }
+        }) ?? [];
+        if (this.editing) {
+            this.data = {
+                ...data,
+                classifierId: this.form.get('classifierId')?.value.id,
+                supplierId: this.form.get('supplierId')?.value.id
+            };
+        }
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -120,12 +141,11 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         switch (event.key) {
             case 'Enter':
                 if (this.selectedItem !== undefined) {
-                    const updatedProducts = [...this.products, {
+                    this.products = [...this.products, {
                         ...this.selectedItem,
                         amount: this.selectedItemAmount,
                         valueToPaid: this.selectedItem.salePrice * this.selectedItemAmount
                     }];
-                    this.products = updatedProducts;
                     this.selectedItem = undefined;
                     this.selectedItemAmount = 1;
                     this.form.get('products')?.setValue(this.products);
@@ -224,26 +244,35 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     override save() {
-        const send = {
-            classifierId: this.form.get('classifierId')?.value.id,
-            products: this.products.map((item: any) => {
-                return {
-                    amount: item.amount,
-                    productId: item.id,
-                    productName: item.name,
-                    unitMeasurementId: item.unitMeasurementCode,
-                    value: item.costPrice,
-                    weight: item.weight,
-                }
-            }),
-            supplierId: this.form.get('supplierId')?.value.id,
-            type: this.form.get('type')?.value,
+        if (this.editing) {
+            this.stepActive++;
+        } else {
+            const send = {
+                classifierId: this.form.get('classifierId')?.value.id,
+                products: this.products.map((item: any) => {
+                    return {
+                        amount: item.amount,
+                        productId: item.id,
+                        productName: item.name,
+                        unitMeasurementId: item.unitMeasurementCode,
+                        value: item.costPrice,
+                        weight: item.weight,
+                    }
+                }),
+                supplierId: this.form.get('supplierId')?.value.id,
+                type: this.form.get('type')?.value,
+            }
+            this.storeFinancialTransactions.create({data: send});
         }
-        this.storeFinancialTransactions.create({data: send});
     }
 
+
     savePayment() {
-        this.child.save();
+        if (this.child.paymentInstallments.length === 0) {
+            this.toastMessageService.showMessage("error", 'ERROR', 'Deve cadastrar pelo menos 1 parcela')
+        } else {
+            this.child.save();
+        }
     }
 
     confirmInstallment(event: any) {
