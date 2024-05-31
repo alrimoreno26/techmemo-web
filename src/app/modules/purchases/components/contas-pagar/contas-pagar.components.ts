@@ -63,7 +63,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         this.service.loadAll({
             pageNumber: this.first,
             pageSize: this.size,
-            type: this.type,
+            state: this.type === 'ALL' ? null : this.type,
             startDate: formatDate(this.rangeDates[0]),
             endDate: formatDate(this.rangeDates[1])
         })
@@ -95,7 +95,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
             this.service.loadAll({
                 pageNumber: this.first,
                 pageSize: this.size,
-                type: this.type,
+                state: this.type === 'ALL' ? null : this.type,
                 startDate: formatDate(this.rangeDates[0]),
                 endDate: formatDate(this.rangeDates[1])
             })
@@ -122,7 +122,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
             this.service.loadAll({
                 pageNumber: this.first,
                 pageSize: this.size,
-                type: this.type,
+                state: this.type === 'ALL' ? null : this.type,
                 startDate: formatDate(this.rangeDates[0]),
                 endDate: formatDate(this.rangeDates[1])
             })
@@ -155,7 +155,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
                 })
             } else {
                 this.service.loadAll({
-                    type: this.type,
+                    state: this.type === 'ALL' ? null : this.type,
                     startDate: formatDate(this.rangeDates[0]),
                     endDate: formatDate(this.rangeDates[1]),
                     pageNumber: this.first,
@@ -180,7 +180,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         this.first = event.first;
         this.service.loadSummary();
         this.service.loadAll({
-            type: this.type,
+            state: this.type === 'ALL' ? null : this.type,
             startDate: formatDate(this.rangeDates[0]),
             endDate: formatDate(this.rangeDates[1]),
             pageNumber: this.first,
