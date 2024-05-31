@@ -20,7 +20,7 @@
     </span>
         <button (click)="refreshContentData(dt)" *ngIf="refreshBtn"
                 class="ml-2 p-button-rounded p-button-text" icon="mdi mdi-replay mdi-24px" pButton
-                pTooltip="Refresh" tooltipPosition="left" type="button"></button>
+                pTooltip="Atualizar" tooltipPosition="left" type="button"></button>
     </div>
 </div>
 <p-table #dt (onLazyLoad)="loadCustomLazy($event)" (onRowReorder)=rowReorder($event,dt) [columns]="headers"

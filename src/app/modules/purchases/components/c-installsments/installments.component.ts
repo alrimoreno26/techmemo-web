@@ -43,11 +43,7 @@ export class InstallmentsComponent implements OnInit {
     clonedProducts: { [s: string]: any } = {};
 
 
-    constructor(private storeService: StoreContasPagarServices,
-                public paymentMethodService: PaymentMethodService,
-                private supplierService: SupplierService,
-                private financialTransactionsServices: FinancialTransactionsServices,
-                private financeService: FinancialClasificationService) {
+    constructor( public paymentMethodService: PaymentMethodService) {
         this.paymentMethodService.loadLight()
     }
 

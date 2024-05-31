@@ -7,5 +7,7 @@ export interface Options {
 export interface LightsDTO {
     id:string
     name:string
-    type:string
+    type?:string
+    description?:string
+    code?:string
 }

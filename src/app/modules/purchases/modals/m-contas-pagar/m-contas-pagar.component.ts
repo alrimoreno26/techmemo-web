@@ -1,4 +1,4 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, effect, OnInit} from "@angular/core";
 import {
     BaseModalStoreComponentDirective
 } from "../../../../standalone/data-table/directives/base.modal.store.component.directive";
@@ -13,7 +13,7 @@ import {CreateBillPaymentInstallmentDto} from "../../../../core/models/bills";
 import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
 
 @Component({
-    selector:'m-contas-pagar',
+    selector: 'm-contas-pagar',
     templateUrl: './m-contas-pagar.component.html',
 })
 export class MContasPagarComponent extends BaseModalStoreComponentDirective implements OnInit {
@@ -21,8 +21,8 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
 
     selected: any;
 
-    consecutiveDaysPaymentInstallments:number = 1;
-    purchaseValue:number = 0;
+    consecutiveDaysPaymentInstallments: number = 1;
+    purchaseValue: number = 0;
     description = '';
     parcelas = false;
     qParcelas = 0;
@@ -43,6 +43,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     suggestionsF: any[] = [];
 
     clonedProducts: { [s: string]: any } = {};
+    editing: boolean = false;
 
 
     constructor(private storeService: StoreContasPagarServices,
@@ -52,24 +53,27 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
                 private financeService: FinancialClasificationService) {
         super(storeService);
         this.dialogRegistryService.addDialog(this.ref);
-        this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
+        this.paymentMethodService.loadLight()
+        this.editing = false;
+        effect(() => {
+            if (this.storeService.selectedEntity$()) {
+                this.editing = true;
+
+            }
+            if (this.storeService.installments$() && this.editing) {
+                this.initForm(this.storeService.selectedEntity$());
+                this.purchaseValue = this.storeService.selectedEntity$()?.value ?? 0;
+                this.paymentInstallments = this.storeService.selectedEntity$()?.paymentInstallments ?? [];
+                this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate+ 'T00:00') : this.rangeDates = new Date();
+                this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
+                this.qParcelas > 1 ? this.mParcelas = true : this.parcelas = false;
+            }
+        });
     }
 
     ngOnInit(): void {
         const {data} = this.config;
-        this.form = new FormGroup({
-            classifierId: new FormControl<string>(data?.classifierId, Validators.required),
-            description: new FormControl<string>(data?.description),
-            monthlyPaymentInstallments: new FormControl<boolean>(data?.monthlyPaymentInstallments || true, Validators.required),
-            paymentStructureId: new FormControl<string>(data?.paymentStructureId, Validators.required),
-            provision: new FormControl<boolean>(data?.provision || false, Validators.required),
-            purchaseCode: new FormControl<string>({value:data?.purchaseCode, disabled: true}),
-            supplierId: new FormControl<string>(data?.supplierId, Validators.required)
-        });
-        this.paymentInstallments = data?.paymentInstallments ?? [];
-        this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate) : this.rangeDates = new Date();
-        this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
-        this.qParcelas > 1 ? this.mParcelas = true : this.parcelas = false;
+        this.initForm(data);
 
         this.financeService.autocompleteSearch({
             pageNumber: 0,
@@ -81,6 +85,25 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
         })
     }
 
+    initForm(data: any) {
+        this.selected = data;
+        console.log(data?.paymentInstallments)
+        this.form = new FormGroup({
+            classifierId: new FormControl<string>(data?.classifier, Validators.required),
+            description: new FormControl<string>(data?.description),
+            monthlyPaymentInstallments: new FormControl<boolean>(data?.monthlyPaymentInstallments || true, Validators.required),
+            paymentStructureId: new FormControl<string>(data?.paymentStructure, Validators.required),
+            provision: new FormControl<boolean>(data?.provision || false, Validators.required),
+            purchaseCode: new FormControl<string>({value: data?.code, disabled: true}),
+            supplierId: new FormControl<string>(data?.supplier, Validators.required)
+        });
+        this.purchaseValue = data?.value ?? 0;
+        this.paymentInstallments = data?.paymentInstallments ?? [];
+        this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate) : this.rangeDates = new Date();
+        this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
+        this.qParcelas > 1 ? this.mParcelas = true : this.parcelas = false;
+    }
+
     getFC(key: string) {
         return this.form.get(key)?.value;
     }
@@ -89,7 +112,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
         if (this.mParcelas) {
             this.paymentInstallments = [];
             let monthlyPayment = 0;
-            if(this.purchaseValue > 0){
+            if (this.purchaseValue > 0) {
                 monthlyPayment = this.purchaseValue / this.qParcelas;
             }
 
@@ -106,6 +129,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
                 }
                 let tempDate = new Date(currentDate);
                 this.paymentInstallments.push({
+                    code: null,
                     value: monthlyPayment,
                     expirationDate: tempDate,
                     description: this.description
@@ -113,6 +137,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
             }
         } else {
             this.paymentInstallments.push({
+                code: null,
                 value: 0,
                 expirationDate: this.rangeDates.setMonth(this.rangeDates.getMonth() + 1),
                 description: this.description,
@@ -163,7 +188,10 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     }
 
     onRowEditSave(product: any) {
-        if (product.price > 0) {
+        if (product.value > 0) {
+            if(this.editing){
+                this.storeService.saveInstallmentsBillBackground(this.selected.id,product.id, product);
+            }
             delete this.clonedProducts[product.id as string];
             console.log({severity: 'success', summary: 'Success', detail: 'Product is updated'});
         } else {
@@ -183,7 +211,7 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
     }
 
     override save() {
-        if(this.form.valid){
+        if (this.form.valid) {
             const bills = {
                 classifierId: this.form.get('classifierId')?.value.id,
                 description: this.form.get('description')?.value,
@@ -209,6 +237,6 @@ export class MContasPagarComponent extends BaseModalStoreComponentDirective impl
                 return false;
             }
         }
-        return true; // Si todos los valores son válidos, retorna true.
+        return true;
     }
 }

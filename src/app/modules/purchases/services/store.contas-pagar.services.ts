@@ -9,17 +9,24 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {BillLigthDto} from "../../../core/models/bills";
 
 @Injectable({providedIn: 'platform'})
-export class StoreContasPagarServices extends StoreComponentService<BillLigthDto> {
+export class StoreContasPagarServices extends StoreComponentService<any> {
 
     summary$: Signal<any | null> = this.selectSignal(state => state.summary);
+    installments$: Signal<any | null> = this.selectSignal(state => state.installments);
+    allInstallments$: Signal<any | null> = this.selectSignal(state => state.allInstallments);
 
     override serverSide = true;
     override lazyLoadOnInit = true;
 
     constructor(private contasPagarService: ContasPagarService) {
-        const defaultEntity: EntityState<BillLigthDto> & { summary?: any } =
+        const defaultEntity: EntityState<any> & { summary?: any, installments?: any, allInstallments?:any } =
             {entities: [], total: 0, dialog: false, loaded: false};
         super(contasPagarService, defaultEntity);
+    }
+
+    resetState() {
+        this.setSelected(null)
+        this.patchState({installments: null, selected: null});
     }
 
     override loadAll = this.effect<any>((lazy$: Observable<{ lazy: LazyLoadData }>) => lazy$.pipe(
@@ -44,6 +51,11 @@ export class StoreContasPagarServices extends StoreComponentService<BillLigthDto
         })
     ));
 
+    loadAllInstallments(queryParams: any){
+        this.contasPagarService.loadInstallmentsBill(queryParams).subscribe((data) => {
+            this.patchState({allInstallments: data});
+        })
+    }
 
     loadInstallmentsBill(queryParams: any) {
         this.contasPagarService.loadInstallmentsBill(queryParams).subscribe((data) => {
@@ -57,6 +69,22 @@ export class StoreContasPagarServices extends StoreComponentService<BillLigthDto
             selected.paymentInstallments = data.content;
             this.setSelected(selected)
             this.setAll(updatedEntities);
+        })
+    }
+
+    editContaInstallment(queryParams: any) {
+        this.contasPagarService.loadInstallmentsBill(queryParams).subscribe((data) => {
+            const {selected, entities} = this.state();
+
+            const updatedEntities = entities.map((entity: any) =>
+                entity.id === selected.id
+                    ? {...entity, paymentInstallments: data.content}
+                    : entity
+            );
+            selected.paymentInstallments = data.content;
+            this.setSelected(selected)
+            this.setAll(updatedEntities);
+            this.patchState({dialog: true, installments: data.content});
         })
     }
 
@@ -76,10 +104,28 @@ export class StoreContasPagarServices extends StoreComponentService<BillLigthDto
         })
     }
 
-    saveInstallmentsBill(contaId:any, id: string, data: any) {
+    saveInstallmentsBill(contaId: any, id: string, data: any) {
         this.contasPagarService.saveInstallmentsBill(id, data).subscribe(() => {
             this.patchState({dialog: false});
             this.loadInstallmentsBill({billId: contaId, type: 'ALL', pageNumber: 0, pageSize: 50})
+        })
+    }
+
+    saveInstallmentsBillBackground(contaId: any, id: string, data: any) {
+        this.contasPagarService.saveInstallmentsBill(id, data).subscribe(() => {
+            // this.patchState({dialog: false});
+            // this.loadInstallmentsBill({billId: contaId, type: 'ALL', pageNumber: 0, pageSize: 50})
+        })
+    }
+
+    deleteInstallmentsBill(contaId: any, id: string) {
+        this.contasPagarService.deleteInstallmentsBill(id).subscribe(() => {
+            this.loadInstallmentsBill({billId: contaId, type: 'ALL', pageNumber: 0, pageSize: 50})
+        })
+    }
+    deleteSimpleInstallments(id: string) {
+        this.contasPagarService.deleteInstallmentsBill(id).subscribe(() => {
+            this.loadAllInstallments({type: 'ALL', pageNumber: 0, pageSize: 50})
         })
     }
 }

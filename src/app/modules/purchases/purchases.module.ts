@@ -50,6 +50,7 @@ import {StepperModule} from "primeng/stepper";
 import {InstallmentsComponent} from "./components/c-installsments/installments.component";
 import {BadgeModule} from "primeng/badge";
 import {TooltipModule} from "primeng/tooltip";
+import {ToolbarModule} from "primeng/toolbar";
 
 @NgModule({
     declarations: [
@@ -92,7 +93,8 @@ import {TooltipModule} from "primeng/tooltip";
         SelectButtonModule,
         StepperModule,
         BadgeModule,
-        TooltipModule
+        TooltipModule,
+        ToolbarModule
     ],
     providers:[
         StoreContasPagarServices,

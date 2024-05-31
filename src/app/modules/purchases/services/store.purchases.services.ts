@@ -8,6 +8,7 @@ import {switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 import {StoreContasPagarServices} from "./store.contas-pagar.services";
+import {LightsDTO} from "../../../core/models/utils";
 
 @Injectable({providedIn: 'platform'})
 export class StorePurchasesServices extends StoreComponentService<any> {
@@ -26,7 +27,14 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             return this.purchasesService.findAllPaginate(lazy).pipe(
                 tapResponse({
                     next: (result) => {
-                        const {content, totalElements} = result;
+                        const {content,totalElements} = result;
+                        // const content: LightsDTO[] = result.content.map((item: any, i: number) => {
+                        //     return {
+                        //         id: item.id,
+                        //         code: item.code,
+                        //         name: item.name
+                        //     }
+                        // })
                         this.setAll(content);
                         this.patchState({total: totalElements});
                     },

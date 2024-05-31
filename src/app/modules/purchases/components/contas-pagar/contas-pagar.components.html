@@ -8,19 +8,7 @@
                             (onClose)="changeFilterType()"
                             [readonlyInput]="true"></p-calendar>
             </div>
-            <div class="align-items-center flex flex-auto gap-3">
-                <label class="block font-bold">Fornecedor</label>
-                <div class="search-container-single px-0 py-3 shadow-none w-full">
-                    <i class="mdi mdi-magnify"></i>
-                    <p-autoComplete class="w-full" styleClass="w-full" appFocus #input (completeMethod)="search($event)"
-                                    inputStyleClass="w-full"
-                                    placeholder="Pesquise por nome ou código de fornecedor"
-                                    (input)="searchClassifiers($event)"
-                                    field="name"
-                                    [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
-                                    [suggestions]="suggestions"></p-autoComplete>
-                </div>
-            </div>
+
         </div>
         <div class="col-5">
             <p-panel>
@@ -54,131 +42,210 @@
         <div class="col-12 py-0">
             <p-divider styleClass="m-1"></p-divider>
         </div>
-        <div class="col-10 pb-0 pt-3 text-right">
-            <button pButton pRipple class="p-button-primary flex-1 border-round"
-                    label="Nova Conta A Pagar"
-                    (click)="novaConta()"
-                    icon="mdi mdi-plus"></button>
-            <button (click)="refreshContentData()"
-                    class="ml-2 p-button-rounded p-button-text" icon="mdi mdi-replay mdi-24px" pButton
-                    pTooltip="Refresh" tooltipPosition="left" type="button"></button>
+        <div class="col-10 pb-0 pt-3 flex justify-content-end">
+            <p-toolbar class="w-full" styleClass="w-full p-1">
+
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold">Fornecedor</label>
+                    <div class="search-container-single px-0 py-3 shadow-none w-full">
+                        <i class="mdi mdi-magnify"></i>
+                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                        (completeMethod)="search($event)"
+                                        inputStyleClass="w-full"
+                                        placeholder="Pesquise por nome ou código de fornecedor"
+                                        (input)="searchClassifiers($event)"
+                                        field="name"
+                                        [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
+                                        [suggestions]="suggestions"></p-autoComplete>
+                    </div>
+                </div>
+
+                <div class="p-toolbar-group-center">
+                    <p-divider layout="vertical" styleClass="py-2 px-0"/>
+                </div>
+                <div class="p-toolbar-group-end">
+                    <button pButton pRipple class="p-button-primary border-round"
+                            label="Nova Conta A Pagar"
+                            (click)="novaConta()"
+                            icon="mdi mdi-plus"></button>
+                    <p-divider layout="vertical" styleClass="py-2 px-0"/>
+                    <p-selectButton [options]="viewOptions"
+                                    [(ngModel)]="viewState"
+                                    (onChange)="changeViewState()"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    styleClass="flex"></p-selectButton>
+                    <p-divider layout="vertical" styleClass="py-2 px-0"/>
+                    <button (click)="refreshContentData()"
+                            class="p-button-primary p-button-text" icon="mdi mdi-replay mdi-24px"
+                            pButton
+                            pTooltip="Atualizar" tooltipPosition="left" type="button"></button>
+                </div>
+            </p-toolbar>
         </div>
         <div class="col-10 flex flex-column" style="min-height: 64vh">
-            <div class="flex-1">
-                <p-table [value]="service.listEntities$()"
-                         [scrollable]="true"
-                         scrollHeight="420px"
-                         rowGroupMode="subheader" dataKey="bigId"
-                         groupRowsBy="bigId" [tableStyle]="{ 'min-width': '60rem' }"
-                         (onRowExpand)="onRowExpand($event)">
+            @if (viewState === 'contas') {
+                <div class="flex-1">
+                    <p-table [value]="service.listEntities$()"
+                             [scrollable]="true"
+                             scrollHeight="420px"
+                             rowGroupMode="subheader" dataKey="bigId"
+                             groupRowsBy="bigId" [tableStyle]="{ 'min-width': '60rem' }"
+                             (onRowExpand)="onRowExpand($event)">
+                        <ng-template pTemplate="header">
+                            <tr>
+                                <th style="width: 5rem"></th>
+                                <th>Documento</th>
+                                <th># Parcelas</th>
+                                <th>1er Parcela</th>
+                                <th>Parcela Fixas</th>
+                                <th>Valor Total Parcelas</th>
+                                <th>Estado</th>
+                                <th>Ações</th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="groupheader" let-rowIndex="rowIndex" let-conta let-expanded="expanded">
+                            <tr [ngClass]="contasClass(conta)">
+                                <td>
+                                    <p-button type="button" pRipple [pRowToggler]="conta" [text]="true" [rounded]="true"
+                                              [plain]="true"
+                                              [icon]="expanded ? 'mdi mdi-chevron-down' : 'mdi mdi-chevron-right'"/>
+                                </td>
+                                <td class="custom-td text-center"><p class="mb-0 pr-6">{{ conta.code }}</p></td>
+                                <td class="custom-td text-center"><p
+                                    class="mb-0 pr-6">{{ conta.amountPaymentInstallments }}</p></td>
+                                <td class="custom-td"><p class="mb-0">{{ conta.firstPaymentInstallmentDate | date }}</p>
+                                </td>
+                                <td class="custom-td text-center">
+                                    <ng-template [ngIf]="conta.monthlyPaymentInstallments" [ngIfElse]="notEnable">
+                                        <i class="mdi mdi-check-circle-outline text-2xl text-green-700 pr-6"></i>
+                                    </ng-template>
+                                    <ng-template #notEnable>
+                                        <i class="mdi mdi-close-circle-outline text-2xl text-red-700-700 pr-6"></i>
+                                    </ng-template>
+                                </td>
+                                <td class="custom-td text-center">
+                                    <p class="mb-0 pr-6">{{ conta.value | currency }}</p>
+                                </td>
+                                <td class="custom-td text-center">
+                                    <p-tag value="{{conta.state | translate}}" [severity]="conta.state | severity"/>
+                                </td>
+                                <td>
+                                    <button class="p-button-rounded p-button-text" icon="mdi mdi-pencil mdi-24px"
+                                            (click)="editConta(conta)"
+                                            pButton
+                                            type="button"></button>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="rowexpansion" let-installments>
+                            <tr>
+                                <td colspan="8">
+                                    <p-table [value]="installments.paymentInstallments" dataKey="id">
+                                        <ng-template pTemplate="header">
+                                            <tr>
+                                                <th>Code</th>
+                                                <th># Parcela</th>
+                                                <th>Data da Parcela</th>
+                                                <th>Doc Fornecedor</th>
+                                                <th>Fornecedor</th>
+                                                <th>Valor</th>
+                                                <th></th>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="body" let-bills let-rowIndex="rowIndex">
+                                            <tr [ngClass]="containerClass(bills)">
+                                                <td>{{ bills.code }}</td>
+                                                <td>{{ rowIndex + 1 }}</td>
+                                                <td>{{ bills.expirationDate | date }}</td>
+                                                <td>{{ bills.supplierDocument | cpfCnpj }}</td>
+                                                <td> {{ bills.supplierName }} {{ bills.supplierLastName }}</td>
+                                                <td> {{ bills.value | currency }}</td>
+                                                <td>
+                                                    <button class="p-button-rounded p-button-text"
+                                                            icon="mdi mdi-pencil mdi-24px"
+                                                            pButton
+                                                            [disabled]="bills.paid"
+                                                            (click)="editInstallment(installments.id,bills)"
+                                                            type="button"></button>
+                                                    <button class="p-button-rounded p-button-text p-button-danger"
+                                                            icon="mdi mdi-delete mdi-24px"
+                                                            [disabled]="bills.paid"
+                                                            (click)="deleteInstallment(installments.id, bills)"
+                                                            pButton
+                                                            type="button"></button>
+                                                </td>
+                                            </tr>
+                                        </ng-template>
+                                        <ng-template pTemplate="emptymessage">
+                                            <tr>
+                                                <td colspan="8">Nao tem contas a pagar</td>
+                                            </tr>
+                                        </ng-template>
+                                    </p-table>
+                                </td>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="emptymessage">
+                            <tr>
+                                <td class="text-center" colspan="8">Nao tem contas a pagar</td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <div class="paginator">
+                    <p-paginator
+                        (onPageChange)="pageChange($event)"
+                        [first]="first"
+                        [rows]="size"
+                        [totalRecords]="service.total$()"
+                        [rowsPerPageOptions]="[20, 50, 100]"/>
+                </div>
+            }
+            @if (viewState === 'parcelas') {
+                <p-table [value]="service.allInstallments$().content" dataKey="id">
                     <ng-template pTemplate="header">
                         <tr>
-                            <th style="width: 5rem"></th>
-                            <th>Documento</th>
-                            <th># Parcelas</th>
-                            <th>1er Parcela</th>
-                            <th>Parcela Fixas</th>
-                            <th>Valor Total Parcelas</th>
-                            <th>Estado</th>
-                            <th>Ações</th>
+                            <th>Code</th>
+                            <th># Parcela</th>
+                            <th>Data da Parcela</th>
+                            <th>Doc Fornecedor</th>
+                            <th>Fornecedor</th>
+                            <th>Valor</th>
+                            <th></th>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="groupheader" let-rowIndex="rowIndex" let-product let-expanded="expanded">
-                        <tr [ngClass]="contasClass(product)">
+                    <ng-template pTemplate="body" let-bills let-rowIndex="rowIndex">
+                        <tr [ngClass]="containerClass(bills)">
+                            <td>{{ bills.code }}</td>
+                            <td>{{ rowIndex + 1 }}</td>
+                            <td>{{ bills.expirationDate | date }}</td>
+                            <td>{{ bills.supplierDocument | cpfCnpj }}</td>
+                            <td> {{ bills.supplierName }} {{ bills.supplierLastName }}</td>
+                            <td> {{ bills.value | currency }}</td>
                             <td>
-                                <p-button type="button" pRipple [pRowToggler]="product" [text]="true" [rounded]="true"
-                                          [plain]="true"
-                                          [icon]="expanded ? 'mdi mdi-chevron-down' : 'mdi mdi-chevron-right'"/>
-                            </td>
-                            <td class="custom-td text-center"><p class="mb-0 pr-6">{{ product.code }}</p></td>
-                            <td class="custom-td text-center"><p
-                                class="mb-0 pr-6">{{ product.amountPaymentInstallments }}</p></td>
-                            <td class="custom-td"><p class="mb-0">{{ product.firstPaymentInstallmentDate | date }}</p>
-                            </td>
-                            <td class="custom-td text-center">
-                                <ng-template [ngIf]="product.monthlyPaymentInstallments" [ngIfElse]="notEnable">
-                                    <i class="mdi mdi-check-circle-outline text-2xl text-green-700 pr-6"></i>
-                                </ng-template>
-                                <ng-template #notEnable>
-                                    <i class="mdi mdi-close-circle-outline text-2xl text-red-700-700 pr-6"></i>
-                                </ng-template>
-                            </td>
-                            <td class="custom-td text-center">
-                                <p class="mb-0 pr-6">{{ product.value | currency }}</p>
-                            </td>
-                            <td class="custom-td text-center">
-                                <p-tag value="{{product.state | translate}}" [severity]="product.state | severity"/>
-                            </td>
-                            <td>
-                                <button class="p-button-rounded p-button-text" icon="mdi mdi-pencil mdi-24px"
+                                <button class="p-button-rounded p-button-text"
+                                        icon="mdi mdi-pencil mdi-24px"
+                                        pButton
+                                        [disabled]="bills.paid"
+                                        (click)="editSimpleInstallment(bills)"
+                                        type="button"></button>
+                                <button class="p-button-rounded p-button-text p-button-danger"
+                                        icon="mdi mdi-delete mdi-24px"
+                                        [disabled]="bills.paid"
+                                        (click)="deleteSimpleInstallment(bills)"
                                         pButton
                                         type="button"></button>
                             </td>
                         </tr>
                     </ng-template>
-                    <ng-template pTemplate="rowexpansion" let-installments>
-                        <tr>
-                            <td colspan="8">
-                                <p-table [value]="installments.paymentInstallments" dataKey="id">
-                                    <ng-template pTemplate="header">
-                                        <tr>
-                                            <th>Code</th>
-                                            <th># Parcela</th>
-                                            <th>Data da Parcela</th>
-                                            <th>Doc Fornecedor</th>
-                                            <th>Fornecedor</th>
-                                            <th>Valor</th>
-                                            <th></th>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="body" let-installment let-rowIndex="rowIndex">
-                                        <tr [ngClass]="containerClass(installment)">
-                                            <td>{{ installment.code }}</td>
-                                            <td>{{ rowIndex + 1 }}</td>
-                                            <td>{{ installment.expirationDate | date }}</td>
-                                            <td>{{ installment.supplierDocument | cpfCnpj }}</td>
-                                            <td> {{ installment.supplierName }} {{ installment.supplierLastName }}</td>
-                                            <td> {{ installment.value | currency }}</td>
-                                            <td>
-                                                <button class="p-button-rounded p-button-text"
-                                                        icon="mdi mdi-pencil mdi-24px"
-                                                        pButton
-                                                        [disabled]="installment.paid"
-                                                        (click)="editInstallment(installments.id,installment)"
-                                                        type="button"></button>
-                                                <button class="p-button-rounded p-button-text p-button-danger"
-                                                        icon="mdi mdi-delete mdi-24px"
-                                                        [disabled]="installment.paid"
-                                                        pButton
-                                                        type="button"></button>
-                                            </td>
-                                        </tr>
-                                    </ng-template>
-                                    <ng-template pTemplate="emptymessage">
-                                        <tr>
-                                            <td colspan="8">Nao tem contas a pagar</td>
-                                        </tr>
-                                    </ng-template>
-                                </p-table>
-                            </td>
-                        </tr>
-                    </ng-template>
                     <ng-template pTemplate="emptymessage">
                         <tr>
-                            <td class="text-center" colspan="8">Nao tem contas a pagar</td>
+                            <td colspan="8">Nao tem contas a pagar</td>
                         </tr>
                     </ng-template>
                 </p-table>
-            </div>
-            <div class="paginator">
-                <p-paginator
-                    (onPageChange)="pageChange($event)"
-                    [first]="first"
-                    [rows]="size"
-                    [totalRecords]="service.total$()"
-                    [rowsPerPageOptions]="[20, 50, 100]"/>
-            </div>
-
+            }
         </div>
         <div class="col-2">
             <p-panel>

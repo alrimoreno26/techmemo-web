@@ -31,4 +31,8 @@ export class ContasPagarService extends AbstractService<any> {
     saveInstallmentsBill(id:string, data: any): Observable<any> {
         return this.client.patch(buildURL(`/v1/bill-payment-installments/${id}`), data);
     }
+
+    deleteInstallmentsBill(id:string): Observable<any> {
+        return this.client.delete(buildURL(`/v1/bill-payment-installments/${id}`));
+    }
 }

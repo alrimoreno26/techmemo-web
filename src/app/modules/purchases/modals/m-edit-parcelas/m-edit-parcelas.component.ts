@@ -34,7 +34,7 @@ export class MEditParcelasComponent extends BaseModalStoreComponentDirective imp
     ngOnInit(): void {
         console.log(this.config.data)
         this.form = new FormGroup({
-            purchaseCode: new FormControl<string>(this.config.data?.installmment.purchaseCode, [Validators.required]),
+            code: new FormControl<string>(this.config.data?.installmment.code, [Validators.required]),
             expirationDate: new FormControl<string>(this.config.data?.installmment.expirationDate, [Validators.required]),
             value: new FormControl<string>(this.config.data?.installmment.value, [Validators.required]),
             description: new FormControl<string>(this.config.data?.installmment.description)
