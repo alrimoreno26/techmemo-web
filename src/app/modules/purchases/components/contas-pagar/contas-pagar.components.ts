@@ -23,6 +23,13 @@ import {ConfirmServices} from "../../../../core/injects/confirm.services";
         ::ng-deep #pn_id_5_content .p-panel-content {
             padding: 5px !important;
         }
+
+        ::ng-deep {
+            #tableParcelas .p-datatable-wrapper,
+            #tableContas .p-datatable-wrapper, {
+                height: calc(100vh - 380px) !important;
+            }
+        }
     `]
 })
 export class ContasPagarComponents extends BaseComponentDirective implements OnInit {
@@ -38,6 +45,8 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
 
     first = 0;
     size = 20;
+    firstInstallement = 0;
+    sizeInstallment = 20;
     totalValuePaid = 0;
     totalValueProvisionType = 0;
     totalValuePay = 0;
@@ -91,7 +100,13 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
                 endDate: formatDate(this.rangeDates[1])
             })
         } else {
-            this.service.loadAllInstallments({type: this.type, pageNumber: 0, pageSize: 50})
+            this.service.loadAllInstallments({
+                type: this.type,
+                pageNumber: this.firstInstallement,
+                pageSize: this.sizeInstallment,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1])
+            })
         }
 
     }
@@ -102,14 +117,24 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     }
 
     refreshContentData() {
-        this.service.loadSummary();
-        this.service.loadAll({
-            pageNumber: this.first,
-            pageSize: this.size,
-            type: this.type,
-            startDate: formatDate(this.rangeDates[0]),
-            endDate: formatDate(this.rangeDates[1])
-        })
+        if (this.viewState === 'contas') {
+            this.service.loadSummary();
+            this.service.loadAll({
+                pageNumber: this.first,
+                pageSize: this.size,
+                type: this.type,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1])
+            })
+        } else {
+            this.service.loadAllInstallments({
+                type: this.type,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1]),
+                pageNumber: this.firstInstallement,
+                pageSize: this.sizeInstallment,
+            })
+        }
     }
 
     search(event: AutoCompleteCompleteEvent) {
@@ -119,23 +144,34 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     }
 
     changeFilterType() {
-        if (this.type === 'PROVISION') {
-            this.service.loadAll({
-                provision: true,
-                startDate: formatDate(this.rangeDates[0]),
-                endDate: formatDate(this.rangeDates[1]),
-                pageNumber: this.first,
-                pageSize: this.size,
-            })
+        if (this.viewState === 'contas') {
+            if (this.type === 'PROVISION') {
+                this.service.loadAll({
+                    provision: true,
+                    startDate: formatDate(this.rangeDates[0]),
+                    endDate: formatDate(this.rangeDates[1]),
+                    pageNumber: this.first,
+                    pageSize: this.size,
+                })
+            } else {
+                this.service.loadAll({
+                    type: this.type,
+                    startDate: formatDate(this.rangeDates[0]),
+                    endDate: formatDate(this.rangeDates[1]),
+                    pageNumber: this.first,
+                    pageSize: this.size,
+                })
+            }
         } else {
-            this.service.loadAll({
+            this.service.loadAllInstallments({
                 type: this.type,
                 startDate: formatDate(this.rangeDates[0]),
                 endDate: formatDate(this.rangeDates[1]),
-                pageNumber: this.first,
-                pageSize: this.size,
+                pageNumber: this.firstInstallement,
+                pageSize: this.sizeInstallment,
             })
         }
+
 
     }
 
@@ -149,6 +185,19 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
             endDate: formatDate(this.rangeDates[1]),
             pageNumber: this.first,
             pageSize: this.size,
+        })
+    }
+
+    pageChangeInstallement(event: any) {
+        this.sizeInstallment = event.rows;
+        this.firstInstallement = event.first;
+        this.service.loadSummary();
+        this.service.loadAllInstallments({
+            type: this.type,
+            startDate: formatDate(this.rangeDates[0]),
+            endDate: formatDate(this.rangeDates[1]),
+            pageNumber: this.firstInstallement,
+            pageSize: this.sizeInstallment,
         })
     }
 
