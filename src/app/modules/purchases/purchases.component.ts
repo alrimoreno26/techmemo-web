@@ -54,6 +54,12 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
         }
     }
 
+    customDelete(evt: any){
+        if(evt.state === 'TYPING'){
+            this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
+        }
+    }
+
     applyFilter() {
         this.service.loadAll({
             pageNumber: 0,
