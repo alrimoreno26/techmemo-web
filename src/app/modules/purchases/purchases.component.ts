@@ -6,6 +6,7 @@ import {MFinancialTransactionsComponent} from "./modals/m-financial-transactions
 import {SupplierService} from "../inventory/forncedores/services/supplier.service";
 import {formatDate} from "../../core/util";
 import {FinancialTransactionsEnum} from "../../core/enums/commerce";
+import {ToastMessageService} from "../../core/injects/toast-message.service";
 
 @Component({
     selector: 'c-purchases',
@@ -17,7 +18,7 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
     type: string = 'ALL';
 
-    constructor(public service: StorePurchasesServices, public supplierService: SupplierService) {
+    constructor(public service: StorePurchasesServices, public supplierService: SupplierService, private toastMessageService: ToastMessageService,) {
         super()
     }
 
@@ -45,7 +46,12 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
     }
 
     customEdit(evt: any): void {
-        this.service.getById(evt.id);
+        if (evt.state === 'TYPING') {
+            this.service.getById(evt.id);
+        } else {
+            this.service.patchState({dialog: false});
+            this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
+        }
     }
 
     applyFilter() {
@@ -56,8 +62,9 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
             endDate: formatDate(this.rangeDates[1])
         })
     }
-    changeFilterType(){
-        if(this.type === 'ALL'){
+
+    changeFilterType() {
+        if (this.type === 'ALL') {
             this.service.loadAll({
                 pageNumber: 0,
                 pageSize: 25,

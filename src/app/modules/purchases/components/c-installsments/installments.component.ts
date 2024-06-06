@@ -62,7 +62,7 @@ export class InstallmentsComponent implements OnInit {
         this.paymentInstallments = this.config?.paymentInstallments?.paymentInstallments ?? [];
         this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate+ 'T00:00') : this.rangeDates = new Date();
         this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
-        this.qParcelas > 1 ? this.mParcelas = true : this.parcelas = false;
+        this.qParcelas > 0 ? this.mParcelas = true : this.parcelas = false;
         this.reduceTotalPaymentsInstall();
     }
 
@@ -168,6 +168,7 @@ export class InstallmentsComponent implements OnInit {
                 provision: this.form.get('provision')?.value,
                 purchaseCode: this.form.get('purchaseCode')?.value,
                 supplierId: this.form.get('supplierId')?.value,
+                editing: !!this.config
             }
 
             this.confirmInstallment.next(bills);

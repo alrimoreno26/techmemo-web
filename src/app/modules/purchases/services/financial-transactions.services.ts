@@ -17,12 +17,14 @@ export class FinancialTransactionsServices extends StoreComponentService<any> {
         this.patchState({goToPay: null});
     }
 
+    updateFinancialTransaction(params: any, id: string) {
+        this.storeFinancialTransactions.updateFinancialTransactions(params, id).subscribe(() => {
+        })
+    }
+
     override preAdd = (data: any, _: any): void => {
         this.patchState({goToPay: {...data, nextStep: true}})
         this.setAdd({data});
     }
 
-    preEdit(item:any) {
-        this.patchState({goToPay: {...item}})
-    }
 }

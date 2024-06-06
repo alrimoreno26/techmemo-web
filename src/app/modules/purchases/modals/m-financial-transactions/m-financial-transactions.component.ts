@@ -85,10 +85,10 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         effect(() => {
             if (this.storeService.selectedEntity$() !== undefined) {
                 this.editing = true;
-                if(this.storeService.selectedEntity$().createdFromBill){
-                    console.log('entrou')
-                }
-                // this.initForm(this.storeService.selectedEntity$());
+                // if(this.storeService.selectedEntity$().createdFromBill){
+                //     console.log('entrou')
+                // }
+                this.initForm(this.storeService.selectedEntity$());
             }
         });
     }
@@ -245,6 +245,12 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
 
     override save() {
         if (this.editing) {
+            const send = {
+                classifierId: this.form.get('classifierId')?.value.id,
+                supplierId: this.form.get('supplierId')?.value.id,
+                type: this.form.get('type')?.value,
+            }
+            this.storeFinancialTransactions.updateFinancialTransaction(send, this.form.get('id')?.value);
             this.stepActive++;
         } else {
             const send = {
