@@ -52,8 +52,6 @@ jobs:
             - name: Push the Docker image
               run: docker push armoreno2626/techmemo-web:latest
 
-            - name: Send custom message
-
 #    # Trabajo para la rama main
 #    job_for_main:
 #        needs: common_tasks
