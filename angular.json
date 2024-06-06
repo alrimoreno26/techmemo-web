@@ -39,6 +39,12 @@
                     },
                     "configurations": {
                         "production": {
+                            "buildOptimizer": false,
+                            "optimization": false,
+                            "vendorChunk": true,
+                            "extractLicenses": false,
+                            "sourceMap": true,
+                            "namedChunks": true,
                             "budgets": [
                                 {
                                     "type": "initial",
@@ -59,7 +65,7 @@
                             ],
                             "outputHashing": "all"
                         },
-                        "development": {  
+                        "development": {
                             "buildOptimizer": false,
                             "optimization": false,
                             "vendorChunk": true,
