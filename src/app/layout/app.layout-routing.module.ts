@@ -35,7 +35,7 @@ const routes: Routes = [
             },
             {
                 path: 'loja',
-                data: {breadcrumb: 'Loja', roles: [domainEnum.ALL]},
+                data: {breadcrumb: 'Loja', roles: [domainEnum.CONFIGURATION,domainEnum.ALL]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/shops/shops.module').then(m => m.ShopsModule)
             },
