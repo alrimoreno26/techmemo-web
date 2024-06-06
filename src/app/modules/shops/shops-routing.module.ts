@@ -3,6 +3,7 @@ import {RouterModule, Routes} from "@angular/router";
 import {ShopsComponents} from "./shops.components";
 import {domainEnum} from "../../core/enums/role";
 import {SuperAdminGuard} from "../../core/guards/super.admin.guard";
+import {ControlGuard} from "../../core/guards/control.guard";
 
 const routes: Routes = [
     {
@@ -15,6 +16,8 @@ const routes: Routes = [
             },
             {
                 path: 'configuration',
+                data: {breadcrumb: 'Configuração da loja', roles: [domainEnum.PRODUCT]},
+                canActivate: [ControlGuard],
                 loadChildren: () => import('./components/configuration/shops-configuration.module').then(c => c.ShopsConfigurationModule)
             },
             {
