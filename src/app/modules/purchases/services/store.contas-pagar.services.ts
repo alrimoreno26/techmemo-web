@@ -28,6 +28,10 @@ export class StoreContasPagarServices extends StoreComponentService<any> {
         this.setSelected(null)
         this.patchState({installments: null, selected: null});
     }
+    // override preAdd = (data: any, _: any): void => {
+    //     this.patchState({dialog: false});
+    //     this.setAdd({data});
+    // }
 
     override loadAll = this.effect<any>((lazy$: Observable<{ lazy: LazyLoadData }>) => lazy$.pipe(
         switchMap((lazy) => {
@@ -113,7 +117,7 @@ export class StoreContasPagarServices extends StoreComponentService<any> {
 
     saveInstallmentsBillBackground(contaId: any, id: string, data: any) {
         this.contasPagarService.saveInstallmentsBill(id, data).subscribe(() => {
-            // this.patchState({dialog: false});
+            this.patchState({dialog: false});
             // this.loadInstallmentsBill({billId: contaId, type: 'ALL', pageNumber: 0, pageSize: 50})
         })
     }

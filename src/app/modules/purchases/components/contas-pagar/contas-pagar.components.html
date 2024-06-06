@@ -234,6 +234,12 @@
                                         [disabled]="bills.paid"
                                         (click)="editSimpleInstallment(bills)"
                                         type="button"></button>
+                                <button class="p-button-rounded p-button-text p-button-success"
+                                        icon="mdi mdi-cash-check mdi-24px"
+                                        pButton
+                                        [disabled]="bills.paid"
+                                        (click)="payInstallments(bills)"
+                                        type="button"></button>
                                 <button class="p-button-rounded p-button-text p-button-danger"
                                         icon="mdi mdi-delete mdi-24px"
                                         [disabled]="bills.paid"
@@ -312,5 +318,137 @@
             </p-panel>
         </div>
     </div>
-
 </div>
+<p-sidebar [(visible)]="visible" position="right" [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'"
+           styleClass="w-full sm:w-25rem">
+    <ng-template pTemplate="header">
+        <div class="flex align-items-center gap-2">
+            <h5 class="font-bold mb-0">
+                Informações para baixa
+            </h5>
+        </div>
+    </ng-template>
+    @if (selectedInstallements) {
+        <div class="surface-section mb-3 border-bottom-1 surface-border">
+            <div class="font-medium text-2xl text-900 mb-3">Informações das Parcela</div>
+            <ul class="list-none p-0 m-0">
+                <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
+                    <div class="text-500 w-6 md:w-4 font-medium">Codigo</div>
+                    <div
+                        class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedInstallements?.code || '-' }}
+                    </div>
+                </li>
+                <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
+                    <div class="text-500 w-6 md:w-4 font-medium">Documento</div>
+                    <div
+                        class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ selectedInstallements?.code || '-' }}
+                    </div>
+                </li>
+                <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
+                    <div class="text-500 w-6 md:w-4 font-medium">Vencimiento</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                        <p-calendar [(ngModel)]="selectedInstallements.expirationDate"
+                                    [ngModelOptions]="{standalone: true}"
+                                    [appendTo]="'body'"
+                                    styleClass="w-full"
+                                    disabled="true"
+                                    dateFormat="dd/mm/yy"
+                                    [readonlyInput]="true"></p-calendar>
+                    </div>
+                </li>
+                <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
+                    <div class="text-500 w-6 md:w-4 font-medium">Fornecedor</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                        {{
+                            selectedInstallements.supplierName + ' ' + selectedInstallements.supplierLastName
+                        }}
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="grid mb-3">
+            <div class="col-12 pb-1 pt-3">
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold flex-1 text-center severity_danger">Valor Baixar</label>
+                    <p-inputNumber
+                        [disabled]="true"
+                        [(ngModel)]="selectedInstallements.value"
+                        inputStyleClass="w-full"
+                        currency="BRL"
+                        locale="pt-BR"
+                        mode="currency"
+                    ></p-inputNumber>
+                </div>
+            </div>
+            <div class="col-12 pb-1 pt-3">
+                <p-selectButton [options]="viewPaymentOptions"
+                                [(ngModel)]="viewPayment"
+                                (onChange)="changeOptionsState()"
+                                optionLabel="label"
+                                styleClass="flex w-full parent-select"
+                                style="{'width': '100%'}"
+                                optionValue="value">
+
+                </p-selectButton>
+            </div>
+            <div class="col-12 pb-1 pt-3">
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold flex-1 text-center severity_danger">Valor</label>
+                    <p-inputNumber
+                        (ngModelChange)="calculatePaymentValue($event)"
+                        [(ngModel)]="selectedInstallements.addedValue"
+                        inputStyleClass="w-full"
+                        currency="BRL"
+                        locale="pt-BR"
+                        mode="currency"
+                    ></p-inputNumber>
+                </div>
+            </div>
+            <div class="col-12 pb-1 pt-3">
+                <div class="align-items-center flex flex-auto gap-3">
+                    <label class="block font-bold flex-1 text-center severity_successfull">Total a Pagar</label>
+                    <p-inputNumber
+                        [disabled]="true"
+                        [(ngModel)]="selectedInstallements.paymentValue"
+                        currency="BRL"
+                        locale="pt-BR"
+                        mode="currency"
+                        inputStyleClass="w-full"
+                    ></p-inputNumber>
+                </div>
+            </div>
+        </div>
+        <div class="surface-section border-top-1 surface-border">
+            <div class="font-medium text-2xl text-900 my-3">Informações do Pagamento</div>
+            <ul class="list-none p-0 m-0">
+                <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
+                    <div class="text-500 w-6 md:w-4 font-medium">Tipo Pagamento</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                        <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
+                                    [options]="[]"
+                                    optionLabel="description"
+                                    placeholder="Tipo Pagamento"></p-dropdown>
+                    </div>
+                </li>
+                <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
+                    <div class="text-500 w-6 md:w-4 font-medium">Data Baixa</div>
+                    <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
+                        <p-calendar [(ngModel)]="rangeDates"
+                                    [ngModelOptions]="{standalone: true}"
+                                    [appendTo]="'body'"
+                                    styleClass="w-full"
+                                    dateFormat="dd/mm/yy"
+                                    [readonlyInput]="true"></p-calendar>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    }
+    <ng-template pTemplate="footer">
+        <div class="flex align-items-center gap-2">
+            <button pButton pRipple class="p-button-primary flex-1 border-round"
+                    label="Efectivar Baixa"
+                    icon="mdi mdi-cash-minus mdi-24px"></button>
+        </div>
+    </ng-template>
+</p-sidebar>

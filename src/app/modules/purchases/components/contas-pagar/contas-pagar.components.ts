@@ -11,20 +11,24 @@ import {MEditParcelasComponent} from "../../modals/m-edit-parcelas/m-edit-parcel
 import {takeUntil} from "rxjs";
 import {confirmDialog} from "../../../../core/rx/confirm";
 import {ConfirmServices} from "../../../../core/injects/confirm.services";
+import {dA} from "@fullcalendar/core/internal-common";
+import {isNull, omitBy} from "lodash";
 
 @Component({
     selector: 'c-contas-pagar',
     templateUrl: './contas-pagar.components.html',
     styles: [`
-        ::ng-deep div#pn_id_5-titlebar {
-            padding: 10px !important;
-        }
-
-        ::ng-deep #pn_id_5_content .p-panel-content {
-            padding: 5px !important;
-        }
-
-        ::ng-deep {
+        ::ng-deep{
+            .parent-select > div:nth-child(1),
+            .parent-select > div:nth-child(2) {
+                flex: 1;
+            }
+            div#pn_id_5-titlebar {
+                padding: 10px !important;
+            }
+            #pn_id_5_content .p-panel-content {
+                padding: 5px !important;
+            }
             #tableParcelas .p-datatable-wrapper,
             #tableContas .p-datatable-wrapper, {
                 height: calc(100vh - 380px) !important;
@@ -39,6 +43,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
     type: string = 'ALL';
     selectedItem: any;
+    selectedInstallements: any;
     suggestions: any[] = [];
 
     searchText = '';
@@ -53,21 +58,35 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     totalValueToPay = 0;
 
     viewOptions = [{label: 'Contas', value: 'contas'}, {label: 'Parcelas', value: 'parcelas'}];
+    viewPaymentOptions = [{label: 'Descontar', value: '-'}, {label: 'Acrescimo', value: '+'}];
     viewState = 'contas'
+    viewPayment = '-'
+    openDialog = false;
+    visible = false;
 
     constructor(public service: StoreContasPagarServices,
                 private financeService: FinancialClasificationService,
                 private confirmationService: ConfirmServices) {
         super()
-
-        this.service.loadAll({
-            pageNumber: this.first,
-            pageSize: this.size,
-            state: this.type === 'ALL' ? null : this.type,
-            startDate: formatDate(this.rangeDates[0]),
-            endDate: formatDate(this.rangeDates[1])
-        })
+        let data =
+            omitBy({
+                state: this.type === 'ALL' ? null : this.type,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1]),
+                pageNumber: this.first,
+                pageSize: this.size,
+            }, isNull);
+        this.service.loadAll(data)
         effect(() => {
+            if (!this.service.dialog$() && this.openDialog) {
+                this.service.loadAllInstallments({
+                    type: this.type,
+                    pageNumber: this.firstInstallement,
+                    pageSize: this.sizeInstallment,
+                    startDate: formatDate(this.rangeDates[0]),
+                    endDate: formatDate(this.rangeDates[1])
+                })
+            }
             if (this.service.summary$()) {
                 this.totalValuePaid = this.service.summary$().totalValuePaid;
                 this.totalValueProvisionType = this.service.summary$().totalValueProvisionType;
@@ -92,13 +111,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
 
     changeViewState() {
         if (this.viewState === 'contas') {
-            this.service.loadAll({
-                pageNumber: this.first,
-                pageSize: this.size,
-                state: this.type === 'ALL' ? null : this.type,
-                startDate: formatDate(this.rangeDates[0]),
-                endDate: formatDate(this.rangeDates[1])
-            })
+            let data =
+                omitBy({
+                    state: this.type === 'ALL' ? null : this.type,
+                    startDate: formatDate(this.rangeDates[0]),
+                    endDate: formatDate(this.rangeDates[1]),
+                    pageNumber: this.first,
+                    pageSize: this.size,
+                }, isNull);
+            this.service.loadAll(data)
         } else {
             this.service.loadAllInstallments({
                 type: this.type,
@@ -119,13 +140,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     refreshContentData() {
         if (this.viewState === 'contas') {
             this.service.loadSummary();
-            this.service.loadAll({
-                pageNumber: this.first,
-                pageSize: this.size,
-                state: this.type === 'ALL' ? null : this.type,
-                startDate: formatDate(this.rangeDates[0]),
-                endDate: formatDate(this.rangeDates[1])
-            })
+            let data =
+                omitBy({
+                    state: this.type === 'ALL' ? null : this.type,
+                    startDate: formatDate(this.rangeDates[0]),
+                    endDate: formatDate(this.rangeDates[1]),
+                    pageNumber: this.first,
+                    pageSize: this.size,
+                }, isNull);
+            this.service.loadAll(data)
         } else {
             this.service.loadAllInstallments({
                 type: this.type,
@@ -154,13 +177,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
                     pageSize: this.size,
                 })
             } else {
-                this.service.loadAll({
-                    state: this.type === 'ALL' ? null : this.type,
-                    startDate: formatDate(this.rangeDates[0]),
-                    endDate: formatDate(this.rangeDates[1]),
-                    pageNumber: this.first,
-                    pageSize: this.size,
-                })
+                let data =
+                    omitBy({
+                        state: this.type === 'ALL' ? null : this.type,
+                        startDate: formatDate(this.rangeDates[0]),
+                        endDate: formatDate(this.rangeDates[1]),
+                        pageNumber: this.first,
+                        pageSize: this.size,
+                    }, isNull);
+                this.service.loadAll(data)
             }
         } else {
             this.service.loadAllInstallments({
@@ -179,13 +204,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         this.size = event.rows;
         this.first = event.first;
         this.service.loadSummary();
-        this.service.loadAll({
-            state: this.type === 'ALL' ? null : this.type,
-            startDate: formatDate(this.rangeDates[0]),
-            endDate: formatDate(this.rangeDates[1]),
-            pageNumber: this.first,
-            pageSize: this.size,
-        })
+        let data =
+            omitBy({
+                state: this.type === 'ALL' ? null : this.type,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1]),
+                pageNumber: this.first,
+                pageSize: this.size,
+            }, isNull);
+        this.service.loadAll(data)
     }
 
     pageChangeInstallement(event: any) {
@@ -221,6 +248,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         const id = conta.id;
         this.service.editContaInstallment({billId: id, type: this.type, pageNumber: 0, pageSize: 50})
         this.service.openModalAddOrEdit();
+        this.openDialog = true;
         this.dialogService.open(MContasPagarComponent, {}).onClose.subscribe(() => {
             this.service.loadSummary()
             this.service.resetState()
@@ -266,7 +294,48 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     }
 
     editSimpleInstallment(bills: any) {
+        this.service.openModalAddOrEdit();
+        this.dialogService.open(MEditParcelasComponent, {
+            data: {id: null, installmment: bills}
+        }).onClose.subscribe(() => {
+            console.log('entre')
+            this.service.loadSummary();
+            this.service.loadAllInstallments({
+                type: this.type,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1]),
+                pageNumber: this.firstInstallement,
+                pageSize: this.sizeInstallment,
+            })
+        })
+    }
 
+    payInstallments(bills: any) {
+        this.selectedInstallements = {
+            ...bills,
+            paymentValue: bills.value,
+            discountValue: 0,
+            addedValue: 0,
+            expirationDate: new Date(bills.expirationDate)
+        };
+        console.log(this.selectedInstallements)
+        this.visible = true;
+    }
+
+    calculatePaymentValue(event: any) {
+        if (this.viewPayment === '-') {
+            this.selectedInstallements.paymentValue = this.selectedInstallements.value - event
+        } else {
+            this.selectedInstallements.paymentValue = this.selectedInstallements.value + event
+        }
+    }
+
+    changeOptionsState(){
+        if (this.viewPayment === '-') {
+            this.selectedInstallements.paymentValue = this.selectedInstallements.value - this.selectedInstallements.addedValue
+        } else {
+            this.selectedInstallements.paymentValue = this.selectedInstallements.value + this.selectedInstallements.addedValue
+        }
     }
 
     deleteSimpleInstallment(bills: any) {

@@ -172,6 +172,5 @@ export class InstallmentsComponent implements OnInit {
 
             this.confirmInstallment.next(bills);
         }
-
     }
 }

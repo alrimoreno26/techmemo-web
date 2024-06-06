@@ -49,7 +49,8 @@ export class MEditParcelasComponent extends BaseModalStoreComponentDirective imp
     override save() {
         if (this.form.valid) {
             const data = this.form.value
-            this.storeService.saveInstallmentsBill(this.config.data.id,this.config.data.installmment.id, data);
+            this.config?.data.id ? this.storeService.saveInstallmentsBill(this.config.data.id,this.config.data.installmment.id, data) :
+            this.storeService.saveInstallmentsBillBackground(this.config.data.id,this.config.data.installmment.id, data);
         }
     }
 }
