@@ -46,7 +46,6 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     ));
 
     createInstallmentsByFinancialTransactions(data: any) {
-        debugger
         if (data.editing) {
             this.financialTransactionsServices.updateFinancialTransaction({state: 'APPROVED'}, data.financialTransactionId)
             this.patchState({dialog: false});

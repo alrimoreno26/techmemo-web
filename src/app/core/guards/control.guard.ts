@@ -26,7 +26,6 @@ export class ControlGuard {
    */
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const {roles} = route?.data;
-    debugger
     if(this.sessionService.userLogged.role.operationArea === operationAreaRoleEnum.SUPER_ADMIN)
         return true
     if (this.sessionService.roleAccess(roles)) {

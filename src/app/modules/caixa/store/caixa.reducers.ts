@@ -89,7 +89,6 @@ export const ordersReducer = createReducer<State>(
         };
     }),
     on(fromOrdersListActions.updateProductsOrdersSuccess, (state, {entity}) => {
-        debugger
         return {...state, sentKitchen: false, dialogAdditional: false,};
     }),
     on(fromOrdersListActions.sentOrdersFromKitchenSuccess, (state) => {

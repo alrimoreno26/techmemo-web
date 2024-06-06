@@ -14,7 +14,6 @@ export class SuperAdminGuard  {
         next: ActivatedRouteSnapshot,
         state: RouterStateSnapshot): boolean {
 
-        debugger
         if (this.session.isLoggedIn && this.session.userLogged.role.operationArea === operationAreaRoleEnum.SUPER_ADMIN) {
             return true;
         } else {

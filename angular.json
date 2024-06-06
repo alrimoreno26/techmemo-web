@@ -39,22 +39,16 @@
                     },
                     "configurations": {
                         "production": {
-                            "buildOptimizer": false,
-                            "optimization": false,
-                            "vendorChunk": true,
-                            "extractLicenses": false,
-                            "sourceMap": true,
-                            "namedChunks": true,
                             "budgets": [
                                 {
                                     "type": "initial",
-                                    "maximumWarning": "10mb",
-                                    "maximumError": "10mb"
+                                    "maximumWarning": "2mb",
+                                    "maximumError": "5mb"
                                 },
                                 {
                                     "type": "anyComponentStyle",
-                                    "maximumWarning": "25kb",
-                                    "maximumError": "25kb"
+                                    "maximumWarning": "4kb",
+                                    "maximumError": "6kb"
                                 }
                             ],
                             "fileReplacements": [
