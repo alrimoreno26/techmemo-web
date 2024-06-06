@@ -78,7 +78,7 @@ export const menuList: any[] = [
             {
                 label: 'Configurações',
                 icon: 'mdi mdi-storefront-edit-outline mdi-24px',
-                roles: [domainEnum.ALL],
+                roles: [domainEnum.PRODUCT],
                 routerLink: ['loja/configuration']
             }
         ]
