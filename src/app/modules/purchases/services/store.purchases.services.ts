@@ -9,6 +9,7 @@ import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 import {StoreContasPagarServices} from "./store.contas-pagar.services";
 import {LightsDTO} from "../../../core/models/utils";
+import {FinancialTransactionsServices} from "./financial-transactions.services";
 
 @Injectable({providedIn: 'platform'})
 export class StorePurchasesServices extends StoreComponentService<any> {
@@ -16,7 +17,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     override serverSide = true;
     override lazyLoadOnInit = true;
 
-    constructor(private purchasesService: PurchasesService, private storeContasPagarServices: StoreContasPagarServices) {
+    constructor(private purchasesService: PurchasesService, private storeContasPagarServices: StoreContasPagarServices, private financialTransactionsServices: FinancialTransactionsServices) {
         const defaultEntity: EntityState<any> =
             {entities: [], total: 0, dialog: false, loaded: false};
         super(purchasesService, defaultEntity);
@@ -27,7 +28,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             return this.purchasesService.findAllPaginate(lazy).pipe(
                 tapResponse({
                     next: (result) => {
-                        const {content,totalElements} = result;
+                        const {content, totalElements} = result;
                         // const content: LightsDTO[] = result.content.map((item: any, i: number) => {
                         //     return {
                         //         id: item.id,
@@ -45,10 +46,18 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     ));
 
     createInstallmentsByFinancialTransactions(data: any) {
-        this.purchasesService.createInstallmentsByFinancialTransactions(data).subscribe((response) => {
+        debugger
+        if (data.editing) {
+            this.financialTransactionsServices.updateFinancialTransaction({state: 'APPROVED'}, data.financialTransactionId)
             this.patchState({dialog: false});
             this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
-        })
+        } else {
+            this.purchasesService.createInstallmentsByFinancialTransactions(data).subscribe((response) => {
+                this.patchState({dialog: false});
+                this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+
+            })
+        }
     }
 
     getById(id: string) {
