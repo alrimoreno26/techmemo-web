@@ -19,7 +19,7 @@ export class AppComponent implements OnInit {
             inputStyle: 'outlined',             //default style for input elements
             menuMode: 'slim',                 //layout mode of the menu, valid values are "static", "overlay", "slim", "compact", "reveal", "drawer" and "horizontal"
             colorScheme: 'light',               //color scheme of the template, valid values are "light", "dim" and "dark"
-            theme: 'blue',                      //default component theme for PrimeNG, see theme section for available values
+            theme: 'blue',                      //default modals theme for PrimeNG, see theme section for available values
             menuTheme: "darkgray",              //theme of the menu, see menu theme section for available values
             scale: 14                           //size of the body font size to scale the whole application
         };

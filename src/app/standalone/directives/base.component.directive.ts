@@ -2,10 +2,10 @@
 // import {DialogService, DynamicDialogRef} from 'primeng/dynamicdialog';
 // import {filter, switchMap} from 'rxjs/operators';
 // import {isObservable, Observable, Subject, tap} from 'rxjs';
-// import {DataTableComponent} from '../data-table.component';
+// import {DataTableComponent} from '../data-table.modals';
 // import {HeadersTable} from '../models';
 // import {ExportDataService} from '../services/export.data.service';
-// import {ExportDataModalComponent} from '../components/export-data-modal/export-data-modal.component';
+// import {ExportDataModalComponent} from '../components/export-data-modal/export-data-modal.modals';
 // import {toObservable} from '@angular/core/rxjs-interop';
 // import {DragValidation, DropValidation} from '../../../core/models';
 // import {MessageServices} from '../../../core/injects/message.services';
@@ -16,7 +16,7 @@
 // })
 // export class BaseComponentDirective implements AfterViewInit, OnDestroy {
 //   /**
-//    * View Child of Data Table component
+//    * View Child of Data Table modals
 //    */
 //   @ViewChildren(DataTableComponent) datatable: QueryList<DataTableComponent>;
 //   /**
@@ -32,7 +32,7 @@
 //    */
 //   messageService: MessageServices = inject(MessageServices);
 //   /**
-//    * Keep reference of dialog for use inside of component
+//    * Keep reference of dialog for use inside of modals
 //    */
 //   dialog: DynamicDialogRef;
 //   /**

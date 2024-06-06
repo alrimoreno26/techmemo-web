@@ -1,0 +1,32 @@
+<ng-template dialog-header>
+    Produto em compra
+</ng-template>
+<div formResponsive width="550px">
+    <form [formGroup]="form">
+        <div class="grid p-fluid">
+            <div class="col-4">
+                <label>Quantidade</label>
+                <p-inputNumber placeholder="Quantidade" formControlName="amount" inputId="amount"
+                ></p-inputNumber>
+            </div>
+            <div class="col-4">
+                <label>Nome do Producto</label>
+                <input pInputText type="text" formControlName="productName" placeholder="Nome" class="mb-3"/>
+            </div>
+            <div class="col-4">
+                <label>Valor do Producto</label>
+                <p-inputNumber placeholder="Valor do Producto" formControlName="value" inputId="value"
+                ></p-inputNumber>
+            </div>
+
+        </div>
+    </form>
+</div>
+<ng-template dialog-footer>
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar"
+            icon="mdi mdi-close"></button>
+    <button pButton pRipple class="p-button-primary flex-1 border-round" label="Salvar"
+            (click)="save()"
+            icon="mdi mdi-check"></button>
+</ng-template>
+

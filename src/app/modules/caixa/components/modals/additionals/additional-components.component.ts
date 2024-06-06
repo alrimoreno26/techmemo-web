@@ -1,5 +1,5 @@
-import {Component, HostListener, OnChanges, OnInit, SimpleChanges} from "@angular/core";
-import {HttpClient, HttpHeaders, HttpParams} from "@angular/common/http";
+import {Component, effect, HostListener, OnChanges, OnInit, SimpleChanges} from "@angular/core";
+import {HttpClient, HttpParams} from "@angular/common/http";
 import {LazyResultData} from "../../../../../standalone/data-table/models";
 import {buildURL} from "../../../../../core/util";
 import {forkJoin, Subscription} from "rxjs";
@@ -8,8 +8,6 @@ import {cloneDeep, isObject} from "lodash";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {CaixaService} from "../../../services/caixa.service";
 import {ActionsSubject} from "@ngrx/store";
-import {ofType} from "@ngrx/effects";
-import {fromOrdersListActions} from "../../../store/caixa.actions";
 import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
@@ -19,7 +17,6 @@ import {DialogRegistryService} from "../../../../../core/injects/dialog.registry
 export class AdditionalComponents implements OnInit, OnChanges {
 
     product: ProductDto;
-    additionalSelected: any[] = [];
 
     subscriptions: Subscription[] = [];
 
@@ -35,7 +32,9 @@ export class AdditionalComponents implements OnInit, OnChanges {
         pageSize: 20,
         type: 'COMBO'
     }
-    private fromAuthActions: any;
+    activeIndex = 0;
+    amountItems: any[] = [];
+    listProducts: any[] = [];
 
     constructor(private http: HttpClient,
                 public service: CaixaService,
@@ -44,11 +43,28 @@ export class AdditionalComponents implements OnInit, OnChanges {
                 public config: DynamicDialogConfig,
                 private dialogRegistryService: DialogRegistryService) {
         this.dialogRegistryService.addDialog(this.ref);
+        effect(() => {
+            console.log(service.dialogAdditional$())
+            if (!service.dialogAdditional$()) {
+                this.ref.close();
+            }
+        });
     }
 
     ngOnInit(): void {
+        console.log(this.config)
         this.product = this.config.data.product;
-        this.additionalSelected = this.config.data?.additionalSelected ? cloneDeep(this.config.data?.additionalSelected) : [];
+        this.amountItems = Array.from({length: this.config.data.amount}, (_, index) => {
+            this.listProducts.push({
+                amount: 1,
+                id: this.product.id,
+                additionals: []
+            });
+            return {label: this.product.name};
+        });
+        console.log(this.listProducts);
+
+        this.listProducts[this.activeIndex].additionals = this.config.data?.additionalSelected ? cloneDeep(this.config.data?.additionalSelected) : [];
         const params1: HttpParams = new HttpParams({fromObject: this.additionalsParams});
         const params2: HttpParams = new HttpParams({fromObject: this.comboParams});
         forkJoin({
@@ -58,21 +74,13 @@ export class AdditionalComponents implements OnInit, OnChanges {
             this.additionals = result1;
             this.combos = result2;
         })
-
-        this.subscriptions.push(
-            this.actions$
-                .pipe(ofType(fromOrdersListActions.addProductsOrdersSuccess))
-                .subscribe(() => {
-                    this.ref.close()
-                })
-        );
     }
 
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
         switch (event.key) {
             case 'Enter':
-              this.addManyAdditionalProduct()
+                this.addManyAdditionalProduct()
                 break;
 
         }
@@ -85,38 +93,58 @@ export class AdditionalComponents implements OnInit, OnChanges {
         }
     }
 
+    getAdditionalForProduct() {
+        return this.config.data.amount > 1 ? this.listProducts[this.activeIndex].additionals : this.listProducts[0].additionals;
+    }
+
+    onActiveIndexChange(event: number) {
+        this.activeIndex = event;
+    }
+
+    stepper(direction: string) {
+        if (direction === '+') {
+            this.activeIndex++;
+        } else {
+            this.activeIndex--;
+        }
+    }
+
     addManyAdditionalProduct() {
-        const params = [{
-            amount: this.config.data.amount,
-            id: this.product.id,
-            additionals: this.additionalSelected.map((el: any) => {
-                return {id: el.id, amount: 1}
-            })
-        }]
-        this.service.addProductsOrders(this.service.selectedEntity$()[this.config.data.activeOrder].id, params)
+        const newArray = this.listProducts.map(item => {
+            const newAdditionals = item.additionals.map((additional: any) => {
+                return {...additional, id: additional.productId, productId: undefined};
+            });
+
+            return {...item, additionals: newAdditionals};
+        });
+        if (this.config.data.created) {
+            this.service.addProductsOrders(this.service.selectedEntity$()[this.config.data.activeOrder].id, this.listProducts);
+        } else {
+            this.service.updateProductsOrders(this.product.id,this.service.selectedEntity$()[this.config.data.activeOrder].id, newArray);
+        }
     }
 
     addElement(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected.push(item);
+        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id,amount:1});
     }
 
     addElementClick(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected.push(item);
+        this.listProducts[this.activeIndex].additionals.push({...item, productId: item.id,amount:1});
     }
 
     removeElement(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected.splice(item, 1);
+        this.listProducts[this.activeIndex].additionals.splice(item, 1);
     }
 
     removeElementbyId(event: any, item: any) {
         event.stopPropagation();
-        this.additionalSelected = this.additionalSelected.filter((ad: any) => ad.id !== item.id)
+        this.listProducts[this.activeIndex].additionals = this.listProducts[this.activeIndex].additionals.filter((ad: any) => ad.productId !== item.id)
     }
 
     totalAdditionals(): number {
-        return (this.product?.salePrice || 0) + this.additionalSelected.reduce((total, item) => total + item.salePrice, 0);
+        return (this.product?.salePrice || 0) + this.listProducts[this.activeIndex].additionals.reduce((total: any, item: any) => total + item.salePrice, 0);
     }
 }

@@ -3,6 +3,7 @@ import {BaseComponentDirective} from "../../../standalone/data-table/directives/
 import {StoreVendasServices} from "../service/store.vendas.services";
 import {StoreDashboardServices} from "../../dashboard/services/dashboard.services";
 import {SessionServices} from "../../../core/injects/session.services";
+import {formatDate} from "../../../core/util";
 
 @Component({
     selector: 'c-historico-vendas',
@@ -46,15 +47,15 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
             lazy: {
                 pageNumber: 0,
                 pageSize: 25,
-                startDate: this.formatDate(this.rangeDates[0]),
-                endDate: this.formatDate(this.rangeDates[1])
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1])
             }
         })
         effect(() => {
             if (this.session.getTenantId()) {
                 this.store.loadOrdersStats({
-                    startDate: this.formatDate(this.rangeDates[0]),
-                    endDate: this.formatDate(this.rangeDates[1])
+                    startDate: formatDate(this.rangeDates[0]),
+                    endDate: formatDate(this.rangeDates[1])
                 });
             }
         });
@@ -83,8 +84,8 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
     }
 
     applyFilter() {
-        const startDate = this.formatDate(this.rangeDates[0]);
-        const endDate = this.rangeDates[1] !== null ? this.formatDate(this.rangeDates[1]) : this.formatDate(this.rangeDates[0]);
+        const startDate = formatDate(this.rangeDates[0]);
+        const endDate = this.rangeDates[1] !== null ? formatDate(this.rangeDates[1]) : formatDate(this.rangeDates[0]);
         this.store.loadOrdersStats({
             startDate,
             endDate
@@ -93,8 +94,8 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
             lazy: {
                 pageNumber: 0,
                 pageSize: 25,
-                startDate: this.formatDate(this.rangeDates[0]),
-                endDate: this.formatDate(this.rangeDates[1])
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1])
             }
         })
     }
@@ -108,10 +109,4 @@ export class HistoricoVendasComponent extends BaseComponentDirective implements 
         el.classList.add('hidden');
     }
 
-    formatDate(date: Date): string {
-        const year = date.getFullYear();
-        const month = ('0' + (date.getMonth() + 1)).slice(-2); // Suma 1 al mes porque los meses comienzan desde 0
-        const day = ('0' + date.getDate()).slice(-2);
-        return `${year}-${month}-${day}`;
-    }
 }

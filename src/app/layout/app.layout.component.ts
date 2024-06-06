@@ -1,4 +1,4 @@
-import { Component, OnDestroy, Renderer2, ViewChild } from '@angular/core';
+import {Component, effect, OnDestroy, Renderer2, ViewChild} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { MenuService } from './components/menus/app.menu.service';
@@ -6,6 +6,7 @@ import { AppTopbarComponent } from './components/header/app.topbar.component';
 import { LayoutService } from './service/app.layout.service';
 import {SessionServices} from "../core/injects/session.services";
 import {operationAreaRoleEnum} from "../core/enums/role";
+import {CommercesService} from "../modules/shops/service/commerces.service";
 
 @Component({
     selector: 'app-layout',
@@ -23,13 +24,16 @@ export class AppLayoutComponent implements OnDestroy {
 
     @ViewChild(AppTopbarComponent) appTopbar!: AppTopbarComponent;
 
-    constructor(private menuService: MenuService, public layoutService: LayoutService, public renderer: Renderer2, public router: Router, public session:SessionServices) {
+    constructor(private menuService: MenuService,
+                public layoutService: LayoutService,
+                public renderer: Renderer2,
+                public router: Router,
+                public session:SessionServices) {
+
         if(this.router.routerState.snapshot.url.includes('comandas')){
             this.user = true;
         }
-        this.layoutService.closePDV$.subscribe((res) => {
-            console.log(res)
-        });
+
         this.overlayMenuOpenSubscription = this.layoutService.overlayOpen$.subscribe(() => {
 
             if (!this.menuOutsideClickListener) {

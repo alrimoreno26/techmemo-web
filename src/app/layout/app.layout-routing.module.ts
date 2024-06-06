@@ -8,12 +8,18 @@ const routes: Routes = [
     {
         path: '', component: AppLayoutComponent,
         children: [
-            //{path: '', component: AppLayoutComponent},
+            //{path: '', modals: AppLayoutComponent},
             {
                 path: 'painel',
                 data: {breadcrumb: 'Panéis Geral', roles: [domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/dashboard/dashboards.module').then(m => m.DashboardsModule)
+            },
+            {
+                path: 'cozinha',
+                data: {breadcrumb: 'Cozinha', roles: [domainEnum.KITCHEN]},
+                canActivate: [canActivateControlGuard],
+                loadChildren: () => import('../modules/kitchen/kitchen.module').then(m => m.KitchenModule)
             },
             {
                 path: 'inventory',

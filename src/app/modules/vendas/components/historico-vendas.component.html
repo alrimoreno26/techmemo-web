@@ -112,6 +112,11 @@
                     </div>
                 </th>
                 <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
+                    <div class="flex align-items-center">
+                        Tipo
+                    </div>
+                </th>
+                <th class="font-semibold py-3 border-bottom-1 surface-border white-space-nowrap">
                 </th>
             </tr>
         </ng-template>
@@ -140,6 +145,9 @@
                 </td>
                 <td class="text-center">
                     <p-badge [value]="order.state | translate" [severity]="order.state | severity"></p-badge>
+                </td>
+                <td class="text-center">
+                    <p-badge [value]="order.type | translate" [severity]="order.type | severity"></p-badge>
                 </td>
                 <td class="text-center">
                     <p-button icon="mdi mdi-printer mdi-24px"

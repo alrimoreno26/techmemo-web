@@ -27,6 +27,8 @@ import {SelectButtonModule} from "primeng/selectbutton";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {CalendarModule} from "primeng/calendar";
+import {BadgeModule} from "primeng/badge";
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -51,6 +53,8 @@ import {CalendarModule} from "primeng/calendar";
         ReactiveFormsModule,
         ConfirmDialogModule,
         CalendarModule,
+        BadgeModule,
+        TranslateModule,
     ],
     providers:[
         SupplierService,

@@ -6,7 +6,7 @@ import {
     getDialog,
     selectAllEntities, selectedEntity,
     selectedTotalElement,
-    selectEntityLoaded
+    selectEntityLoaded, temporalCreated
 } from "../store/product.selectors";
 import {fromProductListActions} from "../store/product.actions";
 import {BaseStoreServices} from "../../../../standalone/data-table/class/base.store.services";
@@ -14,7 +14,6 @@ import {UnidadeService} from "../../../configuracion/unidade/services/unidade.se
 import {SupplierService} from "../../forncedores/services/supplier.service";
 import {StoreCategoryService} from "../../category/services/store.category.service";
 import {ProductsCreateDto} from "../../../../core/models/products";
-import {fromSupplierListActions} from "../../forncedores/store/fornecedores.actions";
 
 @Injectable({providedIn: 'platform'})
 export class ProductService extends BaseStoreServices<any> {
@@ -25,6 +24,7 @@ export class ProductService extends BaseStoreServices<any> {
 
     additionals$: Signal<any>;
     autocomplete$: Signal<any>;
+    temporalCreated$: Signal<any>;
 
     constructor(private store: Store<ProductPartialState>,
                 public unitService: UnidadeService,
@@ -42,6 +42,7 @@ export class ProductService extends BaseStoreServices<any> {
         this.selectedEntity$ = this.store.selectSignal(selectedEntity);
         this.additionals$ = this.store.selectSignal(getAdditional);
         this.autocomplete$ = this.store.selectSignal(getAutocomplete);
+        this.temporalCreated$ = this.store.selectSignal(temporalCreated);
     }
 
     autocomplete(data: Partial<any>): void {

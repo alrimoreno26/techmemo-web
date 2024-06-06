@@ -19,6 +19,7 @@ import {CashRegisterService} from "../../service/cash-register.service";
 import {MAddCaixasComponent} from "./components/m-add-caixa/m-add-caixas.component";
 import {SessionServices} from "../../../../core/injects/session.services";
 import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
+import {MAddBanksComponent} from "./components/m-add-banks/m-add-banks.component";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -62,43 +63,16 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         super();
         this.commercesService.loadAll({lazy: {pageNumber: 0, pageSize: 100}})
         effect(() => {
-
             if (!this.commercesService.selectedEntity$()) {
-                this.commercesService.getById(this.session.userLogged.commerces[0].commerceId);
+                this.commercesService.getById(this.session.getCurrentStore().id);
             } else {
                 this.printersServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
                 this.cashRegisterService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
-                this.selectedStore = this.commercesService.selectedEntity$();
+                this.selectedStore = this.session.getCurrentStore();
+                this.session.setCurrentStore(this.selectedStore);
                 this.onlineStore = this.selectedStore.hasOnlineCommerce;
 
-                let userConfig = {
-                    ripple: true,
-                    colorScheme: this.selectedStore.config ? this.selectedStore.config.colorSchemeType.toLowerCase() : 'light',
-                    menuMode: this.selectedStore.config ? this.selectedStore.config.menuType.toLowerCase() : 'slim',
-                    menuTheme: this.selectedStore.config ? this.selectedStore.config.componentTheme : 'darkgray',
-                    scale: this.selectedStore.config ? this.selectedStore.config.scale : 14,
-                    inputStyle: 'outlined',
-                    theme: this.selectedStore.config ? this.selectedStore.config.theme : 'blue',
-                };
-
-                const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
-                const newHref = themeLink.getAttribute('href')!.replace(this.layout.config.theme, userConfig.theme);
-
-                const id = 'theme-link';
-                const targetLink = <HTMLLinkElement>document.getElementById(id);
-                const cloneLinkElement = <HTMLLinkElement>targetLink.cloneNode(true);
-
-                cloneLinkElement.setAttribute('href', newHref);
-                cloneLinkElement.setAttribute('id', id + '-clone');
-
-                targetLink.parentNode!.insertBefore(cloneLinkElement, targetLink.nextSibling);
-                cloneLinkElement.setAttribute('id', id);
-                targetLink.remove();
-
-                this.layout.onConfigUpdate();
-
-
-                this.layout.userConfigVisuals(userConfig);
+                this.changeVisualsCommerce();
                 this.initForm()
             }
         });
@@ -110,7 +84,50 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         this.commercesService.getById(this.selectedStore.id)
     }
 
+    changeVisualsCommerce() {
+
+        let userConfig = {
+            ripple: true,
+            colorScheme: this.selectedStore.config ? this.selectedStore.config.colorSchemeType.toLowerCase() : 'light',
+            menuMode: this.selectedStore.config ? this.selectedStore.config.menuType.toLowerCase() : 'slim',
+            menuTheme: this.selectedStore.config ? this.selectedStore.config.componentTheme : 'darkgray',
+            scale: this.selectedStore.config ? this.selectedStore.config.scale : 14,
+            inputStyle: 'outlined',
+            theme: this.selectedStore.config ? this.selectedStore.config.theme : 'blue',
+        };
+
+        const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
+        const newHref = themeLink.getAttribute('href')!.replace(this.layout.config.theme, userConfig.theme);
+
+        const id = 'theme-link';
+        const targetLink = <HTMLLinkElement>document.getElementById(id);
+        const cloneLinkElement = <HTMLLinkElement>targetLink.cloneNode(true);
+
+        cloneLinkElement.setAttribute('href', newHref);
+        cloneLinkElement.setAttribute('id', id + '-clone');
+
+        targetLink.parentNode!.insertBefore(cloneLinkElement, targetLink.nextSibling);
+        cloneLinkElement.setAttribute('id', id);
+        targetLink.remove();
+
+        this.layout.onConfigUpdate();
+
+
+        this.layout.userConfigVisuals(userConfig);
+    }
+
     ngOnInit() {
+        this.session.actualStore$.subscribe((store: any) => {
+            if (this.selectedStore && this.selectedStore.id !== store.id) {
+                this.selectedStore = this.commercesService.listEntities$().find((x: any) => x.id === store.id);
+                this.commercesService.setSelected(this.selectedStore);
+                this.session.setCurrentStore(this.selectedStore);
+                this.onlineStore = this.selectedStore.hasOnlineCommerce;
+
+                this.changeVisualsCommerce();
+                this.initForm()
+            }
+        })
         this.initForm()
         this.form.get('quantityTables')?.valueChanges.subscribe(() => {
             this.enableQuantity = true;
@@ -124,6 +141,18 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                         label: 'Dados gerais ',
                         value: 'dados',
                         icon: 'mdi mdi-store-cog-outline mdi-24px',
+
+                    },
+                ]
+            },
+            {
+                label: 'Contas Correntes',
+                value: 'bancos',
+                items: [
+                    {
+                        label: 'Bancos',
+                        value: 'bank',
+                        icon: 'mdi mdi-bank-plus mdi-24px',
 
                     },
                 ]
@@ -257,7 +286,14 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             })
             this.dialogRegistryService.addDialog(dialogRef);
         }
+    }
 
+    addEditContaCorrente(){
+        let dialogRef;
+        dialogRef = this.dialogService.open(MAddBanksComponent, {
+            data: null,
+            width: '350px',
+        })
     }
 
     patchEnable(event: any, item: PrinterDto) {

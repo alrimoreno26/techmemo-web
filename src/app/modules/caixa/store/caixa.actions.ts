@@ -14,6 +14,9 @@ export enum EntityActionTypes {
     GetByID = '[Orders] Get By ID',
     GetByIDSuccess = '[Orders] Get By ID Success',
 
+    GetProductInOrderByID = '[Orders] Get Product In Order By ID',
+    GetProductInOrderByIDSuccess = '[Orders] Get Product In Order By ID Success',
+
     CreateOrders = '[Orders] Create Orders',
     CreateInTableOrders = '[Orders] Create In Table Orders',
     CreateOrdersSuccess = '[Orders] Create Orders Success',
@@ -27,6 +30,8 @@ export enum EntityActionTypes {
 
     AddProductsOrders = '[Orders] Add Products Orders',
     AddProductsOrdersSuccess = '[Orders] Add Products Orders Success',
+    UpdateProductsOrders = '[Orders] Update Products Orders',
+    UpdateProductsOrdersSuccess = '[Orders] Update Products Orders Success',
     DeleteProductsOrders = '[Orders] Delete Products Orders',
     DeleteProductsOrdersSuccess = '[Orders] Delete Products Orders Success',
 
@@ -45,7 +50,15 @@ export enum EntityActionTypes {
     ChangeFieldStateOrders = '[Orders] Change Field State Orders',
     ChangeFieldStateOrdersSuccess = '[Orders] Change Field State Orders Success',
 
+    SentOrdersFromKitchen = '[Orders] Sent Orders From Kitchen',
+    SentOrdersFromKitchenSuccess = '[Orders] Sent Orders From Kitchen Success',
+
+    OrdersFromKitchen = '[Orders] Orders From Kitchen',
+    OrdersFromKitchenSuccess = '[Orders] Orders From Kitchen Success',
+
     OpenAddOrEdit = '[Orders] Open Add Or Edit Dialog',
+
+    OpenCustomDialog = '[Orders] Open Custom Dialog',
 
 }
 
@@ -69,6 +82,9 @@ export const OrdersListFailRequest = createAction(EntityActionTypes.OrdersListFa
 export const getByID = createAction(EntityActionTypes.GetByID, props<{ path: string[],id: any }>());
 export const getByIDSuccess = createAction(EntityActionTypes.GetByIDSuccess, props<{ entity: any }>());
 
+export const getProductInOrderByID = createAction(EntityActionTypes.GetProductInOrderByID, props<{ id: any }>());
+export const getProductInOrderByIDSuccess = createAction(EntityActionTypes.GetProductInOrderByIDSuccess, props<{ entity: any }>());
+
 export const createOrders = createAction(EntityActionTypes.CreateOrders, props<{ entity: CreateOrderTO }>());
 export const createInTableOrders = createAction(EntityActionTypes.CreateInTableOrders, props<{ entity: CreateOrderTO }>());
 export const createOrdersSuccess = createAction(EntityActionTypes.CreateOrdersSuccess, props<{ entity: any }>());
@@ -76,6 +92,8 @@ export const createInTableOrdersSuccess = createAction(EntityActionTypes.CreateI
 
 export const addProductsOrders = createAction(EntityActionTypes.AddProductsOrders, props<{ id: string, params:any[] }>());
 export const addProductsOrdersSuccess = createAction(EntityActionTypes.AddProductsOrdersSuccess, props<{ entity: OrdersTO }>());
+export const updateProductsOrders = createAction(EntityActionTypes.UpdateProductsOrders, props<{ id: string, orderId: string,params:any[] }>());
+export const updateProductsOrdersSuccess = createAction(EntityActionTypes.UpdateProductsOrdersSuccess, props<{ entity: any }>());
 
 export const deleteProductsOrders = createAction(EntityActionTypes.DeleteProductsOrders, props<{ id: string, entity:DeleteOrderProductDto }>());
 export const deleteProductsOrdersSuccess = createAction(EntityActionTypes.DeleteProductsOrdersSuccess, props<{ productId:string[] }>());
@@ -93,11 +111,16 @@ export const joinTablesSuccess = createAction(EntityActionTypes.JoinTablesSucces
 export const transferProductsOrders = createAction(EntityActionTypes.TransferProductsOrders, props<{ entity: any }>());
 export const transferProductsOrdersSuccess = createAction(EntityActionTypes.TransferProductsOrdersSuccess, props<{ entity: any }>());
 export const openAddOrEdit = createAction(EntityActionTypes.OpenAddOrEdit);
+export const openCustomDialog = createAction(EntityActionTypes.OpenCustomDialog, props<{ modal: string, show: boolean }>());
 export const loadNewProductsOrders = createAction(EntityActionTypes.LoadNewProductsOrders, props<{ pos: number }>());
 export const makePaymentsOrders = createAction(EntityActionTypes.MakePaymentsOrders, props<{ params: CreatePaymentTransactionTO[] }>());
 export const makePaymentsOrdersSuccess = createAction(EntityActionTypes.MakePaymentsOrdersSuccess, props<{ entity: any[] }>());
 export const changeFieldStateOrders = createAction(EntityActionTypes.ChangeFieldStateOrders, props<{ id: string, params: any }>());
 export const changeFieldStateOrdersSuccess = createAction(EntityActionTypes.ChangeFieldStateOrdersSuccess, props<{ entity: any[] }>());
+export const ordersFromKitchen = createAction(EntityActionTypes.OrdersFromKitchen, props<{  lazy: Partial<LazyLoadData> }>());
+export const ordersFromKitchenSuccess = createAction(EntityActionTypes.OrdersFromKitchenSuccess, props<{   data: LazyResultData<any> }>());
+export const sentOrdersFromKitchen = createAction(EntityActionTypes.SentOrdersFromKitchen, props<{ id: string }>());
+export const sentOrdersFromKitchenSuccess = createAction(EntityActionTypes.SentOrdersFromKitchenSuccess);
 
 export const fromOrdersListActions = {
     loadOrdersList,
@@ -116,11 +139,16 @@ export const fromOrdersListActions = {
     setSelectedOrders,
     getByID,
     getByIDSuccess,
+    getProductInOrderByID,
+    getProductInOrderByIDSuccess,
     addProductsOrders,
     addProductsOrdersSuccess,
+    updateProductsOrders,
+    updateProductsOrdersSuccess,
     deleteProductsOrders,
     deleteProductsOrdersSuccess,
     openAddOrEdit,
+    openCustomDialog,
     joinTables,
     joinTablesSuccess,
     transferProductsOrders,
@@ -129,5 +157,9 @@ export const fromOrdersListActions = {
     makePaymentsOrdersSuccess,
     changeFieldStateOrders,
     changeFieldStateOrdersSuccess,
-    loadNewProductsOrders
+    loadNewProductsOrders,
+    ordersFromKitchen,
+    ordersFromKitchenSuccess,
+    sentOrdersFromKitchen,
+    sentOrdersFromKitchenSuccess
 };

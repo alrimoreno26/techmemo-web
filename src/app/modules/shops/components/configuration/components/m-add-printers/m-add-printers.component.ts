@@ -30,8 +30,8 @@ export class MAddPrintersComponent implements OnInit {
         this.form = new FormGroup({
             name: new FormControl<string>(this.config.data?.name, Validators.required),
             area: new FormControl<string>(this.config.data?.area, Validators.required),
-            connectionByIp: new FormControl<boolean>(this.config.data?.connectionByIp, Validators.required),
-            ip: new FormControl<string>(this.config.data?.ip),
+            // connectionByIp: new FormControl<boolean>(this.config.data?.connectionByIp || false, Validators.required),
+            // ip: new FormControl<string>(this.config.data?.ip),
             enable: new FormControl<boolean>(this.config.data?.enable),
         });
     }
@@ -40,7 +40,7 @@ export class MAddPrintersComponent implements OnInit {
         const filteredValues: { [key: string]: any } = {};
         Object.keys(formGroup.controls).forEach(key => {
             const control = formGroup.controls[key];
-            if (control.value !== '') {
+            if (control.value !== '' && control.value !== null && control.value !== undefined) {
                 filteredValues[key] = control.value;
             }
         });

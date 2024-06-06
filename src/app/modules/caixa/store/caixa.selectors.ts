@@ -20,3 +20,7 @@ export const selectedTotalElement = createSelector(getEntityState, state => stat
 export const getDialog = createSelector(getEntityState, state => state.dialog);
 export const orderCreate = createSelector(getEntityState, state => state.orderCreate);
 export const orderProduct = createSelector(getEntityState, state => state.orderProducts);
+export const orderKitchen = createSelector(getEntityState, state => state.kitchen);
+export const sentKitchen = createSelector(getEntityState, state => state.sentKitchen);
+export const dialogTransfer = createSelector(getEntityState, state => state.dialogTransfer);
+export const dialogAdditional = createSelector(getEntityState, state => state.dialogAdditional);

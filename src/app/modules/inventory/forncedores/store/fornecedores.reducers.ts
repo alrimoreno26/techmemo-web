@@ -11,6 +11,7 @@ export interface State extends EntityState<any> {
     dialog: boolean;
     totalElements: number;
     selected?: any;
+    autocomplete: any;
     error?: Error | any;
 }
 
@@ -25,6 +26,7 @@ export const adapter: EntityAdapter<any> = createEntityAdapter<any>({
 export const initialState: State = adapter.getInitialState({
     // Additional entity state properties
     entities: [],
+    autocomplete: [],
     loaded: false,
     dialog: false,
     totalElements: 0,
@@ -36,9 +38,16 @@ export const fornecedoresReducer = createReducer<State>(
     on(fromSupplierListActions.loadSupplierListSuccess, (state, {data}) => {
         const dataWithName = data.content.map((element) => ({
             ...element,
-            identification: element.type === 'COMPANY' ? element.fantasyName : element.name + ' ' + element.lastName
+            identification: element.type === 'COMPANY' ? element.name : element.name + ' ' + element.lastName
         }));
         return adapter.setAll(dataWithName, {...state, loaded: true, totalElements: data.totalElements});
+    }),
+    on(fromSupplierListActions.autocompleteSupplierListSuccess, (state, {data}) => {
+        const dataWithName = data.content.map((element) => ({
+            ...element,
+            identification: element.type === 'COMPANY' ? element.name : element.name + ' ' + element.lastName
+        }));
+        return {...state, autocomplete: dataWithName};
     }),
     on(fromSupplierListActions.createSupplierSuccess, (state, {entity}) => {
         const dataWithName = {

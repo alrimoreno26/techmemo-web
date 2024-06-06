@@ -1,0 +1,182 @@
+<ng-template dialog-header>
+    Trasação financeira
+</ng-template>
+<div formResponsive width="950px">
+    <p-stepper [linear]="true" [(activeStep)]="stepActive">
+        <p-stepperPanel header="Detalhes da transferência">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+                <div class="grid p-fluid">
+                    <form [formGroup]="form" class="flex w-full">
+                        <div class="col-8">
+                            <div class="col-12 flex gap-3">
+                                <div class="align-items-center flex flex-auto gap-3">
+                                    <label class="block font-bold w-4">Fornecedor</label>
+                                    <div class="search-container-single px-0 py-0 shadow-none w-full">
+                                        <i class="mdi mdi-magnify"></i>
+                                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                                        formControlName="supplierId"
+                                                        (completeMethod)="searchSuppliers($event)"
+                                                        inputStyleClass="w-full"
+                                                        (input)="searchFornecedor($event)"
+                                                        field="name"
+                                                        [dropdown]="true"
+                                                        placeholder="Pesquise por nome ou código"
+                                                        [suggestions]="suggestionsSuppliers"></p-autoComplete>
+                                    </div>
+                                </div>
+                                <p-button icon="mdi mdi-plus" class="mr-2" [outlined]="true" severity="success"
+                                          (onClick)="addFornecedor()"></p-button>
+                            </div>
+                            <div class="col-12 pb-1">
+                                <div class="align-items-center flex flex-auto">
+                                    <label class="block font-bold w-4">Class Financiera</label>
+                                    <div class="search-container-single px-0 py-0 shadow-none w-full">
+                                        <i class="mdi mdi-magnify"></i>
+                                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                                        (completeMethod)="searchBills($event)"
+                                                        formControlName="classifierId"
+                                                        inputStyleClass="w-full"
+                                                        (input)="searchClassifiers($event)"
+                                                        [dropdown]="true"
+                                                        field="name"
+                                                        placeholder="Class Financiera"
+                                                        [suggestions]="suggestionsClassifiers"></p-autoComplete>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <p-panel>
+                                <ng-template pTemplate="header">
+                                    <span class="mb-0 font-bold">Configurações</span>
+                                </ng-template>
+                                <div class="align-items-center flex flex-auto gap-3 justify-content-between  pb-3">
+                                    <label class="block font-bold">Tipo de transação</label>
+                                    <div class="flex flex-column">
+                                        <div class="pb-2">
+                                            <p-radioButton [value]="'EXPENSES'" formControlName="type"
+                                                           [inputId]="'EXPENSES'"></p-radioButton>
+                                            <label class="ml-2">Contas a pagar</label>
+                                        </div>
+                                        <div>
+                                            <p-radioButton [value]="'BILLING'" formControlName="type"
+                                                           [inputId]="'BILLING'"></p-radioButton>
+                                            <label class="ml-2">Renda a recebir</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </p-panel>
+                        </div>
+                    </form>
+                    <div class="col-12 py-0">
+                        <p-divider layout="horizontal"></p-divider>
+                    </div>
+                    <div class="col-6 flex">
+                        <div class="flex w-full">
+                <span class="flex-auto pl-2 text-2xl flex align-items-center"
+                      style="border-left: 5px double var(--primary-color);">Lista de produtos</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="flex gap-3">
+                            <button pButton pRipple class="p-button-outlined" label="Producto do Inventario"
+                                    [disabled]="form.get('supplierId')?.value === null"
+                                    (click)="addProduct()"
+                                    icon="mdi mdi-plus mdi-24px"></button>
+                            <button pButton pRipple class="p-button-outlined" label="Novo Producto"
+                                    (click)="novoProducto()"
+                                    icon="mdi mdi-plus mdi-24px"></button>
+                        </div>
+                    </div>
+                    <div class="col-12 pb-0 pt-0">
+                        <div class="search-container px-0 py-3 shadow-none w-full gap-3">
+                            <i class="mdi mdi-magnify"></i>
+                            <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                            (completeMethod)="searchListProducts($event)"
+                                            inputStyleClass="w-full"
+                                            placeholder="Pesquise producto por nome ou código de barras"
+                                            (input)="searchProduct($event)"
+                                            field="name"
+                                            [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
+                                            [suggestions]="suggestionsProducts"></p-autoComplete>
+                            <div style="width: 6.5em;">
+                        <span class="p-input-icon-left">
+                            <i class="mdi mdi-pound" style="top:15px; font-size: 2rem"></i>
+                            <input class="pl-4" type="number" pInputText
+                                   [(ngModel)]="selectedItemAmount"
+                                   [ngModelOptions]="{standalone: true}"/>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <p-table [value]="products" [scrollable]="true"
+                                 [styleClass]="'p-datatable-sm'">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th class="custom-th font-bold">Nome do Produto</th>
+                                    <th class="custom-th font-bold">Unit</th>
+                                    <th class="custom-th font-bold">Quantia</th>
+                                    <th class="custom-th font-bold">Preço</th>
+                                    <th class="custom-th font-bold">Sub-Total</th>
+                                    <th class="custom-th font-bold">Ações</th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-product>
+                                <tr>
+                                    <td class="custom-td" style="min-width: 220px">{{ product.name | wrapText: 25 }}
+                                    </td>
+                                    <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" }}</td>
+                                    <td class="custom-td">
+                                        {{ product.amount }}
+                                    </td>
+                                    <td class="custom-td">{{ product.costPrice| currency }}</td>
+                                    <td class="custom-td">{{ (product.costPrice * product.amount)| currency }}</td>
+                                    <td>
+                                        <p-button styleClass="border-round-3xl severity_danger small"
+                                                  (onClick)="deleteProduct(product.id)"
+                                                  icon="mdi mdi-close">
+                                        </p-button>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="emptymessage">
+                                <tr>
+                                    <td colspan="3">Nenhuma producto na lista de compra</td>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="footer">
+                                <tr>
+                                    <td colspan="4" class="text-right font-bold">Totais de Compra</td>
+                                    <td class="font-bold">{{ totalProducts | currency }}</td>
+                                    <td></td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </div>
+                </div>
+            </ng-template>
+        </p-stepperPanel>
+        <p-stepperPanel header="Conta a Pagar">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
+                         let-index="index">
+                <c-installments [config]="data" (confirmInstallment)="confirmInstallment($event)"></c-installments>
+            </ng-template>
+        </p-stepperPanel>
+    </p-stepper>
+
+</div>
+<ng-template dialog-footer>
+    @if (this.stepActive === 1) {
+       <p-button label="Detalhes da transferência" severity="secondary" (onClick)="decreaseStepActive()"/>
+       <p-button label="Salvar Pagamento" (onClick)="savePayment()"/>
+    }
+
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
+            icon="mdi mdi-close"></button>
+    @if (this.stepActive === 0) {
+        <p-button [disabled]="form.invalid && products.length === 0" label="Continuar a Pagamento"
+                  (onClick)="save()"/>
+    }
+</ng-template>
+

@@ -5,6 +5,7 @@ import {CategoryDto} from "../../../../../core/models";
 import {
     BaseModalStoreComponentDirective
 } from "../../../../../standalone/data-table/directives/base.modal.store.component.directive";
+import {FinancialClasificationService} from "../../../../financial/service/financial-clasification.service";
 
 @Component({
     templateUrl: './m-category.component.html',
@@ -23,8 +24,9 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
 
     formSub: FormGroup;
 
-    constructor(public storeCategoryService: StoreCategoryService) {
+    constructor(public storeCategoryService: StoreCategoryService, public financialClasificationService:FinancialClasificationService) {
         super(storeCategoryService);
+        this.financialClasificationService.loadAll( {pageNumber: 0, pageSize: 1000})
         effect(() => {
             if (this.storeCategoryService.subCategory$().length > 0) {
                 this.categories = this.storeCategoryService.subCategory$();
@@ -42,7 +44,7 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
         }
         this.form = new FormGroup({
             name: new FormControl<string>(data?.name, Validators.required),
-            plano: new FormControl<string>(data?.plano),
+            classifier: new FormControl<string>(data?.classifierId),
             description: new FormControl<string>(data?.description, Validators.required),
         });
         this.formSub = new FormGroup({
@@ -83,8 +85,10 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
                 })
             })
             const send = {
-                ...value,
-                subCategories: cat
+                name: this.form.get('name')?.value,
+                description: this.form.get('description')?.value,
+                classifierId: this.form.get('classifier')?.value.id,
+                subCategories: cat,
             }
             this.service.create({data: send})
         } else {

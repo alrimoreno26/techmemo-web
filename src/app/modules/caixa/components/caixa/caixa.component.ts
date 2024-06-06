@@ -63,6 +63,7 @@ export class CaixaComponent implements OnInit {
                 private dialogService: DialogService,
                 private productService: ProductService,
                 private toastMessageService: ToastMessageService,
+                public client: HttpClient,
                 private storeTablesServices: StoreTablesServices,
                 private router: Router,
                 public cashService: CashRegisterService,
@@ -91,7 +92,7 @@ export class CaixaComponent implements OnInit {
                     this.pagamento = true;
                 }
 
-                if(this.orders.every((x: any) => (x.state === 'FINISHED'))){
+                if (this.orders.every((x: any) => (x.state === 'FINISHED'))) {
                     this.service.setSelected(null);
                     this.router.navigate(['/comandas'])
                 }
@@ -100,6 +101,10 @@ export class CaixaComponent implements OnInit {
             if (this.storeTablesServices.finalize$()) {
                 this.service.setSelected(null);
                 this.router.navigate(['/comandas'])
+            }
+
+            if (this.service.sentKitchen$()) {
+                this.toastMessageService.showMessage("success", 'INFO', 'Pedido enviado para a cozinha')
             }
         })
         effect(async () => {
@@ -135,14 +140,16 @@ export class CaixaComponent implements OnInit {
             case 'Enter':
                 if (this.selectedItem !== undefined) {
                     if (this.selectedItem.allowsAdditional) {
+                        this.service.openCustomDialog('additional', true);
                         this.dialogService.open(AdditionalComponents, {
                             data: {
                                 product: this.selectedItem,
                                 activeOrder: this.activeOrder,
+                                created: true,
                                 amount: this.selectedItemAmount,
                             },
                             modal: true,
-                            style: {'width': '60vw', 'height': '60vw'},
+                            style: {'width': '65vw', 'height': '70vw'},
                             draggable: false,
                             resizable: false
                         }).onClose.subscribe(() => {
@@ -222,15 +229,20 @@ export class CaixaComponent implements OnInit {
     }
 
     transferOrders() {
-        if(this.service.selectedEntity$()[this.activeOrder].products.length > 0){
+        if (this.service.selectedEntity$()[this.activeOrder].products.length > 0) {
+            this.service.openCustomDialog('transfer', true);
             this.dialogService.open(MTransferComponents, {
-                data: this.service.selectedEntity$()[this.activeOrder],
+                data: {
+                    order: this.service.selectedEntity$()[this.activeOrder],
+                    activeRouteOrder: this.activeRouteOrder,
+                    byRoute:this.activeRoute
+                },
                 modal: true,
-                style: {'width': '60vw'},
+                style: {'width': '65vw'},
                 draggable: false,
                 resizable: false
             })
-        } else{
+        } else {
             this.toastMessageService.showMessage("info", 'INFO', 'Nao tem productos para transferir')
         }
 
@@ -246,7 +258,7 @@ export class CaixaComponent implements OnInit {
     }
 
     comandaTotal(): void {
-        this.totalOrders =  this.orders?.reduce((sumaTotal: any, item: any) =>
+        this.totalOrders = this.orders?.reduce((sumaTotal: any, item: any) =>
                 sumaTotal + (item.valueToPaid - item.valuePaid),
             0
         ) || 0;
@@ -291,10 +303,10 @@ export class CaixaComponent implements OnInit {
             draggable: false,
             resizable: false
         }).onClose.subscribe((data) => {
-            if(data.cancel){
+            if (data.cancel) {
                 const deleteTO: DeleteOrderProductDto = {
                     description: data.data.description,
-                    productIds:[pedido.id]
+                    productIds: [pedido.id]
                 }
                 this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
             }
@@ -308,10 +320,10 @@ export class CaixaComponent implements OnInit {
             draggable: false,
             resizable: false
         }).onClose.subscribe((data) => {
-            if(data.cancel){
+            if (data.cancel) {
                 const deleteTO: DeleteOrderProductDto = {
                     description: data.data.description,
-                    productIds:this.service.selectedEntity$()[this.activeOrder].products.map((obj:any) => {
+                    productIds: this.service.selectedEntity$()[this.activeOrder].products.map((obj: any) => {
                         return obj.id
                     }),
                 }
@@ -321,13 +333,17 @@ export class CaixaComponent implements OnInit {
     }
 
     lookAdditional(product: any) {
+        this.service.openCustomDialog('additional', true);
         this.dialogService.open(AdditionalComponents, {
             data: {
                 product: product,
+                amount: product.amount,
+                created: false,
+                activeOrder: this.activeOrder,
                 additionalSelected: product.additionals
             },
             modal: true,
-            style: {'width': '60vw', 'height': '60vw'},
+            style: {'width': '65vw', 'height': '70vw'},
             draggable: false,
             resizable: false
         })
@@ -335,7 +351,7 @@ export class CaixaComponent implements OnInit {
 
     addElementComanda(event: ProductLightDto): void {
         const params = [
-            {id: event.id, amount: this.selectedItemAmount, additionals: []}
+            {id: event.id, amount: this.selectedItemAmount, additionals: [], weight:event.weight}
         ];
         this.service.addProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, params)
         this.resetAllValues();
@@ -343,7 +359,12 @@ export class CaixaComponent implements OnInit {
 
     searchProducts(event: { target: { value: string; } } | any) {
         this.searchText = event.target.value;
-        this.productService.autocomplete({filter: this.searchText, type: 'SIMPLE'});
+        this.productService.autocomplete({
+            filter: this.searchText,
+            type: 'SIMPLE',
+            showEnables: true,
+            showInMenu: true
+        });
     }
 
 
@@ -355,11 +376,11 @@ export class CaixaComponent implements OnInit {
 
     confirmWeight() {
         this.visible = false;
-        if (this.itemFinded !== null) {
+        if (this.selectedItem !== null) {
             let item = {
                 count: this.selectedItemAmount,
-                ...this.itemFinded,
-                peso_liquido: Number(this.weightScale),
+                ...this.selectedItem,
+                weight: Number(this.weightScale),
             }
             this.addElementComanda(item);
         }
@@ -414,6 +435,11 @@ export class CaixaComponent implements OnInit {
 
     setDisabled() {
         return this.value === 'on';
+    }
+
+    printCozinha(){
+        this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder].id);
+        //this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
     }
 
     protected readonly isObject = isObject;

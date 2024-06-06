@@ -6,6 +6,7 @@ import {Observable, of} from "rxjs";
 import {map} from 'lodash';
 import {buildURL} from "../util";
 import {SupplierDTO} from "../models/supplier";
+import {silentIt} from "../interceptors/spinner.interceptor";
 
 @Injectable({
     providedIn: 'root'
@@ -21,5 +22,12 @@ export class FornecedoresService extends AbstractService<any> {
             Array.isArray(e) ? k + '=' + e.join(',') : k + '=' + e : null)
             .filter(f => f).join('&');
         return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}?${params}`);
+    }
+
+    autocompleteSuplpiers(data: LazyLoadData | Partial<LazyLoadData>): Observable<LazyResultData<SupplierDTO>> {
+        const params = map(data, (e, k) => (e !== undefined) ?
+            Array.isArray(e) ? k + '=' + e.join(',') : k + '=' + e : null)
+            .filter(f => f).join('&');
+        return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}?${params}`, {context: silentIt()});
     }
 }

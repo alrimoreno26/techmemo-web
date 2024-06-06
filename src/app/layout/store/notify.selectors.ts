@@ -12,3 +12,4 @@ const {selectIds, selectTotal} = adapter.getSelectors();
 export const selectEntityIds = createSelector(getEntityState, selectIds);
 
 export const weightScale = createSelector(getEntityState, state => state.weightScale);
+export const kitchen = createSelector(getEntityState, state => state.kitchen);

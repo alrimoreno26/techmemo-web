@@ -1,7 +1,7 @@
 <div [ngClass]="containerTopBarWrapper" class="layout-topbar">
     <div class="topbar-left">
         <a #menubutton tabindex="0" class="menu-button p-trigger" (click)="onMenuButtonClick()">
-            <i class="pi pi-chevron-left"></i>
+            <i class="mdi mdi-chevron-left"></i>
         </a>
         <img class="horizontal-logo" [routerLink]="['/']" [src]="'assets/layout/images/logo-'+ logo + '.svg'"
              alt="diamond-layout"/>
@@ -18,10 +18,16 @@
 
     <div class="topbar-right">
         <ul class="topbar-menu">
+            <li class="right-sidebar-item">
+                <span class="font-bold">Loja Activa: </span>
+                <p-dropdown [options]="lojas" [(ngModel)]="selectedCommerce" optionLabel="commerceName"
+                            (onChange)="changeCommerce($event)"
+                            placeholder="Selecione sua loja"></p-dropdown>
+            </li>
             <li class="profile-item static sm:relative">
                 <a tabindex="0" pStyleClass="@next" enterClass="hidden" enterActiveClass="scalein" leaveToClass="hidden"
                    leaveActiveClass="fadeout" [hideOnOutsideClick]="true">
-                    <img src="../../../../assets/demo/images/avatar/profile.jpg" alt="diamond-layout"
+                    <img src="../../../../assets/images/user-profile.png" alt="diamond-layout"
                          class="profile-image"/>
                     <span class="profile-name">{{ session.userLogged.name }}</span>
                 </a>

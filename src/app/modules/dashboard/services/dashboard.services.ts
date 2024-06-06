@@ -1,9 +1,8 @@
 import {Injectable, Signal} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
-import {CategoryServices} from "../../../core/services/category-services.service";
 import {CategoryDto} from "../../../core/models";
 import {ReportsService} from "../../../core/services/reports.service";
-import {LazyLoadData, LazyResultData} from "../../../standalone/data-table/models";
+import {LazyResultData} from "../../../standalone/data-table/models";
 import {StockProductReportTO} from "../../../core/models/products";
 import {productType} from "../../../core/enums/product";
 import {ReportsDTO} from "../../../core/models/reports";

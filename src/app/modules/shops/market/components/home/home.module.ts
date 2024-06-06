@@ -9,8 +9,6 @@ import {CarouselModule} from "primeng/carousel";
 import {ButtonModule} from "primeng/button";
 import {FooterComponent} from "../../shared/footer/footer.component";
 import {HeaderComponent} from "../../shared/header/header.component";
-// import {CarouselModule} from 'ngx-owl-carousel-o';
-// import {NgxSliderModule} from '@angular-slider/ngx-slider';
 
 
 @NgModule({
@@ -26,7 +24,6 @@ import {HeaderComponent} from "../../shared/header/header.component";
         HomeRoutingModule,
         CarouselModule,
         ButtonModule,
-        // NgxSliderModule,
     ]
 })
 export class HomeModule {

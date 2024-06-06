@@ -19,6 +19,8 @@ export interface OrdersByStateDTO {
     averageOrders: 0,
     totalInPayment: 0,
     totalPaid: 0
+    totalValuePaid:0
+    totalvalueToPaid:0
 }
 
 export interface SalesByPaymentStructureDTO {

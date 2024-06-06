@@ -5,7 +5,7 @@ import {Component} from '@angular/core';
 @Component({
     selector: 'shop',
     templateUrl: './shop.component.html',
-    styleUrl: './shop.component.css'
+    // styleUrl: './shop.modals.scss'
 })
 export class ShopComponent {
     minValue: number = 100;

@@ -36,20 +36,20 @@ import {StyleClassModule} from "primeng/styleclass";
 
 
 @NgModule({
-  declarations: [
-    DataTableComponent,
-    ShowValueComponent,
+    declarations: [
+        DataTableComponent,
+        ShowValueComponent,
 
-    TableRowDirective,
-    TableFooterDirective,
-    BaseComponentDirective,
-    TableExpansionDirective,
-    BaseModalComponentDirective,
-    BaseModalDragComponentDirective,
-    BaseModalStoreComponentDirective,
+        TableRowDirective,
+        TableFooterDirective,
+        BaseComponentDirective,
+        TableExpansionDirective,
+        BaseModalComponentDirective,
+        BaseModalDragComponentDirective,
+        BaseModalStoreComponentDirective,
 
-    RowTemplatePipe
-  ],
+        RowTemplatePipe
+    ],
     imports: [
         CommonModule,
         TranslateModule,
@@ -68,19 +68,19 @@ import {StyleClassModule} from "primeng/styleclass";
         FormsModule,
         StyleClassModule
     ],
-  providers: [
-    DecimalPipe, CurrencyPipe, DatePipe, DialogService,
-    ExportDataService, BaseStoreServices, BaseDragServices
-  ],
-  exports: [
-    DataTableComponent,
-    TableRowDirective,
-    TableFooterDirective,
-    TableExpansionDirective,
+    providers: [
+        DecimalPipe, CurrencyPipe, DatePipe, DialogService,
+        ExportDataService, BaseStoreServices, BaseDragServices
+    ],
+    exports: [
+        DataTableComponent,
+        TableRowDirective,
+        TableFooterDirective,
+        TableExpansionDirective,
 
-    PipesModule,
-    DirectivesModule
-  ]
+        PipesModule,
+        DirectivesModule
+    ]
 })
 export class DataTableModule {
 }

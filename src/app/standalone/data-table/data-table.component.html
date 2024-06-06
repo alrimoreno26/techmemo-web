@@ -2,25 +2,25 @@
      class="sm:flex align-items-center mb-3">
     <button (click)="createItem()" *ngIf="showCreate && !itemsSplit?.length"
             class="p-button-outlined text-2xl" icon="mdi {{iconCreate}} mdi-24px" label="{{'common.create' | translate}}"
-            pTooltip="{{'common.tooltip.create' | translate: {value: (name | translate)} }}"
+            pTooltip="{{'common.tooltip.create' | translate}}"
             pButton
             type="button"></button>
     <p-splitButton (onClick)="createItem()" *ngIf="showCreate && itemsSplit?.length"
                    class="text-2xl"
                    outlined
                    [model]="itemsSplit" appendTo="body" icon="mdi {{iconCreate}} mdi-24px" label="{{'common.create' | translate}}"
-                   pTooltip="{{'common.tooltip.create' | translate: {value: (name | translate)} }}"
+                   pTooltip="{{'common.tooltip.create' | translate}}"
                    styleClass="text-2xl"
     ></p-splitButton>
     <div>
     <span class="p-input-icon-left">
-      <i class="pi pi-search"></i>
+      <i class="mdi mdi-magnify"></i>
       <input #inputSearch (input)="setGlobalFilter($event, dt)" pInputText
              placeholder="Vamos pesquisar" type="text"/>
     </span>
         <button (click)="refreshContentData(dt)" *ngIf="refreshBtn"
                 class="ml-2 p-button-rounded p-button-text" icon="mdi mdi-replay mdi-24px" pButton
-                pTooltip="Refresh" tooltipPosition="left" type="button"></button>
+                pTooltip="Atualizar" tooltipPosition="left" type="button"></button>
     </div>
 </div>
 <p-table #dt (onLazyLoad)="loadCustomLazy($event)" (onRowReorder)=rowReorder($event,dt) [columns]="headers"
@@ -46,8 +46,8 @@
                                 </div>
                             </ng-template>
                             <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                                <p-dropdown [(ngModel)]="selectedType" [options]="[productType.ADDITIONAL,productType.COMBO,productType.SIMPLE]" placeholder="Classificação de produto" [filter]="false"
-                                               (onChange)="filter($event.value)">
+                                <p-dropdown [(ngModel)]="selectedType" [options]="item.filterValue" placeholder="Estado" [filter]="false"
+                                               (onChange)="filter($event.value, item.field)">
                                     <ng-template pTemplate="selectedItem">
                                         <div class="inline-block vertical-align-middle">
                                             <span class="ml-1 mt-1">{{ selectedType | translate}}</span>

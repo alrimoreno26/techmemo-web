@@ -23,8 +23,14 @@ export class ProductComponent extends BaseComponentDirective {
             sort: true, class: 'text-center', visible: true
         },
         {
-            header: 'Classificação', field: 'type', filter:true,
-            sort: false, class: 'text-center', visible: true, width: 140
+            header: 'Classificação',
+            field: 'type',
+            filter: true,
+            filterValue: [productType.ADDITIONAL, productType.COMBO, productType.SIMPLE],
+            sort: false,
+            class: 'text-center',
+            visible: true,
+            width: 140
         },
         {
             header: 'Preço', field: 'costPrice', pipe: 'currency',
@@ -71,7 +77,7 @@ export class ProductComponent extends BaseComponentDirective {
 
     customEdit(evt: any): void {
         this.productService.getById(evt.id)
-        if(evt.type === 'COMBO'){
+        if (evt.type === 'COMBO') {
             this.productService.getAdditionalProducts({pageNumber: 0, pageSize: 1000, type: productType.ADDITIONAL})
         }
     }

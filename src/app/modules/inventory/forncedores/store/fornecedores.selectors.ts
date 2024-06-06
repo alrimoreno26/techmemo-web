@@ -18,3 +18,4 @@ export const selectEntityLoaded = createSelector(getEntityState, state => state.
 export const selectedEntity = createSelector(getEntityState, state => state.selected);
 export const selectedTotalElement = createSelector(getEntityState, state => state.totalElements);
 export const getDialog = createSelector(getEntityState, state => state.dialog);
+export const autocomplete = createSelector(getEntityState, state => state.autocomplete);

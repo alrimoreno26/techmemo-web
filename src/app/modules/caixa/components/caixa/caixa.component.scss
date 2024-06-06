@@ -12,7 +12,7 @@
         overflow-x: hidden;
         overflow-y: auto;
         border-radius: 0.8rem;
-        height: calc(100vh - 195px);
+        height: calc(100vh - 185px);
         padding-right: 16px;
         padding-left: 16px;
 
@@ -32,7 +32,7 @@
 
     .comanda_list{
         width: 100%;
-        height: calc(100vh - 445px);
+        height: calc(100vh - 410px);
         overflow: auto;
     }
 
@@ -63,7 +63,7 @@
         display: table-cell;
         vertical-align: inherit;
         border-bottom: 1px solid rgb(224, 224, 224);
-        text-align: left;
+        text-align: center;
         padding: 6px 16px;
         color: rgba(0, 0, 0, 0.87);
     }

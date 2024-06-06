@@ -8,7 +8,8 @@ import { LayoutService } from '../../service/app.layout.service';
 export class AppSidebarComponent implements OnDestroy {
     timeout: any = null;
     @ViewChild('menuContainer') menuContainer!: ElementRef;
-    constructor(public layoutService: LayoutService, public el: ElementRef) {}
+    constructor(public layoutService: LayoutService, public el: ElementRef) {
+    }
 
     get logoColor() {
         let logo;

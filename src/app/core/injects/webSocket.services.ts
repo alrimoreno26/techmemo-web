@@ -40,7 +40,7 @@ export class WebSocketServices {
     onConnection(accessToken: string): void {
         if (this.state.value !== SocketClientState.CONNECTED) {
             const websocketUrl = environment.websocket;
-            this.client = Stomp.over(new SockJS(websocketUrl));
+            this.client = Stomp.over(new WebSocket(websocketUrl));
             this.state = new BehaviorSubject<SocketClientState>(SocketClientState.ATTEMPTING);
             this.client.connect(
                 {},
@@ -94,6 +94,6 @@ export class WebSocketServices {
         this.addNotification(target, message);
     }
     private handlePrint(target: targetNotifyEnum, message: WsMessage): void {
-        console.log(message)
+        this.store.dispatch(fromNotifyActions.sentToKitchen({sent: true}))
     }
 }

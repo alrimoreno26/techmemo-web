@@ -15,6 +15,12 @@ import {CellPhonePipe} from "./cell-phone.pipe";
 import {SanitizeHtmlPipe} from "./sanitaize-html.pipe";
 import {SeverityPipe} from "./severity.pipe";
 import {ClientNamePipe} from "./client-name.pipe";
+import {TimeAgoPipe} from "./time-ago.pipe";
+import {ColHeaderPipe} from "../../standalone/data-table/pipes/col-header.pipe";
+import {ColSpanPipe} from "../../standalone/data-table/pipes/col-span.pipe";
+import {LeafCheckPipe} from "./leaf-check.pipe";
+import {ExtraHeaderPipe} from "./extra-header.pipe";
+import {NumberKPipe} from "./number-decimal.pipe";
 
 
 @NgModule({
@@ -33,7 +39,13 @@ import {ClientNamePipe} from "./client-name.pipe";
         CellPhonePipe,
         SanitizeHtmlPipe,
         ClientNamePipe,
-        SeverityPipe
+        SeverityPipe,
+        TimeAgoPipe,
+        ColHeaderPipe,
+        ColSpanPipe,
+        LeafCheckPipe,
+        ExtraHeaderPipe,
+        NumberKPipe
     ],
     imports: [
         CommonModule
@@ -53,7 +65,13 @@ import {ClientNamePipe} from "./client-name.pipe";
         CellPhonePipe,
         SanitizeHtmlPipe,
         ClientNamePipe,
-        SeverityPipe
+        SeverityPipe,
+        TimeAgoPipe,
+        ColHeaderPipe,
+        ColSpanPipe,
+        LeafCheckPipe,
+        ExtraHeaderPipe,
+        NumberKPipe
     ],
     providers: [
         CepPipe,

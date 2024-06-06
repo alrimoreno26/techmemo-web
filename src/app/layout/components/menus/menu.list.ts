@@ -44,20 +44,6 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
-        label: 'Financeiro',
-        icon: 'mdi mdi-cash-register mdi-24px',
-        roles: [domainEnum.CONFIGURATION],
-        items: [
-            {
-                label: 'Meios de pagamento',
-                roles: [domainEnum.CONFIGURATION],
-                icon: 'mdi mdi-cash-plus mdi-24px',
-                routerLink: ['financial/payment-method']
-            }
-        ]
-    },
-    {separator: true},
-    {
         label: 'Vendas',
         roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
         icon: 'mdi mdi-cash-check mdi-24px',
@@ -72,17 +58,10 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
-        label: 'Compras',
-        icon: 'mdi mdi-cash-multiple mdi-24px',
-        roles: [domainEnum.PRODUCT],
-        items: [
-            {
-                label: 'Compras',
-                roles: [domainEnum.PRODUCT],
-                icon: 'mdi mdi-cash-multiple mdi-24px',
-                routerLink: ['compras/lista']
-            }
-        ]
+        label: 'Cozinha',
+        icon: 'mdi mdi-chef-hat mdi-24px',
+        roles: [domainEnum.KITCHEN,domainEnum.ALL],
+        routerLink: ['cozinha'],
     },
     {separator: true},
     {
@@ -101,6 +80,58 @@ export const menuList: any[] = [
                 icon: 'mdi mdi-storefront-edit-outline mdi-24px',
                 roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],
                 routerLink: ['loja/configuration']
+            }
+        ]
+    },
+    {separator: true},
+    {
+        label: 'Compras',
+        icon: 'mdi mdi-cash-multiple mdi-24px',
+        roles: [domainEnum.PRODUCT],
+        items: [
+            {
+                label: 'Contas a Pagar',
+                roles: [domainEnum.PRODUCT],
+                icon: 'mdi mdi-cash-clock mdi-24px',
+                routerLink: ['compras/contas-pagar']
+            },
+            {
+                label: 'Compras',
+                roles: [domainEnum.PRODUCT],
+                icon: 'mdi mdi-cash-multiple mdi-24px',
+                routerLink: ['compras/lista']
+            }
+        ]
+    },
+    {separator: true},
+    {
+        label: 'Financeiro',
+        icon: 'mdi mdi-cash-register mdi-24px',
+        roles: [domainEnum.CONFIGURATION],
+        items: [
+            {
+                label: 'Classificação financeira',
+                roles: [domainEnum.ALL],
+                icon: 'mdi mdi-graph mdi-24px',
+                routerLink: ['financial/financial-clasification']
+            },
+            {
+                label: 'Estrutura DRE',
+                roles: [domainEnum.ALL],
+                icon: 'mdi mdi-cash-edit mdi-24px',
+                routerLink: ['financial/structure-dre']
+            },
+            {
+                label: 'DRE',
+                roles: [domainEnum.ALL],
+                icon: 'mdi mdi-cash-check mdi-24px',
+                routerLink: ['financial/payment-method']
+            },
+            {
+                label: 'Meios de pagamento',
+                roles: [domainEnum.CONFIGURATION],
+                icon: 'mdi mdi-cash-plus mdi-24px',
+                routerLink: ['financial/payment-method']
             }
         ]
     },

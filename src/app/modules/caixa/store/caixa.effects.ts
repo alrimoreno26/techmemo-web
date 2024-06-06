@@ -126,6 +126,20 @@ export class CaixaEffects {
         )
     );
 
+    getProductInOrderByID$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.getProductInOrderByID),
+            switchMap(({id}) =>
+                this.service.getProductOrder(id).pipe(
+                    switchMap((data) => {
+                        return of(fromOrdersListActions.getProductInOrderByIDSuccess({entity: data}))
+                    }),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
     payments$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromOrdersListActions.makePaymentsOrders),
@@ -164,7 +178,12 @@ export class CaixaEffects {
                 this.service.transferProducts(entity).pipe(
                     switchMap((response) => {
                         return of(
-                            fromOrdersListActions.transferProductsOrdersSuccess({entity: response})
+                            fromOrdersListActions.transferProductsOrdersSuccess({entity: response}),
+                            fromOrdersListActions.openCustomDialog({modal: 'transfer', show: false}),
+                            entity.route === 'table' ? fromOrdersListActions.getByID({
+                                path: ['by-table'],
+                                id: {tableId: entity.activeRouteOrder}
+                            }) : fromOrdersListActions.getByID({path: [], id: entity.sourceOrderId})
                         )
                     }),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
@@ -185,12 +204,53 @@ export class CaixaEffects {
         )
     );
 
+    updateProductsOrders$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.updateProductsOrders),
+            switchMap(({id, orderId, params}) =>
+                this.service.updateProductsOrders(id, params[0]).pipe(
+                    switchMap((response) => {
+                        return of(
+                            fromOrdersListActions.openCustomDialog({modal: 'additional', show: false}),
+                            fromOrdersListActions.getByID({path: [], id: orderId})
+                        )
+                    }),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
     deleteProductsOrders$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromOrdersListActions.deleteProductsOrders),
             switchMap(({id, entity}) =>
                 this.service.deleteProductsOrders(id, entity).pipe(
                     map((data) => fromOrdersListActions.deleteProductsOrdersSuccess({productId: entity.productIds})),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
+    ordersFromKitchen$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.ordersFromKitchen),
+            switchMap(({lazy}) =>
+                this.service.pendingPrepare(lazy).pipe(
+                    map((data) => fromOrdersListActions.ordersFromKitchenSuccess(data)),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
+    sentOrdersFromKitchen$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.sentOrdersFromKitchen),
+            switchMap(({id}) =>
+                this.service.sentDataToKitchen(id).pipe(
+                    map((data) => fromOrdersListActions.sentOrdersFromKitchenSuccess()),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
                 )
             )

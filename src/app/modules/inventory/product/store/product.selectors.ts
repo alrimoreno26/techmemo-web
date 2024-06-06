@@ -20,3 +20,4 @@ export const selectedTotalElement = createSelector(getEntityState, state => stat
 export const getDialog = createSelector(getEntityState, state => state.dialog);
 export const getAdditional = createSelector(getEntityState, state => state.additionals);
 export const getAutocomplete = createSelector(getEntityState, state => state.autocomplete);
+export const temporalCreated = createSelector(getEntityState, state => state.tempCreated);

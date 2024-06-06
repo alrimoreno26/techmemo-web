@@ -54,6 +54,7 @@ export class RoleModalComponent extends BaseModalComponentDirective implements O
                 {value: 'ADMINISTRATOR_STORE', label: 'ADMINISTRATOR_STORE'},
                 {value: 'POINT_OF_SALE', label: 'POINT_OF_SALE'},
                 {value: 'ATTENDANT', label: 'ATTENDANT'},
+                {value: 'KITCHEN', label: 'KITCHEN'},
                 {value: 'WAITER', label: 'WAITER'},
             ]
         },

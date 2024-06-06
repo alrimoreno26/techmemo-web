@@ -23,13 +23,21 @@ export class MTransferComponents implements OnInit {
                 ordersService.getOrders();
             }
             if (ordersService.listEntities$()) {
-                this.orders = this.ordersService.listEntities$()?.filter(od => (od.id !== this.config.data.id && od.state === 'ACTIVE')) || [];
+                this.orders = this.ordersService.listEntities$()?.filter(od => (od.id !== this.config.data.order.id && od.state === 'ACTIVE')) || [];
+                console.log(this.orders)
             }
         }, {allowSignalWrites: true})
+        effect(() => {
+            if(!this.ordersService.dialogTransfer$()) {
+                this.ref.close();
+            }
+        });
+
     }
 
     ngOnInit() {
-        this.config.data.products.filter((x:any) => !x.paid).forEach((p: any) => {
+
+        this.config.data.order.products.filter((x:any) => !x.paid).forEach((p: any) => {
             if (p.amount > 1) {
                 this.targetProducts = Array.from({length: p.amount}, () => ({
                     ...p,
@@ -57,7 +65,9 @@ export class MTransferComponents implements OnInit {
                 }
                 return result;
             }, []),
-            sourceOrderId: this.config.data.id
+            sourceOrderId: this.config.data.order.id,
+            activeRouteOrder: this.config.data.activeRouteOrder,
+            route: this.config.data.byRoute
         }
         this.ordersService.transferOrders(params)
     }

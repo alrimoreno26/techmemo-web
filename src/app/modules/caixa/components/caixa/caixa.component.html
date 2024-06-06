@@ -1,17 +1,17 @@
 <!--<app-print-nfe [product]="orders" [total]="comandaTotal()"></app-print-nfe>-->
-<main class="main_pos p-4 pb-0" appFocus>
+<main class="main_pos px-4 pt-2 pb-0" appFocus>
     <div class="grid">
         <div class="col-12 shadow-6">
             <div class="flex flex-1 w-full gap-3" style="width: 220px">
                 <p-button class="flex-1"
                           [disabled]="pagamento"
-                          styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
+                          styleClass="w-full p-button-outlined flex-1 flex justify-content-center">
                     <i class="mdi mdi-printer text-5xl"></i>
-                    <span class="text-lg">(F4) NFC-e</span>
+                    <span class="text-lg">(F4)&nbsp; NFC-e</span>
                 </p-button>
                 <p-button class="flex-1"
                           (onClick)="refreshOrders()"
-                          styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
+                          styleClass="w-full p-button-outlined flex-1 flex justify-content-center">
                     <i class="mdi mdi-refresh text-5xl"></i>
                     <span class="text-lg">(F5) Atualizar</span>
                 </p-button>
@@ -19,21 +19,22 @@
                     class="flex-1"
                     (onClick)="deleteAll()"
                     [disabled]="pagamento"
-                    styleClass="w-full p-button-outlined p-button-danger flex-1 flex-column flex justify-content-center">
+                    styleClass="w-full p-button-outlined p-button-danger flex-1 flex justify-content-center">
                     <i class="mdi mdi-minus-circle-outline text-5xl"></i>
                     <span class="text-lg">(F6) Apagar</span>
                 </p-button>
                 <p-button
                     class="flex-1"
+                    (onClick)="printCozinha()"
                     [disabled]="pagamento"
-                    styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
+                    styleClass="w-full p-button-outlined flex-1 flex justify-content-center">
                     <i class="mdi mdi-printer text-5xl"></i>
                     <span class="text-lg">(F7) Cozinha</span>
                 </p-button>
                 <p-button
                     class="flex-1"
                     [disabled]="pagamento"
-                    styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
+                    styleClass="w-full p-button-outlined flex-1 flex justify-content-center">
                     <i class="mdi mdi-printer text-5xl"></i>
                     <span class="text-lg">(F8) Imprimir</span>
                 </p-button>
@@ -41,7 +42,7 @@
                     class="flex-1"
                     [disabled]="!canFinalize$"
                     (onClick)="finalizeOrder()"
-                    styleClass="w-full p-button-outlined p-button-success flex-1 flex-column flex justify-content-center">
+                    styleClass="w-full p-button-outlined p-button-success flex-1 flex justify-content-center">
                     <i class="mdi mdi-check-circle-outline text-5xl"></i>
                     <span class="text-lg">(F9) Finalizar</span>
                 </p-button>
@@ -49,7 +50,7 @@
                     class="flex-1"
                     (onClick)="transferOrders()"
                     [disabled]="pagamento"
-                    styleClass="w-full p-button-outlined p-button-warning flex-1 flex-column flex justify-content-center">
+                    styleClass="w-full p-button-outlined p-button-warning flex-1 flex justify-content-center">
                     <i class="mdi mdi-swap-horizontal text-5xl"></i>
                     <span class="text-lg">(F10) Enviar</span>
                 </p-button>
@@ -57,7 +58,7 @@
                 <p-button
                     (onClick)="closeOrders()"
                     class="flex-1"
-                    styleClass="w-full p-button-outlined p-button-danger flex-1 flex-column flex justify-content-center">
+                    styleClass="w-full p-button-outlined p-button-danger flex-1 flex justify-content-center">
                     <i class="mdi mdi-close-circle-outline text-5xl"></i>
                     <span class="text-xl">(ESC) Fechar</span>
                 </p-button>
@@ -120,21 +121,21 @@
                                                       (onClick)="deleteFromOrder(product)">
                                             </p-button>
                                             <p-button styleClass="border-round-3xl severity_info small"
-                                                      [disabled]="product.additionals.length === 0 || pagamento || product.amount === product.amountPaid"
+                                                      [disabled]="product.allowsAdditional === false || pagamento || product.amount === product.amountPaid"
                                                       icon="mdi mdi-magnify"
                                                       (onClick)="lookAdditional(product)">
                                             </p-button>
                                         </td>
-                                        <td class="custom-td" style="min-width: 220px">{{ product.name | wrapText: 25 }}
+                                        <td class="custom-td" style="min-width: 220px; text-align: left">{{ product.name | wrapText: 25 }}
                                         </td>
                                         <td class="custom-td">
                                             {{ product.amount }}
                                         </td>
-                                        <td class="custom-td">{{ product.unit === 'KILO' ? product.peso_liquido : ('-') }}</td>
+                                        <td class="custom-td">{{ !product.soldPerUnits ? product.weight : ('-') }}</td>
                                         <td class="custom-td">{{ product.salePrice| currency }}</td>
                                         <td class="custom-td">{{ product.totalAdditionalsValue| currency }}</td>
                                         <td class="custom-td font-bold" alignFrozen="right"
-                                            pFrozenColumn>{{ product.soldPerUnits ? ((product.salePrice + product.totalAdditionalsValue) * product.amount | currency) : (product.salePrice | currency) }}
+                                            pFrozenColumn>{{ product.valueToPaid | currency:'BRL' : 'symbol' : '1.2' }}
                                         </td>
                                     </tr>
                                 </ng-template>
@@ -145,12 +146,12 @@
                 <div class="mt-20 gray-color flex flex-column m-3" *ngIf="service.selectedEntity$() !== null">
                     <div class="flex align-items-center justify-content-between">
                         <h6 class="text-2xl text-gray-600 m-0">Sub-Total Order:</h6>
-                        <h6 class="text-3xl text-primary m-0">{{ (service.selectedEntity$()[activeOrder]?.valueToPaid - service.selectedEntity$()[activeOrder]?.valuePaid) | currency }}</h6>
+                        <h6 class="text-3xl text-primary m-0">{{ (service.selectedEntity$()[activeOrder]?.valueToPaid - service.selectedEntity$()[activeOrder]?.valuePaid) | currency: 'BRL' : 'symbol' : '1.2'  }}</h6>
                     </div>
                     <div class="flex align-items-center justify-content-between">
                         <h6 class="text-3xl text-gray-600 m-0">Total ({{ service.selectedEntity$().length }})
                             Orders:</h6>
-                        <h6 class="text-5xl text-primary m-0">{{ totalOrders | currency }}</h6>
+                        <h6 class="text-5xl text-primary m-0">{{ totalOrders | currency: 'BRL' : 'symbol' : '1.2' }}</h6>
                     </div>
                     <div class="flex gap-3">
                         <div class="flex-1">

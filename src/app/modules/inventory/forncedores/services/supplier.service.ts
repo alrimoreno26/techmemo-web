@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Signal} from "@angular/core";
 import {Store} from "@ngrx/store";
 import {BaseStoreServices} from "../../../../standalone/data-table/class/base.store.services";
 import {fromSupplierListActions} from "../store/fornecedores.actions";
@@ -7,7 +7,8 @@ import {
     selectAllEntities,
     selectedEntity,
     selectedTotalElement,
-    selectEntityLoaded
+    selectEntityLoaded,
+    autocomplete
 } from "../store/fornecedores.selectors";
 import {FornecedoresPartialState} from "../store/fornecedores.reducers";
 import {SupplierDTO} from "../../../../core/models/supplier";
@@ -15,6 +16,7 @@ import {SupplierDTO} from "../../../../core/models/supplier";
 @Injectable({providedIn: 'platform'})
 export class SupplierService extends BaseStoreServices<any> {
 
+    autocomplete$: Signal<any>;
     override serverSide = true;
     override lazyLoadOnInit = false;
 
@@ -29,10 +31,20 @@ export class SupplierService extends BaseStoreServices<any> {
         this.listEntities$ = this.store.selectSignal(selectAllEntities);
         this.dialog$ = this.store.selectSignal(getDialog);
         this.selectedEntity$ = this.store.selectSignal(selectedEntity);
+        this.autocomplete$ = this.store.selectSignal(autocomplete);
     }
 
     override loadAll(data: Partial<any>): void {
         this.store.dispatch(fromSupplierListActions.loadSupplierList({
+            lazy: {
+                ...data
+            }
+        }));
+        super.loadAll(data);
+    }
+
+     autocomplete(data: Partial<any>): void {
+        this.store.dispatch(fromSupplierListActions.autocompleteSupplierList({
             lazy: {
                 ...data
             }

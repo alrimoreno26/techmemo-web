@@ -11,7 +11,7 @@ export interface SupplierDTO {
     document: string;
     email: string;
     id: string;
-    products?: ProductLightDto[];
+    products: ProductLightDto[];
     phone: string;
     type: supplierType
 }

@@ -1,0 +1,44 @@
+<div class="card m-3" style="height: calc(100vh - 85px);">
+    <div class="grid p-4 container-grid">
+        <div class="col-12">
+            <h4 class="align-items-center block border-bottom-1 flex font-bold justify-content-between p-2 surface-border text-900">
+                <span>Pedidos de cozinha</span>
+            </h4>
+        </div>
+        @for (order of orders; track order.id) {
+            <div class="col-12 lg:col-3">
+                <div class="p-3 shadow-2 border-round surface-card h-full">
+                    <div class="flex justify-content-between text-500">
+                        <span>Order: {{ order.code }}</span>
+                        <span class="inline-flex">
+                            <i class="pi pi-clock mr-2"></i>
+                            <span>{{ order.created|timeAgo }}</span>
+                        </span>
+                    </div>
+                    <p class="line-height-3 mt-3 text-900 font-medium text-xl">{{ order.name }}</p>
+                    <div class="pb-3">
+                        <span
+                            class="bg-green-100 text-green-600 font-medium py-1 px-3 mb-3"
+                            style="border-radius: 30px;">Ingredientes</span>
+                    </div>
+                    <ul class="list-none p-0 m-0">
+                        @for (additional of order.additionals || []; track additional.id) {
+                            <li class="flex align-items-center mb-3"><i
+                                class="mdi mdi-circle mr-2 text-sm"></i><span>{{ additional.name }}</span>
+                            </li>
+                        }
+                    </ul>
+                    <div class="flex gap-3 mt-1">
+                        @if (order.state === 'SENT_TO_KITCHEN') {
+                            <p-button (onClick)="modifyState(order,'IN_PREPARATION')" label="Começar" class="w-full" styleClass="w-full"/>
+                        }
+                        @if (order.state === 'IN_PREPARATION') {
+                            <p-button (onClick)="modifyState(order,'READY')" label="Concluido" class="w-full" styleClass="w-full"/>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>

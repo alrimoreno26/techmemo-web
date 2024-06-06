@@ -36,6 +36,13 @@
                             [pTooltip]="'Mostrar Mesas'"></button>
                     <button [disabled]="table_union.length === 0" (click)="juntarMesas()" pButton
                             icon="mdi mdi-vector-union mdi-18px" class="mr-2" [pTooltip]="'Juntar Mesas'"></button>
+                    @if(caixaOpened){
+                        <p-divider layout="vertical"></p-divider>
+                        <p-button [pTooltip]="'Retirada de dinheiro'" tooltipPosition="bottom" styleClass="px-4"
+                                  (click)="extractionCaixa()"
+                                  icon="mdi mdi-cash-minus mdi-24px" severity="danger" [outlined]="true">
+                        </p-button>
+                    }
                     @if(caixaOpened && session.userLogged.role.operationArea !== 'ADMINISTRATOR_STORE'){
                         <p-divider layout="vertical"></p-divider>
                         <p-button [pTooltip]="'Fechar Caixa'" tooltipPosition="bottom" styleClass="px-4"

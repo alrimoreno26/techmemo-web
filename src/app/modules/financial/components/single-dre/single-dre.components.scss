@@ -1,0 +1,76 @@
+::ng-deep.balanceK-table {
+    .p-treetable .p-treetable-tbody > tr > td {
+        padding: 0;
+        height: 33px;
+    }
+
+    .p-treetable .p-treetable-thead > tr > th {
+        height: 40px;
+        padding: 0.5rem 1rem !important;
+    }
+
+    .p-treetable-scrollable-header-box {
+        padding-right: 0 !important;
+    }
+}
+::ng-deep.inverted-table {
+    &.p-datatable .p-datatable-tbody > tr {
+        &:not(.bg-leaf) {
+            td {
+                border-bottom: solid 2px white;
+            }
+        }
+    }
+}
+
+$balance-active: (0: #2d5ea8, 1: #8eaadb, 2: #d9e2f3);
+@each $name, $color in $balance-active {
+    .balance-active-#{$name} {
+        background-color: $color !important;
+        font-weight: bold;
+        border-bottom: solid 2px white;
+        @if $name == 0 {
+            color: white !important;
+        }
+    }
+}
+
+$balance-passive: (0: #c11f00, 1: #f4b083, 2: #fbe4d5);
+@each $name, $color in $balance-passive {
+    .balance-passive-#{$name} {
+        background-color: $color !important;
+        font-weight: bold;
+        @if $name == 0 {
+            color: white !important;
+        }
+    }
+}
+
+$balance-dre: (0: #385623, 1: #a8d08d, 2: #e2efd9);
+@each $name, $color in $balance-dre {
+    .balance-dre-#{$name} {
+        background-color: $color !important;
+        font-weight: bold;
+        @if $name == 0 {
+            color: white !important;
+        }
+    }
+}
+
+// $balance-index: (0: #808080, 1: #9f9a9a, 2: #bebbbb);
+$balance-index: (0: #a5a5a5, 1: #d8d8d8);
+@each $name, $color in $balance-index {
+    .balance-index-#{$name} {
+        background-color: $color !important;
+        font-weight: bold;
+        @if $name == 0 {
+            color: white !important;
+        }
+    }
+}
+
+.bg-leaf {
+    background-color: white !important;
+    border-bottom: unset !important;
+    font-weight: initial;
+}

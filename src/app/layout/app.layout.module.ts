@@ -38,6 +38,7 @@ import {MessagesModule} from "primeng/messages";
 import {ToastModule} from "primeng/toast";
 import {DirectivesModule} from "../core/directives/directives.module";
 import {CoreModule} from "../core/core.module";
+import {CommercesService} from "../modules/shops/service/commerces.service";
 
 @NgModule({
     declarations: [
@@ -82,6 +83,7 @@ import {CoreModule} from "../core/core.module";
     ],
     providers: [
         NotifyService,
+        CommercesService
     ]
 })
 export class AppLayoutModule {

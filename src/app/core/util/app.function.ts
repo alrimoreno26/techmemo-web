@@ -29,27 +29,31 @@ export function initializeAppFactory(httpClient: HttpClient,
             buildURL('/v1/users/authenticated'),
             {headers: {Authorization: `Bearer ${token}`}})
             .pipe(tap((user: any) => {
-                session.setTenantId(user.commerces[0].commerceId)
-                session.updateUser(user)
-                commercesService.getById(user.commerces[0].commerceId).subscribe((commerce: CommerceDto) => {
-                    let userConfig = {
-                        ripple: true,
-                        colorScheme: commerce.config ? commerce.config.colorSchemeType.toLowerCase() : 'light',
-                        menuMode: commerce.config ? commerce.config.menuType.toLowerCase() : 'slim',
-                        menuTheme: commerce.config ? commerce.config.componentTheme : 'darkgray',
-                        scale: commerce.config ? commerce.config.scale : 14,
-                        inputStyle: 'outlined',
-                        theme: commerce.config ? commerce.config.theme : 'blue',
-                    };
-                    const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
-                    const newHref = themeLink.getAttribute('href')!.replace(layout.config.theme, userConfig.theme);
+                if(user.commerces.length> 0){
+                    session.setTenantId(user.commerces[0].commerceId)
+                    session.updateUser(user)
+                    commercesService.getById(user.commerces[0].commerceId).subscribe((commerce: CommerceDto) => {
+                        session.setCurrentStore(commerce);
+                        let userConfig = {
+                            ripple: true,
+                            colorScheme: commerce.config ? commerce.config.colorSchemeType.toLowerCase() : 'light',
+                            menuMode: commerce.config ? commerce.config.menuType.toLowerCase() : 'slim',
+                            menuTheme: commerce.config ? commerce.config.componentTheme : 'darkgray',
+                            scale: commerce.config ? commerce.config.scale : 14,
+                            inputStyle: 'outlined',
+                            theme: commerce.config ? commerce.config.theme : 'blue',
+                        };
+                        const themeLink = <HTMLLinkElement>document.getElementById('theme-link');
+                        const newHref = themeLink.getAttribute('href')!.replace(layout.config.theme, userConfig.theme);
 
-                    layout.replaceThemeLink(newHref, 'theme-link', () => {
-                        layout.config.theme = userConfig.theme;
-                        layout.onConfigUpdate();
-                    });
-                    layout.userConfigVisuals(userConfig);
-                })
+                        layout.replaceThemeLink(newHref, 'theme-link', () => {
+                            layout.config.theme = userConfig.theme;
+                            layout.onConfigUpdate();
+                        });
+                        layout.userConfigVisuals(userConfig);
+                    })
+                }
+
 
             }));
     }

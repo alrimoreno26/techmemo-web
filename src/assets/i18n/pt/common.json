@@ -124,14 +124,25 @@
     "ADDITIONAL": "Adicional",
     "COMBO": "Combinação",
     "PAID": "Pago",
+    "UNPAID": "Sem pagamento",
     "IN_PAYMENT": "En Pagamento",
     "ACTIVE": "Ativa",
     "CANCELLED": "Cancelado",
     "MONEY": "DINHEIRO",
     "DEBIT": "DÉBITO",
     "CREDIT": "CREDITO",
+    "STORE": "Loja",
+    "DELIVERY": "Envio",
+    "KITCHEN": "Cocina",
     "PIX": "PIX",
     "OTHERS": "Outros pagamento",
+    "TYPING": "Em preparação",
+    "PENDING_APPROVAL": "Aprovação pendente",
+    "APPROVED": "Aprovado",
+    "CANCELED": "Cancelado",
+    "EXPENSES": "Gasto",
+    "BILLING": "Renda",
+    "RECEIVED": "Recebido",
     "CLOSED": "Fechado",
     "FINISHED": "Terminada",
     "networkError": {
@@ -197,10 +208,18 @@
         "tooltip": {
             "refresh": "Atualizar dados da tabela",
             "print": "Imprimir dados da tabela",
-            "create": "Criar um novo {{value}}",
-            "edit": "Editar {{value}}",
-            "delete": "Excluir {{value}}"
+            "create": "Criar um novo",
+            "edit": "Editar",
+            "delete": "Excluir"
         }
+    },
+    "addBankAccountModal": {
+        "bankLabel": "Banco",
+        "accountTypeLabel": "Tipo de Conta",
+        "agencyLabel": "Agência",
+        "accountNumberLabel": "Número da conta",
+        "bankISPBLabel": "ISPB do Banco",
+        "paymentAccountLabel": "Conta de Pagamento"
     },
     "login": {
         "email": "Email",

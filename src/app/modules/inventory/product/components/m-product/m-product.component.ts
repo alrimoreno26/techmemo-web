@@ -36,7 +36,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
 
     products: ProductFilterDto[] = []
     technicalSheetProducts: any[] = [];
-
     selectedEntity: any = {};
 
     suggestions: any[] = [];
@@ -52,7 +51,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         effect(() => {
             if (this.service.selectedEntity$() !== undefined) {
                 this.selectedEntity = this.service.selectedEntity$();
-                this.form.reset()
+                // this.form.reset()
                 this.initForm(this.selectedEntity);
             }
 
@@ -68,6 +67,10 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     ngOnInit(): void {
         const {data} = this.config;
         this.initForm(data);
+    }
+
+    close(){
+        this.ref.close()
     }
 
     fillSelected(data: any): any {
@@ -110,7 +113,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             }, [Validators.required]),
             cst: new FormControl<number>(data?.cst, [Validators.required]),
             description: new FormControl<string>(data?.description),
-            enable: new FormControl<boolean>(data?.enable),
+            enabled: new FormControl<boolean>(data?.enabled),
             name: new FormControl<string>(data?.name, [Validators.required]),
             ncm: new FormControl<number>(data?.ncm, [Validators.required]),
             quantityStockAlert: new FormControl<number>(data?.quantityStockAlert),
@@ -179,7 +182,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     override save(): void {
         const value: any = this.form.value;
         let additionalProducts: any[] = [];
-        let technicalSheetProducts: any[] = [];
         if (this.typeProduct === productType.COMBO) {
             this.selectedAdditional.forEach((ad: any) => {
                 additionalProducts.push({

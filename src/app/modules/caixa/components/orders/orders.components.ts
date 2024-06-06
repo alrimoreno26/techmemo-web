@@ -14,6 +14,8 @@ import {MCloseCaixaComponents} from "../modals/m-close-caixa/m-close-caixa.compo
 import {LayoutService} from "../../../../layout/service/app.layout.service";
 import {CashRegisterService} from "../../../shops/service/cash-register.service";
 import {CashRegisterOperationsService} from "../../../shops/service/cash-register-operations.service";
+import {MExtractionMoneyComponents} from "../modals/m-extraction-money/m-extraction-money.components";
+import {CashRegisterExtractionsService} from "../../../shops/service/cash-register-extractions.service";
 
 @Component({
     selector: 'app-orders',
@@ -30,6 +32,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     fromTable: any;
 
     caixaOpened: any;
+    actualStore: any;
 
     constructor(public service: CaixaService,
                 public tableService: StoreTablesServices,
@@ -37,21 +40,16 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
                 public layoutService: LayoutService,
                 private toastMessageService: ToastMessageService,
                 public cashRegisterOperations: CashRegisterOperationsService,
+                public cashRegisterExtractionsService: CashRegisterExtractionsService,
                 public session: SessionServices,
                 private cashRegisterService: CashRegisterService,
                 private datePipe: DatePipe) {
         super()
         this.tableService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
         this.cashRegisterService.existsAnyWorking();
+        this.actualStore = this.session.getCurrentStore().id;
         effect(() => {
-            this.cashRegisterService.opened$.subscribe((opened) => {
-                //if (opened)
-                    this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
-            })
-            this.cashRegisterOperations.opened$.subscribe((opened) => {
-                //if (opened)
-                    this.caixaOpened = session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE' ? true : opened;
-            })
+
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
                     let tableId = tableService.listEntities$()?.find(f => f.number.toString() === this.service.selectedEntity$()[0].tableNumber)?.id;
@@ -62,6 +60,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
             }
             if (tableService.listEntities$()) {
+                this.table_union= [];
                 this.free = tableService.listEntities$()?.filter(f => f.state === tableState.FREE).length || 0;
                 this.busy = tableService.listEntities$()?.filter(f => f.state === tableState.BUSY || f.state === tableState.BUSY_WITH_UNION).length || 0;
             }
@@ -70,6 +69,26 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     ngOnInit() {
+        this.cashRegisterService.opened$.subscribe((opened) => {
+            if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+                this.caixaOpened = true
+            } else if (opened)
+                this.caixaOpened = opened;
+        })
+        this.cashRegisterOperations.opened$.subscribe((opened) => {
+            if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+                this.caixaOpened = true
+            } else if (opened) {
+                this.caixaOpened = opened;
+            }
+        })
+        this.session.actualStore$.subscribe((store) => {
+            if (store.id !== this.actualStore) {
+                this.actualStore = store.id;
+                this.loadComanda()
+                this.loadMesas()
+            }
+        })
     }
 
     loadComanda() {
@@ -87,26 +106,32 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         if (event.target.classList.contains('p-checkbox-box') || event.target.classList.contains('p-checkbox-icon')) {
             event.stopPropagation();
         } else {
-            switch (table.state) {
-                case tableState.FREE:
-                    this.fromTable = table.id;
-                    this.service.openModalAddOrEdit();
-                    this.dialogService.open(MComandaComponents, {
-                        data: {id: table.id},
-                        width: '350px',
-                    })
-                    break;
-                case tableState.BUSY_WITH_UNION:
-                    this.router.navigate([`/comandas/table-union/${table.unionTableId}`]).then();
-                    break;
-                default:
-                    this.router.navigate([`/comandas/table/${table.id}`]).then();
-            }
-            if (table.state === tableState.FREE) {
+            if(!this.caixaOpened){
+                this.toastMessageService.showMessage("warn", 'INFO', 'Caixa fechado')
+                return;
+            } else{
+                switch (table.state) {
+                    case tableState.FREE:
+                        this.fromTable = table.id;
+                        this.service.openModalAddOrEdit();
+                        this.dialogService.open(MComandaComponents, {
+                            data: {id: table.id},
+                            width: '350px',
+                        })
+                        break;
+                    case tableState.BUSY_WITH_UNION:
+                        this.router.navigate([`/comandas/table-union/${table.unionTableId}`]).then();
+                        break;
+                    default:
+                        this.router.navigate([`/comandas/table/${table.id}`]).then();
+                }
+                if (table.state === tableState.FREE) {
 
-            } else {
+                } else {
 
+                }
             }
+
 
         }
 
@@ -150,7 +175,13 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     closeCaixa() {
         this.dialogService.open(MCloseCaixaComponents, {
             data: null,
-            width: '700px',
+        });
+    }
+    extractionCaixa() {
+        this.cashRegisterExtractionsService.openModalAddOrEdit();
+        this.dialogService.open(MExtractionMoneyComponents, {
+            data: null,
+            width: '300px',
         });
     }
 

@@ -69,6 +69,8 @@ import {LayoutService} from "../../layout/service/app.layout.service";
 import {reducer} from "../security/user/store/user.reducers";
 import {UserEffects} from "../security/user/store/user.effects";
 import {RoleEffects} from "../security/roles/store/role.effects";
+import {MExtractionMoneyComponents} from "./components/modals/m-extraction-money/m-extraction-money.components";
+import {StepsModule} from "primeng/steps";
 
 @NgModule({
     imports: [
@@ -93,7 +95,7 @@ import {RoleEffects} from "../security/roles/store/role.effects";
         StoreModule.forFeature('orders', ordersReducer),
         StoreModule.forFeature('product', reducerProduct),
         StoreModule.forFeature('user', reducer),
-        EffectsModule.forFeature([CaixaEffects, ProductEffects,UserEffects]),
+        EffectsModule.forFeature([CaixaEffects, ProductEffects, UserEffects]),
 
         MCancellationComponent,
         DividerModule,
@@ -116,6 +118,7 @@ import {RoleEffects} from "../security/roles/store/role.effects";
         InputSwitchModule,
         InputGroupModule,
         InputGroupAddonModule,
+        StepsModule,
     ],
     declarations: [
         CaixaComponent,
@@ -129,7 +132,8 @@ import {RoleEffects} from "../security/roles/store/role.effects";
         MCancelProductsComponents,
         AdditionalComponents,
         MOpenCaixaComponents,
-        MCloseCaixaComponents
+        MCloseCaixaComponents,
+        MExtractionMoneyComponents
     ],
     providers: [
         PaymentMethodService,

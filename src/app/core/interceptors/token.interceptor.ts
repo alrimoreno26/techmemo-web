@@ -24,7 +24,8 @@ export class TokenInterceptor implements HttpInterceptor {
         let requestToken = '';
         if (isLoggedIn && isApiUrl && !isNotRefresh) {
             const routePattern = /^(?:.*\/)*orders\/([a-zA-Z0-9\-]+)\/products$/;
-            requestToken = (routePattern.test(request.url) && request.method === 'DELETE') ? this.sessionService.getDeleteToken() : this.sessionService.getAccessToken()
+            const extractionPattern = /^(?:.*\/)*cash-register-extractions$/;
+            requestToken = ((routePattern.test(request.url) && request.method === 'DELETE') || (extractionPattern.test(request.url) && request.method === 'POST')) ? this.sessionService.getDeleteToken() : this.sessionService.getAccessToken()
             request = request.clone({
                 setHeaders: {
                     Authorization: `Bearer ${requestToken}`,
@@ -34,11 +35,16 @@ export class TokenInterceptor implements HttpInterceptor {
         }
         if (isNotRefresh) {
             requestToken = this.sessionService.getRefreshToken().token;
-            request = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${requestToken}`
-                }
-            });
+            if(requestToken === "") {
+                this.sessionService.clearSession()
+            } else {
+                request = request.clone({
+                    setHeaders: {
+                        Authorization: `Bearer ${requestToken}`
+                    }
+                });
+            }
+
         }
         return next.handle(request);
     }

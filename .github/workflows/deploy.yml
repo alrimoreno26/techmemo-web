@@ -71,6 +71,7 @@ jobs:
     # Trabajo de despliegue para ambas ramas
     deploy:
         runs-on: ubuntu-latest
+        if: github.ref == 'refs/heads/main'
 #        needs:
 #            - job_for_main
         steps:

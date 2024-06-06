@@ -25,18 +25,6 @@
                     <div class="container-wrapper">
                         <ng-template [ngIf]="selectedItems=== 'dados'">
                             <div class="top">
-                                <div class="flex justify-content-between">
-                                    <div class="flex align-items-center gap-3">
-                                        <h4 class="text-center mb-0">Configurações de dados da Loja</h4>
-                                        <p-dropdown [options]="commercesService.listEntities$()"
-                                                    (onChange)="setNewCommerce()"
-                                                    [(ngModel)]="selectedStore" [ngModelOptions]="{standalone: true}" optionLabel="name"
-                                                    placeholder="Selecione sua loja"></p-dropdown>
-                                    </div>
-
-                                    <p-button [disabled]="!onlineStore" (onClick)="goto()"
-                                              label="Minha loja"></p-button>
-                                </div>
                                 <div class="grid">
                                     <div class="col-6">
                                         <div class="grid">
@@ -275,7 +263,7 @@
                                                         <img alt="Card" src="assets/layout/images/elgin.jpeg"
                                                              [height]="150"/>
                                                     </ng-template>
-                                                    <p-badge value="{{printer.area}}"
+                                                    <p-badge value="{{printer.area | translate}}"
                                                              [severity]="printer.area === 'POS' ? 'success' : 'warning'"></p-badge>
                                                     <div class="align-items-center flex flex-auto gap-3 pt-2">
                                                         <label class="block font-bold">Activa</label>
@@ -355,6 +343,15 @@
                                     <ng-container *ngTemplateOutlet="blank;"></ng-container>
                                 }
 
+                            </div>
+                        </ng-template>
+                        <ng-template [ngIf]="selectedItems=== 'bank'">
+                            <div class="top">
+                                <div class="flex justify-content-between">
+                                    <h4 class="text-center">Configurações das contas</h4>
+                                    <p-button label="Nova"
+                                              (onClick)="addEditContaCorrente()"></p-button>
+                                </div>
                             </div>
                         </ng-template>
 

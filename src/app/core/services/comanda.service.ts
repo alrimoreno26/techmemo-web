@@ -7,6 +7,7 @@ import {Observable} from "rxjs";
 import {map} from "lodash";
 import {CreatePaymentTransactionTO} from "../models/orders";
 import {DeleteOrderProductDto} from "../models/products";
+import {updateProductsOrders} from "../../modules/caixa/store/caixa.actions";
 
 @Injectable({
     providedIn: 'root'
@@ -34,6 +35,12 @@ export class OrdersService extends AbstractService<any> {
 
     addProductsOrders(id: string, params: any): Observable<any> {
         return this.httpClient.post<any>(`${this.basePath}/${id}/products`, params)
+    }
+    updateProductsOrders(id: string, params: any): Observable<any> {
+        return this.httpClient.patch<any>(`${this.basePath}/products/${id}`, params)
+    }
+    getProductOrder(id: string): Observable<any> {
+        return this.httpClient.get<any>(`${this.basePath}/products/${id}`)
     }
 
     deleteProductsOrders(id: string, entity: DeleteOrderProductDto): Observable<any> {
@@ -66,5 +73,14 @@ export class OrdersService extends AbstractService<any> {
 
     changeFieldState(id: string, params: any) {
         return this.httpClient.patch<any>(`${this.basePath}/${id}`, params)
+    }
+
+    pendingPrepare(queryParams: any) {
+        const params: HttpParams = new HttpParams({fromObject: queryParams});
+        return this.httpClient.get<any>(`${this.basePath}/pendings?${params}`)
+    }
+
+    sentDataToKitchen(id: string) {
+        return this.httpClient.post<any>(`${this.basePath}/${id}/print`,{})
     }
 }

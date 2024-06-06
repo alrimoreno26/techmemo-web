@@ -1,5 +1,56 @@
 <div class="card m-3">
-    <c-data-table [action]="true" [exportBtn]="false"
+    <div class="flex justify-content-between pb-2">
+        <div class="align-items-center flex flex-auto gap-3 py-3">
+            <label class="block font-bold">Vencimiento</label>
+            <p-calendar styleClass="w-20rem" class="w-20rem" [(ngModel)]="rangeDates" selectionMode="range"
+                        dateFormat="dd/mm/yy"
+                        (onClose)="applyFilter()"
+                        [readonlyInput]="true"></p-calendar>
+        </div>
+        <div>
+            <p-panel>
+                <ng-template pTemplate="header">
+                    <span class="mb-0 font-bold">Estado</span>
+                </ng-template>
+                <div class="flex flex-wrap gap-3">
+                    <div class="flex align-items-center">
+                        <p-radioButton name="todas" value="ALL" [(ngModel)]="type" inputId="all"
+                                       (onClick)="changeFilterType()"></p-radioButton>
+                        <label class="ml-2">Todas</label>
+                    </div>
+                    <div class="flex align-items-center">
+                        <p-radioButton name="todas" value="{{FinancialTransactionsEnum.TYPING}}" [(ngModel)]="type" inputId="all"
+                                       (onClick)="changeFilterType()"></p-radioButton>
+                        <label class="ml-2">{{ 'TYPING' | translate }}</label>
+                    </div>
+                    <div class="flex align-items-center">
+                        <p-radioButton name="abertas" value="{{FinancialTransactionsEnum.PENDING_APPROVAL}}" [(ngModel)]="type" inputId="abertas"
+                                       (onClick)="changeFilterType()"></p-radioButton>
+                        <label class="ml-2">{{ 'PENDING_APPROVAL' | translate }}</label>
+                    </div>
+                    <div class="flex align-items-center">
+                        <p-radioButton name="quitadas" value="{{FinancialTransactionsEnum.APPROVED}}" [(ngModel)]="type" inputId="quitadas"
+                                       (onClick)="changeFilterType()"></p-radioButton>
+                        <label class="ml-2">{{ 'APPROVED' | translate }}</label>
+                    </div>
+                    <div class="flex align-items-center">
+                        <p-radioButton name="provisao" value="{{FinancialTransactionsEnum.RECEIVED}}" [(ngModel)]="type" inputId="provisao"
+                                       (onClick)="changeFilterType()"></p-radioButton>
+                        <label class="ml-2">{{ 'RECEIVED' | translate }}</label>
+                    </div>
+                    <div class="flex align-items-center">
+                        <p-radioButton name="provisao" value="{{FinancialTransactionsEnum.CANCELED}}" [(ngModel)]="type" inputId="provisao"
+                                       (onClick)="changeFilterType()"></p-radioButton>
+                        <label class="ml-2">{{ 'CANCELED' | translate }}</label>
+                    </div>
+                </div>
+            </p-panel>
+        </div>
+    </div>
+    <c-data-table [action]="true" [exportBtn]="false" (edit)="customEdit($event)" (create)="customCrear($event)"
                   [headers]="headersTable" [service]="service" [showCreate]="true">
+        <ng-template let-data tableRow="state">
+            <p-badge [value]="data.state | translate" [severity]="data.state | severity"></p-badge>
+        </ng-template>
     </c-data-table>
 </div>

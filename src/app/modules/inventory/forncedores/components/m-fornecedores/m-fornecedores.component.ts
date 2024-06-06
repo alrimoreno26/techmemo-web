@@ -11,6 +11,7 @@ import {AddressDTO, SupplierDTO, supplierType} from "../../../../../core/models/
 import {cellPhone} from "../../../../../core/validators/cell.validator";
 import {onlyDigits} from "../../../../../core/util";
 import {cloneDeep} from "lodash";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     templateUrl: './m-fornecedores.component.html',
@@ -32,17 +33,21 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
 
     supplier: SupplierDTO;
 
-    constructor(private fornecedoresservice: SupplierService,
+    constructor(public fornecedoresservice: SupplierService,
                 private cepValidateService: CepValidateService,
                 private cdRef: ChangeDetectorRef,
+                private dialogRegistryService: DialogRegistryService,
                 private fb: FormBuilder,
                 private cnpjService: CNPJService,) {
         super(fornecedoresservice);
+        this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
             if (this.fornecedoresservice.selectedEntity$() !== undefined) {
-                this.supplier = this.service.selectedEntity$();
+                if (Object.keys(this.service.selectedEntity$()).includes('products')) {
+                    this.products = this.service.selectedEntity$().products;
+                }
                 this.form.reset()
-                this.initForm(this.supplier);
+                this.initForm(this.service.selectedEntity$());
             }
 
         })
@@ -54,6 +59,16 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
     }
 
     initForm(data: any): void {
+        if (data !== undefined && Object.keys(data).includes('products')) {
+            this.supplier = data;
+        } else {
+            this.supplier = {
+                ...data,
+                products: []
+            };
+        }
+
+        console.log(this.supplier)
         let type = supplierType.COMPANY;
         let cep = '';
 
@@ -80,9 +95,9 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
                 uf: [{value: data?.address?.uf, disabled: true}, Validators.required],
             }),
             document: new FormControl<string>(data?.document, Validators.required),
-            fantasyName: new FormControl<string>(data?.fantasyName, Validators.required),
-            socialReason: new FormControl<string>({
-                value: data?.socialReason,
+            lastName: new FormControl<string>(data?.lastName, Validators.required),
+            name: new FormControl<string>({
+                value: data?.name,
                 disabled: true
             }, Validators.required),
             email: new FormControl<string>(data?.email, [Validators.required, Validators.email]),
@@ -101,18 +116,9 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
     private updateFormBasedOnType(type: supplierType): void {
         if (type === supplierType.COMPANY) {
             this.showCompany = true;
-            this.form.removeControl('name');
-            this.form.removeControl('lastName');
             this.form.removeControl('birthdate');
-            this.form.addControl('fantasyName', this.fb.control(this.config.data?.fantasyName, Validators.required));
-            this.form.addControl('socialReason', this.fb.control({value: this.config.data?.socialReason,disabled: true
-        }, Validators.required));
         } else if (supplierType.PERSON) {
             this.showCompany = false;
-            this.form.removeControl('fantasyName');
-            this.form.removeControl('socialReason');
-            this.form.addControl('name', this.fb.control(this.config.data?.name, Validators.required));
-            this.form.addControl('lastName', this.fb.control(this.config.data?.lastName, Validators.required));
             this.form.addControl('birthdate', this.fb.control(this.config.data?.birthdate, Validators.required));
         }
     }
@@ -167,15 +173,15 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
     }
 
     fillCNPJInformation(cnpjInformation: any) {
-        this.form.get('fantasyName')?.patchValue(cnpjInformation.nome_fantasia);
-        this.form.get('socialReason')?.patchValue(cnpjInformation.razao_social);
+        this.form.get('lastName')?.patchValue(cnpjInformation.nome_fantasia);
+        this.form.get('name')?.patchValue(cnpjInformation.razao_social);
     }
 
     override save(): void {
         const value: any = this.form.value;
         value.document = onlyDigits(this.form.get('document')?.value)
         value.phone = onlyDigits(this.form.get('phone')?.value);
-        value.socialReason = this.form.get('socialReason')?.value;
+        value.name = this.form.get('name')?.value;
         value.address = {
             cep: (this.form.get('address') as FormGroup).get('cep')?.value,
             complement: (this.form.get('address') as FormGroup).get('complement')?.value,

@@ -11,3 +11,11 @@ export enum PaymentTypeEnum {
     PIX = 'CREDIT',
     OTHERS = 'CREDIT',
 }
+
+export enum FinancialTransactionsEnum {
+    TYPING = 'TYPING',
+    PENDING_APPROVAL = 'PENDING_APPROVAL',
+    APPROVED = 'APPROVED',
+    RECEIVED = 'RECEIVED',
+    CANCELED = 'CANCELED'
+}

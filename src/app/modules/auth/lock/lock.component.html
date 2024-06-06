@@ -15,7 +15,7 @@
                                    inputStyleClass="w-20rem"></p-password>
                 </span>
             </span>
-                <button pButton pRipple [label]="'login.singIn' | translate" type="submit" class="w-20rem"></button>
+                <button [disabled]="lockForm.invalid" pButton pRipple [label]="'login.singIn' | translate" type="submit" class="w-20rem"></button>
             </div>
         </form>
         <p class="text-color-secondary font-semibold"></p>
