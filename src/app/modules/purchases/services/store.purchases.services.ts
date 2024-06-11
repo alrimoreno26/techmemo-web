@@ -39,7 +39,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     ));
 
     createInstallmentsByFinancialTransactions(data: any) {
-        if (data.originalPaymentInstallments === undefined) {
+        if (data.originalPaymentInstallments === undefined || data.originalPaymentInstallments.paymentInstallments.length === 0) {
             this.purchasesService.createInstallmentsByFinancialTransactions(data).pipe(
                 tapResponse({
                     next: (result) => {
