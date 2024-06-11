@@ -176,11 +176,9 @@ export class InstallmentsComponent implements OnInit {
                 provision: this.form.get('provision')?.value,
                 purchaseCode: this.form.get('purchaseCode')?.value,
                 supplierId: this.form.get('supplierId')?.value,
-
                 editing: !!this.config
             }
 
-            console.log(bills)
             this.storeService.createInstallmentsByFinancialTransactions(bills);
             //this.confirmInstallment.next(bills);
         }

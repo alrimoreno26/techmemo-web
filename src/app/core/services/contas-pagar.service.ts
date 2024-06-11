@@ -28,8 +28,11 @@ export class ContasPagarService extends AbstractService<any> {
         return this.client.get<BillSummaryDto>(buildURL('/v1/bill-payment-installments/summary'),{context: silentIt()});
     }
 
-    saveInstallmentsBill(id:string, data: any): Observable<any> {
+    updatedInstallmentsBill(id:string, data: any): Observable<any> {
         return this.client.patch(buildURL(`/v1/bill-payment-installments/${id}`), data);
+    }
+    saveInstallmentsBill(data: any): Observable<any> {
+        return this.client.post(buildURL(`/v1/bill-payment-installments`), data);
     }
 
     deleteInstallmentsBill(id:string): Observable<any> {

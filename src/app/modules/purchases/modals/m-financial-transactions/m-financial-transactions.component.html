@@ -172,7 +172,7 @@
        <p-button label="Salvar Pagamento" (onClick)="savePayment()"/>
     }
 
-    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="ref.close()"
+    <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="closingModal()"
             icon="mdi mdi-close"></button>
     @if (this.stepActive === 0) {
         <p-button [disabled]="form.invalid && products.length === 0" label="Continuar a Pagamento"

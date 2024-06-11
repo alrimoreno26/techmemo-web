@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Signal} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {OrdersTO} from "../../../core/models/orders";
 import {PurchasesService} from "../../../core/services/purchases.service";
@@ -10,6 +10,7 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {StoreContasPagarServices} from "./store.contas-pagar.services";
 import {LightsDTO} from "../../../core/models/utils";
 import {FinancialTransactionsServices} from "./financial-transactions.services";
+import {ContasPagarService} from "../../../core/services/contas-pagar.service";
 
 @Injectable({providedIn: 'platform'})
 export class StorePurchasesServices extends StoreComponentService<any> {
@@ -17,10 +18,19 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     override serverSide = true;
     override lazyLoadOnInit = true;
 
-    constructor(private purchasesService: PurchasesService, private storeContasPagarServices: StoreContasPagarServices, private financialTransactionsServices: FinancialTransactionsServices) {
-        const defaultEntity: EntityState<any> =
+    billId$: Signal<any> = this.selectSignal(state => state.billId);
+
+    constructor(private purchasesService: PurchasesService,
+                private storeContasPagarServices: StoreContasPagarServices,
+                private contasPagarService: ContasPagarService) {
+        const defaultEntity: EntityState<any>& { billId?: any } =
             {entities: [], total: 0, dialog: false, loaded: false};
         super(purchasesService, defaultEntity);
+    }
+
+    resetState(){
+        this.setSelected(null);
+        this.patchState({billId: null, dialog: false, selected: null})
     }
 
     override loadAll = this.effect<any>((lazy$: Observable<{ lazy: LazyLoadData }>) => lazy$.pipe(
@@ -39,10 +49,11 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     ));
 
     createInstallmentsByFinancialTransactions(data: any) {
-        if (data.originalPaymentInstallments === undefined || data.originalPaymentInstallments.paymentInstallments.length === 0) {
+        if (data.originalPaymentInstallments === undefined) {
             this.purchasesService.createInstallmentsByFinancialTransactions(data).pipe(
                 tapResponse({
                     next: (result) => {
+                        this.patchState({billId: result.billId});
                         this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
                     },
                     error: (err: HttpErrorResponse) => this.setError(err.error)
@@ -51,17 +62,12 @@ export class StorePurchasesServices extends StoreComponentService<any> {
         } else {
             this.purchasesService.deleteAllInstallmentsByFinancialTransactions(data.billId).pipe(
                 switchMap(() => {
-                    const bills = {
-                        classifierId: data.classifierId,
-                        consecutiveDaysPaymentInstallments: data.consecutiveDaysPaymentInstallments,
-                        description: data.description,
-                        financialTransactionId: data.financialTransactionId,
-                        paymentInstallments: data.paymentInstallments,
-                        paymentStructureId: data.paymentStructureId,
-                        provision: data.provision,
-                        supplierId: data.supplierId,
+                    const installments ={
+                        billId: data.id,
+                        installments: data.paymentInstallments
                     }
-                    return this.purchasesService.createInstallmentsByFinancialTransactions(bills).pipe(
+                    this.patchState({billId: data.billId});
+                    return this.contasPagarService.saveInstallmentsBill(installments).pipe(
                         tapResponse({
                             next: (result) => {
                                 this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
@@ -72,6 +78,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
                 })).subscribe();
         }
     }
+
 
     getById(id:string) {
         this.purchasesService.findOneById(id).pipe(
@@ -89,7 +96,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             })
         ).subscribe(response => {
             this.setSelected(response);
-            this.patchState({dialog: true, selected: response});
+            this.patchState({dialog: true, selected: response, billId: response.billId});
         });
     }
 }

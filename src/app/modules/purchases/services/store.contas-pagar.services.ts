@@ -109,14 +109,14 @@ export class StoreContasPagarServices extends StoreComponentService<any> {
     }
 
     saveInstallmentsBill(contaId: any, id: string, data: any) {
-        this.contasPagarService.saveInstallmentsBill(id, data).subscribe(() => {
+        this.contasPagarService.updatedInstallmentsBill(id, data).subscribe(() => {
             this.patchState({dialog: false});
             this.loadInstallmentsBill({billId: contaId, type: 'ALL', pageNumber: 0, pageSize: 50})
         })
     }
 
     saveInstallmentsBillBackground(contaId: any, id: string, data: any) {
-        this.contasPagarService.saveInstallmentsBill(id, data).subscribe(() => {
+        this.contasPagarService.updatedInstallmentsBill(id, data).subscribe(() => {
             this.patchState({dialog: false});
             // this.loadInstallmentsBill({billId: contaId, type: 'ALL', pageNumber: 0, pageSize: 50})
         })

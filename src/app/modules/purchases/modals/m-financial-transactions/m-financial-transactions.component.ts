@@ -76,19 +76,20 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             if (storeFinancialTransactions.goToPay$()) {
                 this.data = {
                     ...storeFinancialTransactions.goToPay$(),
-                    billsId: this.storeService.selectedEntity$().billId,
+                    billsId: storeFinancialTransactions.goToPay$().billId,
                     classifierId: this.form.get('classifierId')?.value.id,
                     supplierId: this.form.get('supplierId')?.value.id
                 };
+                this.form.get('id')?.setValue(storeFinancialTransactions.goToPay$().id);
                 this.stepActive++;
+            }
+            if(this.storeFinancialTransactions.approvedEnd$()){
+            this.closingModal()
             }
         });
         effect(() => {
             if (this.storeService.selectedEntity$() !== undefined) {
                 this.editing = true;
-                // if(this.storeService.selectedEntity$().createdFromBill){
-                //     console.log('entrou')
-                // }
                 this.initForm(this.storeService.selectedEntity$());
             }
         });
@@ -104,6 +105,15 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         });
         this.initForm(data);
     }
+    override ngOnDestroy() {
+        this.storeService.resetState();
+    }
+
+    closingModal(){
+        this.ref.close()
+        this.storeService.resetState();
+        this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+    }
 
     set products(products: any[]) {
         this.productsSubject.next(products);
@@ -114,6 +124,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     initForm(data: any) {
+        console.log(data)
         this.form = new FormGroup({
             id: new FormControl(data?.id),
             supplierId: new FormControl(data?.supplier, Validators.required),
@@ -279,7 +290,10 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.child.paymentInstallments.length === 0) {
             this.toastMessageService.showMessage("error", 'ERROR', 'Deve cadastrar pelo menos 1 parcela')
         } else {
-            this.child.save();
+            const send = {
+              state: 'APPROVED'
+            }
+            this.storeFinancialTransactions.changeStateFinancialTransaction(send, this.form.get('id')?.value);
         }
     }
 
