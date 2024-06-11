@@ -20,8 +20,8 @@ export class AdditionalComponents implements OnInit, OnChanges {
 
     subscriptions: Subscription[] = [];
 
-    additionals: LazyResultData<any> = {content: [], totalPages: 0, totalElements: 0};
-    combos: LazyResultData<any> = {content: [], totalPages: 0, totalElements: 0};
+    additionals: LazyResultData<any> = {content: [], page:{totalElements:0, totalPages: 0, number: 0, size:0}};
+    combos: LazyResultData<any> = {content: [], page:{totalElements:0, totalPages: 0, number: 0, size:0}};
     additionalsParams = {
         pageNumber: 0,
         pageSize: 20,

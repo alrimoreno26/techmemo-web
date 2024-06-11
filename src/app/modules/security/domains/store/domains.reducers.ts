@@ -36,10 +36,10 @@ export const initialState: State = adapter.getInitialState({
 export const domainsReducer = createReducer<State>(
   initialState,
   on(fromDomainsActions.loadResolverSuccess, (state, {data, role}) => {
-    return adapter.setAll(data.content, {...state, loaded: true, roleList: role, total: data.totalElements});
+    return adapter.setAll(data.content, {...state, loaded: true, roleList: role, total: data.page.totalElements});
   }),
   on(fromDomainsActions.loadDomainsSuccess, (state, {data}) => {
-    return adapter.setAll(data.content, {...state, total: data.totalElements});
+    return adapter.setAll(data.content, {...state, total: data.page.totalElements});
   }),
   on(fromDomainsActions.domainsFailRequest, (state, {error}) => {
     return {...state, error};

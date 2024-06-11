@@ -24,7 +24,7 @@ export class BaseDragServices<T> extends BaseServices<T> implements LoadAllReque
     if (data) {
       const {count, page} = data;
       this.pageSize = count ? count : 25;
-      this.pageRecord = page ? page : 0;
+      this.pageRecord = page ? page.number : 0;
     }
   }
 

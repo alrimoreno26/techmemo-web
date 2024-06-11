@@ -58,7 +58,6 @@ export interface TemplateSlot {
 }
 
 export interface LazyLoadData {
-    page?: number;
     count?: number;
     first?: number;
     filter?: string;
@@ -69,12 +68,22 @@ export interface LazyLoadData {
     sort?: string;
     direction?: any;
     type?: any;
+    page?: {
+        size: number,
+        number: number,
+        totalElements: number,
+        totalPages: number
+    }
 }
 
 export interface LazyResultData<T> {
     content: Array<T>;
-    totalElements: number;
-    totalPages: number;
+    page: {
+        size: number,
+        number: number,
+        totalElements: number,
+        totalPages: number
+    }
 }
 
 export interface RowReorder extends TableRowReorderEvent {

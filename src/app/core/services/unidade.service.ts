@@ -20,8 +20,6 @@ export class UnidadeService extends AbstractService<any> {
         const params = map(data, (e, k) => (e !== undefined) ?
             Array.isArray(e) ? k + '=' + e.join(',') : k + '=' + e : null)
             .filter(f => f).join('&');
-        // @ts-ignore
-        //return of<LazyResultData<any>>({content: [], totalElements: 0, totalPages: 0});
         return this.httpClient.get<LazyResultData<UnitsMeasurementsDTO>>(`${this.basePath}?${params}`);
     }
 }

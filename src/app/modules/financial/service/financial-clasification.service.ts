@@ -30,9 +30,9 @@ export class FinancialClasificationService extends StoreComponentService<Classif
             return this.services.findAllPaginate(lazy).pipe(
                 tapResponse({
                     next: (result) => {
-                        const {content, totalElements} = result;
+                        const {content, page} = result;
                         this.setAll(content);
-                        this.patchState({total: totalElements});
+                        this.patchState({total: page.totalElements});
                     },
                     error: (err: HttpErrorResponse) => this.setError(err.error)
                 })
@@ -45,11 +45,4 @@ export class FinancialClasificationService extends StoreComponentService<Classif
             this.patchState({autocomplete: data.content});
         });
     }
-
-    // override finalizeLoad = () => {
-    //     const {content, totalElements} = this.state().entities;
-    //     this.setAll(content);
-    //     this.patchState({total: totalElements});
-    // }
-
 }

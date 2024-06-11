@@ -33,7 +33,7 @@ export const initialState: State = adapter.getInitialState({
 export const UnitsMeasurementsReducer = createReducer<State>(
     initialState,
     on(fromUnitActions.loadUnitListSuccess, (state, {data}) => {
-        return adapter.setAll(data.content, {...state, loaded: true, totalElements: data.totalElements});
+        return adapter.setAll(data.content, {...state, loaded: true, totalElements: data.page.totalElements});
     }),
     on(fromUnitActions.createUnitSuccess, (state, {entity}) => {
         return adapter.addOne(entity, {...state, dialog: false});

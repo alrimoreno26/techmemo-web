@@ -43,14 +43,14 @@ export const userReducer = createReducer<State>(
             ...state,
             loaded: true,
             roleList: role.content,
-            total: data.totalElements
+            total: data.page.totalElements
         });
     }),
     on(fromUserActions.loadUserSuccess, (state, {data}) => {
-        return adapter.setAll(data.content, {...state, total: data.totalElements});
+        return adapter.setAll(data.content, {...state, total: data.page.totalElements});
     }),
     on(fromUserActions.loadUserBasicSuccess, (state, {data}) => {
-        return {...state, total: data.totalElements, userBasic: data.content};
+        return {...state, total: data.page.totalElements, userBasic: data.content};
     }),
     on(fromUserActions.userFailRequest, (state, {error}) => {
         return {...state, error};

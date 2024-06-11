@@ -40,7 +40,7 @@ export const fornecedoresReducer = createReducer<State>(
             ...element,
             identification: element.type === 'COMPANY' ? element.name : element.name + ' ' + element.lastName
         }));
-        return adapter.setAll(dataWithName, {...state, loaded: true, totalElements: data.totalElements});
+        return adapter.setAll(dataWithName, {...state, loaded: true, totalElements: data.page.totalElements});
     }),
     on(fromSupplierListActions.autocompleteSupplierListSuccess, (state, {data}) => {
         const dataWithName = data.content.map((element) => ({

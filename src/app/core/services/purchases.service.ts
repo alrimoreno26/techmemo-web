@@ -16,4 +16,8 @@ export class PurchasesService extends AbstractService<any> {
     createInstallmentsByFinancialTransactions(params: any): Observable<any> {
         return this.httpClient.post<any>(buildURL('/v1/bills'), params);
     }
+
+    deleteAllInstallmentsByFinancialTransactions(id: any): Observable<any> {
+        return this.httpClient.delete<any>(buildURL(`/v1/bills/${id}/installments`));
+    }
 }

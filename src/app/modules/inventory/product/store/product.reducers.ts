@@ -42,7 +42,7 @@ export const initialState: State = adapter.getInitialState({
 export const productReducer = createReducer<State>(
     initialState,
     on(fromProductListActions.loadProductListSuccess, (state, {data}) => {
-        return adapter.setAll(data.content, {...state, loaded: true, totalElements: data.totalElements});
+        return adapter.setAll(data.content, {...state, loaded: true, totalElements: data.page.totalElements});
     }),
     on(fromProductListActions.autocompleteSearchSuccess, (state, {data}) => {
         return {...state, autocomplete: data.content};

@@ -7,6 +7,7 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {CreateBillPaymentInstallmentDto} from "../../../../core/models/bills";
 import {formatDate} from "../../../../core/util";
 import {FinancialTransactionsServices} from "../../services/financial-transactions.services";
+import {StorePurchasesServices} from "../../services/store.purchases.services";
 
 @Component({
     selector: 'c-installments',
@@ -15,6 +16,7 @@ import {FinancialTransactionsServices} from "../../services/financial-transactio
         ::ng-deep .p-dialog .p-dialog-content {
             padding: 0 1.5rem 0 1.5rem;
         }
+
         ::ng-deep .p-datatable-wrapper {
             min-height: 300px;
             max-height: 500px;
@@ -29,11 +31,12 @@ export class InstallmentsComponent implements OnInit {
 
     selected: any;
 
+    consecutiveDaysPaymentInstallments: number = 1;
     purchaseValue: number = 0;
     description = '';
     parcelas = false;
     qParcelas = 0;
-    mParcelas: boolean = false;
+    mParcelas: boolean = true;
     totalPaymentsInstall: number = 0;
 
     rangeDates: Date = new Date()
@@ -43,7 +46,7 @@ export class InstallmentsComponent implements OnInit {
     clonedProducts: { [s: string]: any } = {};
 
 
-    constructor( public paymentMethodService: PaymentMethodService) {
+    constructor(public paymentMethodService: PaymentMethodService, private storeService: StorePurchasesServices) {
         this.paymentMethodService.loadLight()
     }
 
@@ -60,9 +63,9 @@ export class InstallmentsComponent implements OnInit {
             supplierId: new FormControl<string>(this.config?.supplierId, Validators.required)
         });
         this.paymentInstallments = this.config?.paymentInstallments?.paymentInstallments ?? [];
-        this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate+ 'T00:00') : this.rangeDates = new Date();
+        this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate + 'T00:00') : this.rangeDates = new Date();
         this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
-        this.qParcelas > 0 ? this.mParcelas = true : this.parcelas = false;
+        // this.qParcelas > 0 ? this.mParcelas = true : this.parcelas = false;
         this.reduceTotalPaymentsInstall();
     }
 
@@ -82,7 +85,7 @@ export class InstallmentsComponent implements OnInit {
             for (let i = 0; i < this.qParcelas; i++) {
 
                 if (!this.form.get('monthlyPaymentInstallments')?.value) {
-                    currentDate.setDate(currentDate.getDate() + 1);
+                    currentDate.setDate(currentDate.getDate() + this.consecutiveDaysPaymentInstallments);
                 } else {
                     if (i !== 0) {
                         currentDate.setMonth(currentDate.getMonth() + 1);
@@ -106,11 +109,13 @@ export class InstallmentsComponent implements OnInit {
             })
         }
         this.reduceTotalPaymentsInstall();
+        this.save()
     }
 
 
     addParcela() {
         const parcela: any = {
+            code: this.form.get('purchaseCode')?.value,
             value: 0,
             expirationDate: new Date(),
             description: '',
@@ -161,6 +166,9 @@ export class InstallmentsComponent implements OnInit {
                 description: this.form.get('description')?.value,
                 financialTransactionId: this.config?.id,
                 monthlyPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value,
+                consecutiveDaysPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value ? null : this.consecutiveDaysPaymentInstallments,
+                originalPaymentInstallments: this.config?.paymentInstallments,
+                billId: this.config?.billId,
                 paymentInstallments: this.paymentInstallments.map((item: CreateBillPaymentInstallmentDto) => {
                     return {...item, expirationDate: formatDate(new Date(item.expirationDate))}
                 }),
@@ -168,10 +176,13 @@ export class InstallmentsComponent implements OnInit {
                 provision: this.form.get('provision')?.value,
                 purchaseCode: this.form.get('purchaseCode')?.value,
                 supplierId: this.form.get('supplierId')?.value,
+
                 editing: !!this.config
             }
 
-            this.confirmInstallment.next(bills);
+            console.log(bills)
+            this.storeService.createInstallmentsByFinancialTransactions(bills);
+            //this.confirmInstallment.next(bills);
         }
     }
 }

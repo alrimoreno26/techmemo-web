@@ -35,15 +35,15 @@
                         <textarea rows="3" cols="53" [autoResize]="true" formControlName="description"
                                   pInputTextarea></textarea>
                     </div>
-                    <div class="align-items-center flex flex-auto gap-3 pb-3">
-                        <label class="block font-bold w-full">Multiples Parcelas</label>
-                        <p-inputSwitch [(ngModel)]="mParcelas" [ngModelOptions]="{standalone: true}"></p-inputSwitch>
-                    </div>
+<!--                    <div class="align-items-center flex flex-auto gap-3 pb-3">-->
+<!--                        <label class="block font-bold w-full">Multiples Parcelas</label>-->
+<!--                        <p-inputSwitch [(ngModel)]="mParcelas" [ngModelOptions]="{standalone: true}"></p-inputSwitch>-->
+<!--                    </div>-->
 
                     @if (mParcelas) {
                         <div class="align-items-center flex flex-auto gap-3 pb-3">
                             <label class="block font-bold w-full"># Parcelas</label>
-                            <p-inputNumber [(ngModel)]="qParcelas" [ngModelOptions]="{standalone: true}"
+                            <p-inputNumber [(ngModel)]="qParcelas" [ngModelOptions]="{standalone: true}" [max]="36"
                                            inputStyleClass="w-5rem"></p-inputNumber>
                         </div>
                         <div class="align-items-center flex flex-auto gap-3 justify-content-between  pb-3">
@@ -61,6 +61,13 @@
                                 </div>
                             </div>
                         </div>
+                        @if(!getFC('monthlyPaymentInstallments')){
+                            <div class="align-items-center flex flex-auto gap-3 pb-3">
+                                <label class="block font-bold w-full">Qtd Dias</label>
+                                <p-inputNumber [(ngModel)]="consecutiveDaysPaymentInstallments" [ngModelOptions]="{standalone: true}"
+                                               inputStyleClass="w-5rem"></p-inputNumber>
+                            </div>
+                        }
                         <div class="align-items-center flex flex-auto gap-3">
                             <label class="block font-bold w-full">Vencimiento 1 Parcela</label>
                             <p-calendar [(ngModel)]="rangeDates"
@@ -72,6 +79,7 @@
                         <div class="align-items-center flex flex-auto gap-3 pt-3">
                             <button pButton pRipple class="p-button-info flex-1 p-button-outlined"
                                     label="Gerar Parcelas"
+                                    [disabled]="form.invalid"
                                     (click)="gerarParcelas()"
                                     icon="mdi mdi-cash-plus"></button>
                         </div>
@@ -107,17 +115,7 @@
             <ng-template pTemplate="body" let-product let-editing="editing" let-ri="rowIndex">
                 <tr [pEditableRow]="product">
                     <td>
-                        <p-cellEditor>
-                            <ng-template pTemplate="input">
-                                <input
-                                    pInputText
-                                    type="text"
-                                    [(ngModel)]="product.code"/>
-                            </ng-template>
-                            <ng-template pTemplate="output">
-                                {{ product.code }}
-                            </ng-template>
-                        </p-cellEditor>
+                        {{ product.code }}
                     </td>
                     <td>{{ product.expirationDate | date:'dd/MM/YYYY' : '+0' }}</td>
                     <td>

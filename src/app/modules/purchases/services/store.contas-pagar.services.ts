@@ -38,7 +38,7 @@ export class StoreContasPagarServices extends StoreComponentService<any> {
             return this.contasPagarService.findAllPaginate(lazy).pipe(
                 tapResponse({
                     next: (result) => {
-                        const {totalElements} = result;
+                        const {page} = result;
                         const content = result.content.map((item: any, i: number) => {
                             return {
                                 ...item,
@@ -47,7 +47,7 @@ export class StoreContasPagarServices extends StoreComponentService<any> {
                             }
                         });
                         this.setAll(content);
-                        this.patchState({total: totalElements});
+                        this.patchState({total: page.totalElements});
                     },
                     error: (err: HttpErrorResponse) => this.setError(err.error)
                 })

@@ -49,7 +49,7 @@ export const ordersReducer = createReducer<State>(
         return adapter.setAll(orderBy(data.content, item => parseInt(item.tableNumber, 10), 'asc'), {
             ...state,
             loaded: true,
-            totalElements: data.totalElements
+            totalElements: data.page.totalElements
         });
     }),
     on(fromOrdersListActions.createOrdersSuccess, (state, {entity}) => {

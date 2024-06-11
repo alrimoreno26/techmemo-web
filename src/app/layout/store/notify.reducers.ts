@@ -40,7 +40,7 @@ export const initialState: State = adapter.getInitialState({
 export const notifyReducer = createReducer<State>(
     initialState,
     on(fromNotifyActions.loadNotifySuccess, (state, {data}) => {
-        return adapter.setMany(data.content, {...state, loaded: true, totalElements: data.totalElements});
+        return adapter.setMany(data.content, {...state, loaded: true, totalElements: data.page.totalElements});
     }),
     on(fromNotifyActions.notifyFailRequest, (state, {error}) => {
         return {...state, error};

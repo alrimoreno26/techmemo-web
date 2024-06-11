@@ -2,9 +2,9 @@ import {Injectable} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {OrdersTO} from "../../../core/models/orders";
 import {PurchasesService} from "../../../core/services/purchases.service";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {LazyLoadData} from "../../../standalone/data-table/models";
-import {switchMap} from "rxjs/operators";
+import {map, switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 import {StoreContasPagarServices} from "./store.contas-pagar.services";
@@ -28,16 +28,9 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             return this.purchasesService.findAllPaginate(lazy).pipe(
                 tapResponse({
                     next: (result) => {
-                        const {content, totalElements} = result;
-                        // const content: LightsDTO[] = result.content.map((item: any, i: number) => {
-                        //     return {
-                        //         id: item.id,
-                        //         code: item.code,
-                        //         name: item.name
-                        //     }
-                        // })
+                        const {content, page} = result;
                         this.setAll(content);
-                        this.patchState({total: totalElements});
+                        this.patchState({total: page.totalElements});
                     },
                     error: (err: HttpErrorResponse) => this.setError(err.error)
                 })
@@ -46,28 +39,57 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     ));
 
     createInstallmentsByFinancialTransactions(data: any) {
-        if (data.editing) {
-            this.financialTransactionsServices.updateFinancialTransaction({state: 'APPROVED'}, data.financialTransactionId)
-            this.patchState({dialog: false});
-            this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+        if (data.originalPaymentInstallments === undefined) {
+            this.purchasesService.createInstallmentsByFinancialTransactions(data).pipe(
+                tapResponse({
+                    next: (result) => {
+                        this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                    },
+                    error: (err: HttpErrorResponse) => this.setError(err.error)
+                })
+            ).subscribe();
         } else {
-            this.purchasesService.createInstallmentsByFinancialTransactions(data).subscribe((response) => {
-                this.patchState({dialog: false});
-                this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
-
-            })
+            this.purchasesService.deleteAllInstallmentsByFinancialTransactions(data.billId).pipe(
+                switchMap(() => {
+                    const bills = {
+                        classifierId: data.classifierId,
+                        consecutiveDaysPaymentInstallments: data.consecutiveDaysPaymentInstallments,
+                        description: data.description,
+                        financialTransactionId: data.financialTransactionId,
+                        paymentInstallments: data.paymentInstallments,
+                        paymentStructureId: data.paymentStructureId,
+                        provision: data.provision,
+                        supplierId: data.supplierId,
+                    }
+                    return this.purchasesService.createInstallmentsByFinancialTransactions(bills).pipe(
+                        tapResponse({
+                            next: (result) => {
+                                this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                            },
+                            error: (err: HttpErrorResponse) => this.setError(err.error)
+                        })
+                    )
+                })).subscribe();
         }
     }
 
-    getById(id: string) {
-        this.purchasesService.findOneById(id).subscribe((response) => {
-            this.storeContasPagarServices.getBillsByFinancialTransactions(response.billId).subscribe((data) => {
-                response.paymentInstallments = data;
-                this.setSelected(response);
-                this.patchState({dialog: true, selected: response})
-            });
-
-
+    getById(id:string) {
+        this.purchasesService.findOneById(id).pipe(
+            switchMap(response => {
+                if (response.billId !== null) {
+                    return this.storeContasPagarServices.getBillsByFinancialTransactions(response.billId).pipe(
+                        map(data => {
+                            response.paymentInstallments = data;
+                            return response;
+                        })
+                    );
+                } else {
+                    return of(response);
+                }
+            })
+        ).subscribe(response => {
+            this.setSelected(response);
+            this.patchState({dialog: true, selected: response});
         });
     }
 }

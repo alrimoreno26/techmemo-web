@@ -25,7 +25,7 @@ export class StoreDashboardServices extends StoreComponentService<any> {
             pageNumber: 0,
             type: productType.SIMPLE
         }).subscribe((response: LazyResultData<StockProductReportTO>) => {
-            this.patchState({entities: response.content, total: response.totalElements})
+            this.patchState({entities: response.content, total: response.page.totalElements})
         })
     }
 

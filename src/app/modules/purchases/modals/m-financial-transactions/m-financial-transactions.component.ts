@@ -76,6 +76,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             if (storeFinancialTransactions.goToPay$()) {
                 this.data = {
                     ...storeFinancialTransactions.goToPay$(),
+                    billsId: this.storeService.selectedEntity$().billId,
                     classifierId: this.form.get('classifierId')?.value.id,
                     supplierId: this.form.get('supplierId')?.value.id
                 };
@@ -130,6 +131,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.editing) {
             this.data = {
                 ...data,
+                billsId: this.storeService.selectedEntity$().billId,
                 classifierId: this.form.get('classifierId')?.value.id,
                 supplierId: this.form.get('supplierId')?.value.id
             };
