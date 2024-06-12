@@ -48,6 +48,16 @@ export class InstallmentsComponent implements OnInit {
 
     constructor(public paymentMethodService: PaymentMethodService, private storeService: StorePurchasesServices) {
         this.paymentMethodService.loadLight()
+        effect(() => {
+            if(this.storeService.selectedEntity$() !== undefined){
+                console.log(this.storeService.selectedEntity$())
+                this.paymentInstallments = this.storeService.selectedEntity$().paymentInstallments.paymentInstallments ?? [];
+                this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate + 'T00:00') : this.rangeDates = new Date();
+                this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
+                // this.qParcelas > 0 ? this.mParcelas = true : this.parcelas = false;
+                this.reduceTotalPaymentsInstall();
+            }
+        });
     }
 
     ngOnInit(): void {
@@ -120,27 +130,45 @@ export class InstallmentsComponent implements OnInit {
             expirationDate: new Date(),
             description: '',
         }
-        this.paymentInstallments.push(parcela)
-        this.onRowEditInit(parcela)
+        this.storeService.addSingleInstallment({
+            billId: this.config?.billId,
+            installments: [parcela]
+        }).subscribe((data) => {
+            console.log(data)
+            if(data.length > 0){
+                this.paymentInstallments.push(parcela)
+                this.qParcelas++;
+                this.onRowEditInit(parcela)
+            }
+
+        })
+
 
     }
 
     onRowEditInit(product: any) {
         this.clonedProducts[product.id as string] = {...product};
+        this.reduceTotalPaymentsInstall();  //
     }
 
     deleteRow(product: any) {
+        debugger
         const index = this.paymentInstallments.findIndex(p => p.id === product.id);
         if (index !== -1) {
-            this.paymentInstallments.splice(index, 1);
-        }
-        delete this.clonedProducts[product.id as string];
+            this.storeService.deleteSingleInstallment({id:this.paymentInstallments[index].id, billId:this.config?.billId}).subscribe(()=>{
+                this.paymentInstallments.splice(index, 1);
+                delete this.clonedProducts[product.id as string];
+                this.qParcelas--;
+                this.reduceTotalPaymentsInstall();  //
+            })
 
-        this.reduceTotalPaymentsInstall();  //
+        }
+
     }
 
     onRowEditSave(product: any) {
         if (product.price > 0) {
+            console.log(product)
             delete this.clonedProducts[product.id as string];
             console.log({severity: 'success', summary: 'Success', detail: 'Product is updated'});
         } else {

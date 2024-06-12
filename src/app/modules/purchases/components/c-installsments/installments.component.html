@@ -95,6 +95,7 @@
                 <div class="flex gap-2">
                     <button pButton pRipple class="p-button-primary flex-1 border-round"
                             label="Cadastrar Nova Parcelas"
+                            [disabled]="!this.config?.billId"
                             (click)="addParcela()"
                             icon="mdi mdi-plus"></button>
                 </div>
