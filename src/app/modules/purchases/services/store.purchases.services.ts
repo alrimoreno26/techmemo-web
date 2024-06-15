@@ -19,18 +19,19 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     override lazyLoadOnInit = true;
 
     billId$: Signal<any> = this.selectSignal(state => state.billId);
+    listProductSelected$: Signal<any> = this.selectSignal(state => state.listProductSelected);
 
     constructor(private purchasesService: PurchasesService,
                 private storeContasPagarServices: StoreContasPagarServices,
                 private contasPagarService: ContasPagarService) {
-        const defaultEntity: EntityState<any>& { billId?: any } =
-            {entities: [], total: 0, dialog: false, loaded: false};
+        const defaultEntity: EntityState<any> & { billId?: any, listProductSelected: any[] } =
+            {entities: [], total: 0, dialog: false, loaded: false, listProductSelected: []};
         super(purchasesService, defaultEntity);
     }
 
-    resetState(){
+    resetState() {
         this.setSelected(null);
-        this.patchState({billId: null, dialog: false, selected: null})
+        this.patchState({billId: null, dialog: false, selected: null, listProductSelected: []});
     }
 
     override loadAll = this.effect<any>((lazy$: Observable<{ lazy: LazyLoadData }>) => lazy$.pipe(
@@ -62,11 +63,10 @@ export class StorePurchasesServices extends StoreComponentService<any> {
         } else {
             this.purchasesService.deleteAllInstallmentsByFinancialTransactions(data.billId).pipe(
                 switchMap(() => {
-                    const installments ={
+                    const installments = {
                         billId: data.billId,
                         installments: data.paymentInstallments
                     }
-                    debugger
                     this.patchState({billId: data.billId});
                     return this.contasPagarService.saveInstallmentsBill(installments).pipe(
                         tapResponse({
@@ -80,35 +80,52 @@ export class StorePurchasesServices extends StoreComponentService<any> {
         }
     }
 
- addSingleInstallment(data: any): Observable<any> {
-   return this.contasPagarService.saveInstallmentsBill(data).pipe(
-        switchMap((result) => {
-            return this.storeContasPagarServices.getBillsByFinancialTransactions(data.billId).pipe(
-                map((bills:any) => {
-                    const selected = this.selectedEntity$();
-                    selected.paymentInstallments = bills.paymentInstallments;
-                    this.setSelected(selected);
-                    this.patchState({ selected: selected});
-                    this.loadAll({pageNumber: 0, pageSize: 50});
-                    return selected; // retornamos el valor selected
-                })
-            );
-        }),
-        catchError((err: HttpErrorResponse) => {
-            this.setError(err.error);
-            return throwError(err);
-        })
-    );
-}
-    deleteSingleInstallment(data: any): Observable<any> {
-       return this.contasPagarService.deleteInstallmentsBill(data.id).pipe(
-            tapResponse({
-                next: (result) => {
-                    this.storeContasPagarServices.getBillsByFinancialTransactions(data.billId).subscribe((bills:any)=>{
+    addSingleInstallment(data: any): Observable<any> {
+        return this.contasPagarService.saveInstallmentsBill(data).pipe(
+            switchMap((result) => {
+                return this.storeContasPagarServices.getBillsByFinancialTransactions(data.billId).pipe(
+                    map((bills: any) => {
                         const selected = this.selectedEntity$();
                         selected.paymentInstallments = bills.paymentInstallments;
                         this.setSelected(selected);
-                        this.patchState({ selected: selected});
+                        this.patchState({selected: selected});
+                        this.loadAll({pageNumber: 0, pageSize: 50});
+                        return selected; // retornamos el valor selected
+                    })
+                );
+            }),
+            catchError((err: HttpErrorResponse) => {
+                this.setError(err.error);
+                return throwError(err);
+            })
+        );
+    }
+
+    updatedInstallmentsBill(id: string, data: any, billId: string): Observable<any> {
+        return this.contasPagarService.updatedInstallmentsBill(id, data).pipe(
+            tapResponse({
+                next: (result) => {
+                    this.storeContasPagarServices.getBillsByFinancialTransactions(billId).subscribe((bills: any) => {
+                        const selected = this.selectedEntity$();
+                        selected.paymentInstallments = bills.paymentInstallments;
+                        this.setSelected(selected);
+                        this.patchState({selected: selected});
+                        this.loadAll({pageNumber: 0, pageSize: 50})
+                    })
+                },
+                error: (err: HttpErrorResponse) => this.setError(err.error)
+            }));
+    }
+
+    deleteSingleInstallment(data: any): Observable<any> {
+        return this.contasPagarService.deleteInstallmentsBill(data.id).pipe(
+            tapResponse({
+                next: (result) => {
+                    this.storeContasPagarServices.getBillsByFinancialTransactions(data.billId).subscribe((bills: any) => {
+                        const selected = this.selectedEntity$();
+                        selected.paymentInstallments = bills.paymentInstallments;
+                        this.setSelected(selected);
+                        this.patchState({selected: selected});
                         this.loadAll({pageNumber: 0, pageSize: 50})
                     })
                 },
@@ -118,7 +135,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     }
 
 
-    getById(id:string) {
+    getById(id: string) {
         this.purchasesService.findOneById(id).pipe(
             switchMap(response => {
                 if (response.billId !== null) {
@@ -134,7 +151,12 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             })
         ).subscribe(response => {
             this.setSelected(response);
+            this.setListProductSelected(response.products);
             this.patchState({dialog: true, selected: response, billId: response.billId});
         });
+    }
+
+    setListProductSelected(data: any) {
+        this.patchState({listProductSelected: data});
     }
 }

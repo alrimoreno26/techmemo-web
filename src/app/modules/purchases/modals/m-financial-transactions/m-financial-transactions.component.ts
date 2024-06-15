@@ -72,27 +72,9 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (!paymentMethodService.loaded$()) {
             this.paymentMethodService.loadAll({lazy: {pageNumber: 0, pageSize: 10}})
         }
-        effect(() => {
-            if (storeFinancialTransactions.goToPay$()) {
-                this.data = {
-                    ...storeFinancialTransactions.goToPay$(),
-                    billsId: storeFinancialTransactions.goToPay$().billId || '',
-                    classifierId: this.form.get('classifierId')?.value.id,
-                    supplierId: this.form.get('supplierId')?.value.id
-                };
-                this.form.get('id')?.setValue(storeFinancialTransactions.goToPay$().id);
-                this.stepActive++;
-            }
-            if(this.storeFinancialTransactions.approvedEnd$()){
-            this.closingModal()
-            }
-        });
-        effect(() => {
-            if (this.storeService.selectedEntity$() !== undefined) {
-                this.editing = true;
-                this.initForm(this.storeService.selectedEntity$());
-            }
-        });
+        effect(() => this.handleGoToPayEffect());
+        effect(() => this.handleSelectedEntityEffect());
+        effect(() => this.handleListProductSelectedEffect());
     }
 
     ngOnInit(): void {
@@ -105,11 +87,76 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         });
         this.initForm(data);
     }
+
+    handleGoToPayEffect(): void {
+        let goToPay = this.storeFinancialTransactions.goToPay$();
+        if (goToPay) {
+            this.handleGoToPay(goToPay);
+        }
+        if (this.storeFinancialTransactions.approvedEnd$()) {
+            this.closingModal()
+        }
+    }
+
+    handleSelectedEntityEffect(): void {
+        let selectedEntity = this.storeService.selectedEntity$();
+        if (selectedEntity !== undefined) {
+            this.handleSelectedEntity(selectedEntity);
+        }
+    }
+
+    handleListProductSelectedEffect(): void {
+        let listProductSelected = this.storeService.listProductSelected$();
+        if (listProductSelected && listProductSelected.length > 0) {
+            this.handleListProductSelected(listProductSelected);
+        }
+    }
+
+    handleGoToPay(goToPay: any): void {
+        let goToPayBillId = goToPay.billId || '';
+        let classifierId = this.getFormValueId('classifierId');
+        let supplierId = this.getFormValueId('supplierId');
+
+        this.data = {
+            ...goToPay,
+            billsId: goToPayBillId,
+            classifierId: classifierId,
+            supplierId: supplierId
+        };
+        this.form.get('id')?.setValue(goToPay.id);
+        this.stepActive++;
+    }
+
+
+    handleSelectedEntity(selectedEntity: any): void {
+        this.editing = true;
+        this.initForm(selectedEntity);
+    }
+
+    handleListProductSelected(listProductSelected: any[]): void {
+        this.products = listProductSelected.map(item => this.mapItemToProduct(item)) ?? [];
+    }
+
+    mapItemToProduct(item: any): any {
+        return {
+            id: item.id,
+            productName: item.productName,
+            soldPerUnits: item.unitMeasurementCode === null,
+            value: item.value,
+            amount: item.amount
+        }
+    }
+
+    getFormValueId(formControlName: string): string {
+        return this.form.get(formControlName)?.value.id;
+    }
+
+
     override ngOnDestroy() {
         this.storeService.resetState();
     }
 
-    closingModal(){
+    closingModal() {
         this.ref.close()
         this.storeService.resetState();
         this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
@@ -124,25 +171,16 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     initForm(data: any) {
-        console.log(data)
         this.form = new FormGroup({
             id: new FormControl(data?.id),
             supplierId: new FormControl(data?.supplier, Validators.required),
             classifierId: new FormControl(data?.classifier, Validators.required),
             type: new FormControl({value: data?.type || 'EXPENSES', disabled: true}, Validators.required),
         });
-        this.products = data?.products?.map((item: any) => {
-            return {
-                name: item.productName,
-                soldPerUnits: item.unitMeasurementCode === null,
-                costPrice: item.value,
-                amount: item.amount
-            }
-        }) ?? [];
         if (this.editing) {
             this.data = {
                 ...data,
-                billsId: this.storeService.selectedEntity$().billId,
+                billsId: this.storeService.selectedEntity$().billId || null,
                 classifierId: this.form.get('classifierId')?.value.id,
                 supplierId: this.form.get('supplierId')?.value.id
             };
@@ -154,11 +192,22 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         switch (event.key) {
             case 'Enter':
                 if (this.selectedItem !== undefined) {
-                    this.products = [...this.products, {
+                    const tempProduct = {
                         ...this.selectedItem,
                         amount: this.selectedItemAmount,
                         valueToPaid: this.selectedItem.salePrice * this.selectedItemAmount
-                    }];
+                    };
+                    if (this.editing) {
+                        this.storeFinancialTransactions.addFinancialTransactionProduct(
+                            this.form.get('id')?.value,
+                            [tempProduct])
+                            .subscribe((response) => {
+                                this.storeService.setListProductSelected(response)
+                                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                            });
+                    } else {
+                        this.products = [...this.products, tempProduct];
+                    }
                     this.selectedItem = undefined;
                     this.selectedItemAmount = 1;
                     this.form.get('products')?.setValue(this.products);
@@ -168,38 +217,66 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         }
     }
 
-    novoProducto() {
-        this.storeFinancialTransactions.openModalAddOrEdit();
-        this.dialogService.open(MNewProductComponent, {}).onClose.subscribe((data: any) => {
-            this.products = [...this.products, {
-                name: data.data.productName,
-                soldPerUnits: true,
-                costPrice: data.data.value,
-                amount: data.data.amount
-            }];
-        });
+    openNewProductModal() {
+        this.openProductModal(MNewProductComponent, {});
     }
 
     addProduct() {
         this.productService.openModalAddOrEdit();
-        this.dialogService.open(MProductComponent, {data: {suppliers: [this.form.get('supplierId')?.value]}}).onClose.subscribe((data: any) => {
-            const temp = cloneDeep(this.productService.temporalCreated$());
-            this.products = [...this.products, {
-                name: temp.name,
-                soldPerUnits: temp.soldPerUnits,
-                costPrice: temp.costPrice,
-                amount: temp.stockAmount
-            }];
+        this.openProductModal(MProductComponent, { data: { suppliers: [this.form.get('supplierId')?.value] } });
+    }
+
+    openProductModal(component: any, params: any) {
+        this.storeFinancialTransactions.openModalAddOrEdit();
+        this.dialogService.open(component, params).onClose.subscribe((data: any) => {
+            let tempProduct;
+            if (component === MNewProductComponent) {
+                tempProduct = this.createProduct(data.data);
+            }
+            this.updateOrAddProduct(this.form.get('id')?.value, tempProduct);
         });
     }
 
-    deleteProduct(product: number) {
-        const index = this.products.findIndex(p => p.id === product);
-        if (index !== -1) {
-            const updatedProducts = [...this.products];
-            updatedProducts.splice(index, 1);
-            this.products = updatedProducts;
+    updateOrAddProduct(id: string, tempProduct: any) {
+        if (this.editing) {
+            this.storeFinancialTransactions.addFinancialTransactionProduct(id, [tempProduct]).subscribe((response: any[]) => {
+                this.storeService.setListProductSelected(response);
+                this.storeService.loadAll({ lazy: { pageNumber: 0, pageSize: 50 } });
+            });
+        } else {
+            this.addNewProduct(tempProduct);
         }
+    }
+
+    createProduct(tempProduct: any): any {
+        return {
+            productName: tempProduct.productName,
+            soldPerUnits: tempProduct.soldPerUnits ? tempProduct.soldPerUnits : true,
+            value: tempProduct.value,
+            amount: tempProduct.amount
+        }
+    }
+    addNewProduct(newProduct: any): void {
+        this.products = [...this.products, newProduct];
+    }
+
+    deleteProduct(product: string) {
+        const index = this.products.findIndex(p => p.id === product);
+        if (this.editing && index !== -1) {
+            this.storeFinancialTransactions.removeFinancialTransactionProduct(product).subscribe(() => {
+                const updatedProducts = [...this.products];
+                updatedProducts.splice(index, 1);
+                this.products = updatedProducts;
+                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+            })
+        } else {
+            if (index !== -1) {
+                const updatedProducts = [...this.products];
+                updatedProducts.splice(index, 1);
+                this.products = updatedProducts;
+            }
+        }
+
     }
 
 
@@ -253,7 +330,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     reduceTotalPayments() {
-        this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.costPrice * curr.amount), 0)
+        this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.value * curr.amount), 0)
     }
 
     override save() {
@@ -291,7 +368,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             this.toastMessageService.showMessage("error", 'ERROR', 'Deve cadastrar pelo menos 1 parcela')
         } else {
             const send = {
-              state: 'APPROVED'
+                state: 'APPROVED'
             }
             this.storeFinancialTransactions.changeStateFinancialTransaction(send, this.form.get('id')?.value);
         }

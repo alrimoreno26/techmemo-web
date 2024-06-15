@@ -22,10 +22,7 @@ export class MEditParcelasComponent extends BaseModalStoreComponentDirective imp
 
 
     constructor(private storeService: StoreContasPagarServices,
-                public paymentMethodService: PaymentMethodService,
-                private supplierService: SupplierService,
-                private dialogRegistryService: DialogRegistryService,
-                private financeService: FinancialClasificationService) {
+                private dialogRegistryService: DialogRegistryService) {
         super(storeService);
         this.dialogRegistryService.addDialog(this.ref);
 

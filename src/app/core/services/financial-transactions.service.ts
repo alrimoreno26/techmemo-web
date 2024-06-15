@@ -22,4 +22,12 @@ export class FinancialTransactionsService extends AbstractService<any> {
     createInstallmentsByFinancialTransactions(params: any): Observable<any> {
         return this.httpClient.post<any>(buildURL('/v1/bills'), params);
     }
+
+    removeFinancialTransactionProduct(id: string): Observable<any> {
+        return this.httpClient.delete<any>(buildURL('/v1/financial-transaction-products') + `/${id}`);
+    }
+    addFinancialTransactionProduct(id:string, data: any): Observable<any> {
+        return this.httpClient.post<any>(`${this.basePath}/${id}/products`, data);
+
+    }
 }

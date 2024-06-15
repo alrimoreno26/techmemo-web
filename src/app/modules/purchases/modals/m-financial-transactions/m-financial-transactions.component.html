@@ -84,7 +84,7 @@
                                     (click)="addProduct()"
                                     icon="mdi mdi-plus mdi-24px"></button>
                             <button pButton pRipple class="p-button-outlined" label="Novo Producto"
-                                    (click)="novoProducto()"
+                                    (click)="openNewProductModal()"
                                     icon="mdi mdi-plus mdi-24px"></button>
                         </div>
                     </div>
@@ -124,14 +124,14 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-product>
                                 <tr>
-                                    <td class="custom-td" style="min-width: 220px">{{ product.name | wrapText: 25 }}
+                                    <td class="custom-td" style="min-width: 220px">{{ product.productName | wrapText: 25 }}
                                     </td>
                                     <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" }}</td>
                                     <td class="custom-td">
                                         {{ product.amount }}
                                     </td>
-                                    <td class="custom-td">{{ product.costPrice| currency }}</td>
-                                    <td class="custom-td">{{ (product.costPrice * product.amount)| currency }}</td>
+                                    <td class="custom-td">{{ product.value| currency }}</td>
+                                    <td class="custom-td">{{ (product.value * product.amount)| currency }}</td>
                                     <td>
                                         <p-button styleClass="border-round-3xl severity_danger small"
                                                   (onClick)="deleteProduct(product.id)"
@@ -175,7 +175,7 @@
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="closingModal()"
             icon="mdi mdi-close"></button>
     @if (this.stepActive === 0) {
-        <p-button [disabled]="form.invalid && products.length === 0" label="Continuar a Pagamento"
+        <p-button [disabled]="form.invalid || products.length === 0" label="Continuar a Pagamento"
                   (onClick)="save()"/>
     }
 </ng-template>

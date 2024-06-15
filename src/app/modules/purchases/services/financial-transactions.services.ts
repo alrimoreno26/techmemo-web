@@ -2,7 +2,7 @@ import {Injectable, Signal} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {FinancialTransactionsService} from "../../../core/services/financial-transactions.service";
 import {switchMap} from "rxjs/operators";
-import {of} from "rxjs";
+import {Observable, of} from "rxjs";
 import {StorePurchasesServices} from "./store.purchases.services";
 
 @Injectable({providedIn: 'platform'})
@@ -11,7 +11,8 @@ export class FinancialTransactionsServices extends StoreComponentService<any> {
     goToPay$: Signal<any> = this.selectSignal(state => state.goToPay);
     approvedEnd$: Signal<any> = this.selectSignal(state => state.approvedEnd);
 
-    constructor(private storeFinancialTransactions: FinancialTransactionsService, private storePurchasesServices: StorePurchasesServices) {
+    constructor(private storeFinancialTransactions: FinancialTransactionsService,
+                private storePurchasesServices: StorePurchasesServices) {
         const defaultEntity: EntityState<any> & { goToPay?: any, approvedEnd?: boolean } =
             {entities: [], total: 0, dialog: false, loaded: false, goToPay: null};
         super(storeFinancialTransactions, defaultEntity);
@@ -41,4 +42,13 @@ export class FinancialTransactionsServices extends StoreComponentService<any> {
         this.setAdd({data});
     }
 
+    //RESOURCE FINANCIAL TRANSACTIONS PRODUCTS
+
+    addFinancialTransactionProduct(id: string, data: any): Observable<any> {
+        return this.storeFinancialTransactions.addFinancialTransactionProduct(id, data);
+    }
+
+    removeFinancialTransactionProduct(id: string): Observable<any> {
+        return this.storeFinancialTransactions.removeFinancialTransactionProduct(id);
+    }
 }

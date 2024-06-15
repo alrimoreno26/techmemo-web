@@ -49,7 +49,7 @@ export class InstallmentsComponent implements OnInit {
     constructor(public paymentMethodService: PaymentMethodService, private storeService: StorePurchasesServices) {
         this.paymentMethodService.loadLight()
         effect(() => {
-            if(this.storeService.selectedEntity$() !== undefined){
+            if (this.storeService.selectedEntity$() !== undefined) {
                 console.log(this.storeService.selectedEntity$())
                 this.paymentInstallments = this.storeService.selectedEntity$().paymentInstallments.paymentInstallments ?? [];
                 this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate + 'T00:00') : this.rangeDates = new Date();
@@ -135,9 +135,9 @@ export class InstallmentsComponent implements OnInit {
             installments: [parcela]
         }).subscribe((data) => {
             console.log(data)
-            if(data.length > 0){
-                this.paymentInstallments.push(parcela)
-                this.qParcelas++;
+            if (data) {
+                this.paymentInstallments = data.paymentInstallments;
+                this.qParcelas = data.paymentInstallments.length;
                 this.onRowEditInit(parcela)
             }
 
@@ -155,7 +155,10 @@ export class InstallmentsComponent implements OnInit {
         debugger
         const index = this.paymentInstallments.findIndex(p => p.id === product.id);
         if (index !== -1) {
-            this.storeService.deleteSingleInstallment({id:this.paymentInstallments[index].id, billId:this.config?.billId}).subscribe(()=>{
+            this.storeService.deleteSingleInstallment({
+                id: this.paymentInstallments[index].id,
+                billId: this.config?.billId
+            }).subscribe(() => {
                 this.paymentInstallments.splice(index, 1);
                 delete this.clonedProducts[product.id as string];
                 this.qParcelas--;
@@ -167,9 +170,15 @@ export class InstallmentsComponent implements OnInit {
     }
 
     onRowEditSave(product: any) {
-        if (product.price > 0) {
-            console.log(product)
-            delete this.clonedProducts[product.id as string];
+        if (product.value > 0) {
+            this.storeService.updatedInstallmentsBill(
+                product.id,
+                {value: product.value},
+                this.config?.billId
+            ).subscribe((result) => {
+                console.log(result)
+                delete this.clonedProducts[product.id as string];
+            });
             console.log({severity: 'success', summary: 'Success', detail: 'Product is updated'});
         } else {
             console.log({severity: 'error', summary: 'Error', detail: 'Invalid Price'});
