@@ -1,28 +1,23 @@
 <div class="card m-3">
-    <div class="grid">
-<!--        <div class="col-12 lg:col-5">-->
-<!--            <p-tree-->
-<!--                [value]="files"-->
-<!--                class="w-full md:w-30rem"-->
-<!--                [draggableNodes]="true"-->
-<!--                [droppableNodes]="true"-->
-<!--                draggableScope="self"-->
-<!--                droppableScope="self"-->
-<!--                selectionMode="single"-->
-<!--                [(selection)]="selectedFile"-->
-<!--                [contextMenu]="cm"-->
-<!--                [filter]="true"-->
-<!--                (onNodeContextMenuSelect)="onNodeContextMenuSelect($event)"-->
-<!--                (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnSelect()"-->
-<!--                filterMode="strict"-->
-<!--                filterPlaceholder="Strict Filter"/>-->
-<!--            <p-contextMenu #cm [model]="menuItems"/>-->
-<!--        </div>-->
-        <div class="col-12 lg:col-12">
-            <p-fieldset legend="Visualização do DRE">
-                <c-single-dre/>
-            </p-fieldset>
-        </div>
-    </div>
+    <c-data-table [headers]="headersTable" [service]="service">
+
+        <ng-template let-data tableRow="pattern">
+            @if (data.pattern) {
+                <span class="mdi mdi-check-circle-outline text-green-500"></span>
+            } @else if (!data.pattern) {
+                <span class="mdi mdi-close-circle-outline text-danger"></span>
+            }
+        </ng-template>
+        <ng-template let-data tableRow="enabled">
+            <p-inputSwitch [ngModel]="data.enabled" (onChange)="patchStructure($event, data)"></p-inputSwitch>
+        </ng-template>
+        <ng-template let-data tableRow="action">
+            <button pButton icon="mdi mdi-file-tree-outline mdi-24px" type="button" class="p-button-text p-button-rounded"
+                    pTooltip="{{'balance.structure.tooltip.balance' | translate}}" tooltipPosition="top"
+                    [routerLink]="['/financial/structure-data', data.id]"></button>
+        </ng-template>
+    </c-data-table>
 </div>
+
+
 

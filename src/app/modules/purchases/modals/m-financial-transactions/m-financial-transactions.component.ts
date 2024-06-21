@@ -100,7 +100,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
 
     handleSelectedEntityEffect(): void {
         let selectedEntity = this.storeService.selectedEntity$();
-        if (selectedEntity !== undefined) {
+        if (selectedEntity) {
             this.handleSelectedEntity(selectedEntity);
         }
     }
@@ -116,9 +116,10 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         let goToPayBillId = goToPay.billId || '';
         let classifierId = this.getFormValueId('classifierId');
         let supplierId = this.getFormValueId('supplierId');
-
+        this.reduceTotalPayments();
         this.data = {
             ...goToPay,
+            paymentInvoice: this.totalProducts,
             billsId: goToPayBillId,
             classifierId: classifierId,
             supplierId: supplierId
@@ -180,7 +181,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.editing) {
             this.data = {
                 ...data,
-                billsId: this.storeService.selectedEntity$().billId || null,
+                billsId: this.storeService.selectedEntity$()?.billId || null,
                 classifierId: this.form.get('classifierId')?.value.id,
                 supplierId: this.form.get('supplierId')?.value.id
             };
@@ -191,27 +192,29 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     handleKeyboardEvent(event: KeyboardEvent) {
         switch (event.key) {
             case 'Enter':
-                if (this.selectedItem !== undefined) {
-                    const tempProduct = {
-                        ...this.selectedItem,
-                        amount: this.selectedItemAmount,
-                        valueToPaid: this.selectedItem.salePrice * this.selectedItemAmount
-                    };
-                    if (this.editing) {
-                        this.storeFinancialTransactions.addFinancialTransactionProduct(
-                            this.form.get('id')?.value,
-                            [tempProduct])
-                            .subscribe((response) => {
-                                this.storeService.setListProductSelected(response)
-                                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
-                            });
-                    } else {
-                        this.products = [...this.products, tempProduct];
+                if(this.suggestionsProducts.length > 0){
+                    if (this.selectedItem !== undefined) {
+                        const tempProduct = {
+                            ...this.selectedItem,
+                            amount: this.selectedItemAmount,
+                            valueToPaid: this.selectedItem.salePrice * this.selectedItemAmount
+                        };
+                        if (this.editing) {
+                            this.storeFinancialTransactions.addFinancialTransactionProduct(
+                                this.form.get('id')?.value,
+                                [tempProduct])
+                                .subscribe((response) => {
+                                    this.storeService.setListProductSelected(response)
+                                    this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                                });
+                        } else {
+                            this.products = [...this.products, tempProduct];
+                        }
+                        this.selectedItem = undefined;
+                        this.selectedItemAmount = 1;
+                        this.form.get('products')?.setValue(this.products);
+                        this.reduceTotalPayments();
                     }
-                    this.selectedItem = undefined;
-                    this.selectedItemAmount = 1;
-                    this.form.get('products')?.setValue(this.products);
-                    this.reduceTotalPayments();
                 }
                 break;
         }
@@ -340,6 +343,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                 supplierId: this.form.get('supplierId')?.value.id,
                 type: this.form.get('type')?.value,
             }
+            this.reduceTotalPayments();
             this.storeFinancialTransactions.updateFinancialTransaction(send, this.form.get('id')?.value);
             this.stepActive++;
         } else {
@@ -349,9 +353,9 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                     return {
                         amount: item.amount,
                         productId: item.id,
-                        productName: item.name,
+                        productName: item.productName,
                         unitMeasurementId: item.unitMeasurementCode,
-                        value: item.costPrice,
+                        value: item.value,
                         weight: item.weight,
                     }
                 }),

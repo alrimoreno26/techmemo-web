@@ -348,10 +348,43 @@
                         <ng-template [ngIf]="selectedItems=== 'bank'">
                             <div class="top">
                                 <div class="flex justify-content-between">
-                                    <h4 class="text-center">Configurações das contas</h4>
+                                    <h4 class="text-center">Configurações das contas bancarias</h4>
                                     <p-button label="Nova"
-                                              (onClick)="addEditContaCorrente()"></p-button>
+                                              (onClick)="addEditContaCorrente(null)"></p-button>
                                 </div>
+                                @if (banksService.listEntities$().length > 0) {
+                                    <div class="grid">
+                                        @for (bank of banksService.listEntities$() || []; track bank.id) {
+                                            <div class="col-3">
+                                                <p-card>
+                                                    <ng-template pTemplate="header">
+                                                        <img alt="Card"
+                                                             src="assets/images/banks/{{getDataBanks(bank,'IMAGE')}}"
+                                                             [height]="100"/>
+                                                        <h6 class="m-0 p-2">{{ getDataBanks(bank, 'NAME') | wrapText: 20 }}</h6>
+                                                    </ng-template>
+
+                                                    <ng-template pTemplate="footer">
+                                                        <div class="flex justify-content-center gap-3">
+                                                            <button pButton pRipple
+                                                                    class="p-button-danger p-button-outlined"
+                                                                    [pTooltip]="'Elminar'"
+                                                                    (click)="deleteContaCorrente(bank.id)"
+                                                                    icon="mdi mdi-close"></button>
+                                                            <button pButton pRipple
+                                                                    class="p-button-primary border-round"
+                                                                    [pTooltip]="'Editar'"
+                                                                    (click)="addEditContaCorrente(bank)"
+                                                                    icon="mdi mdi-pencil"></button>
+                                                        </div>
+                                                    </ng-template>
+                                                </p-card>
+                                            </div>
+                                        }
+                                    </div>
+                                } @else {
+                                    <ng-container *ngTemplateOutlet="blank;"></ng-container>
+                                }
                             </div>
                         </ng-template>
 

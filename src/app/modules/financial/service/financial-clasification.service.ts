@@ -3,12 +3,13 @@ import {ClassifierDto, PaymentStructureTO} from "../../../core/models/financial"
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {FinancialClassifiersService} from "../../../core/services/financial-classifiers.service";
 import {CommerceDto} from "../../../core/models/commerce";
-import {LazyLoadData} from "../../../standalone/data-table/models";
+import {LazyLoadData, LazyResultData} from "../../../standalone/data-table/models";
 import {fromUserActions} from "../../security/user/store/user.actions";
-import {Observable} from "rxjs";
-import {switchMap} from "rxjs/operators";
+import {Observable, of} from "rxjs";
+import {catchError, switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
-import {HttpErrorResponse} from "@angular/common/http";
+import {HttpErrorResponse, HttpParams} from "@angular/common/http";
+import {T} from "@fullcalendar/core/internal-common";
 
 @Injectable({providedIn: 'platform'})
 export class FinancialClasificationService extends StoreComponentService<ClassifierDto> {
@@ -24,6 +25,8 @@ export class FinancialClasificationService extends StoreComponentService<Classif
             {entities: [], total: 0, dialog: false, loaded: false, autocomplete: []};
         super(services, defaultEntity);
     }
+
+
 
     override loadAll = this.effect<any>((lazy$: Observable<{ lazy: LazyLoadData }>) => lazy$.pipe(
         switchMap((lazy) => {

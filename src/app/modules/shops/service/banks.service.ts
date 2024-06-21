@@ -1,26 +1,25 @@
 import {Injectable} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
-import {SessionServices} from "../../../core/injects/session.services";
-import {PrintersServices} from "../../../core/services/printers.services";
+import {BankAccount} from "../../../core/models/bills";
+import {BanksServices} from "../../../core/services/banks.services";
+import {CashRegisterServices} from "../../../core/services/cash-register.services";
 import {Observable} from "rxjs";
-import {PrinterDto} from "../../../core/models/commerce";
+import {CashRegisterDto} from "../../../core/models/commerce";
 import {switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 
 @Injectable({providedIn: 'root'})
-export class PrintersService extends StoreComponentService<PrinterDto> {
+export class BanksService extends StoreComponentService<BankAccount> {
 
-    override serverSide = true;
 
-    constructor(private services: PrintersServices,
-                private sessionService: SessionServices,) {
+    constructor(private services: BanksServices) {
         const defaultEntity: EntityState<any> =
             {entities: [], total: 0, dialog: false, loaded: false};
         super(services, defaultEntity);
     }
 
-    override create = this.effect((trigger$: Observable<{ data: PrinterDto }>) => trigger$.pipe(
+    override create = this.effect((trigger$: Observable<{ data: BankAccount }>) => trigger$.pipe(
         switchMap(({data}) => this.services.create(data).pipe(
             tapResponse({
                 next: (response: any) => {
@@ -32,10 +31,10 @@ export class PrintersService extends StoreComponentService<PrinterDto> {
         ))
     ));
 
-    override update = this.effect((trigger$: Observable<{ data: Partial<PrinterDto> }>) => trigger$.pipe(
+    override update = this.effect((trigger$: Observable<{ data: Partial<BankAccount> }>) => trigger$.pipe(
         switchMap(({data}) => this.services.update(data, 'id').pipe(
             tapResponse({
-                next: (response: any) => {
+                next: () => {
                     this.setUpdate(data);
                     this.patchState({dialog: false});
                 },

@@ -4,7 +4,10 @@
         <ng-template let-data tableRow="type">
             <p-badge [value]="data.type | translate" [severity]="data.type | severity"></p-badge>
         </ng-template>
-
+        <ng-template let-data tableRow="balanceAccountType">
+            <span
+                class="badge-{{data.balanceAccountType}}">{{ 'balance.structure.type.' + data.balanceAccountType | translate }}</span>
+        </ng-template>
     </c-data-table>
 </div>
 

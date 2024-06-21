@@ -29,6 +29,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {TranslateModule} from "@ngx-translate/core";
 import {MAddBanksComponent} from "./components/m-add-banks/m-add-banks.component";
 import {AccountValidateService} from "../../../../core/injects/offer-operation-bank-account-validate.service";
+import {PipesModule} from "../../../../core/pipes/pipes.module";
 
 @NgModule({
     declarations: [
@@ -59,6 +60,7 @@ import {AccountValidateService} from "../../../../core/injects/offer-operation-b
         BadgeModule,
         DropdownModule,
         TranslateModule,
+        PipesModule,
     ],
     providers: [
         AccountValidateService,

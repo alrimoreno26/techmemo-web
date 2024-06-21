@@ -13,6 +13,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {InputSwitchModule} from "primeng/inputswitch";
 import {FinancialClasificationService} from "../../service/financial-clasification.service";
 import {SelectButtonModule} from "primeng/selectbutton";
+import {BalanceAccountType} from "../../../../core/enums/commerce";
 
 @Component({
     standalone: true,
@@ -38,6 +39,12 @@ export class AddEditFinancialClasificationModal extends BaseModalStoreComponentD
         {label: 'Renda', value: 'BILLINGS'}
     ];
 
+    balanceAccountType: any[] = [
+        {label: 'Ativo', value: BalanceAccountType.ACTIVE},
+        {label: 'Pasivo', value: BalanceAccountType.PASSIVE},
+        {label: 'DRE', value: BalanceAccountType.DRE},
+    ];
+
     constructor(public financialClasificationService: FinancialClasificationService) {
         super(financialClasificationService);
     }
@@ -47,6 +54,8 @@ export class AddEditFinancialClasificationModal extends BaseModalStoreComponentD
         this.form = new FormGroup({
             name: new FormControl<string>(data?.name, Validators.required),
             type: new FormControl<string>(data?.type, Validators.required),
+            visibleOnlyForStructures: new FormControl<string>(data?.visibleOnlyForStructures, Validators.required),
+            balanceAccountType: new FormControl<string>(data?.balanceAccountType, Validators.required),
             code: new FormControl<string>(data?.code, Validators.required),
         });
 

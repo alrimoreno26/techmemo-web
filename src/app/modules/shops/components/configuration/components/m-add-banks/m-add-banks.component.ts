@@ -6,6 +6,8 @@ import {AccountValidateService} from "../../../../../../core/injects/offer-opera
 import {BrazilActiveBanks} from "../../../../../../core/util";
 import {DynamicDialogConfig, DynamicDialogRef} from "primeng/dynamicdialog";
 import {DialogRegistryService} from "../../../../../../core/injects/dialog.registry.services";
+import {BankAccountType} from "../../../../../../core/enums/commerce";
+import {BanksService} from "../../../../service/banks.service";
 
 @Component({
     selector: 'm-add-banks',
@@ -37,10 +39,10 @@ export class MAddBanksComponent implements OnInit {
     ];
 
     accountType: any[] = [
-        {code: "CC", name: "Conta Corrente"},
-        {code: "CD", name: "Conta de Depósito"},
-        {code: "PG", name: "Conta Pagamento"},
-        {code: "PP", name: "Conta Poupança"},
+        {code: BankAccountType.CHECKING_ACCOUNT, name: "Conta Corrente"},
+        {code: BankAccountType.DEPOSIT_ACCOUNT, name: "Conta de Depósito"},
+        {code: BankAccountType.PAYMENT_ACCOUNT, name: "Conta Pagamento"},
+        {code: BankAccountType.SAVINGS_ACCOUNT, name: "Conta Poupança"},
     ]
 
     agencyNumberMask: string;
@@ -51,12 +53,13 @@ export class MAddBanksComponent implements OnInit {
                 private accountValidationService: AccountValidateService,
                 public ref: DynamicDialogRef,
                 public config: DynamicDialogConfig,
+                public service: BanksService,
                 private dialogRegistryService: DialogRegistryService) {
         effect(() => {
-            // if (!this.service.dialog$()) {
-            //     this.dialogRegistryService.removeDialog(this.ref);
-            //     this.ref.close();
-            // }
+            if (!this.service.dialog$()) {
+                this.dialogRegistryService.removeDialog(this.ref);
+                this.ref.close();
+            }
         });
     }
 
@@ -64,22 +67,29 @@ export class MAddBanksComponent implements OnInit {
         const data = this.config.data
         this.form = new FormGroup({
             accountNumber: new FormControl<string>(data?.accountNumber, [Validators.required]),
-            accountType: new FormControl<string>(data?.accountType, [Validators.required]),
-            bankBranch: new FormControl<string>(data?.bankBranch, [Validators.required]),
-            codeIspb: new FormControl<string>({value: '', disabled: true}, [Validators.required]),
-            paymentAccountNumber: new FormControl<string>(data?.paymentAccountNumber, [Validators.required]),
+            type: new FormControl<string>(data?.type, [Validators.required]),
+            agency: new FormControl<string>(data?.agency, [Validators.required]),
+            bankIspb: new FormControl<string>({value: '', disabled: true}, [Validators.required])
         });
+        if(data){
+            this.banks = data.bank;
+            this.setISBP()
+        }
+    }
+
+    setISBP(){
+        const bankMask: any[] = this.banksMask.filter(
+            (value) => value.compe === this.banks
+        );
+        this.agencyNumberMask = bankMask[0]?.agencyMask;
+        this.accountNumberMask = bankMask[0]?.accountMask;
+        const isbp = this.brazilActiveBanks.find(f => f.COMPE === this.banks).ISPB;
+        this.form.get('bankIspb')?.setValue(isbp);
     }
 
     onChangeBank(event: any): void {
         this.bankActual = event.value;
-        const bankMask: any[] = this.banksMask.filter(
-            (value) => value.compe === this.bankActual
-        );
-        this.agencyNumberMask = bankMask[0]?.agencyMask;
-        this.accountNumberMask = bankMask[0]?.accountMask;
-        const isbp = this.brazilActiveBanks.find(f => f.COMPE === this.bankActual).ISPB;
-        this.form.get('codeIspb')?.setValue(isbp);
+        this.setISBP()
     }
 
     verifyBankCount(): void {
@@ -149,13 +159,13 @@ export class MAddBanksComponent implements OnInit {
     }
 
     addBankData() {
-        // const params: any = {
-        //     ...this.form.value,
-        //     active: false,
-        //     codeIspb: this.form.get('codeIspb')?.value,
-        //     organizationId: this.sessionService.userLogged.organization.id,
-        // }
-        // this.storeOrganizationsListService.postBanksAccount(params);
+        const params: any = {
+            ...this.form.value,
+            bank: this.banks,
+            bankIspb: this.form.get('bankIspb')?.value
+        }
+        this.service.create({data: params});
+
     }
 
     clearBankData() {

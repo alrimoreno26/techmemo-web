@@ -2,6 +2,15 @@
 <form [formGroup]="form">
     <div formResponsive width="380px">
         <div class="grid grid-nogutter formgrid flex-wrap gap-3 p-fluid">
+            <div class="col-12">
+                <p-selectButton
+                    class="w-full"
+                    [options]="balanceAccountType"
+                    styleClass="w-full"
+                    formControlName="balanceAccountType"
+                    optionLabel="label"
+                    optionValue="value"/>
+            </div>
             <div class="col-12 lg:col-12 field">
                 <input pInputText type="text" formControlName="name" placeholder="Nome do Classificador Financeiro">
             </div>
@@ -16,7 +25,13 @@
                         styleClass="w-full"
                         formControlName="type"
                         optionLabel="label"
-                        optionValue="value" />
+                        optionValue="value"/>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="align-items-center col-12 field flex gap-3">
+                    <label class="mb-0">So para estruturas</label>
+                    <p-inputSwitch formControlName="visibleOnlyForStructures" inputId="enable"></p-inputSwitch>
                 </div>
             </div>
         </div>

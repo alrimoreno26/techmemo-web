@@ -1,0 +1,108 @@
+{
+    "balance": {
+        "code": "Code",
+        "codeBalanco": "Code Balanço",
+        "nameDe": "Name",
+        "codeDe": "Code",
+        "namePara": "Conta Balanço",
+        "structure": {
+            "type": {
+                "ACTIVE": "Ativo",
+                "PASSIVE": "Pasivo",
+                "DRE": "DRE",
+                "INDEXES_AND_INDICATORS": "Índice"
+            },
+            "labels": {
+                "description": "Descrição",
+                "created": "Data",
+                "pattern": "Padrão",
+                "inverted": "Invertido",
+                "enabled": "Habilitado",
+                "prefix": "Prefixo",
+                "suffix": "Sufixo",
+                "show": "Visível",
+                "hidden": "Escondida",
+                "noCalculations": "Sem Fórmula",
+                "sumOfAccounts": "Soma de subcontas",
+                "mappersAccount": "Contas relacionadas",
+                "customFormula": "Fórmula personalizada",
+                "customFormulaConditional": "Fórmula condicional personalizada",
+                "importAccount": "Importar contas",
+                "addAccount": "Adicionar Conta",
+                "addBeforeAccount": "Adicionar Conta antes",
+                "addRootAccount": "Adicionar Conta Base",
+                "addBeforeRootAccount": "Adicionar Conta Base antes",
+                "removeAccount": "Eliminar conta",
+                "baseForVA": "Base de cálculo do VA",
+                "conditions": "Condições:",
+                "positiveCase": "Caso positivo:",
+                "negativeCase": "Caso negativo:"
+            },
+            "calculations": {
+                "type": "Tipo",
+                "account": "Conta",
+                "constant": "Constante",
+                "operator": "Operador",
+                "changeSignEndValue": "Mudar o sinal",
+                "previousYears": "Cálculos anos anteriores",
+                "nullableIfNotHavePreviousYear": "Anulável se não tiver o ano anterior"
+            },
+            "form": {
+                "account": "A conta é obrigatória",
+                "constant": "A constante é obrigatória",
+                "operator": "Operador é obrigatório",
+                "operatorFormula": "Operador da equação é obrigatório",
+                "calculation": "O cálculo não pode ficar vazio"
+            },
+            "tooltip": {
+                "balance": "Configurar contas de balanço",
+                "summary": "Configure o resumo",
+                "addNodeOp": "Operador de fórmula",
+                "addNodeForm": "Adicionar nova fórmula",
+                "removeNodeForm": "Excluir fórmula",
+                "addNodeCalc": "Adicionar novo cálculo",
+                "removeNodeCalc": "Excluir cálculo"
+            },
+            "confirmDialog": {
+                "title": "Nova conta",
+                "accountName": "Nome da conta",
+                "accountType": "Tipo da conta"
+            }
+        },
+        "summary": {
+            "labels": {
+                "description": "Descrição",
+                "created": "Data",
+                "accountName": "Nome da conta",
+                "type": "Tipo",
+                "position": "Posição",
+                "example": "Example",
+                "available": "Disponível",
+                "selected": "Selecionado",
+                "boldTextFont": "Texto em negrito",
+                "color": "Color"
+            }
+        }
+    },
+    "summary": {
+        "title": "Resumo",
+        "labels": {
+            "analysisTypes": "Tipo de análise",
+            "withoutTraceability": "Sem rastreabilidade",
+            "withTraceability": "Com rastreabilidade",
+            "print": "Imprimir",
+            "treeViews": "Visualizar",
+            "currencyView": "Moeda",
+            "decimalPrecision": "Precisão decimal"
+        },
+        "analysisTypes": {
+            "INDIVIDUAL": "Individual",
+            "CONSOLIDATED": "Consolidado"
+        },
+        "currencyView": {
+            "NORMAL": "R$",
+            "THOUSANDS": "R$ mil",
+            "MILLIONS": "R$ MI"
+        }
+    }
+}

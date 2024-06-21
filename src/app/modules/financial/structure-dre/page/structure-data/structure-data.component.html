@@ -1,0 +1,71 @@
+<div class="card m-3">
+    <div>
+        <button pButton icon="mdi mdi-arrow-left-thin-circle-outline"
+                (click)="window.history.back()"
+                class="p-element text-2xl p-1 p-button p-component p-button-icon-only"><span
+            class="p-button-icon mdi mdi-arrow-left-thin-circle-outline" aria-hidden="true"></span>
+        </button>
+    </div>
+    <p-splitter [panelSizes]="[50, 50]" [minSizes]="[30, 30]">
+        <ng-template pTemplate>
+            <p-tree
+                [value]="service.nodesList$()"
+                class="w-full"
+                selectionMode="single"
+                [(selection)]="selectedNode"
+                [filter]="true"
+                (onNodeSelect)="nodeSelect($event)" (onNodeUnselect)="nodeUnSelect()"
+                filterMode="strict"
+                filterPlaceholder="Strict Filter">
+                <ng-template let-state pTemplate="togglericon">
+                    @if (!state) {
+                        <i class="mdi mdi-folder-outline"></i>
+                    } @else if (state) {
+                        <i class="mdi mdi-folder-open-outline text-primary"></i>
+                    }
+                </ng-template>
+            </p-tree>
+            <p-contextMenu #cm [model]="menuItems"/>
+        </ng-template>
+        <ng-template pTemplate>
+            <c-node-struct [node]="selectedNode" class="w-full"/>
+        </ng-template>
+    </p-splitter>
+
+</div>
+
+<p-confirmDialog #contaDialog [style]="{ width: '300px' }">
+    <ng-template pTemplate="header">
+        <h3>{{ 'balance.structure.confirmDialog.title' | translate }}</h3>
+    </ng-template>
+    <ng-template pTemplate="message">
+        <div class="grid">
+            <div class="field p-fluid w-full">
+                <label for="account">{{ 'balance.structure.confirmDialog.accountName' | translate }}</label>
+                <input pInputText required [(ngModel)]="accountName" id="account">
+            </div>
+            @if (rootAccount) {
+                <div class="field p-fluid w-full">
+                    <label for="type">{{ 'balance.structure.confirmDialog.accountType' | translate }}</label>
+                    <p-dropdown appendTo="body" [options]="typeAccount" id="type"
+                                optionLabel="name" optionValue="value" [(ngModel)]="accountType">
+                        <ng-template let-selected pTemplate="selectedItem">
+                            @if (selected) {
+                                {{ selected.name | translate }}
+                            }
+                        </ng-template>
+                        <ng-template let-data pTemplate="item">
+                            {{ data.name | translate }}
+                        </ng-template>
+                    </p-dropdown>
+                </div>
+            }
+        </div>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button (click)="contaDialog.reject()" class="p-button-outlined mr-2" icon="mdi mdi-close"
+                label="{{'common.cancel' | translate}}" pButton type="button"></button>
+        <button (click)="contaDialog.accept()" class="p-button-outlined mr-2" icon="mdi mdi-check"
+                label="{{'common.save' | translate}}" pButton type="button"></button>
+    </ng-template>
+</p-confirmDialog>

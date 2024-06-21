@@ -9,6 +9,7 @@ import {
 
 @Component({
     selector: 'c-financial-clasification',
+    styleUrls: ['./financial-clasification.component.scss'],
     templateUrl: './financial-clasification.component.html',
 })
 export class FinancialClasificationComponent extends BaseComponentDirective implements OnInit {
@@ -17,6 +18,7 @@ export class FinancialClasificationComponent extends BaseComponentDirective impl
     override headersTable: HeadersTable[] = [
         {header: 'Code', field: 'code', sort: true, class: 'text-center', visible: true},
         {header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true},
+        {header: 'Tipo de conta', field: 'balanceAccountType', sort: true, class: 'text-center', visible: true},
         {header: 'Tipo', field: 'type', sort: true, class: 'text-center', visible: true},
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];
@@ -24,8 +26,8 @@ export class FinancialClasificationComponent extends BaseComponentDirective impl
     constructor(public service: FinancialClasificationService) {
         super();
         this.service.loadAll({
-                pageNumber: 0,
-                pageSize: 25,
+            pageNumber: 0,
+            pageSize: 25,
 
         })
     }

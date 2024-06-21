@@ -20,6 +20,8 @@ import {MAddCaixasComponent} from "./components/m-add-caixa/m-add-caixas.compone
 import {SessionServices} from "../../../../core/injects/session.services";
 import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
 import {MAddBanksComponent} from "./components/m-add-banks/m-add-banks.component";
+import {BanksService} from "../../service/banks.service";
+import {BrazilActiveBanks} from "../../../../core/util";
 
 @Component({
     selector: 'c-shops-configuration',
@@ -53,6 +55,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 private shopsServices: ShopsService,
                 public printersServices: PrintersService,
                 public cashRegisterService: CashRegisterService,
+                public banksService: BanksService,
                 private layout: LayoutService,
                 public session: SessionServices,
                 public commercesService: CommercesService,
@@ -68,6 +71,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             } else {
                 this.printersServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
                 this.cashRegisterService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                this.banksService.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
                 this.selectedStore = this.session.getCurrentStore();
                 this.session.setCurrentStore(this.selectedStore);
                 this.onlineStore = this.selectedStore.hasOnlineCommerce;
@@ -288,12 +292,14 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
         }
     }
 
-    addEditContaCorrente(){
+    addEditContaCorrente(param: any) {
         let dialogRef;
+        this.banksService.openModalAddOrEdit();
         dialogRef = this.dialogService.open(MAddBanksComponent, {
-            data: null,
+            data: param,
             width: '350px',
         })
+        this.dialogRegistryService.addDialog(dialogRef);
     }
 
     patchEnable(event: any, item: PrinterDto) {
@@ -394,6 +400,26 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             takeUntil(this.ngUnsubscribe),
             confirmDialog(() => this.cashRegisterService.delete({id}))
         ).subscribe();
+    }
+
+    deleteContaCorrente(id: string) {
+        this.confirmationService.confirm(
+            'security.user.messages.confirmation',
+            'security.user.messages.message'
+        ).pipe(
+            takeUntil(this.ngUnsubscribe),
+            confirmDialog(() => this.banksService.delete({id}))
+        ).subscribe();
+    }
+
+    getDataBanks(bank: any, type: 'IMAGE' | 'NAME') {
+        const select = BrazilActiveBanks.find(x => x.COMPE === bank.bank);
+        if(type === 'NAME'){
+            return select.ShortName
+        } else {
+            return select.Icon
+        }
+
     }
 
 

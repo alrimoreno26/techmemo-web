@@ -115,6 +115,10 @@ export class StoreContasPagarServices extends StoreComponentService<any> {
         })
     }
 
+    baixarInstallment(id: string, data: any): Observable<any>{
+        return  this.contasPagarService.updatedInstallmentsBill(id, data);
+    }
+
     saveInstallmentsBillBackground(contaId: any, id: string, data: any) {
         this.contasPagarService.updatedInstallmentsBill(id, data).subscribe(() => {
             this.patchState({dialog: false});

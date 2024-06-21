@@ -51,4 +51,8 @@ export class FinancialTransactionsServices extends StoreComponentService<any> {
     removeFinancialTransactionProduct(id: string): Observable<any> {
         return this.storeFinancialTransactions.removeFinancialTransactionProduct(id);
     }
+
+    efectivarBaixa(params: any, id: string): Observable<any> {
+        return this.storeFinancialTransactions.updateFinancialTransactions(params, id);
+    }
 }

@@ -34,7 +34,7 @@
                 </div>
                 <p-dropdown
                     [options]="accountType"
-                    formControlName="accountType"
+                    formControlName="type"
                     optionLabel="name"
                     optionValue="code"
                     [appendTo]="'body'"
@@ -42,7 +42,7 @@
                 >
                     <ng-template let-account pTemplate="item">
                         <div class="flex bank-item">
-                            <div class="pl-2">{{ account.name }} ({{ account.code }})</div>
+                            <div class="pl-2">{{ account.name }}</div>
                         </div>
                     </ng-template>
                 </p-dropdown>
@@ -54,7 +54,7 @@
                 </div>
                 <p-inputMask
                     id="bankBranch"
-                    formControlName="bankBranch"
+                    formControlName="agency"
                     mask="{{agencyNumberMask}}"
                     class="w-full"
                     [style]="{'width':'100%'}"
@@ -82,19 +82,7 @@
                 </div>
                 <p-inputNumber
                     id="codeIspb"
-                    formControlName="codeIspb"
-                    [style]="{'width':'100%'}"
-                    class="w-full"
-                >
-                </p-inputNumber>
-            </div>
-            <div class="accountNumber pb-3">
-                <div class="form-label">
-                    {{ "addBankAccountModal.paymentAccountLabel" | translate }}
-                </div>
-                <p-inputNumber
-                    id="paymentAccountNumber"
-                    formControlName="paymentAccountNumber"
+                    formControlName="bankIspb"
                     [style]="{'width':'100%'}"
                     class="w-full"
                 >

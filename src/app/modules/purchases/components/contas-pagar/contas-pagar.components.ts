@@ -13,22 +13,28 @@ import {confirmDialog} from "../../../../core/rx/confirm";
 import {ConfirmServices} from "../../../../core/injects/confirm.services";
 import {dA} from "@fullcalendar/core/internal-common";
 import {isNull, omitBy} from "lodash";
+import {PaymentMethodService} from "../../../financial/service/payment-method.service";
+import {FinancialTransactionsServices} from "../../services/financial-transactions.services";
+import {ContasPagarService} from "../../../../core/services/contas-pagar.service";
 
 @Component({
     selector: 'c-contas-pagar',
     templateUrl: './contas-pagar.components.html',
     styles: [`
-        ::ng-deep{
+        ::ng-deep {
             .parent-select > div:nth-child(1),
             .parent-select > div:nth-child(2) {
                 flex: 1;
             }
+
             div#pn_id_5-titlebar {
                 padding: 10px !important;
             }
+
             #pn_id_5_content .p-panel-content {
                 padding: 5px !important;
             }
+
             #tableParcelas .p-datatable-wrapper,
             #tableContas .p-datatable-wrapper, {
                 height: calc(100vh - 380px) !important;
@@ -41,7 +47,9 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     override modalContent = MContasPagarComponent;
 
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
+    paymentDate: Date = new Date();
     type: string = 'ALL';
+    paymentStructureId: any;
     selectedItem: any;
     selectedInstallements: any;
     suggestions: any[] = [];
@@ -63,11 +71,15 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
     viewPayment = '-'
     openDialog = false;
     visible = false;
+    onlyRead: boolean = false;
 
     constructor(public service: StoreContasPagarServices,
+                public paymentMethodService: PaymentMethodService,
                 private financeService: FinancialClasificationService,
                 private confirmationService: ConfirmServices) {
         super()
+        this.paymentMethodService.loadLight()
+
         let data =
             omitBy({
                 state: this.type === 'ALL' ? null : this.type,
@@ -310,7 +322,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         })
     }
 
-    payInstallments(bills: any) {
+    payInstallments(bills: any, onlyRead = false) {
         this.selectedInstallements = {
             ...bills,
             paymentValue: bills.value,
@@ -318,9 +330,18 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
             addedValue: 0,
             expirationDate: new Date(bills.expirationDate)
         };
-        console.log(this.selectedInstallements)
+        this.onlyRead = onlyRead;
+        if (this.onlyRead) {
+            if (bills.valuePaid > bills.value) {
+                this.selectedInstallements.addedValue = bills.valuePaid - bills.value;
+                this.selectedInstallements.paymentValue = bills.valuePaid;
+                this.selectedInstallements.paymentDate = new Date(bills.paymentDate);
+                this.viewPayment = '+'
+            }
+        }
         this.visible = true;
     }
+
 
     calculatePaymentValue(event: any) {
         if (this.viewPayment === '-') {
@@ -330,7 +351,7 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         }
     }
 
-    changeOptionsState(){
+    changeOptionsState() {
         if (this.viewPayment === '-') {
             this.selectedInstallements.paymentValue = this.selectedInstallements.value - this.selectedInstallements.addedValue
         } else {
@@ -348,5 +369,25 @@ export class ContasPagarComponents extends BaseComponentDirective implements OnI
         ).subscribe();
     }
 
+    efectivarBaixa() {
+        const baixa = {
+            paymentDate: formatDate(this.paymentDate),
+            valuePaid: this.selectedInstallements.paymentValue,
+            paid: true,
+            paymentStructureId: this.paymentStructureId.id,
+        }
+        this.service.baixarInstallment(this.selectedInstallements.id, baixa).subscribe((response) => {
+            this.service.loadAllInstallments({
+                type: this.type,
+                startDate: formatDate(this.rangeDates[0]),
+                endDate: formatDate(this.rangeDates[1]),
+                pageNumber: this.firstInstallement,
+                pageSize: this.sizeInstallment,
+            })
+            this.service.loadSummary();
+            this.visible = false;
+        })
+
+    }
 
 }

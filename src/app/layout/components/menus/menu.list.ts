@@ -116,16 +116,16 @@ export const menuList: any[] = [
                 routerLink: ['financial/financial-clasification']
             },
             {
-                label: 'Estrutura DRE',
-                roles: [domainEnum.ALL],
-                icon: 'mdi mdi-cash-edit mdi-24px',
-                routerLink: ['financial/structure-dre']
-            },
-            {
                 label: 'DRE',
                 roles: [domainEnum.ALL],
+                icon: 'mdi mdi-cash-edit mdi-24px',
+                routerLink: ['financial/dre']
+            },
+            {
+                label: 'Estrutura DRE',
+                roles: [domainEnum.ALL],
                 icon: 'mdi mdi-cash-check mdi-24px',
-                routerLink: ['financial/payment-method']
+                routerLink: ['financial/structure-dre']
             },
             {
                 label: 'Meios de pagamento',

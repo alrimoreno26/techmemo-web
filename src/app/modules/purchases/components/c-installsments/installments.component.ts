@@ -26,6 +26,7 @@ import {StorePurchasesServices} from "../../services/store.purchases.services";
 export class InstallmentsComponent implements OnInit {
 
     @Input() config: any;
+    @Input() totalProducts: any;
     @Output() confirmInstallment: EventEmitter<any> = new EventEmitter<any>()
     form: FormGroup;
 
@@ -50,11 +51,9 @@ export class InstallmentsComponent implements OnInit {
         this.paymentMethodService.loadLight()
         effect(() => {
             if (this.storeService.selectedEntity$() !== undefined) {
-                console.log(this.storeService.selectedEntity$())
                 this.paymentInstallments = this.storeService.selectedEntity$().paymentInstallments.paymentInstallments ?? [];
                 this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate + 'T00:00') : this.rangeDates = new Date();
                 this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
-                // this.qParcelas > 0 ? this.mParcelas = true : this.parcelas = false;
                 this.reduceTotalPaymentsInstall();
             }
         });
@@ -69,7 +68,7 @@ export class InstallmentsComponent implements OnInit {
             paymentStructureId: new FormControl<any>(this.config?.paymentInstallments?.paymentStructure, Validators.required),
             provision: new FormControl<boolean>(this.config?.paymentInstallments?.provision || false, Validators.required),
             purchaseCode: new FormControl<string>({value: this.config?.code, disabled: true}),
-            purchaseValue: new FormControl<string>({value: this.config?.totalValue, disabled: true}),
+            purchaseValue: new FormControl<string>({value: this.totalProducts, disabled: true}),
             supplierId: new FormControl<string>(this.config?.supplierId, Validators.required)
         });
         this.paymentInstallments = this.config?.paymentInstallments?.paymentInstallments ?? [];
@@ -152,7 +151,6 @@ export class InstallmentsComponent implements OnInit {
     }
 
     deleteRow(product: any) {
-        debugger
         const index = this.paymentInstallments.findIndex(p => p.id === product.id);
         if (index !== -1) {
             this.storeService.deleteSingleInstallment({

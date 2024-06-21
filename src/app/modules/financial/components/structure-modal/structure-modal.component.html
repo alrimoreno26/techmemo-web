@@ -1,0 +1,31 @@
+<ng-template dialog-header><span class="p-dialog-title">Nova Estrutura DRE</span></ng-template>
+<form [formGroup]="form" class="grid">
+  <div class="col-12">
+    <div class="field p-fluid">
+      <label for="description" class="block required">{{ 'balance.structure.labels.description' | translate }}</label>
+      <input id="description" formControlName="description" formFieldValidation pInputText>
+    </div>
+    <div class="field">
+      <label>{{ 'summary.labels.currencyView'| translate }}</label>
+      <p-selectButton [options]="stateOptions" styleClass="mt-2"
+                      formControlName="currencyFormat" optionLabel="name" optionValue="value">
+        <ng-template let-item pTemplate>
+         {{item.name | translate}}
+        </ng-template>
+      </p-selectButton>
+    </div>
+    <div class="field">
+      <label for="decimalPrecision" class="block required">
+        {{ 'summary.labels.decimalPrecision' | translate }}
+      </label>
+      <p-selectButton [options]="decimalPrecision" styleClass="mt-2" id="decimalPrecision"
+                      formControlName="decimalPrecision" optionLabel="name" optionValue="value"/>
+    </div>
+  </div>
+</form>
+<div class="grid justify-content-end mt-2">
+  <button (click)="onClose()" class="p-button-outlined mr-2" icon="mdi mdi-close"
+          label="{{'common.cancel' | translate}}" pButton type="button"></button>
+  <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined mr-2" icon="mdi mdi-check"
+          label="{{'common.save' | translate}}" pButton type="button"></button>
+</div>

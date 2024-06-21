@@ -168,12 +168,25 @@
                                                             [disabled]="bills.paid"
                                                             (click)="editInstallment(installments.id,bills)"
                                                             type="button"></button>
+                                                    <button class="p-button-rounded p-button-text p-button-success"
+                                                            icon="mdi mdi-cash-check mdi-24px"
+                                                            pButton
+                                                            [disabled]="bills.paid"
+                                                            (click)="payInstallments(bills)"
+                                                            type="button"></button>
                                                     <button class="p-button-rounded p-button-text p-button-danger"
                                                             icon="mdi mdi-delete mdi-24px"
                                                             [disabled]="bills.paid"
                                                             (click)="deleteInstallment(installments.id, bills)"
                                                             pButton
                                                             type="button"></button>
+                                                    @if (bills.paid){
+                                                        <button class="p-button-rounded p-button-text"
+                                                                (click)="payInstallments(bills, true)"
+                                                                icon="mdi mdi-eye mdi-24px"
+                                                                pButton
+                                                                type="button"></button>
+                                                    }
                                                 </td>
                                             </tr>
                                         </ng-template>
@@ -246,6 +259,13 @@
                                         (click)="deleteSimpleInstallment(bills)"
                                         pButton
                                         type="button"></button>
+                                @if (bills.paid){
+                                    <button class="p-button-rounded p-button-text"
+                                            (click)="payInstallments(bills, true)"
+                                            icon="mdi mdi-eye mdi-24px"
+                                            pButton
+                                            type="button"></button>
+                                }
                             </td>
                         </tr>
                     </ng-template>
@@ -387,6 +407,7 @@
                                 optionLabel="label"
                                 styleClass="flex w-full parent-select"
                                 style="{'width': '100%'}"
+                                [disabled]="onlyRead"
                                 optionValue="value">
 
                 </p-selectButton>
@@ -400,6 +421,7 @@
                         inputStyleClass="w-full"
                         currency="BRL"
                         locale="pt-BR"
+                        [disabled]="onlyRead"
                         mode="currency"
                     ></p-inputNumber>
                 </div>
@@ -425,18 +447,21 @@
                     <div class="text-500 w-6 md:w-4 font-medium">Tipo Pagamento</div>
                     <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
                         <p-dropdown class="w-full" styleClass="w-full" [appendTo]="'body'"
-                                    [options]="[]"
+                                    [options]="paymentMethodService.lightEntities$()"
+                                    [(ngModel)]="paymentStructureId"
                                     optionLabel="description"
+                                    [disabled]="onlyRead"
                                     placeholder="Tipo Pagamento"></p-dropdown>
                     </div>
                 </li>
                 <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
                     <div class="text-500 w-6 md:w-4 font-medium">Data Baixa</div>
                     <div class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">
-                        <p-calendar [(ngModel)]="rangeDates"
+                        <p-calendar [(ngModel)]="paymentDate"
                                     [ngModelOptions]="{standalone: true}"
                                     [appendTo]="'body'"
                                     styleClass="w-full"
+                                    [disabled]="onlyRead"
                                     dateFormat="dd/mm/yy"
                                     [readonlyInput]="true"></p-calendar>
                     </div>
@@ -447,6 +472,8 @@
     <ng-template pTemplate="footer">
         <div class="flex align-items-center gap-2">
             <button pButton pRipple class="p-button-primary flex-1 border-round"
+                    (click)="efectivarBaixa()"
+                    [disabled]="onlyRead"
                     label="Efectivar Baixa"
                     icon="mdi mdi-cash-minus mdi-24px"></button>
         </div>

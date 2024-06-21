@@ -12,35 +12,35 @@ import {merge} from 'lodash';
  * @param injector {@link Injector}
  */
 export function appInitializerFactory(translate: TranslateService, injector: Injector): () => Promise<any> {
-  return () => new Promise<any>((resolve: any) => {
-    const locationInitialized = injector.get(LOCATION_INITIALIZED, Promise.resolve(null));
-    locationInitialized.then(() => {
-      translate.use('pt').pipe(
-        map(() => console.log(`Successfully initialized language.'`)),
-        catchError(() => of(new Error(`Problem with language initialization.'`))),
-        finalize(() => resolve(null))
-      ).subscribe();
+    return () => new Promise<any>((resolve: any) => {
+        const locationInitialized = injector.get(LOCATION_INITIALIZED, Promise.resolve(null));
+        locationInitialized.then(() => {
+            translate.use('pt').pipe(
+                map(() => console.log(`Successfully initialized language.'`)),
+                catchError(() => of(new Error(`Problem with language initialization.'`))),
+                finalize(() => resolve(null))
+            ).subscribe();
+        });
     });
-  });
 }
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
 export class HttpTranslateLoader implements TranslateLoader {
-  resources: Array<string> = ['common','security'];
+    resources: Array<string> = ['common', 'security', 'balance'];
 
-  constructor(private http: HttpClient) {
-  }
+    constructor(private http: HttpClient) {
+    }
 
-  getTranslation(lang: string): Observable<any> {
-    const requests = this.resources.map(resource => {
-      return this.http.get(`./assets/i18n/${lang}/${resource}.json`)
-        .pipe(catchError(() => {
-          console.error('Something went wrong for the following translation file:', `./assets/i18n/${lang}/${resource}.json`);
-          return of({});
-        }));
-    });
-    return forkJoin(requests).pipe(map(response => response.reduce((prev, next) => merge(prev, next), {})));
-  }
+    getTranslation(lang: string): Observable<any> {
+        const requests = this.resources.map(resource => {
+            return this.http.get(`./assets/i18n/${lang}/${resource}.json`)
+                .pipe(catchError(() => {
+                    console.error('Something went wrong for the following translation file:', `./assets/i18n/${lang}/${resource}.json`);
+                    return of({});
+                }));
+        });
+        return forkJoin(requests).pipe(map(response => response.reduce((prev, next) => merge(prev, next), {})));
+    }
 }

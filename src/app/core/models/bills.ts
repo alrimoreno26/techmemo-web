@@ -1,3 +1,10 @@
+import {
+    BalanceAccountType,
+    BankAccountType,
+    calculationTypeAccountStructure,
+    currencyFormatEnum, operatorCalculationTO
+} from "../enums/commerce";
+
 export interface BillLigthDto {
     amountPaymentInstallments: number
     classifier: ClassifierDto
@@ -65,3 +72,101 @@ export interface BillSummaryDto {
     totalValueToPay: number;
 }
 
+export interface BankAccount {
+    accountNumber: number
+    agency: string
+    bank: string
+    bankIspb: number
+    id: string
+    type: BankAccountType;
+}
+
+
+
+export interface BalanceStructureLightTO {
+    created: string;
+    description: string;
+    enabled: boolean;
+    id: string;
+    inverted: boolean;
+    pattern: boolean;
+    organizationId: string;
+    currencyFormat: currencyFormatEnum;
+    decimalPrecision: number;
+}
+
+
+export interface CreateAccountStructureTO {
+    accountId: string | null;
+    baseForVA: boolean;
+    calculationType: calculationTypeAccountStructure;
+    parentAccountStructureId: string | null;
+    position: number;
+    prefix: string | null;
+    sheet: boolean;
+    suffix: string | null;
+    visualize: boolean;
+    nullableIfNotHavePreviousYear: boolean;
+}
+
+export interface AccountStructureTO extends CreateAccountStructureTO {
+    created?: string;
+    id?: string;
+    name: string;
+    type: BalanceAccountType;
+    parent?: string
+}
+
+export interface AccountEquationStructureTO {
+    accountStructureId: string;
+    calculations: CalculationTO[];
+    created: string;
+    id: string;
+    operator: operatorCalculationTO;
+}
+
+export interface CalculationTO {
+    accountId: string;
+    changeSignEndValue: boolean;
+    constant: number;
+    id?: string;
+    name: string;
+    operator: operatorCalculationTO;
+    previousYears: number;
+}
+
+export interface BalanceFormatAccount {
+    created: string;
+    id: string;
+    name: string;
+    organizationId: string;
+    parentAccountId: string | null;
+    sheet: boolean;
+    type: BalanceAccountType;
+    calculationType: calculationTypeAccountStructure;
+}
+export interface StructNode extends AccountStructureTO {
+    parent: string;
+    nullableIfNotHavePreviousYear: boolean;
+    structureData?: string;
+    accountsId?: string;
+    equations?: AccountEquationStructureTO[];
+    conditionalEquations?: ConditionalAccountEquationStructureTO;
+}
+export interface ConditionalAccountEquationStructureTO {
+    accountStructureId: string;
+    anotherResultCaseCondition: AccountEquationStructureTO[];
+    created: string;
+    firstCondition: AccountEquationStructureTO[];
+    id: string;
+    operator: operatorConditionalTO;
+    resultCaseCondition: AccountEquationStructureTO[];
+    secondCondition: AccountEquationStructureTO[];
+}
+export enum operatorConditionalTO {
+    LESSER = 'LESSER',
+    GREATER = 'GREATER',
+    EQUAL = 'EQUAL',
+    LESSER_EQUAL = 'LESSER_EQUAL',
+    GREATER_EQUAL = 'GREATER_EQUAL'
+}
