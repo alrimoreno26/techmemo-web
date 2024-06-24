@@ -1,0 +1,39 @@
+@if (showCalc) {
+  <form [formGroup]="form">
+    <section formArrayName="calculations">
+      @for (calc of data.controls; track calc; let i = $index) {
+        <div class="grid justify-content-between m-3" [formGroupName]="i">
+          <div class="flex justify-content-start flex-1 flex-wrap mx-3 align-items-center border-calc"
+            formArrayName="calculations">
+            @for (cal of calc.get('calculations') | formArray; track cal; let j = $index; let last = $last) {
+              <c-calculations [formControlName]="j" [last]="last" class="m-2"
+                (add)="addCalc(i, j)" (remove)="removeCalc(i,j)" (changeStatus)="updateStatus($event)"/>
+            }
+          </div>
+          @if (!withoutOperation) {
+            <div class="align-items-center grid justify-content-evenly w-10rem">
+              <c-operator-calc formControlName="operator"/>
+              <button pButton type="button" icon="mdi mdi-table-row-plus-after" (click)="addNode(i)"
+                      class="p-button-text p-button-outlined text-primary"
+                      pTooltip="{{'balance.structure.tooltip.addNodeForm' | translate}}" tooltipPosition="top"
+              ></button>
+              <button pButton type="button" icon="mdi mdi-trash-can-outline" (click)="removeNode(i)"
+                      class="p-button-text p-button-outlined text-danger"
+                      pTooltip="{{'balance.structure.tooltip.removeNodeForm' | translate}}" tooltipPosition="top"
+              ></button>
+            </div>
+          }
+        </div>
+        @if (calc.errors) {
+          <span class="block text-red-500 text-center">
+            @if (calc.getError('operator')) {
+              <small>{{ 'balance.structure.form.operatorFormula' | translate}}</small>
+            } @else if (calc.getError('formula')) {
+              <small>{{ 'balance.structure.form.calculation' | translate}}</small>
+            }
+          </span>
+        }
+      }
+    </section>
+  </form>
+}

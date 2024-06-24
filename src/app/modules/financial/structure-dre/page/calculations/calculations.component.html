@@ -1,0 +1,115 @@
+<p-inplace>
+  <ng-template pTemplate="display">
+    <div class="-m-3 px-4">
+      <b class="text-sm white-space-nowrap">
+        {{ data | calculationValue }} {{ data?.operator | operator: false }}
+      </b>
+      @if (form.errors) {
+        <span class="block text-red-500 text-center">
+          @if (form.getError('operator')) {
+            <small>{{ 'balance.structure.form.operator' | translate }}</small>
+          } @else if (form.getError('calculation')) {
+            <small>{{ 'balance.structure.form.calculation' | translate }}</small>
+          }
+        </span>
+      }
+    </div>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <div class="grid justify-content-between m-3 min-w-full w-20rem" [formGroup]="form">
+      <div class="justify-content-start flex-1 flex-wrap mx-3 align-items-center">
+        <div class="p-fluid field">
+          <label for="type">{{ 'balance.structure.calculations.type' | translate }}</label>
+          <p-dropdown [options]="typeOptions" formControlName="type"
+                      optionLabel="name" optionValue="value" styleClass="w-full" id="type">
+            <ng-template let-selected pTemplate="selectedItem">
+              @if (selected) {
+                {{ selected.name | translate }}
+              }
+            </ng-template>
+            <ng-template let-data pTemplate="item">
+              {{ data.name | translate }}
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <!--account-->
+        @if (form.get('type')?.value === 'account') {
+          <div class="p-fluid field">
+            <label for="account">{{ 'balance.structure.calculations.account' | translate }}</label>
+            <p-dropdown [options]="service.accountList$()" formControlName="accountId" [filter]="true"
+                        optionLabel="name" styleClass="w-full" id="account">
+              <ng-template let-selected pTemplate="selectedItem">
+                @if (selected) {
+                  <small class="block">{{ selected.name }}</small>
+                  <small>
+                    {{ 'balance.structure.type.' + selected.type | translate }}
+                    @if (selected.parent) {
+                      - {{ selected.parent }}
+                    }
+                  </small>
+                }
+              </ng-template>
+              <ng-template let-data pTemplate="item">
+                <small class="block">{{ data.name }}</small>
+                <small>
+                  {{ 'balance.structure.type.' + data.type | translate }}
+                  @if (data.parent) {
+                    - {{ data.parent }}
+                  }
+                </small>
+              </ng-template>
+            </p-dropdown>
+          </div>
+        } @else {
+          <!--const-->
+          <div class="p-fluid field">
+            <label for="constant">{{ 'balance.structure.calculations.constant' | translate }}</label>
+            <p-inputNumber formControlName="constant" id="constant"/>
+          </div>
+        }
+        <div class="grid justify-content-around align-items-center">
+          <div class="p-fluid field text-center">
+            <label for="changeSignEndValue" class="block mb-3">
+              {{ 'balance.structure.calculations.changeSignEndValue' | translate }}
+            </label>
+            <p-inputSwitch formControlName="changeSignEndValue" id="changeSignEndValue"
+                           [trueValue]="true" [falseValue]="false"/>
+          </div>
+          <div class="p-fluid field">
+            <label for="operator">{{ 'balance.structure.calculations.operator' | translate }}</label>
+            <p-dropdown [options]="operatorOptions" formControlName="operator"
+                        optionLabel="name" optionValue="value" styleClass="w-full" id="operator"/>
+          </div>
+          <div class="p-fluid field">
+            <label for="operator">{{ 'balance.structure.calculations.previousYears' | translate }}</label>
+            <p-inputNumber mode="decimal" [min]="1" [max]="15" [showClear]="true"
+                           formControlName="previousYears" styleClass="w-full" id="previousYears"/>
+          </div>
+        </div>
+        @if ((form.touched || form.dirty) && form.errors) {
+          <span class="block text-red-500 text-center">
+            @if (form.getError('account')) {
+              <small>{{ 'balance.structure.form.account' | translate }}</small>
+            } @else if (form.getError('constant')) {
+              <small>{{ 'balance.structure.form.constant' | translate }}</small>
+            } @else if (form.getError('operator')) {
+              <small>{{ 'balance.structure.form.operator' | translate }}</small>
+            } @else if (form.getError('calculation')) {
+              <small>{{ 'balance.structure.form.calculation' | translate }}</small>
+            }
+          </span>
+        }
+      </div>
+      <div class="align-items-center grid justify-content-evenly w-6rem">
+        <button pButton type="button" icon="mdi mdi-table-row-plus-after" (click)="add.emit()"
+                class="p-button-text p-button-outlined text-primary"
+                pTooltip="{{'balance.structure.tooltip.addNodeCalc' | translate}}" tooltipPosition="top"
+        ></button>
+        <button pButton type="button" icon="mdi mdi-trash-can-outline" (click)="remove.emit()"
+                class="p-button-text p-button-outlined text-danger"
+                pTooltip="{{'balance.structure.tooltip.removeNodeCalc' | translate}}" tooltipPosition="top"
+        ></button>
+      </div>
+    </div>
+  </ng-template>
+</p-inplace>

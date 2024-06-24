@@ -1,5 +1,5 @@
 @if (data) {
-    <div class="flex flex-column h-full" id="node-structure">
+    <div class="flex flex-column h-full px-3" id="node-structure">
         <h3 class="m-3 flex align-items-center">
             {{ data.name }}
             <span [class]="data.type" class="type-badge">{{ 'balance.structure.type.' + data.type | translate }}</span>
@@ -13,80 +13,66 @@
                     </ng-template>
                 </p-selectButton>
             </div>
-            <div class="flex mt-2">
+            <p-divider />
+            <div class="mt-3">
+                <c-formula-calc formControlName="equations" (changeStatus)="updateStatus($event, 'equations')"/>
+            </div>
+            <p-divider />
+            <div class="flex mt-3">
                 <p-fieldset class="w-full" legend="Novas contas" styleClass="w-full">
-                    <div class="grid">
-                        <div class="col-6">
-                            <p-button (click)="op.toggle($event)" icon="mdi mdi-table-column-plus-after"
-                                      label="Nova Conta"/>
-                            <p-overlayPanel #op>
-                                <div class="flex flex-column gap-3 w-15rem">
-                                    <div class="field p-fluid w-full">
-                                        <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
-                                                        (completeMethod)="search($event)"
-                                                        inputStyleClass="w-full"
-                                                        formControlName="classifierId"
-                                                        (input)="searchClassifiers($event)"
-                                                        [dropdown]="true"
-                                                        field="name"
-                                                        placeholder="Class Financiera"
-                                                        [suggestions]="suggestions"></p-autoComplete>
-                                    </div>
-                                    <div class="flex w-full justify-content-end">
-                                        <button (click)="addConta()" class="p-button-outlined mr-2" icon="mdi mdi-check"
-                                                label="{{'common.save' | translate}}" pButton type="button"></button>
-                                    </div>
-                                </div>
-
-                            </p-overlayPanel>
+                    <div class="flex">
+                        <p-messages [(value)]="messages" [enableService]="false" closable="false"/>
+                    </div>
+                    <div class="flex gap-3">
+                        <div>
+                            <div class="field p-fluid w-full">
+                                <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                                (completeMethod)="search($event)"
+                                                inputStyleClass="w-full"
+                                                formControlName="classifierId"
+                                                (input)="searchClassifiers($event)"
+                                                [dropdown]="true"
+                                                field="name"
+                                                placeholder="Class Financiera"
+                                                [suggestions]="suggestions"></p-autoComplete>
+                            </div>
                         </div>
-                        <div class="col-6">
+                        <div class="flex-1">
+                            <p-dropdown
+                                class="w-full"
+                                [options]="typeOptions" optionLabel="name"
+                                emptyMessage="{{'primeng.emptyMessage' | translate}}"
+                                emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
+                                optionValue="value"
+                                placeholder="Formula"
+                                appendTo="body" styleClass="p-sidebar-sm"
+                                [style]="{'width': '100%'}" id="subordination">
+                                  <ng-template let-item pTemplate="item">
+                                    <div class="organization-item flex flex-row gap-2 ">
+                                      <div class="name font-medium">{{ item.name |translate }}</div>
+                                    </div>
+                                  </ng-template>
+                            </p-dropdown>
 
+                        </div>
+                        <div>
+                            <button (click)="addConta()" class="p-button-outlined mr-2" icon="mdi mdi-check"
+                                    label="{{'common.save' | translate}}" pButton type="button"></button>
                         </div>
                     </div>
                 </p-fieldset>
-                <!--        <div class="flex flex-row align-items-center justify-content-center">-->
-                <!--          <label for="vi" [ngClass]="{'font-bold': form.get('visualize')?.value}">-->
-                <!--            {{ 'balance.structure.labels.show' | translate }}-->
-                <!--          </label>-->
-                <!--          <p-inputSwitch inputId="vi" class="mx-5 my-2" formControlName="visualize" [trueValue]="true"-->
-                <!--                         [falseValue]="false"/>-->
-                <!--          <label for="vi" [ngClass]="{'font-bold': !form.get('visualize')?.value}">-->
-                <!--            {{ 'balance.structure.labels.hidden' | translate }}-->
-                <!--          </label>-->
-                <!--        </div>-->
-                <!--        <div class="flex flex-column gap-2">-->
-                <!--          <div class="flex flex-row align-items-center">-->
-                <!--            <label for="va" class="mr-2">{{ 'balance.structure.labels.baseForVA' | translate }}</label>-->
-                <!--            <p-checkbox formControlName="baseForVA" [binary]="true" inputId="va"/>-->
-                <!--          </div>-->
-                <!--          <div class="flex flex-row gap-2">-->
-                <!--            <label for="nullableIfNotHavePreviousYear">-->
-                <!--              {{ 'balance.structure.calculations.nullableIfNotHavePreviousYear' | translate }}-->
-                <!--            </label>-->
-                <!--            <p-checkbox [binary]="true" inputId="nullableIfNotHavePreviousYear"-->
-                <!--                        formControlName="nullableIfNotHavePreviousYear" styleClass="w-full"/>-->
-                <!--          </div>-->
-                <!--        </div>-->
+
             </div>
-            <div class="grid m-2">
-                <!--        <div class="col">-->
-                <!--          <div class="field p-fluid">-->
-                <!--            <label for="prefix">{{ 'balance.structure.labels.prefix' | translate }}</label>-->
-                <!--            <input pInputText formControlName="prefix" id="prefix"/>-->
-                <!--          </div>-->
-                <!--        </div>-->
-                <!--        <div class="col">-->
-                <!--          <div class="field p-fluid">-->
-                <!--            <label for="suffix">{{ 'balance.structure.labels.suffix' | translate }}</label>-->
-                <!--            <input pInputText formControlName="suffix" id="suffix"/>-->
-                <!--          </div>-->
-                <!--        </div>-->
-            </div>
+
+
         </div>
-        <div class="grid justify-content-end m-2">
-            <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined p-button-danger" icon="mdi mdi-trash"
+        <div class="grid justify-content-end m-2 gap-3">
+            <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined" icon="mdi mdi-trash"
                     label="Eliminar conta" pButton type="button"></button>
+            <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined p-button-danger"
+                    icon="mdi mdi-trash"
+                    label="Actualizar conta" pButton type="button"></button>
+
         </div>
     </div>
 }

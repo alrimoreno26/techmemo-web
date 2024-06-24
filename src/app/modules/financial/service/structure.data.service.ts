@@ -333,11 +333,11 @@ export class StructureDataService {
         transformedStructure.forEach(({id, name}) => structIndex[id] = name)
         const {ACTIVE, PASSIVE, DRE, INDEXES_AND_INDICATORS} =
             groupBy(orderBy(transformedStructure, 'position'), 'balanceAccountType');
-        const actives = buildTreeNodes(
+        this.base[0].children = buildTreeNodes(
             ACTIVE?.filter(f => !f.parentAccountStructureId),
             ACTIVE, 'parentAccountStructureId', 'accountsId'
         );
-        const passives = buildTreeNodes(
+        this.base[1].children = buildTreeNodes(
             PASSIVE?.filter(f => !f.parentAccountStructureId),
             PASSIVE, 'parentAccountStructureId', 'accountsId'
         );
@@ -349,7 +349,7 @@ export class StructureDataService {
             INDEXES_AND_INDICATORS?.filter(f => !f.parentAccountStructureId),
             INDEXES_AND_INDICATORS, 'parentAccountStructureId', 'accountsId'
         );
-        this.nodesList$.set([...actives, ...passives, this.base[2], ...index]);
+        this.nodesList$.set([this.base[0], this.base[1], this.base[2], ...index]);
         // @ts-ignore
         this.accountList$.set(transformedStructure.map(m => ({...m, parent: structIndex[m.parentAccountStructureId]})));
     }

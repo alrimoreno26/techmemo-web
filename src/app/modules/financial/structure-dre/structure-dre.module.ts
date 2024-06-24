@@ -29,13 +29,29 @@ import {NodeStructComponent} from "./page/node-struct/node-struct.component";
 import {CheckboxModule} from "primeng/checkbox";
 import {OverlayPanelModule} from "primeng/overlaypanel";
 import {AutoCompleteModule} from "primeng/autocomplete";
+import {FormulaCalcComponent} from "./page/formula-calc/formula-calc.component";
+import {CalculationsComponent} from "./page/calculations/calculations.component";
+import {OperatorCalcComponent} from "./page/operator-calc/operator-calc.component";
+import {FormArrayPipe} from "./pipes/form-array.pipe";
+import {OperatorPipe} from "./pipes/operator.pipe";
+import {InplaceModule} from "primeng/inplace";
+import {InputNumberModule} from "primeng/inputnumber";
+import {CalculationValuePipe} from "./pipes/calculation-value.pipe";
+import {MessagesModule} from "primeng/messages";
+import {DividerModule} from "primeng/divider";
 
 @NgModule({
     declarations: [
         StructureDreComponent,
         StructureModalComponent,
         StructureDataComponent,
-        NodeStructComponent
+        NodeStructComponent,
+        FormulaCalcComponent,
+        CalculationsComponent,
+        OperatorCalcComponent,
+        FormArrayPipe,
+        OperatorPipe,
+        CalculationValuePipe
     ],
     imports: [
         CommonModule,
@@ -58,7 +74,11 @@ import {AutoCompleteModule} from "primeng/autocomplete";
         SplitterModule,
         CheckboxModule,
         OverlayPanelModule,
-        AutoCompleteModule
+        AutoCompleteModule,
+        InplaceModule,
+        InputNumberModule,
+        MessagesModule,
+        DividerModule
     ],
     providers:[
         FinancialClassifiersService,

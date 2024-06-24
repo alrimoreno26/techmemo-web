@@ -1,0 +1,12 @@
+<p-inplace (onActivate)="onShow($event)">
+  <ng-template pTemplate="display">
+    <b class="text-3xl" pTooltip="{{'balance.structure.tooltip.addNodeOp' | translate}}" tooltipPosition="top">
+      {{operator.value | operator: conditionalOperators}}
+    </b>
+  </ng-template>
+  <ng-template pTemplate="content">
+    <p-dropdown (onHide)="onHide()" [formControl]="operator"
+                appendTo="body" optionLabel="name" optionValue="value" styleClass="w-full"
+                [options]="conditionalOperators ? operatorConditionalOptions : operatorOptions"/>
+  </ng-template>
+</p-inplace>

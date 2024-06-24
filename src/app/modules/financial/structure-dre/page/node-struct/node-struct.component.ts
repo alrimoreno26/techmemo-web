@@ -1,5 +1,5 @@
 import {Component, DestroyRef, EventEmitter, inject, Input, Output} from '@angular/core';
-import {TreeNode} from 'primeng/api';
+import {Message, TreeNode} from 'primeng/api';
 import {FormControl, FormGroup} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 import {Options} from "../../../../../core/models";
@@ -31,8 +31,9 @@ export class NodeStructComponent {
     routeId: string = '';
     suggestions: any[] = [];
 
+    messages: Message[] = [];
     data: StructNode;
-    nodeAll:any;
+    nodeAll: any;
     form: FormGroup;
     typeOptions: Options[] = [
         {name: 'balance.structure.labels.noCalculations', value: calculationTypeAccountStructure.NO_CALCULATIONS},
@@ -58,6 +59,9 @@ export class NodeStructComponent {
         this.route.paramMap.subscribe(params => {
             this.routeId = params.get('id') || '';
         });
+        this.messages = [
+            {severity: 'info', summary: 'A conta adicionada será adicionada como uma subconta da conta selecionada'},
+        ];
     }
 
     save(): void {
