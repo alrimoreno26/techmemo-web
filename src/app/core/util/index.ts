@@ -62,7 +62,7 @@ export const setCookie = (key: string, value: string, maxAge: number = 7200) => 
 
     //TODO cuando haya ssl poner SameSite=None; Secure;
     //SameSite=None; Secure;
-    if(domain === 'techmemo-app.s3-website-us-east-1.amazonaws.com'){
+    if (domain === 'techmemo-app.s3-website-us-east-1.amazonaws.com') {
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`
     } else {
         document.cookie = `${key}=${value}; Domain=${domain}; Max-Age=${maxAge}; Path=/;`;
@@ -127,3 +127,17 @@ export const BrazilActiveBanks: Array<any> = [
         "Icon": "city-bank.svg"
     },
 ];
+
+
+export function removeNullProperties<T extends object>(obj: T): Partial<T> {
+    const result: Partial<T> = {};
+
+    Object.keys(obj).forEach(key => {
+        const value = (obj as any)[key];
+
+        if (value !== null) {
+            (result as any)[key] = value;
+        }
+    });
+    return result;
+}

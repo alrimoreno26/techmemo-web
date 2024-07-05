@@ -3,52 +3,54 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {AbstractService} from './abstract.services';
 import {buildURL} from "../util";
-import {AccountStructureTO, BalanceStructureLightTO} from "../models/bills";
+import {AccountEquationStructureTO, AccountStructureTO, BalanceStructureLightTO} from "../models/bills";
 
 
 @Injectable({providedIn: 'root'})
 export class BalanceStructureHttpServices extends AbstractService<BalanceStructureLightTO> {
-  constructor(private httpClient: HttpClient) {
-    super(httpClient, buildURL('/v1/balance-structures'));
-  }
+    constructor(private httpClient: HttpClient) {
+        super(httpClient, buildURL('/v1/balance-structures'));
+    }
 
-  patchStructure(id: string, body: Partial<BalanceStructureLightTO>): Observable<any> {
-    return this.httpClient.patch(`${this.basePath}/${id}`, body);
-  }
+    override update(params: any, idProp: string, queryParams?: any): Observable<BalanceStructureLightTO> {
+        return this.client.patch<any>(buildURL('/v1/account-structures') + '/' + params[idProp], params)
+    }
 
-  changeState(id: string): Observable<any> {
-    return this.httpClient.patch(`${this.basePath}/${id}/enable`, {});
-  }
+    getFormulaByAccount(id: string | '') {
+        return this.client.get(buildURL('/v1/account-structures') + `/${id}/formulas`)
+    }
 
-  /************Accounts***********/
-  getAccounts(id: string): Observable<AccountStructureTO[]> {
-    return this.httpClient.get<AccountStructureTO[]>(`${this.basePath}/${id}/accounts`);
-  }
+    updateAccounts({id, equations}: { equations?: AccountEquationStructureTO[]; id: string }): Observable<any> {
+        const formulas = [
+            {
+                mathOperations: equations ? equations[0].calculations.map(c => {
+                    return {
+                        changeSignEndValue: c.changeSignEndValue,
+                        classifierId: c?.classifierId,
+                        constant: c.constant,
+                        operator: c.operator
+                    }
+                }) : [],
+                operator: equations ? equations[0].operator : []
+            }
+        ]
+        return this.httpClient.put<AccountStructureTO[]>(buildURL('/v1/account-structures') + `/${id}/formulas`, formulas);
+    }
 
-  createAccounts(id: string, body: any[]): Observable<any[]> {
-    return this.httpClient.post<any[]>(`${this.basePath}/${id}/accounts`, body);
-  }
+    patchStructure(id: string, body: Partial<BalanceStructureLightTO>): Observable<any> {
+        return this.httpClient.patch(`${this.basePath}/${id}`, body);
+    }
 
-  /****************Summary*****************/
-  getSummary(id: string): Observable<any[]> {
-    return this.httpClient.get<any[]>(`${this.basePath}/${id}/summaries`);
-  }
+    changeState(id: string): Observable<any> {
+        return this.httpClient.patch(`${this.basePath}/${id}/enable`, {});
+    }
 
-  createSummary(id: string, data: any): Observable<any[]> {
-    return this.httpClient.post<any[]>(`${this.basePath}/${id}/summaries`, [data]);
-  }
+    /************Accounts***********/
+    getAccounts(id: string): Observable<AccountStructureTO[]> {
+        return this.httpClient.get<AccountStructureTO[]>(`${this.basePath}/${id}/accounts`);
+    }
 
-  updateSummary({id, accountStructures}: any): Observable<any> {
-    return this.httpClient.put<any>(
-      `${this.basePath}/summaries/${id}/accounts`, accountStructures
-    );
-  }
-
-  deleteSummary(id: number | string): Observable<any> {
-    return this.httpClient.delete(`${this.basePath}/summaries/${id}`);
-  }
-
-  patchSummary(id: string, body: any): Observable<any> {
-    return this.httpClient.patch(`${this.basePath}/summaries/${id}`, body);
-  }
+    createAccounts(id: string, body: any[]): Observable<any[]> {
+        return this.httpClient.post<any[]>(`${this.basePath}/${id}/accounts`, body);
+    }
 }

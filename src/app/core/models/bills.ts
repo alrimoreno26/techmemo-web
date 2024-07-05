@@ -127,6 +127,7 @@ export interface AccountEquationStructureTO {
 
 export interface CalculationTO {
     accountId: string;
+    classifierId?: string;
     changeSignEndValue: boolean;
     constant: number;
     id?: string;

@@ -1,4 +1,4 @@
-import {Component, DestroyRef, EventEmitter, inject, Input, Output} from '@angular/core';
+import {Component, DestroyRef, effect, EventEmitter, inject, Input, Output} from '@angular/core';
 import {Message, TreeNode} from 'primeng/api';
 import {FormControl, FormGroup} from '@angular/forms';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
@@ -17,15 +17,15 @@ import {ActivatedRoute} from "@angular/router";
     styleUrls: ['./node-struct.component.scss']
 })
 export class NodeStructComponent {
-    @Input() set node(value: TreeNode) {
-        if (value) {
-            console.log(value)
-            const {data} = value;
-            this.nodeAll = value;
-            this.data = data;
-            this.buildForm(data);
-        }
-    };
+    // @Input() set node(value: TreeNode) {
+    //     if (value) {
+    //         console.log(value)
+    //         const {data} = value;
+    //         this.nodeAll = value;
+    //         this.data = data;
+    //         this.buildForm(data);
+    //     }
+    // };
 
     @Output() onUpdateNode: EventEmitter<TreeNode> = new EventEmitter<TreeNode>()
     routeId: string = '';
@@ -42,8 +42,7 @@ export class NodeStructComponent {
             name: 'balance.structure.labels.mappersAccount',
             value: calculationTypeAccountStructure.SUM_OF_RELATED_ACCOUNTS
         },
-        {name: 'balance.structure.labels.customFormula', value: calculationTypeAccountStructure.EQUATIONS},
-        {name: 'balance.structure.labels.customFormulaConditional', value: calculationTypeAccountStructure.CONDITIONAL}
+        {name: 'balance.structure.labels.customFormula', value: calculationTypeAccountStructure.EQUATIONS}
     ];
 
     private destroyRef = inject(DestroyRef);
@@ -62,13 +61,26 @@ export class NodeStructComponent {
         this.messages = [
             {severity: 'info', summary: 'A conta adicionada será adicionada como uma subconta da conta selecionada'},
         ];
+        effect(()=>{
+            const {data} = this.structureDataService.selectedNode$();
+            this.nodeAll = this.structureDataService.selectedNode$();
+            this.data = data;
+            this.buildForm(data);
+            console.log( this.structureDataService.selectedNode$())
+        })
+
     }
 
     save(): void {
         const {value} = this.form;
         const {equations, formulaType, conditionalEquations, ...data} = value
-        // this.structureDataService.updateNode({...this.data, ...value});
-        this.onUpdateNode.emit(data);
+        console.log(equations)
+        console.log(formulaType)
+        console.log(conditionalEquations)
+        debugger
+        this.structureDataService.updateNode({...this.data, ...value});
+        // console.log(data)
+        // this.onUpdateNode.emit(data);
     }
 
     private buildForm(data: StructNode): void {
@@ -78,7 +90,6 @@ export class NodeStructComponent {
             conditionalEquations,
             nullableIfNotHavePreviousYear
         } = data;
-
         this.form = new FormGroup<any>({
             id: new FormControl(id),
             prefix: new FormControl(prefix),

@@ -31,8 +31,9 @@ export class StructureDataComponent {
 
     nodeSelect($event: TreeNodeSelectEvent): void {
         const {node} = $event;
-        const {data} = node;
         this.node = node;
+        console.log(this.node)
+        this.service.setSelectedNode(this.node);
     }
 
     protected readonly typeAccount = typeAccount;

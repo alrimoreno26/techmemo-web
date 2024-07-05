@@ -5,17 +5,19 @@ import {groupBy, orderBy} from 'lodash';
 import {BalanceStructureHttpServices} from "../../../core/services/balance.structure.http.services";
 import {
     AccountStructureTO,
-    BalanceFormatAccount, CreateAccountStructureTO,
+    BalanceFormatAccount, CreateAccountStructureTO, StructNode,
 } from "../../../core/models/bills";
 import {buildTreeNodes} from "../structure-dre/utils";
 import {FinancialClassifiersService} from "../../../core/services/financial-classifiers.service";
-import {BalanceAccountType} from "../../../core/enums/commerce";
+import {BalanceAccountType, calculationTypeAccountStructure} from "../../../core/enums/commerce";
 import {find} from 'lodash';
+import {removeNullProperties} from "../../../core/util";
 
 @Injectable({providedIn: 'platform'})
 export class StructureDataService {
     nodesList$: WritableSignal<TreeNode[]> = signal([]);
     accountList$: WritableSignal<AccountStructureTO[]> = signal([]);
+    selectedNode$: WritableSignal<TreeNode> = signal({});
     private formatRaw$: WritableSignal<BalanceFormatAccount[]> = signal([]);
 
     private base: ({
@@ -154,30 +156,42 @@ export class StructureDataService {
     //     return this.balanceStructureAccountsHttpServices.getAccountsStructureConditional(idNode);
     // }
     //
-    // updateNode(data: StructNode): void {
-    //     const {id, equations, conditionalEquations, ...params} = data;
-    //     const {calculationType} = params;
-    //     const request = [
-    //         this.balanceStructureAccountsHttpServices.update({id, ...params}, 'id')
-    //     ];
-    //     if (equations && calculationType === calculationTypeAccountStructure.EQUATIONS) {
-    //         request.push(this.balanceStructureAccountsHttpServices.updateAccounts({id, equations}))
-    //     }
-    //     if (conditionalEquations && calculationType === calculationTypeAccountStructure.CONDITIONAL) {
-    //         request.push(
-    //             this.balanceStructureAccountsHttpServices.updateAccountsStructureConditional(
-    //                 {id, conditionalEquations}
-    //             )
-    //         );
-    //     }
-    //
-    //     forkJoin(request)
-    //         .subscribe(() => {
-    //             this.accountList$.update(list =>
-    //                 list.map(m => m.id === id ? {...m, ...data} : m)
-    //             );
-    //         });
-    // }
+
+    setSelectedNode(node: TreeNode) {
+        if (node.key !== '64c26a1d11561a242cfeea97' && node.key !== '64c26a1d11561a242cfeea98' && node.key !== '64c26a1d11561a242cfeea99') {
+            const request = [this.balanceStructureHttpServices.getFormulaByAccount(node.key || '')]
+            forkJoin(request)
+                .subscribe((response) => {
+                    node.data.equations = response[0]
+                });
+        }
+
+        this.selectedNode$.set(node)
+    }
+
+    updateNode(data: StructNode): void {
+        const {accountsId, equations, conditionalEquations, ...params} = data;
+        const {calculationType} = params;
+        debugger
+        const novo = {
+            calculationType: params.calculationType,
+            parentAccountStructureId: params.parentAccountStructureId
+        };
+        let a = removeNullProperties(novo)
+        const request = [
+            this.balanceStructureHttpServices.update({accountsId, ...a}, 'accountsId')
+        ];
+        if (equations && calculationType === calculationTypeAccountStructure.EQUATIONS) {
+            request.push(this.balanceStructureHttpServices.updateAccounts({id: accountsId || '', equations}))
+        }
+        forkJoin(request)
+            .subscribe(() => {
+                this.accountList$.update(list =>
+                    list.map(m => m.id === accountsId ? {...m, ...data} : m)
+                );
+            });
+    }
+
     //
     createAccounts(idStructure: string, node: TreeNode<any>, root: boolean, before: boolean, createAccount: any): void {
 

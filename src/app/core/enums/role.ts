@@ -1,5 +1,5 @@
-export const ACCESS_TOKEN = 'secure_access';
-export const REFRESH_TOKEN = 'secure_refresh';
+export const ACCESS_TOKEN = 'secure_access_tech';
+export const REFRESH_TOKEN = 'secure_refresh_tech';
 export const DELETE_TOKEN = 'delete_refresh';
 
 export enum domainEnum {

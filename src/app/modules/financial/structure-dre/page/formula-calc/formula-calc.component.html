@@ -11,17 +11,16 @@
             }
           </div>
           @if (!withoutOperation) {
-            <div class="align-items-center grid justify-content-evenly w-10rem">
-              <c-operator-calc formControlName="operator"/>
-              <button pButton type="button" icon="mdi mdi-table-row-plus-after" (click)="addNode(i)"
-                      class="p-button-text p-button-outlined text-primary"
-                      pTooltip="{{'balance.structure.tooltip.addNodeForm' | translate}}" tooltipPosition="top"
-              ></button>
-              <button pButton type="button" icon="mdi mdi-trash-can-outline" (click)="removeNode(i)"
-                      class="p-button-text p-button-outlined text-danger"
-                      pTooltip="{{'balance.structure.tooltip.removeNodeForm' | translate}}" tooltipPosition="top"
-              ></button>
-            </div>
+<!--            <div class="align-items-center grid justify-content-evenly w-10rem">-->
+<!--              <button pButton type="button" icon="mdi mdi-table-row-plus-after" (click)="addNode(i)"-->
+<!--                      class="p-button-text p-button-outlined text-primary"-->
+<!--                      pTooltip="{{'balance.structure.tooltip.addNodeForm' | translate}}" tooltipPosition="top"-->
+<!--              ></button>-->
+<!--              <button pButton type="button" icon="mdi mdi-trash-can-outline" (click)="removeNode(i)"-->
+<!--                      class="p-button-text p-button-outlined text-danger"-->
+<!--                      pTooltip="{{'balance.structure.tooltip.removeNodeForm' | translate}}" tooltipPosition="top"-->
+<!--              ></button>-->
+<!--            </div>-->
           }
         </div>
         @if (calc.errors) {
@@ -36,4 +35,7 @@
       }
     </section>
   </form>
+} @else {
+    <h6>Conta sem formula</h6>
 }
+

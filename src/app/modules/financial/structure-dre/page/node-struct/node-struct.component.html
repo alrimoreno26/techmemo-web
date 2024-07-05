@@ -1,4 +1,4 @@
-@if (data) {
+@if (data && (data.id !== '64c26a1d11561a242cfeea97' && data.id !== '64c26a1d11561a242cfeea98' && data.id !== '64c26a1d11561a242cfeea99')) {
     <div class="flex flex-column h-full px-3" id="node-structure">
         <h3 class="m-3 flex align-items-center">
             {{ data.name }}
@@ -13,18 +13,18 @@
                     </ng-template>
                 </p-selectButton>
             </div>
-            <p-divider />
+            <p-divider/>
             <div class="mt-3">
                 <c-formula-calc formControlName="equations" (changeStatus)="updateStatus($event, 'equations')"/>
             </div>
-            <p-divider />
+            <p-divider/>
             <div class="flex mt-3">
                 <p-fieldset class="w-full" legend="Novas contas" styleClass="w-full">
                     <div class="flex">
                         <p-messages [(value)]="messages" [enableService]="false" closable="false"/>
                     </div>
                     <div class="flex gap-3">
-                        <div>
+                        <div class="flex-1">
                             <div class="field p-fluid w-full">
                                 <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
                                                 (completeMethod)="search($event)"
@@ -36,24 +36,6 @@
                                                 placeholder="Class Financiera"
                                                 [suggestions]="suggestions"></p-autoComplete>
                             </div>
-                        </div>
-                        <div class="flex-1">
-                            <p-dropdown
-                                class="w-full"
-                                [options]="typeOptions" optionLabel="name"
-                                emptyMessage="{{'primeng.emptyMessage' | translate}}"
-                                emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
-                                optionValue="value"
-                                placeholder="Formula"
-                                appendTo="body" styleClass="p-sidebar-sm"
-                                [style]="{'width': '100%'}" id="subordination">
-                                  <ng-template let-item pTemplate="item">
-                                    <div class="organization-item flex flex-row gap-2 ">
-                                      <div class="name font-medium">{{ item.name |translate }}</div>
-                                    </div>
-                                  </ng-template>
-                            </p-dropdown>
-
                         </div>
                         <div>
                             <button (click)="addConta()" class="p-button-outlined mr-2" icon="mdi mdi-check"
@@ -67,10 +49,11 @@
 
         </div>
         <div class="grid justify-content-end m-2 gap-3">
-            <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined" icon="mdi mdi-trash"
-                    label="Eliminar conta" pButton type="button"></button>
             <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined p-button-danger"
                     icon="mdi mdi-trash"
+                    label="Eliminar conta" pButton type="button"></button>
+            <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined"
+                    icon="mdi mdi-check"
                     label="Actualizar conta" pButton type="button"></button>
 
         </div>
