@@ -1,23 +1,25 @@
-@if (data && (data.id !== '64c26a1d11561a242cfeea97' && data.id !== '64c26a1d11561a242cfeea98' && data.id !== '64c26a1d11561a242cfeea99')) {
+@if (data) {
     <div class="flex flex-column h-full px-3" id="node-structure">
         <h3 class="m-3 flex align-items-center">
             {{ data.name }}
             <span [class]="data.type" class="type-badge">{{ 'balance.structure.type.' + data.type | translate }}</span>
         </h3>
         <div class="flex-1" [formGroup]="form">
-            <div class="flex flex-column align-items-center justify-content-center">
-                <p-selectButton [options]="typeOptions" formControlName="calculationType" optionLabel="name"
-                                optionValue="value" styleClass="select-button-pills">
-                    <ng-template let-item pTemplate>
-                        {{ item.name | translate }}
-                    </ng-template>
-                </p-selectButton>
-            </div>
-            <p-divider/>
-            <div class="mt-3">
-                <c-formula-calc formControlName="equations" (changeStatus)="updateStatus($event, 'equations')"/>
-            </div>
-            <p-divider/>
+            @if (data.id !== '64c26a1d11561a242cfeea97' && data.id !== '64c26a1d11561a242cfeea98' && data.id !== '64c26a1d11561a242cfeea99') {
+                <div class="flex flex-column align-items-center justify-content-center">
+                    <p-selectButton [options]="typeOptions" formControlName="calculationType" optionLabel="name"
+                                    optionValue="value" styleClass="select-button-pills">
+                        <ng-template let-item pTemplate>
+                            {{ item.name | translate }}
+                        </ng-template>
+                    </p-selectButton>
+                </div>
+                <p-divider/>
+                <div class="mt-3">
+                    <c-formula-calc formControlName="equations" (changeStatus)="updateStatus($event, 'equations')"/>
+                </div>
+                <p-divider/>
+            }
             <div class="flex mt-3">
                 <p-fieldset class="w-full" legend="Novas contas" styleClass="w-full">
                     <div class="flex">
@@ -48,14 +50,16 @@
 
 
         </div>
-        <div class="grid justify-content-end m-2 gap-3">
-            <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined p-button-danger"
-                    icon="mdi mdi-trash"
-                    label="Eliminar conta" pButton type="button"></button>
-            <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined"
-                    icon="mdi mdi-check"
-                    label="Actualizar conta" pButton type="button"></button>
+        @if (data.id !== '64c26a1d11561a242cfeea97' && data.id !== '64c26a1d11561a242cfeea98' && data.id !== '64c26a1d11561a242cfeea99') {
+            <div class="grid justify-content-end m-2 gap-3">
+                <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined p-button-danger"
+                        icon="mdi mdi-trash"
+                        label="Eliminar conta" pButton type="button"></button>
+                <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined"
+                        icon="mdi mdi-check"
+                        label="Actualizar conta" pButton type="button"></button>
 
-        </div>
+            </div>
+        }
     </div>
 }

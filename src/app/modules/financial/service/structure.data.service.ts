@@ -159,7 +159,7 @@ export class StructureDataService {
 
     setSelectedNode(node: TreeNode) {
         if (node.key !== '64c26a1d11561a242cfeea97' && node.key !== '64c26a1d11561a242cfeea98' && node.key !== '64c26a1d11561a242cfeea99') {
-            const request = [this.balanceStructureHttpServices.getFormulaByAccount(node.key || '')]
+            const request = [this.balanceStructureHttpServices.getFormulaByAccount(node.data.accountsId || '')]
             forkJoin(request)
                 .subscribe((response) => {
                     node.data.equations = response[0]
