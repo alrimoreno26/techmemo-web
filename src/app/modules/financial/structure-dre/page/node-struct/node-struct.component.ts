@@ -61,12 +61,12 @@ export class NodeStructComponent {
         this.messages = [
             {severity: 'info', summary: 'A conta adicionada será adicionada como uma subconta da conta selecionada'},
         ];
-        effect(()=>{
+        effect(() => {
             const {data} = this.structureDataService.selectedNode$();
             this.nodeAll = this.structureDataService.selectedNode$();
             this.data = data;
             this.buildForm(data);
-            console.log( this.structureDataService.selectedNode$())
+            console.log(this.structureDataService.selectedNode$())
         })
 
     }
@@ -151,7 +151,7 @@ export class NodeStructComponent {
 
     addConta() {
         const accounts = [{
-            calculationType: this.form.get('calculationType')?.value,
+            calculationType: this.form.get('calculationType')?.value === null ? calculationTypeAccountStructure.NO_CALCULATIONS : this.form.get('calculationType')?.value,
             classifierId: this.form.get('classifierId')?.value.id,
             parentAccountStructureId: !this.data.sheet ? this.data.accountsId : null,
             position: 0,
