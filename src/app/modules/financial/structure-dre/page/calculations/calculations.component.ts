@@ -61,7 +61,6 @@ export class CalculationsComponent implements ControlValueAccessor, OnChanges {
                 private elementRef: ElementRef,
                 public service: StructureDataService) {
         this.controlDir.valueAccessor = this;
-        console.log(service.accountList$())
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -75,18 +74,32 @@ export class CalculationsComponent implements ControlValueAccessor, OnChanges {
 
     writeValue(value?: CalculationTO): void {
         this.data = value;
+        let newAccount: any = value
+        if (value?.classifier) {
+            const account = this.service.accountList$().find(f => f.classifierId === value?.classifier.id);
+            newAccount = {
+                ...account,
+                name: account?.classifier.name,
+                type: account?.classifier.balanceAccountType
+            }
+        }
+
         this.form = new FormGroup({
             type: new FormControl('account'),
             id: new FormControl(value?.id),
-            accountId: new FormControl(this.service.accountList$().find(f => f.accountId === value?.accountId)),
-            classifierId: new FormControl(this.service.accountList$().find(f => f.accountId === value?.accountId)?.id),
+            accountId: new FormControl(newAccount),
+            classifierId: new FormControl(newAccount?.id),
             changeSignEndValue: new FormControl(value?.changeSignEndValue),
             constant: new FormControl(value?.constant),
             name: new FormControl(value?.name),
             previousYears: new FormControl<number | null>(value?.previousYears ?? null),
             operator: new FormControl(value?.operator)
         }, calculationValidation(this.last));
-        this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => this.update(data));
+        console.log(this.form)
+        this.form.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
+            this.update(data)
+            console.log(this.form)
+        });
         this.form.get('type')?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
             if (data === 'account') {
                 this.form.get('constant')?.setValue(null);
@@ -96,7 +109,6 @@ export class CalculationsComponent implements ControlValueAccessor, OnChanges {
         });
         this.form.get('accountId')?.valueChanges.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(data => {
             if (data) {
-                debugger
                 const {name} = data;
                 this.form.get('name')?.setValue(name);
             }
@@ -107,7 +119,7 @@ export class CalculationsComponent implements ControlValueAccessor, OnChanges {
 
     private update(data: any): void {
         const {accountId} = data;
-        const value = accountId ? {...data, accountId: accountId.accountId} : data;
+        const value = accountId ? {...data, accountId: accountId.classifier.id} : data;
         if (!value?.id) {
             delete value.id;
         }

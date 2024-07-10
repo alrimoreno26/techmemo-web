@@ -1,9 +1,12 @@
-import {Component, Input, ViewChildren} from '@angular/core';
-import {ConfirmationService, MenuItem, TreeNode} from "primeng/api";
-import {TranslateService} from "@ngx-translate/core";
+import {Component, DestroyRef, effect, inject, Input, ViewChildren} from '@angular/core';
+import {MenuItem, TreeNode} from "primeng/api";
 import {StructureDataService} from "../../../service/structure.data.service";
-import {TreeNodeContextMenuSelectEvent, TreeNodeSelectEvent} from "primeng/tree";
+import {TreeNodeSelectEvent} from "primeng/tree";
 import {typeAccount} from "../../utils";
+import {AccountEquationStructureTO, StructNode} from "../../../../../core/models/bills";
+import {calculationTypeAccountStructure} from "../../../../../core/enums/commerce";
+import {BalanceStructureHttpServices} from "../../../../../core/services/balance.structure.http.services";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Component({
     selector: 'p-structure-data',
@@ -23,17 +26,53 @@ export class StructureDataComponent {
 
     menuItems!: MenuItem[];
     protected readonly window = window;
+    private destroyRef = inject(DestroyRef);
 
-    constructor(public service: StructureDataService,) {
-        console.log(service.nodesList$())
+    constructor(public service: StructureDataService, private balanceStructureHttpServices: BalanceStructureHttpServices) {
     }
 
 
     nodeSelect($event: TreeNodeSelectEvent): void {
+
         const {node} = $event;
+        const {data} = node;
         this.node = node;
+        const {accountsId, calculationType} = data as StructNode;
+        if (calculationType === calculationTypeAccountStructure.EQUATIONS) {
+            this.balanceStructureHttpServices.getFormulaByAccount(accountsId || '').pipe(takeUntilDestroyed(this.destroyRef))
+                .subscribe(value => {
+                    if (Array.isArray(value)) {
+                        node.data.equations = value.map((item: any) => this.convertToAccountEquationStructureTO(item));
+                        node.data.structureData = this.id;
+                        this.selectedNode = {...node};
+                    }
+                });
+        }
+    }
+
+    updateNode($event: any): void {
+        console.log($event)
         console.log(this.node)
-        this.service.setSelectedNode(this.node);
+        // this.node.position = $event.position
+        this.node.data = {...this.node.data, ...$event.data};
+        console.log(this.node)
+    }
+
+    // Función para convertir el valor a la estructura deseada
+    convertToAccountEquationStructureTO(input: any): AccountEquationStructureTO {
+        return {
+            accountStructureId: input.id,
+            calculations: input.mathOperations.map((operation: any) => ({
+                id: operation.id,
+                constant: operation.constant,
+                changeSignEndValue: operation.changeSignEndValue,
+                operator: operation.operator,
+                classifier: operation.classifier
+            })),
+            created: input.created,
+            id: input.id,
+            operator: input.operator
+        };
     }
 
     protected readonly typeAccount = typeAccount;

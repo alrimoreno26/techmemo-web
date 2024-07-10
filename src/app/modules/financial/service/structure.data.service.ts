@@ -18,6 +18,7 @@ export class StructureDataService {
     nodesList$: WritableSignal<TreeNode[]> = signal([]);
     accountList$: WritableSignal<AccountStructureTO[]> = signal([]);
     selectedNode$: WritableSignal<TreeNode> = signal({});
+    selectedEquations$: WritableSignal<any> = signal({});
     private formatRaw$: WritableSignal<BalanceFormatAccount[]> = signal([]);
 
     private base: ({
@@ -148,34 +149,27 @@ export class StructureDataService {
         );
     }
 
-    // getAccountsStructure(idNode: string): Observable<AccountEquationStructureTO[]> {
-    //     return this.balanceStructureAccountsHttpServices.getAccountsStructure(idNode);
-    // }
-    //
-    // getAccountsStructureConditional(idNode: string): Observable<ConditionalAccountEquationStructureTO> {
-    //     return this.balanceStructureAccountsHttpServices.getAccountsStructureConditional(idNode);
-    // }
-    //
+    deleteNode(data: StructNode): void {
+        const {accountsId} = data;
 
-    setSelectedNode(node: TreeNode) {
-        if (node.key !== '64c26a1d11561a242cfeea97' && node.key !== '64c26a1d11561a242cfeea98' && node.key !== '64c26a1d11561a242cfeea99') {
-            const request = [this.balanceStructureHttpServices.getFormulaByAccount(node.data.accountsId || '')]
-            forkJoin(request)
-                .subscribe((response) => {
-                    node.data.equations = response[0]
-                });
-        }
+        const request = [
+            this.balanceStructureHttpServices.delete(accountsId)
+        ];
 
-        this.selectedNode$.set(node)
+        forkJoin(request)
+            .subscribe(() => {
+                this.nodesList$.update((list) => list.filter(f => f.key !== data.id));
+
+            });
     }
 
     updateNode(data: StructNode): void {
         const {accountsId, equations, conditionalEquations, ...params} = data;
         const {calculationType} = params;
-        debugger
         const novo = {
             calculationType: params.calculationType,
-            parentAccountStructureId: params.parentAccountStructureId
+            parentAccountStructureId: params.parentAccountStructureId,
+            position: params.position + 1
         };
         let a = removeNullProperties(novo)
         const request = [
@@ -351,21 +345,30 @@ export class StructureDataService {
             ACTIVE?.filter(f => !f.parentAccountStructureId),
             ACTIVE, 'parentAccountStructureId', 'accountsId'
         );
+        this.base[0].children = this.base[0].children.sort((a, b) => a.position - b.position);
+
         this.base[1].children = buildTreeNodes(
             PASSIVE?.filter(f => !f.parentAccountStructureId),
             PASSIVE, 'parentAccountStructureId', 'accountsId'
         );
+        this.base[1].children = this.base[1].children.sort((a, b) => a.position - b.position);
+
         this.base[2].children = buildTreeNodes(
             DRE?.filter(f => !f.parentAccountStructureId),
             DRE, 'parentAccountStructureId', 'accountsId'
-        );
+        )
+        this.base[2].children = this.base[2].children.sort((a, b) => a.position - b.position);
         const index = buildTreeNodes(
             INDEXES_AND_INDICATORS?.filter(f => !f.parentAccountStructureId),
             INDEXES_AND_INDICATORS, 'parentAccountStructureId', 'accountsId'
         );
         this.nodesList$.set([this.base[0], this.base[1], this.base[2], ...index]);
         // @ts-ignore
-        this.accountList$.set(transformedStructure.map(m => ({...m, parent: structIndex[m.parentAccountStructureId]})));
+        this.accountList$.set(transformedStructure.map(m => ({
+            ...m,
+            classifierId: m.classifier.id,
+            parent: structIndex[m.parentAccountStructureId]
+        })));
     }
 
 }

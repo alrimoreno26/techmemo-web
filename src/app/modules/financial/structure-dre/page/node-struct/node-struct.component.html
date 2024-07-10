@@ -1,9 +1,19 @@
 @if (data) {
     <div class="flex flex-column h-full px-3" id="node-structure">
-        <h3 class="m-3 flex align-items-center">
-            {{ data.name }}
-            <span [class]="data.type" class="type-badge">{{ 'balance.structure.type.' + data.type | translate }}</span>
-        </h3>
+        <div class="align-items-center flex justify-content-between">
+            <h3 class="m-3 flex align-items-center">
+                {{ data.name }}
+                <span [class]="data.type"
+                      class="type-badge">{{ 'balance.structure.type.' + data.type | translate }}</span>
+            </h3>
+            @if (data.id !== '64c26a1d11561a242cfeea97' && data.id !== '64c26a1d11561a242cfeea98' && data.id !== '64c26a1d11561a242cfeea99') {
+                <p-dropdown
+                    [options]="levels"
+                    [(ngModel)]="data.position"
+                    placeholder="Position"/>
+            }
+        </div>
+
         <div class="flex-1" [formGroup]="form">
             @if (data.id !== '64c26a1d11561a242cfeea97' && data.id !== '64c26a1d11561a242cfeea98' && data.id !== '64c26a1d11561a242cfeea99') {
                 <div class="flex flex-column align-items-center justify-content-center">
@@ -36,7 +46,11 @@
                                                 [dropdown]="true"
                                                 field="name"
                                                 placeholder="Class Financiera"
-                                                [suggestions]="suggestions"></p-autoComplete>
+                                                [suggestions]="suggestions">
+                                    <ng-template let-item pTemplate="item">
+                                        <div>{{ item.name }} - {{ 'balance.structure.type.' + item.balanceAccountType | translate }}</div>
+                                    </ng-template>
+                                </p-autoComplete>
                             </div>
                         </div>
                         <div>
@@ -52,7 +66,7 @@
         </div>
         @if (data.id !== '64c26a1d11561a242cfeea97' && data.id !== '64c26a1d11561a242cfeea98' && data.id !== '64c26a1d11561a242cfeea99') {
             <div class="grid justify-content-end m-2 gap-3">
-                <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined p-button-danger"
+                <button (click)="delete()" [disabled]="form.invalid" class="p-button-outlined p-button-danger"
                         icon="mdi mdi-trash"
                         label="Eliminar conta" pButton type="button"></button>
                 <button (click)="save()" [disabled]="form.invalid" class="p-button-outlined"

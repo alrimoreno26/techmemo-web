@@ -15,6 +15,9 @@ export class BalanceStructureHttpServices extends AbstractService<BalanceStructu
     override update(params: any, idProp: string, queryParams?: any): Observable<BalanceStructureLightTO> {
         return this.client.patch<any>(buildURL('/v1/account-structures') + '/' + params[idProp], params)
     }
+    override delete(params: any): Observable<BalanceStructureLightTO> {
+        return this.client.delete<any>(buildURL('/v1/account-structures') + '/' + params)
+    }
 
     getFormulaByAccount(id: string | '') {
         return this.client.get(buildURL('/v1/account-structures') + `/${id}/formulas`)
@@ -26,7 +29,7 @@ export class BalanceStructureHttpServices extends AbstractService<BalanceStructu
                 mathOperations: equations ? equations[0].calculations.map(c => {
                     return {
                         changeSignEndValue: c.changeSignEndValue,
-                        classifierId: c?.classifierId,
+                        classifierId: c?.accountId,
                         constant: c.constant,
                         operator: c.operator
                     }

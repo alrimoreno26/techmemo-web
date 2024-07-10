@@ -17,19 +17,25 @@ import {ActivatedRoute} from "@angular/router";
     styleUrls: ['./node-struct.component.scss']
 })
 export class NodeStructComponent {
-    // @Input() set node(value: TreeNode) {
-    //     if (value) {
-    //         console.log(value)
-    //         const {data} = value;
-    //         this.nodeAll = value;
-    //         this.data = data;
-    //         this.buildForm(data);
-    //     }
-    // };
+    @Input() set node(value: TreeNode) {
+        if (value) {
+            const {data} = value;
+            this.nodeAll = value;
+            this.data = data;
+            console.log(this.data)
+            this.buildForm(data);
+        }
+    };
 
-    @Output() onUpdateNode: EventEmitter<TreeNode> = new EventEmitter<TreeNode>()
+    @Output() onUpdateNode: EventEmitter<{ data: TreeNode, position: number }> = new EventEmitter<{
+        data: TreeNode,
+        position: number
+    }>()
     routeId: string = '';
     suggestions: any[] = [];
+
+    levels = [...Array(50).keys()].map(n => n + 1);
+    levelsS: any
 
     messages: Message[] = [];
     data: StructNode;
@@ -61,26 +67,20 @@ export class NodeStructComponent {
         this.messages = [
             {severity: 'info', summary: 'A conta adicionada será adicionada como uma subconta da conta selecionada'},
         ];
-        effect(() => {
-            const {data} = this.structureDataService.selectedNode$();
-            this.nodeAll = this.structureDataService.selectedNode$();
-            this.data = data;
-            this.buildForm(data);
-            console.log(this.structureDataService.selectedNode$())
-        })
-
     }
 
     save(): void {
         const {value} = this.form;
+        const {position} = this.data;
         const {equations, formulaType, conditionalEquations, ...data} = value
-        console.log(equations)
-        console.log(formulaType)
-        console.log(conditionalEquations)
-        debugger
         this.structureDataService.updateNode({...this.data, ...value});
-        // console.log(data)
-        // this.onUpdateNode.emit(data);
+        this.onUpdateNode.emit({data, position});
+    }
+
+    delete(): void {
+        const {value} = this.form;
+        const {equations, formulaType, conditionalEquations, ...data} = value
+        this.structureDataService.deleteNode({...this.data, ...value});
     }
 
     private buildForm(data: StructNode): void {
@@ -153,8 +153,8 @@ export class NodeStructComponent {
         const accounts = [{
             calculationType: this.form.get('calculationType')?.value === null ? calculationTypeAccountStructure.NO_CALCULATIONS : this.form.get('calculationType')?.value,
             classifierId: this.form.get('classifierId')?.value.id,
-            parentAccountStructureId: !this.data.sheet ? this.data.accountsId : null,
-            position: 0,
+            parentAccountStructureId: this.data.name !== 'DRE' ? this.data.accountsId : null,
+            position: this.nodeAll.children.length + 1,
             sheet: !this.data.sheet,
         }];
         this.structureDataService.createAccounts(this.routeId, this.nodeAll, false, false, accounts);

@@ -34,11 +34,11 @@ export function buildTreeNodes(base: any[] = [],
     if (children.length === 0) {
       // @ts-ignore
       return child[parent] ?
-        {key: id, label: name, data: child, leaf: true, expanded: false, type: 'sheet', children: []} :
-        {key: id, label: name, data: child, leaf: true, expanded: false, type: 'root', children: []};
+        {key: id, label: name, data: child, position: child.position, leaf: true, expanded: false, type: 'sheet', children: []} :
+        {key: id, label: name, data: child, position: child.position, leaf: true, expanded: false, type: 'root', children: []};
     }
     return {
-      key: id, label: name, data: child, leaf: sheet, expanded: false,
+      key: id, label: name, data: child, position: child.position, leaf: sheet, expanded: false,
       children: buildTreeNodes(children, listBase, parent, key)
     };
   });

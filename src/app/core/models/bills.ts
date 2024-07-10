@@ -115,6 +115,8 @@ export interface AccountStructureTO extends CreateAccountStructureTO {
     name: string;
     type: BalanceAccountType;
     parent?: string
+    classifierId?: string
+    classifier?: any
 }
 
 export interface AccountEquationStructureTO {
@@ -128,6 +130,7 @@ export interface AccountEquationStructureTO {
 export interface CalculationTO {
     accountId: string;
     classifierId?: string;
+    classifier?: any;
     changeSignEndValue: boolean;
     constant: number;
     id?: string;
