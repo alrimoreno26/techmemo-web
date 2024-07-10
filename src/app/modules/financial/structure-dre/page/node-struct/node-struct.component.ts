@@ -44,10 +44,6 @@ export class NodeStructComponent {
     typeOptions: Options[] = [
         {name: 'balance.structure.labels.noCalculations', value: calculationTypeAccountStructure.NO_CALCULATIONS},
         {name: 'balance.structure.labels.sumOfAccounts', value: calculationTypeAccountStructure.SUM_OF_ALL_SUBACCOUNTS},
-        {
-            name: 'balance.structure.labels.mappersAccount',
-            value: calculationTypeAccountStructure.SUM_OF_RELATED_ACCOUNTS
-        },
         {name: 'balance.structure.labels.customFormula', value: calculationTypeAccountStructure.EQUATIONS}
     ];
 
@@ -108,7 +104,6 @@ export class NodeStructComponent {
             switch (value) {
                 case calculationTypeAccountStructure.NO_CALCULATIONS:
                 case calculationTypeAccountStructure.SUM_OF_ALL_SUBACCOUNTS:
-                case calculationTypeAccountStructure.SUM_OF_RELATED_ACCOUNTS:
                     this.form.patchValue({equations: null, conditionalEquations: null});
                     break;
                 case calculationTypeAccountStructure.EQUATIONS:

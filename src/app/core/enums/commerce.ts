@@ -66,7 +66,6 @@ export const decimalPrecision: Options[] = [
 export enum calculationTypeAccountStructure {
     NO_CALCULATIONS = 'NO_CALCULATIONS',
     SUM_OF_ALL_SUBACCOUNTS = 'SUM_OF_ALL_SUBACCOUNTS',
-    SUM_OF_RELATED_ACCOUNTS = 'SUM_OF_RELATED_ACCOUNTS',
     EQUATIONS = 'EQUATIONS',
     CONDITIONAL = 'CONDITIONAL'
 }
