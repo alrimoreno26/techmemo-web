@@ -15,7 +15,7 @@ export class BalanceStructureHttpServices extends AbstractService<BalanceStructu
     override update(params: any, idProp: string, queryParams?: any): Observable<BalanceStructureLightTO> {
         return this.client.patch<any>(buildURL('/v1/account-structures') + '/' + params[idProp], params)
     }
-    override delete(params: any): Observable<BalanceStructureLightTO> {
+    deleteAccount(params: any): Observable<BalanceStructureLightTO> {
         return this.client.delete<any>(buildURL('/v1/account-structures') + '/' + params)
     }
 

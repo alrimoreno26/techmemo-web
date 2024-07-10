@@ -153,7 +153,7 @@ export class StructureDataService {
         const {accountsId} = data;
 
         const request = [
-            this.balanceStructureHttpServices.delete(accountsId)
+            this.balanceStructureHttpServices.deleteAccount(accountsId)
         ];
 
         forkJoin(request)
