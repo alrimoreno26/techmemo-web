@@ -119,13 +119,13 @@ export const menuList: any[] = [
                 label: 'DRE',
                 roles: [domainEnum.ALL],
                 icon: 'mdi mdi-cash-edit mdi-24px',
-                routerLink: ['financial/dre']
+                routerLink: ['financial/balances']
             },
             {
                 label: 'Estrutura DRE',
                 roles: [domainEnum.ALL],
                 icon: 'mdi mdi-cash-check mdi-24px',
-                routerLink: ['financial/structure-dre']
+                routerLink: ['financial/structure-balances']
             },
             {
                 label: 'Meios de pagamento',

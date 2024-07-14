@@ -16,6 +16,7 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
     editing: boolean = false;
     parentId: string = '';
     categories: any[] = []
+    showCategories: boolean = false;
     selectedCategories: any;
 
     subgrupoAdd: boolean = false;
@@ -24,15 +25,18 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
 
     formSub: FormGroup;
 
-    constructor(public storeCategoryService: StoreCategoryService, public financialClasificationService:FinancialClasificationService) {
+    constructor(public storeCategoryService: StoreCategoryService, public financialClasificationService: FinancialClasificationService) {
         super(storeCategoryService);
-        this.financialClasificationService.loadAll( {pageNumber: 0, pageSize: 1000})
+        this.financialClasificationService.loadAll({pageNumber: 0, pageSize: 1000})
         effect(() => {
-            if (this.storeCategoryService.subCategory$().length > 0) {
+            if (this.storeCategoryService.subCategory$()) {
+                this.showCategories = true
                 this.categories = this.storeCategoryService.subCategory$();
-                if(this.formSub){
+                if (this.formSub) {
                     this.formSub.reset()
                 }
+            } else {
+                this.showCategories = false
             }
         });
     }
@@ -44,7 +48,7 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
         }
         this.form = new FormGroup({
             name: new FormControl<string>(data?.name, Validators.required),
-            classifier: new FormControl<string>(data?.classifierId),
+            classifier: new FormControl<string>(data?.classifier),
             description: new FormControl<string>(data?.description, Validators.required),
         });
         this.formSub = new FormGroup({

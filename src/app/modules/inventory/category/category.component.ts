@@ -1,4 +1,4 @@
-import {Component} from "@angular/core";
+import {Component, effect} from "@angular/core";
 import {HeadersTable} from "../../../standalone/data-table/models";
 import {StoreCategoryService} from "./services/store.category.service";
 import {MCategoryComponent} from "./components/m-category/m-category.component";
@@ -38,11 +38,21 @@ export class CategoryComponent extends BaseComponentDirective {
                 type: 'PARENT'
             }
         })
+        effect(() => {
+            if (!this.categoryService.dialog$()) {
+                console.log('entre')
+            }
+        })
         // this.importCategorys()
     }
 
     customEdit(event: any) {
         this.categoryService.findOneById(event.id)
+    }
+
+    customCreate(event: any) {
+        this.categoryService.emptySubCategories();
+        this.categoryService.openModalAddOrEdit();
     }
 
     importCategorys() {

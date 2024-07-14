@@ -6,13 +6,13 @@ import {FinancialClasificationService} from "../service/financial-clasification.
 import {DataTableModule} from "../../../standalone/data-table/data-table.module";
 import {BadgeModule} from "primeng/badge";
 import {TranslateModule} from "@ngx-translate/core";
-import {SingleDreComponents} from "../components/single-dre/single-dre.components";
+import {SingleBalancesComponents} from "../components/single-balances/single-balances.components";
 import {TreeTableModule} from "primeng/treetable";
 
 @NgModule({
     declarations: [
         FinancialClasificationComponent,
-        SingleDreComponents
+        SingleBalancesComponents
     ],
     imports: [
         CommonModule,
@@ -26,7 +26,7 @@ import {TreeTableModule} from "primeng/treetable";
         FinancialClasificationService
     ],
     exports: [
-        SingleDreComponents
+        SingleBalancesComponents
     ],
 })
 export class FinancialClasificationModule {

@@ -83,11 +83,35 @@
                     <div>
                         <p-button
                             class="flex-1"
-                            (onClick)="addNewOrderTable()"
-                            [disabled]="pagamento || this.activeRoute !== 'table'"
+                            (onClick)="addNewOrderTable(op, $event)"
+                            [disabled]="pagamento || this.activeRoute === 'order'"
                             styleClass="w-full p-button-outlined flex-1">
                             <img src="assets/layout/images/comanda.svg" width="28" height="28">
                         </p-button>
+                        <p-overlayPanel #op>
+                            <div class="flex flex-column gap-3 w-25rem">
+                                <div>
+                                    <span class="font-medium text-900 block mb-2">Em qual mesa você deseja gerar o pedido</span>
+<!--                                    <form class="flex flex-column gap-3" [formGroup]="formTables">-->
+<!--                                        @for (table of storeTablesServices.unionTable$() || []; track table.id) {-->
+<!--                                        <div class="field-checkbox">-->
+<!--                                            <p-radioButton-->
+<!--                                                [inputId]="category.key"-->
+<!--                                                [value]="category"-->
+<!--                                                formControlName="selectedCategory" />-->
+<!--                                            <label [for]="category.key" class="ml-2">-->
+<!--                                                {{ category.name }}-->
+<!--                                            </label>-->
+<!--                                            }-->
+<!--                                        </div>-->
+<!--                                    </form>-->
+
+                                </div>
+                                <div>
+                                </div>
+
+                            </div>
+                        </p-overlayPanel>
                     </div>
                 </div>
 
@@ -126,7 +150,8 @@
                                                       (onClick)="lookAdditional(product)">
                                             </p-button>
                                         </td>
-                                        <td class="custom-td" style="min-width: 220px; text-align: left">{{ product.name | wrapText: 25 }}
+                                        <td class="custom-td"
+                                            style="min-width: 220px; text-align: left">{{ product.name | wrapText: 25 }}
                                         </td>
                                         <td class="custom-td">
                                             {{ product.amount }}
@@ -146,7 +171,7 @@
                 <div class="mt-20 gray-color flex flex-column m-3" *ngIf="service.selectedEntity$() !== null">
                     <div class="flex align-items-center justify-content-between">
                         <h6 class="text-2xl text-gray-600 m-0">Sub-Total Order:</h6>
-                        <h6 class="text-3xl text-primary m-0">{{ (service.selectedEntity$()[activeOrder]?.valueToPaid - service.selectedEntity$()[activeOrder]?.valuePaid) | currency: 'BRL' : 'symbol' : '1.2'  }}</h6>
+                        <h6 class="text-3xl text-primary m-0">{{ (service.selectedEntity$()[activeOrder]?.valueToPaid - service.selectedEntity$()[activeOrder]?.valuePaid) | currency: 'BRL' : 'symbol' : '1.2' }}</h6>
                     </div>
                     <div class="flex align-items-center justify-content-between">
                         <h6 class="text-3xl text-gray-600 m-0">Total ({{ service.selectedEntity$().length }})
@@ -155,9 +180,10 @@
                     </div>
                     <div class="flex gap-3">
                         <div class="flex-1">
-                            <p-button styleClass="w-full flex align-items-center justify-content-center p-button-danger p-button-raised"
-                                      (onClick)="fecharConta()"
-                                      [disabled]="pagamento">
+                            <p-button
+                                styleClass="w-full flex align-items-center justify-content-center p-button-danger p-button-raised"
+                                (onClick)="fecharConta()"
+                                [disabled]="pagamento">
                                 <span class="text-3xl">(F11) Fechar Conta</span>
                             </p-button>
                         </div>
@@ -192,7 +218,7 @@
                                         </div>
                                         <span
                                             class="text-primary text-xl font-bold">{{ selectedItem.salePrice | currency }}
-                                            {{ selectedItem.soldPerUnits ? "Unit" : " / " + selectedItem.unitMeasurementName+"("+selectedItem.unitMeasurementCode+")" }}</span>
+                                            {{ selectedItem.soldPerUnits ? "Unit" : " / " + selectedItem.unitMeasurementName + "(" + selectedItem.unitMeasurementCode + ")" }}</span>
                                     </div>
                                 </div>
                             </ng-template>

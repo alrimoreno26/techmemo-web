@@ -1,0 +1,57 @@
+<div class="card m-3">
+    <p-toolbar styleClass="mb-3">
+        <div class="p-toolbar-group-start flex align-items-center gap-3">
+            @if (allBalances) {
+                <button pButton icon="mdi mdi-arrow-left-thin-circle-outline"
+                        (click)="service.changeState()"
+                        class="p-element p-1 p-button p-component p-button-icon-only"><span
+                    class="p-button-icon mdi mdi-arrow-left-thin-circle-outline" aria-hidden="true"></span>
+                </button>
+            }
+            @if (!allBalances) {
+                <h5 class="mb-0 mt-0">Gerar Novo balanço.</h5>
+            }
+        </div>
+        <div class="p-toolbar-group-center">
+            @if (!allBalances) {
+                <p-calendar styleClass="w-20rem" class="w-20rem" [(ngModel)]="rangeDates" selectionMode="range"
+                            dateFormat="dd/mm/yy"
+                            [readonlyInput]="true"></p-calendar>
+            }
+        </div>
+        <div class="p-toolbar-group-end">
+            @if (!allBalances) {
+                <p-button label="Gerar" class="w-full" styleClass="w-full"
+                          (onClick)="newBalance()"/>
+            }
+        </div>
+    </p-toolbar>
+    <div class="grid pt-3">
+        @if (!allBalances) {
+            @for (balance of service.listEntities$() || []; track balance.id) {
+                <div class="col-12 lg:col-3">
+                    <p-card header="Balanco">
+                        <div class="grid">
+                            <div class="col-12 lg:col-3 flex align-items-center"><h4 class="mb-0">Inicio</h4></div>
+                            <div class="col-12 lg:col-9 flex align-items-center">{{ balance.startDate | date }}</div>
+                            <div class="col-12 lg:col-3 flex align-items-center"><h4 class="mb-0">Fin</h4></div>
+                            <div class="col-12 lg:col-9 flex align-items-center">{{ balance.endDate | date }}</div>
+                        </div>
+                        <ng-template pTemplate="footer">
+                            <div class="flex gap-3 mt-1">
+                                <p-button label="Olhear" class="w-full" styleClass="w-full"
+                                          (onClick)="getById(balance)"/>
+                            </div>
+                        </ng-template>
+                    </p-card>
+                </div>
+            }
+        } @else {
+            <p-fieldset class="w-full" legend="Visualização do Saldo contábil">
+                <c-single-balances/>
+            </p-fieldset>
+        }
+    </div>
+</div>
+
+

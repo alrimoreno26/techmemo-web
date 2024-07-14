@@ -17,12 +17,12 @@ const routes: Routes = [
                 loadChildren: () => import('./financial-clasification/financial-clasification.module').then(c => c.FinancialClasificationModule)
             },
             {
-                path: 'dre',
+                path: 'balances',
                 data: {name: 'DRE'},
-                loadChildren: () => import('./dre/dre.module').then(c => c.DreModule)
+                loadChildren: () => import('./balances/dre.module').then(c => c.DreModule)
             },
             {
-                path: 'structure-dre',
+                path: 'structure-balances',
                 data: {name: 'Estrutura DRE'},
                 loadChildren: () => import('./structure-dre/structure-dre.module').then(c => c.StructureDreModule)
             },

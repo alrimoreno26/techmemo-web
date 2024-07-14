@@ -104,6 +104,28 @@ export class CaixaEffects {
         )
     );
 
+    getByUnionId$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromOrdersListActions.getByUnionID),
+            switchMap(({path, params}) =>
+                this.service.loadOrdersUnion(path, params.unionTableId).pipe(
+                    switchMap((data) => {
+                        if (data.length === 0) {
+                            const param = {
+                                clientDocument: '',
+                                clientName: '',
+                                tableId: params.tableId || ''
+                            }
+                            this.caixaService.create(param);
+                        }
+                        return of(fromOrdersListActions.getByIDSuccess({entity: data}))
+                    }),
+                    catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
+                )
+            )
+        )
+    );
+
     getById$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromOrdersListActions.getByID),

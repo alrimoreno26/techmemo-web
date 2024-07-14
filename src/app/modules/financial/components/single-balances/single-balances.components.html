@@ -1,7 +1,6 @@
 <div class="my-4">
-    <ng-template
-        [ngTemplateOutletContext]="{$implicit: service.indexesAndIndicators, columns: service.columnsIndex, empty: true, columnsSec: service.columnsIndexSec}"
-        [ngTemplateOutlet]="treeTable"></ng-template>
+    <ng-template [ngTemplateOutletContext]="{$implicit: service.actPasDem, columns: service.columns}"
+                 [ngTemplateOutlet]="treeTable"/>
 </div>
 <ng-template #treeTable let-columns="columns" let-columnsSec="columnsSec" let-data let-empty="empty">
     <p-treeTable [columns]="columns" [frozenColumns]="[{header: 'k', field: 'name'}]" [scrollable]="true"
@@ -15,17 +14,8 @@
         </ng-template>
         <ng-template let-column pTemplate="frozenheader">
             <tr>
-                @for (col of column | colHeader; track col) {
-                    <th>
-                        Contas
-                    </th>
-                }
+                <th>Contas</th>
             </tr>
-            @if (columnsSec.length) {
-                <tr>
-                    <th></th>
-                </tr>
-            }
         </ng-template>
         <ng-template let-rowData="rowData" let-rowNode pTemplate="frozenbody">
             <tr class="balance-{{rowData.class}}" [ngClass]="{'bg-leaf' : rowData | leafCheck}">
@@ -37,6 +27,7 @@
         </ng-template>
         <ng-template let-columns pTemplate="header">
             <tr>
+
                 @for (col of columns | colHeader | extraHeader; track col) {
                     <th>
                         <div class="white-space-nowrap flex align-items-center justify-content-center">
@@ -45,15 +36,6 @@
                     </th>
                 }
             </tr>
-            @if (columnsSec.length) {
-                <tr>
-                    @for (col of columnsSec | colHeader; track col) {
-                        <th [attr.colspan]="col.colSpan" [class]="col.class" class="text-center">
-                            {{ col.header | translate }}
-                        </th>
-                    }
-                </tr>
-            }
         </ng-template>
         <ng-template let-columns="columns" let-node="node" let-rowData="rowData" pTemplate="body">
             <tr class="balance-{{rowData.class}}" [ngClass]="{'bg-leaf' : rowData | leafCheck}">
@@ -62,12 +44,12 @@
                         @if (empty && !node.leaf) {
                             <span [cnpj]="cnpj" [data]="rowData" [field]="col.field" [source]="col.source"
                                   [index]="empty" traceBalance>
-                               {{ rowData | numberK: col.field: [1,2] : empty }}
+                               {{ rowData | numberK: col.field: [1, 2] : empty }}
                             </span>
                         } @else {
                             <span [cnpj]="cnpj" [data]="rowData" [field]="col.field" [source]="col.source"
                                   [index]="empty" traceBalance>
-                               {{ rowData | numberK: col.field: [1,2] : empty }}
+                               {{ rowData | numberK: col.field: [1, 2] : empty }}
                             </span>
                         }
                     </td>

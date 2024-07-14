@@ -9,6 +9,7 @@ import {operationAreaRoleEnum} from "../../../../../../core/enums/role";
 import {
     BaseModalStoreComponentDirective
 } from "../../../../../../standalone/data-table/directives/base.modal.store.component.directive";
+import {DialogRegistryService} from "../../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-add-commerce',
@@ -43,8 +44,10 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
 
     constructor(private cnpjService: CNPJService,
                 private commercesService: CommercesService,
-                public userService: UserService) {
+                public userService: UserService,
+                private dialogRegistryService: DialogRegistryService) {
         super(commercesService)
+        this.dialogRegistryService.removeDialog(this.ref);
         this.userService.loadBasic({pageSize: 10, pageNumber: 0})
         effect(() => {
             this.userService.userBasic$.subscribe(user => {
@@ -55,7 +58,6 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
 
     ngOnInit(): void {
         this.form = new FormGroup({
-
             cnpj: new FormControl<string>('', Validators.required),
             name: new FormControl<string>('', Validators.required),
             socialReason: new FormControl<string>({

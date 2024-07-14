@@ -7,11 +7,15 @@ import {tapResponse} from "@ngrx/component-store";
 import {Observable} from "rxjs";
 import {LazyLoadData, LazyResultData} from "../../../../standalone/data-table/models";
 import {HttpErrorResponse} from "@angular/common/http";
+import {groupBy} from "../../../../core/util";
 
 @Injectable({providedIn: 'platform'})
 export class StoreCategoryService extends StoreComponentService<CategoryDto> {
 
-    override serverSide = false;
+    override serverSide = true;
+    override lazyLoadOnInit = false;
+    override pageSize = 10;
+
     subCategory$: Signal<CategoryDto[] | []> = this.selectSignal(state => state.raw);
 
     constructor(private categoryService: CategoryServices) {
@@ -19,6 +23,7 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
             {entities: [], total: 0, dialog: false, loaded: false};
         super(categoryService, defaultEntity);
     }
+
 
     override create = this.effect((trigger$: Observable<{ data: CategoryDto }>) => trigger$.pipe(
         switchMap(({data}) => this.categoryService.create({...data}).pipe(
@@ -80,6 +85,11 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
     }
 
     closeModal() {
-        this.patchState({raw: [], dialog: false})
+        this.patchState({raw: undefined, dialog: false})
     }
+
+    emptySubCategories(){
+        this.patchState({raw: undefined})
+    }
+
 }

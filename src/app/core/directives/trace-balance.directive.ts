@@ -41,7 +41,7 @@ export class TraceBalanceDirective implements OnInit {
       this.el.nativeElement.appendChild(icon);
       this.el.nativeElement.className = 'cursor-pointer';
     }
-    if (!this.index && !leaf && !end && !className.startsWith('dre')) {
+    if (!this.index && !leaf && !end && !className.startsWith('balances')) {
       const val = this.data[this.field];
       const total = this.data[`${this.field}Total`];
       if (val !== total) {

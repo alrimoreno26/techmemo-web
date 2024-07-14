@@ -44,7 +44,7 @@
                         [pTooltip]="'Dinheiro pendente de pagamento'"
                         style="width: 10rem !important;">{{ (stats && stats.orderSummary && stats.orderSummary.totalvalueToPaid || 0) | currency }}</h5>
                 </div>
-                <p-table [value]="caixas.listEntities$()" [paginator]="true" [rows]="10" responsiveLayout="scroll">
+                <p-table [value]="caixasList" [paginator]="true" [rows]="10" responsiveLayout="scroll">
                     <ng-template pTemplate="header">
                         <tr>
                             <th>Nome</th>

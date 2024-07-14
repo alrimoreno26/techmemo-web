@@ -10,7 +10,7 @@ import {StructureModalComponent} from "../components/structure-modal/structure-m
 import {formatDate} from "../../../core/util";
 
 @Component({
-    selector: 'c-structure-dre',
+    selector: 'c-structure-balances',
     templateUrl: './structure-dre.component.html',
 })
 export class StructureDreComponent extends BaseComponentDirective implements OnInit {

@@ -11,10 +11,11 @@ export class StoreTablesServices extends StoreComponentService<TableTO> {
 
     auth$: Signal<any | null> = this.selectSignal(state => state.raw);
     finalize$: Signal<boolean | false> = this.selectSignal(state => state.finalize);
+    unionTable$: Signal<any[]> = this.selectSignal(state => state.unionTable);
 
     constructor(private tableService: TablesService) {
-        const defaultEntity: EntityState<TableTO> & { raw?: any, finalize?: boolean } =
-            {entities: [], total: 0, dialog: false, loaded: false};
+        const defaultEntity: EntityState<TableTO> & { raw?: any, finalize?: boolean, unionTable: any[] } =
+            {entities: [], total: 0, dialog: false, loaded: false, unionTable: []};
         super(tableService, defaultEntity);
     }
 
@@ -25,11 +26,18 @@ export class StoreTablesServices extends StoreComponentService<TableTO> {
         this.patchState({raw: modify, finalize: false})
     }
 
-    changeStateTable(orderId: string,stateOrder:string) {
-        this.tableService.changeStateTable(orderId,stateOrder).subscribe(() => {
-            if(stateOrder === 'FREE'){
+    changeStateTable(orderId: string, stateOrder: string) {
+        this.tableService.changeStateTable(orderId, stateOrder).subscribe(() => {
+            if (stateOrder === 'FREE') {
                 this.patchState({finalize: true})
             }
         })
     }
+
+    allTableInUnion(id: string) {
+        this.tableService.allTableInUnion(id).subscribe((union: any) => {
+            this.patchState({unionTable: union})
+        })
+    }
+
 }
