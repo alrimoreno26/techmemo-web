@@ -23,7 +23,7 @@
         <ng-template pTemplate="groupheader" let-orders>
             <tr pRowGroupHeader>
                 <td class="bg-blue-50" colspan="7">
-                    <span class="font-bold">{{ orders.clientName |clientName:orders.tableNumber }}</span>
+                    <span class="font-bold">{{ orders |clientName }}</span>
                 </td>
             </tr>
         </ng-template>

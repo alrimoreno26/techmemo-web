@@ -16,7 +16,7 @@ export class MTransferComponents implements OnInit {
     orders: any[] = [];
     selectedProducts!: any;
 
-    constructor(public ordersService: CaixaService, public ref: DynamicDialogRef, public config: DynamicDialogConfig,private dialogRegistryService: DialogRegistryService) {
+    constructor(public ordersService: CaixaService, public ref: DynamicDialogRef, public config: DynamicDialogConfig, private dialogRegistryService: DialogRegistryService) {
         this.dialogRegistryService.addDialog(this.ref);
         effect(async () => {
             if (!ordersService.loaded$()) {
@@ -28,7 +28,7 @@ export class MTransferComponents implements OnInit {
             }
         }, {allowSignalWrites: true})
         effect(() => {
-            if(!this.ordersService.dialogTransfer$()) {
+            if (!this.ordersService.dialogTransfer$()) {
                 this.ref.close();
             }
         });
@@ -36,8 +36,7 @@ export class MTransferComponents implements OnInit {
     }
 
     ngOnInit() {
-
-        this.config.data.order.products.filter((x:any) => !x.paid).forEach((p: any) => {
+        this.config.data.order.products.filter((x: any) => !x.paid).forEach((p: any) => {
             if (p.amount > 1) {
                 this.targetProducts = Array.from({length: p.amount}, () => ({
                     ...p,

@@ -101,13 +101,9 @@ export class KeypadComponents implements OnInit {
                         sumaTotal + item.valueToPaid,
                     0
                 ) || 0;
-                console.log(this.paymentsDone)
-                console.log(this.service.selectedEntity$())
                 if (totales === this.pagamento) {
                     this.disableAllFields = true;
                 }
-                console.log(totales)
-                console.log(this.pagamento)
                 this.remaining_amount = totales - this.pagamento;
                 this.paymentsResetFields()
             }

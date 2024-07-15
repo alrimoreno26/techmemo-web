@@ -66,6 +66,7 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
             }, Validators.required),
             type: new FormControl<any>(CommerceTypeEnum.SUBSIDIARY),
             userId: new FormControl<any>('', Validators.required),
+            populateInitialData: new FormControl<boolean>(false),
         });
     }
 

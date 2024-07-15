@@ -3,7 +3,7 @@ import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {catchError, map, switchMap} from "rxjs/operators";
 import {of} from "rxjs";
 import {
-    fromOrdersListActions
+    fromOrdersListActions, getByUnionID
 } from "./caixa.actions";
 import {OrdersService} from "../../../core/services/comanda.service";
 import {StoreTablesServices} from "../services/store.tables.services";
@@ -54,10 +54,19 @@ export class CaixaEffects {
             switchMap(({entity}) =>
                 this.service.create(entity).pipe(
                     switchMap((data) => {
-                        return of(
-                            fromOrdersListActions.createInTableOrdersSuccess(data),
-                            fromOrdersListActions.getByID({path: ['by-table'], id: {tableId: entity.tableId}})
-                        )
+                        switch (entity.byRoute) {
+                            case 'table-union':
+                                return of(
+                                    fromOrdersListActions.createInTableOrdersSuccess(data),
+                                    fromOrdersListActions.getByUnionID({path: ['by-union-table'], params: entity.tableUnion})
+                                )
+                            default:
+                                return of(
+                                    fromOrdersListActions.createInTableOrdersSuccess(data),
+                                    fromOrdersListActions.getByID({path: ['by-table'], id: {tableId: entity.tableId}})
+                                )
+                        }
+
                     }),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
                 )

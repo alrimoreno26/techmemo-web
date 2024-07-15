@@ -63,7 +63,11 @@ export class CaixaComponent implements OnInit {
     activeRouteOrder: string;
     totalOrders = 0;
 
-    tableUnion:TableUnion;
+    tableIdUnion:string;
+    tableUnion: TableUnion = {
+        tableId: '',
+        unionTableId: ''
+    };
 
     constructor(public notify: NotifyService,
                 private http: HttpClient,
@@ -214,7 +218,7 @@ export class CaixaComponent implements OnInit {
 
     addNewOrderTable(op: OverlayPanel, event: any) {
         this.service.openModalAddOrEdit();
-        if(this.activeRoute === 'table-union'){
+        if (this.activeRoute === 'table-union') {
             this.storeTablesServices.allTableInUnion(this.tableUnion.unionTableId);
             op.toggle(event);
         }
@@ -227,6 +231,21 @@ export class CaixaComponent implements OnInit {
                 width: '350px',
             })
         }
+    }
+
+    selectedTableForOrder() {
+        const deep = cloneDeep(this.tableUnion);
+        deep.tableId= this.tableIdUnion;
+        this.dialogService.open(MComandaComponents, {
+            data: {
+                id: deep.tableId,
+                inside: true,
+                type: this.activeRoute,
+                tableUnion: deep
+            },
+            width: '350px',
+        })
+        console.log(deep)
     }
 
     getOrders() {

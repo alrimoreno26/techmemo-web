@@ -28,7 +28,7 @@
             <span class="p-float-label">
                 <p-dropdown
                     [options]="listUser" optionLabel="name"
-                   formControlName="userId"
+                    formControlName="userId"
                     emptyMessage="{{'primeng.emptyMessage' | translate}}"
                     emptyFilterMessage="{{'primeng.emptyFilterMessage' | translate}}"
                     optionValue="id"
@@ -43,6 +43,10 @@
                 </p-dropdown>
                  <label for="subordination">Selecione administrador</label>
             </span>
+        </div>
+        <div class="align-content-center col-12 field flex gap-3 mt-3">
+            <label class="mb-0">Popular produtos</label>
+            <p-inputSwitch formControlName="populateInitialData"></p-inputSwitch>
         </div>
         <div class="flex flex-column justify-content-start gap-2">
             <label>Tipo de Negócio</label>
