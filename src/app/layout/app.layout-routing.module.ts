@@ -11,7 +11,7 @@ const routes: Routes = [
             //{path: '', modals: AppLayoutComponent},
             {
                 path: 'painel',
-                data: {breadcrumb: 'Panéis Geral', roles: [domainEnum.PRODUCT]},
+                data: {breadcrumb: 'Painel Geral', roles: [domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/dashboard/dashboards.module').then(m => m.DashboardsModule)
             },

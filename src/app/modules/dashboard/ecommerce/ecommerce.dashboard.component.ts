@@ -94,16 +94,16 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                 this.stats = this.store.stat$();
                 this.metrics = [
                     {
-                        title: 'Ordenes',
+                        title: 'Pedidos',
                         icon: 'pi pi-shopping-cart',
                         color_light: '#64B5F6',
                         color_dark: '#1976D2',
                         textContent: [
-                            {amount: this.stats.orderSummary.totalActive, text: 'Ativas'},
-                            {amount: this.stats.orderSummary.totalInPayment, text: 'En pagamento'},
-                            {amount: this.stats.orderSummary.totalPaid, text: 'Pagadas'},
-                            {amount: this.stats.orderSummary.totalClosed, text: 'Fechadas'},
-                            {amount: this.stats.orderSummary.totalFinished, text: 'Concluídas'}
+                            {amount: this.stats.orderSummary.totalActive, text: 'Abertos'},
+                            {amount: this.stats.orderSummary.totalInPayment, text: 'Em Pagamento'},
+                            {amount: this.stats.orderSummary.totalPaid, text: 'Pagos'},
+                            {amount: this.stats.orderSummary.totalClosed, text: 'Fechados'},
+                            {amount: this.stats.orderSummary.totalFinished, text: 'Concluídos'}
                         ]
                     },
                 ];
