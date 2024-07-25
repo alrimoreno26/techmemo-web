@@ -23,12 +23,10 @@
                              <label for="subordination">Selecione uma caixa</label>
                         </span>
                 </div>
-                <div class="col-12 lg:col-12 field">
-                    <p-inputGroup>
-                        <p-inputGroupAddon>$</p-inputGroupAddon>
-                        <input type="text" formControlName="value" pInputText placeholder="Dinheiro em caixa" />
-                        <p-inputGroupAddon>.00</p-inputGroupAddon>
-                    </p-inputGroup>
+                <div class="col-12 lg:col-12">
+                    <p-inputNumber
+                        [maxFractionDigits]="2" formControlName="value" id="unitPriceCombo" currency="BRL"
+                        locale="pt-BR" mode="currency" placeholder="Dinheiro em caixa"></p-inputNumber>
                 </div>
                 @if(session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE'){
                     <div class="col-12 field mt-3">
