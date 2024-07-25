@@ -52,13 +52,17 @@ export class MOpenCaixaComponents implements OnInit {
     ngOnInit(): void {
         this.form = new FormGroup({
             cashRegisterId: new FormControl<string>(this.config.data?.id, Validators.required),
-            value: new FormControl<string>(this.config.data?.value, Validators.required),
+            value: new FormControl<number>(this.config.data?.value, Validators.required),
             operatorId: new FormControl<string>(this.session.userLogged.role.operationArea !== 'ADMINISTRATOR_STORE' ? this.session.userLogged.id : this.config.data?.operatorId, Validators.required),
         });
     }
 
     openCaixa() {
         if (this.form.valid) {
+            const params = {
+                ...this.form.value,
+                value: this.form.get('value')?.value
+            }
             this.cashRegisterOperations.openCaixa(this.form.value)
         }
     }
