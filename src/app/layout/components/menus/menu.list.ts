@@ -34,12 +34,12 @@ export const menuList: any[] = [
                 icon: 'mdi mdi-card-account-details-outline mdi-24px',
                 routerLink: ['inventory/proveedores']
             },
-            {
-                label: 'Transferência de estoque',
-                roles: [domainEnum.SUPPLIER],
-                icon: 'mdi mdi mdi-swap-horizontal-bold mdi-24px',
-                routerLink: ['inventory/transfer/estoque']
-            }
+            // {
+            //     label: 'Transferência de estoque',
+            //     roles: [domainEnum.SUPPLIER],
+            //     icon: 'mdi mdi mdi-swap-horizontal-bold mdi-24px',
+            //     routerLink: ['inventory/transfer/estoque']
+            // }
         ]
     },
     {separator: true},
@@ -100,6 +100,12 @@ export const menuList: any[] = [
                 roles: [domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-multiple mdi-24px',
                 routerLink: ['compras/lista']
+            },
+            {
+                label: 'Transferência',
+                roles: [domainEnum.PRODUCT],
+                icon: 'mdi mdi-truck-delivery mdi-24px',
+                routerLink: ['transfer/lista']
             }
         ]
     },

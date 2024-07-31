@@ -88,6 +88,7 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
                     description: c.description
                 })
             })
+            debugger
             const send = {
                 name: this.form.get('name')?.value,
                 description: this.form.get('description')?.value,
@@ -96,7 +97,12 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
             }
             this.service.create({data: send})
         } else {
-            this.service.update({data: {id: this.config.data.id, ...value}})
+            const create = {
+                name: this.form.get('name')?.value,
+                description: this.form.get('description')?.value,
+                classifierId: this.form.get('classifier')?.value.id,
+            }
+            this.service.update({data: {id: this.config.data.id, ...create}})
         }
     }
 

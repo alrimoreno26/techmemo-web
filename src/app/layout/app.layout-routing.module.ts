@@ -52,6 +52,12 @@ const routes: Routes = [
                 loadChildren: () => import('../modules/purchases/purchases.module').then(m => m.PurchasesModule)
             },
             {
+                path: 'transfer',
+                data: {breadcrumb: 'Transferencias de Compra', roles: [domainEnum.PRODUCT]},
+                canActivate: [canActivateControlGuard],
+                loadChildren: () => import('../modules/transfer/transfer.module').then(m => m.TransferModule)
+            },
+            {
                 path: 'financial',
                 data: {breadcrumb: 'Financeiro', roles: [domainEnum.CONFIGURATION]},
                 canActivate: [canActivateControlGuard],
