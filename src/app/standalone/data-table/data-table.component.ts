@@ -1,4 +1,16 @@
-import {Component, ContentChild, ContentChildren, ElementRef, EventEmitter, Input, OnDestroy, OnInit, Output, QueryList, ViewChild} from '@angular/core';
+import {
+    Component,
+    ContentChild,
+    ContentChildren,
+    ElementRef,
+    EventEmitter,
+    Input,
+    OnDestroy,
+    OnInit,
+    Output,
+    QueryList,
+    ViewChild
+} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {MenuItem} from 'primeng/api';
 import {Table, TableLazyLoadEvent, TableRowReorderEvent} from 'primeng/table';
@@ -48,7 +60,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
     /**
      * Array the values for the pagination default value 25, 50, 100
      */
-    @Input() rowsPerPageOptions: number[] = [10,25,50,100];
+    @Input() rowsPerPageOptions: number[] = [10, 25, 50, 100];
     /**
      * The available table Headers
      */
@@ -93,6 +105,10 @@ export class DataTableComponent implements OnInit, OnDestroy {
      * List of source items optional use service
      */
     @Input() items: any[];
+    /**
+     * Custom type for loadAll
+     */
+    @Input() type: string;
     /**
      * Refresh button
      */
@@ -179,24 +195,25 @@ export class DataTableComponent implements OnInit, OnDestroy {
      */
     loadCustomLazy($event: TableLazyLoadEvent): void {
         const {first, rows, globalFilter, sortField, sortOrder} = $event;
-        if($event?.filters){
+        if ($event?.filters) {
             // @ts-ignore
             let value = Object.keys($event.filters).length > 0 ? $event?.filters?.type[0]?.value : '';
             this.service.loadAll({
                 pageNumber: first as number / (rows as number),
                 pageSize: rows ? rows : 25,
                 filter: globalFilter ? globalFilter as string : '',
-                type: value ? value : '',
+                type: value ? value : this.type,
                 sort: sortField as string,
                 direction: sortField ? sortOrder === 1 ? 'ASC' : 'DESC' : sortField,
                 first
             });
-        } else{
+        } else {
             this.service.loadAll({
                 pageNumber: first as number / (rows as number),
                 pageSize: rows ? rows : 25,
                 filter: globalFilter ? globalFilter as string : '',
                 sort: sortField as string,
+                type: this.type,
                 direction: sortField ? sortOrder === 1 ? 'ASC' : 'DESC' : sortField,
                 first
             });
@@ -273,7 +290,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
      */
     refreshContentData(dt: Table): void {
         this.service.serverSide ?
-            this.service.loadAll({page: 0, count: dt.rows}) :
+            this.service.loadAll({page: 0, count: dt.rows, type: this.type}) :
             this.service.loadAll(undefined);
         this.input.nativeElement.value = '';
         dt.filters = {};

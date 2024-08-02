@@ -13,7 +13,7 @@ import {groupBy} from "../../../../core/util";
 export class StoreCategoryService extends StoreComponentService<CategoryDto> {
 
     override serverSide = true;
-    override lazyLoadOnInit = false;
+    override lazyLoadOnInit = true;
     override pageSize = 10;
 
     subCategory$: Signal<CategoryDto[] | []> = this.selectSignal(state => state.raw);
@@ -24,6 +24,20 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
         super(categoryService, defaultEntity);
     }
 
+    override loadAll = this.effect<any>((lazy$: Observable<{ lazy: LazyLoadData }>) => lazy$.pipe(
+        switchMap((lazy) => {
+            return this.categoryService.findAllPaginate(lazy).pipe(
+                tapResponse({
+                    next: (result) => {
+                        const {content, page} = result;
+                        this.setAll(content);
+                        this.patchState({total: page.totalElements});
+                    },
+                    error: (err: HttpErrorResponse) => this.setError(err.error)
+                })
+            );
+        })
+    ));
 
     override create = this.effect((trigger$: Observable<{ data: CategoryDto }>) => trigger$.pipe(
         switchMap(({data}) => this.categoryService.create({...data}).pipe(
@@ -31,6 +45,10 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
                 next: (response: CategoryDto) => {
                     this.setAdd(response)
                     this.setSelected(response)
+                    this.loadAll({
+                        pageNumber: 0,
+                        pageSize: 10,
+                        type: 'PARENT'})
                     this.patchState({raw: response.subCategories, dialog: true});
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)
@@ -43,6 +61,10 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
             tapResponse({
                 next: (response: any) => {
                     this.patchState({dialog: false});
+                    this.loadAll({
+                        pageNumber: 0,
+                        pageSize: 10,
+                        type: 'PARENT'})
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)
             })
@@ -79,7 +101,7 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
     }
 
     loadSubCategories(lazy: any) {
-        this.categoryService.findAllPaginate(lazy).subscribe((r: LazyResultData<CategoryDto>) => {
+        this.categoryService.subCategory(lazy).subscribe((r: LazyResultData<CategoryDto>) => {
             this.patchState({raw: r.content});
         })
     }

@@ -11,7 +11,7 @@
                         <p class="align-items-center block flex font-bold justify-content-end gap-3 surface-border text-900">
                             <span>Classificação financeira</span>
                             <p-dropdown
-                                [options]="financialClasificationService.listEntities$()"
+                                [options]="financialClasificationService.lightEntities$()"
                                 appendTo="body"
                                 [filter]="true"
                                 filterBy="name"

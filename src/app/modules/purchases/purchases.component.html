@@ -1,7 +1,7 @@
 <div class="card m-3">
     <div class="flex justify-content-between pb-2">
         <div class="align-items-center flex flex-auto gap-3 py-3">
-            <label class="block font-bold">Vencimiento</label>
+            <label class="block font-bold">Data</label>
             <p-calendar styleClass="w-20rem" class="w-20rem" [(ngModel)]="rangeDates" selectionMode="range"
                         dateFormat="dd/mm/yy"
                         (onClose)="applyFilter()"
@@ -48,7 +48,7 @@
         </div>
     </div>
     <c-data-table [action]="true" [exportBtn]="false" (edit)="customEdit($event)" (create)="customCrear($event)" (delete)="customDelete($event)"
-                  [headers]="headersTable" [service]="service" [showCreate]="true">
+                  [headers]="headersTable" [service]="service" [showCreate]="true" [type]="'EXPENSES'">
         <ng-template let-data tableRow="state">
             <p-badge [value]="data.state | translate" [severity]="data.state | severity"></p-badge>
         </ng-template>

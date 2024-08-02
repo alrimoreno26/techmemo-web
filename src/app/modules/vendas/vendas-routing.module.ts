@@ -7,7 +7,13 @@ const routes: Routes = [
         path: '', component: VendasComponent, children: [
             {
                 path: 'historico',
-                loadChildren: () => import('./components/historico-vendas.module').then(c => c.HistoricoVendasModule)
+                data: {breadcrumb: 'PDV'},
+                loadChildren: () => import('./components/pdv/historico-vendas.module').then(c => c.HistoricoVendasModule)
+            },
+            {
+                path: 'loja',
+                data: {breadcrumb: 'Loja'},
+                loadChildren: () => import('./components/directas/vendas-directas.module').then(c => c.VendasDirectasModule)
             }
         ]
     }

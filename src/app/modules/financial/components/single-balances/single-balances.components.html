@@ -4,7 +4,7 @@
 </div>
 <ng-template #treeTable let-columns="columns" let-columnsSec="columnsSec" let-data let-empty="empty">
     <p-treeTable [columns]="columns" [frozenColumns]="[{header: 'k', field: 'name'}]" [scrollable]="true"
-                 [value]="data" class="balanceK-table" frozenWidth="400px">
+                 [value]="data" class="balanceK-table" frozenWidth="485px">
         <ng-template let-columns pTemplate="colgroup">
             <colgroup>
                 @for (col of columns | colHeader; track col) {

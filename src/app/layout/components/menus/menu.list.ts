@@ -49,10 +49,16 @@ export const menuList: any[] = [
         icon: 'mdi mdi-cash-check mdi-24px',
         items: [
             {
+                label: 'PDV',
+                roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
+                icon: 'mdi mdi-point-of-sale mdi-24px',
+                routerLink: ['vendas/historico']
+            },
+            {
                 label: 'Vendas',
                 roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
-                icon: 'mdi mdi-cash-check mdi-24px',
-                routerLink: ['vendas/historico']
+                icon: 'mdi mdi-cash-plus mdi-24px',
+                routerLink: ['vendas/loja']
             }
         ]
     },

@@ -35,7 +35,6 @@ export class CategoryComponent extends BaseComponentDirective {
             lazy: {
                 pageNumber: 0,
                 pageSize: 10,
-                type: 'PARENT'
             }
         })
         effect(() => {

@@ -15,7 +15,7 @@ export class CategoryServices extends AbstractService<CategoryDto> {
     constructor(private httpClient: HttpClient) {
         super(httpClient, buildURL('/v1/categories'));
     }
-    override findAllPaginate(data: LazyLoadData): Observable<LazyResultData<CategoryDto>> {
+    subCategory(data: LazyLoadData): Observable<LazyResultData<CategoryDto>> {
         const params = map(data, (e, k) => (e !== undefined) ? k + '=' + e : null).filter(f => f).join('&');
         return this.httpClient.get<LazyResultData<CategoryDto>>(
             `${this.basePath}?${params}`

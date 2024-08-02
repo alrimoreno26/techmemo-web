@@ -1,9 +1,9 @@
 import {Component, effect, OnInit} from '@angular/core';
-import {BaseComponentDirective} from "../../../standalone/data-table/directives/base.component.directive";
-import {StoreVendasServices} from "../service/store.vendas.services";
-import {StoreDashboardServices} from "../../dashboard/services/dashboard.services";
-import {SessionServices} from "../../../core/injects/session.services";
-import {formatDate} from "../../../core/util";
+import {BaseComponentDirective} from "../../../../standalone/data-table/directives/base.component.directive";
+import {StoreVendasServices} from "../../service/store.vendas.services";
+import {StoreDashboardServices} from "../../../dashboard/services/dashboard.services";
+import {SessionServices} from "../../../../core/injects/session.services";
+import {formatDate} from "../../../../core/util";
 
 @Component({
     selector: 'c-historico-vendas',

@@ -12,9 +12,7 @@ export class SingleBalancesComponents {
     compareValues?: string;
     constructor(public service: StructureDreService) {
         // this.service.buildTree()
-        console.log(this.service.columns)
-        console.log(this.service.columnsIndex)
-        console.log(this.service.columnsIndex)
+
         console.log(service.actPasDem)
     }
 

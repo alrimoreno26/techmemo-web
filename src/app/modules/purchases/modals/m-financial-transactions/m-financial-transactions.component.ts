@@ -85,6 +85,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.supplierService.autocomplete({
             filter: this.searchTextClassifiers,
         });
+        console.log(data)
         this.initForm(data);
     }
 

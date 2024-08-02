@@ -3,7 +3,7 @@ import {EntityState, StoreComponentService} from "../../../standalone/data-table
 import {HeadersTable} from "../../../standalone/data-table/models";
 import {StructureBalancesServices} from "../../../core/services/structure-dre.service";
 import {TreeNode} from "primeng/api";
-import {keys, orderBy, sumBy} from "lodash";
+import {cloneDeep, keys, orderBy, sumBy} from "lodash";
 import {Observable} from "rxjs";
 import {BalanceStructureHttpServices} from "../../../core/services/balance.structure.http.services";
 import {AccountStructureTO} from "../../../core/models/bills";
@@ -39,8 +39,8 @@ export class StructureDreService extends StoreComponentService<any> {
         })
     }
 
-    newBalance(params: any){
-        this.services.generarBalance(params).subscribe(()=>{
+    newBalance(params: any) {
+        this.services.generarBalance(params).subscribe(() => {
             this.services.getBalances({startDate: '2024-01-01', endDate: '2024-12-31'}).subscribe((result: any) => {
                 const {content, page} = result;
                 this.setAll(content);
@@ -62,7 +62,7 @@ export class StructureDreService extends StoreComponentService<any> {
         })
     }
 
-    changeState(){
+    changeState() {
         this.patchState({seeBalance: !this.state().seeBalance})
     }
 
@@ -108,6 +108,11 @@ export class StructureDreService extends StoreComponentService<any> {
                 related: b.relatedTraceabilities && b.relatedTraceabilities.length > 0 ? b.relatedTraceabilities : undefined
             });
 
+            const accounts = cloneDeep(this.accountList$());
+            b?.actives.sort((a: any, b: any) => a.accountStructure.position - b.accountStructure.position);
+            b?.demonstrations.sort((a: any, b: any) => a.accountStructure.position - b.accountStructure.position);
+            b?.passives.sort((a: any, b: any) => a.accountStructure.position - b.accountStructure.position);
+
             b.actives.forEach((p: any, i: number) => {
                 if (r === 0) {
                     // @ts-ignore
@@ -125,7 +130,8 @@ export class StructureDreService extends StoreComponentService<any> {
                         rootCode: p.accountStructure.parentAccountStructureId ? this.accountList$().find((c: any) => c.id === p.accountStructure.parentAccountStructureId)?.code : null,
                         id: p.accountStructure.id,
                         // @ts-ignore
-                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures
+                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures,
+                        parentAccountStructureId: p.accountStructure.parentAccountStructureId
                     });
                 } else if (r !== 0 && i >= activesList.length) {
                     activesList.push({
@@ -142,7 +148,8 @@ export class StructureDreService extends StoreComponentService<any> {
                         rootCode: p.accountStructure.parentAccountStructureId ? this.accountList$().find((c: any) => c.id === p.accountStructure.parentAccountStructureId)?.code : null,
                         id: p.accountStructure.id,
                         // @ts-ignore
-                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures
+                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures,
+                        parentAccountStructureId: p.accountStructure.parentAccountStructureId
                     });
                 }
 
@@ -167,7 +174,8 @@ export class StructureDreService extends StoreComponentService<any> {
                         rootCode: p.accountStructure.parentAccountStructureId ? this.accountList$().find((c: any) => c.id === p.accountStructure.parentAccountStructureId)?.code : null,
                         id: p.accountStructure.id,
                         // @ts-ignore
-                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures
+                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures,
+                        parentAccountStructureId: p.accountStructure.parentAccountStructureId
                     });
                 } else if (r !== 0 && i >= passiveList.length) {
                     passiveList.push({
@@ -184,7 +192,8 @@ export class StructureDreService extends StoreComponentService<any> {
                         rootCode: p.accountStructure.parentAccountStructureId ? this.accountList$().find((c: any) => c.id === p.accountStructure.parentAccountStructureId)?.code : null,
                         id: p.accountStructure.id,
                         // @ts-ignore
-                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures
+                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures,
+                        parentAccountStructureId: p.accountStructure.parentAccountStructureId
                     });
                 }
 
@@ -194,41 +203,22 @@ export class StructureDreService extends StoreComponentService<any> {
                 passiveList[i][trace] = b.traceabilityId;
             });
             b?.demonstrations?.forEach((p: any, i: number) => {
-                if (r === 0) {
-                    demonstrationsList.push({
-                        name: p.accountStructure.classifier.name,
-                        leaf: p.accountStructure.sheet,
-                        sheet: p.accountStructure.sheet,
-                        visualize: p.accountStructure.visualize,
-                        prefix: p.accountStructure.prefix,
-                        suffix: p.accountStructure.suffix,
-                        position: p.accountStructure.position,
-                        // @ts-ignore
-                        code: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).code,
-                        // @ts-ignore
-                        rootCode: p.accountStructure.parentAccountStructureId ? this.accountList$().find((c: any) => c.id === p.accountStructure.parentAccountStructureId)?.code : null,
-                        id: p.accountStructure.id,
-                        // @ts-ignore
-                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures
-                    });
-                } else if (r !== 0 && i >= demonstrationsList.length) {
-                    demonstrationsList.push({
-                        name: p.accountStructure.classifier.name,
-                        leaf: p.accountStructure.sheet,
-                        sheet: p.accountStructure.sheet,
-                        visualize: true,
-                        prefix: p.accountStructure.prefix,
-                        suffix: p.accountStructure.suffix,
-                        position: p.accountStructure.position,
-                        // @ts-ignore
-                        code: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).code,
-                        // @ts-ignore
-                        rootCode: p.accountStructure.parentAccountStructureId ? this.accountList$().find((c: any) => c.id === p.accountStructure.parentAccountStructureId)?.code : null,
-                        id: p.accountStructure.id,
-                        // @ts-ignore
-                        parent: this.accountList$().find((c: any) => c.id === p.accountStructure.classifier.id).visibleOnlyForStructures
-                    });
-                }
+                demonstrationsList.push({
+                    name: p.accountStructure.classifier.name,
+                    leaf: p.accountStructure.sheet,
+                    sheet: p.accountStructure.sheet,
+                    visualize: true,
+                    position: p.accountStructure.position,
+                    // @ts-ignore
+                    code: accounts.find((c: any) => c.id === p.accountStructure.classifier.id).code,
+                    // @ts-ignore
+                    rootCode: p.accountStructure.parentAccountStructureId ? accounts.find((c: any) => c.id === p.accountStructure.parentAccountStructureId)?.code : null,
+                    id: p.accountStructure.id,
+                    // @ts-ignore
+                    parent: accounts.find(f => f.id === p.accountStructure.classifier.id).visibleOnlyForStructures,
+                    // @ts-ignore
+                    parentAccountStructureId: p.accountStructure.parentAccountStructureId
+                });
 
                 demonstrationsList[i][value] = p.value;
                 demonstrationsList[i][va] = p.percentVA;
@@ -317,8 +307,12 @@ export class StructureDreService extends StoreComponentService<any> {
     private buildTreeNode(listRaw: any[] = [], base: any[] = [], color: string): TreeNode[] {
         return base.map(b => {
             const pos = b.code.split('.').length;
-            const className = `${color}-${pos - 1}`;
-            const child = listRaw.filter(f => (f.code.startsWith(b.code + '.') && f.code.split('.').length === (pos + 1)));
+            let className = `${color}-${pos - 1}`;
+            if (pos > 1) {
+                className = `${color}-${pos}`;
+            }
+            const child = listRaw.filter(x => x.parentAccountStructureId === b.id)
+            //const child = listRaw.filter(f => (f.code.startsWith(b.code + '.') && f.code.split('.').length === (pos + 1)));
             if (child.length === 0) {
                 return {data: {...b, class: className, leaf: true}, leaf: true};
             }

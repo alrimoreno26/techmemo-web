@@ -117,6 +117,7 @@ export interface AccountStructureTO extends CreateAccountStructureTO {
     parent?: string
     classifierId?: string
     classifier?: any
+    visibleOnlyForStructures?: boolean
 }
 
 export interface AccountEquationStructureTO {
