@@ -48,7 +48,7 @@
             <label class="mb-0">Popular produtos</label>
             <p-inputSwitch formControlName="populateInitialData"></p-inputSwitch>
         </div>
-        <div class="flex flex-column justify-content-start gap-2">
+        <div class="align-items-center flex flex-column gap-2 w-full">
             <label>Tipo de Negócio</label>
             <p-selectButton [options]="commerceTypeEnum"
                             formControlName="type"
@@ -56,6 +56,24 @@
                             (onChange)="onChangeCommerceType($event)"
                             optionValue="value"></p-selectButton>
         </div>
+        @if(getForm('type') !== CommerceTypeEnum.INDUSTRY){
+            <div class="flex flex-column w-full justify-content-start gap-2">
+                <p-dropdown
+                    [options]="groupedCommerces"
+                    formControlName="parentCommerceId"
+                    placeholder="Selecione uma organização"
+                    styleClass="w-full"
+                    class="w-full"
+                    appendTo="body"
+                    [group]="true">
+                    <ng-template let-group pTemplate="group">
+                        <div class="flex align-items-center">
+                            <span>{{ group.label }}</span>
+                        </div>
+                    </ng-template>
+                </p-dropdown>
+            </div>
+        }
 
     </div>
 </form>

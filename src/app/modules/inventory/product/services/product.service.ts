@@ -86,7 +86,7 @@ export class ProductService extends BaseStoreServices<any> {
         })
     }
 
-    override create(data: ProductsCreateDto): void {
+    override create(data: any): void {
         this.store.dispatch(fromProductListActions.createProduct({entity: data}));
     }
 

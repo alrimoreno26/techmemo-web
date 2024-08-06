@@ -48,7 +48,7 @@
         </div>
     </div>
     <c-data-table [action]="true" [exportBtn]="false" (edit)="customEdit($event)" (create)="customCrear($event)" (delete)="customDelete($event)"
-                  [headers]="headersTable" [service]="service" [showCreate]="true" [type]="'EXPENSES'">
+                  [headers]="headersTable" [service]="service" [showCreate]="true" [type]="'BILLING'">
         <ng-template let-data tableRow="state">
             <p-badge [value]="data.state | translate" [severity]="data.state | severity"></p-badge>
         </ng-template>

@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, Signal} from "@angular/core";
 import {EntityState, StoreComponentService} from "../../../standalone/data-table/store/store.component.service";
 import {CommercesServices} from "../../../core/services/commerces.services";
 import {SessionServices} from "../../../core/injects/session.services";
@@ -14,11 +14,12 @@ export class CommercesService extends StoreComponentService<any> {
     override serverSide = false;
 
     changed$: Observable<any> = this.select(state => state.changed);
+    autocomplete$: Signal<any | null> = this.selectSignal(state => state.autocomplete);
 
     constructor(private services: CommercesServices,
                 private sessionService: SessionServices,) {
-        const defaultEntity: EntityState<any> & { changed: any } =
-            {entities: [], total: 0, dialog: false, loaded: false, changed: false};
+        const defaultEntity: EntityState<any> & { changed: any, autocomplete: [] } =
+            {entities: [], total: 0, dialog: false, loaded: false, changed: false, autocomplete: []};
         super(services, defaultEntity);
     }
 
@@ -69,4 +70,13 @@ export class CommercesService extends StoreComponentService<any> {
     }
 
 
+    autocomplete(data: Partial<any>) {
+        this.services.autocomplete({
+            ...data,
+            pageNumber: 0,
+            pageSize: 15,
+        }).subscribe((response: any) => {
+            this.patchState({autocomplete: response.content});
+        })
+    }
 }

@@ -6,6 +6,10 @@ import {MProductComponent} from "./components/m-product/m-product.component";
 import {MenuItem} from "primeng/api";
 import {TranslateService} from "@ngx-translate/core";
 import {productType} from "../../../core/enums/product";
+import * as XLSX from "xlsx";
+import {CategoryDto} from "../../../core/models";
+import {HttpClient} from "@angular/common/http";
+import {ProductDto} from "../../../core/models/products";
 
 @Component({
     selector: 'c-product',
@@ -60,7 +64,8 @@ export class ProductComponent extends BaseComponentDirective {
 
 
     constructor(public productService: ProductService,
-                private translateService: TranslateService) {
+                private translateService: TranslateService,
+                private http: HttpClient) {
         super();
     }
 
@@ -80,5 +85,59 @@ export class ProductComponent extends BaseComponentDirective {
         if (evt.type === 'COMBO') {
             this.productService.getAdditionalProducts({pageNumber: 0, pageSize: 1000, type: productType.ADDITIONAL})
         }
+    }
+
+    importProducts() {
+        const workbook = 'assets/products.xlsx';
+        // Obtiene la primera hoja del archivo (puedes ajustar esto según tu caso)
+        return this.http.get(workbook, {responseType: 'arraybuffer'})
+            .subscribe(
+                (data) => {
+                    const send = this.processExcelData(data);
+                    console.log(send)
+                    let index = 0;
+                    // const intervalId = setInterval(() => {
+                    //     if (index < send.length) {
+                    //         this.productService.create(send[index]);
+                    //         console.log("¡La función se ejecutó después de 5000 milisegundos (5 segundos)!");
+                    //         index++;
+                    //     } else {
+                    //         clearInterval(intervalId);
+                    //         console.log("Todos los datos han sido insertados.");
+                    //     }
+                    // }, 200); // 5000 milisegundos = 5 segundos
+                },
+                (error) => {
+                    console.error('Error loading Excel file:', error);
+                }
+            );
+    }
+
+    private processExcelData(data: ArrayBuffer) {
+        const workbook = XLSX.read(new Uint8Array(data), {type: 'array'});
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+
+        let products: ProductDto[] = [];
+
+        jsonData.forEach((row: any) => {
+            if (row[0] !== undefined) {
+                const p: any = {
+                    name: row[0],
+                    categoryId: row[1],
+                    costPrice: row[2],
+                    salePrice: row[3],
+                    cfop: row[5] === undefined ? 1 : row[5],
+                    ncm: row[6] === undefined ? 1 : row[6],
+                    cst: row[6] === undefined ? 1 : row[7],
+                    type: 'ADDITIONAL',
+                }
+                products.push(p)
+            }
+
+        });
+
+        return products;
     }
 }
