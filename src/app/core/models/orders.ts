@@ -19,6 +19,8 @@ export interface CreateOrderTO {
     clientDocument: string,
     clientName: string,
     tableId?: string
+    byRoute?: string
+    tableUnion?: any
 }
 
 export interface CreatePaymentTransactionTO {

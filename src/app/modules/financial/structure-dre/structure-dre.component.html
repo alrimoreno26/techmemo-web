@@ -1,13 +1,13 @@
 <div class="card m-3">
     <c-data-table [headers]="headersTable" [service]="service">
 
-        <ng-template let-data tableRow="pattern">
-            @if (data.pattern) {
-                <span class="mdi mdi-check-circle-outline text-green-500"></span>
-            } @else if (!data.pattern) {
-                <span class="mdi mdi-close-circle-outline text-danger"></span>
-            }
-        </ng-template>
+<!--        <ng-template let-data tableRow="pattern">-->
+<!--            @if (data.pattern) {-->
+<!--                <span class="mdi mdi-check-circle-outline text-green-500"></span>-->
+<!--            } @else if (!data.pattern) {-->
+<!--                <span class="mdi mdi-close-circle-outline text-danger"></span>-->
+<!--            }-->
+<!--        </ng-template>-->
         <ng-template let-data tableRow="enabled">
             <p-inputSwitch [ngModel]="data.enabled" (onChange)="patchStructure($event, data)"></p-inputSwitch>
         </ng-template>

@@ -2,7 +2,7 @@
     <c-data-table [action]="true" [exportBtn]="false"
                   [headers]="headersTable" [service]="service" [showCreate]="true">
         <ng-template let-data tableRow="enable">
-            <ng-template [ngIf]="data.enable" [ngIfElse]="notEnable">
+            <ng-template [ngIf]="data.enabled" [ngIfElse]="notEnable">
                 <i class="mdi mdi-check-circle-outline text-2xl text-green-700"></i>
             </ng-template>
             <ng-template #notEnable>

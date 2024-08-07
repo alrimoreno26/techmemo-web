@@ -2,6 +2,7 @@ import {createAction, props} from "@ngrx/store";
 import {LazyLoadData, LazyResultData} from "../../../standalone/data-table/models";
 import {CreateOrderTO, CreatePaymentTransactionTO, OrdersTO} from "../../../core/models/orders";
 import {DeleteOrderProductDto} from "../../../core/models/products";
+import {TableUnion} from "../components/caixa/caixa.component";
 
 export enum EntityActionTypes {
     LoadOrdersList = '[Orders] Load Orders List',
@@ -12,6 +13,7 @@ export enum EntityActionTypes {
     LoadOrdersAdditionalSuccess = '[Orders] Load Orders Additional Success',
 
     GetByID = '[Orders] Get By ID',
+    GetByUnionID = '[Orders] Get By Union ID',
     GetByIDSuccess = '[Orders] Get By ID Success',
 
     GetProductInOrderByID = '[Orders] Get Product In Order By ID',
@@ -80,6 +82,7 @@ export const OrdersListFailRequest = createAction(EntityActionTypes.OrdersListFa
 }>());
 
 export const getByID = createAction(EntityActionTypes.GetByID, props<{ path: string[],id: any }>());
+export const getByUnionID = createAction(EntityActionTypes.GetByUnionID, props<{ path: string[],params: TableUnion }>());
 export const getByIDSuccess = createAction(EntityActionTypes.GetByIDSuccess, props<{ entity: any }>());
 
 export const getProductInOrderByID = createAction(EntityActionTypes.GetProductInOrderByID, props<{ id: any }>());
@@ -138,6 +141,7 @@ export const fromOrdersListActions = {
     deleteOrdersSuccess,
     setSelectedOrders,
     getByID,
+    getByUnionID,
     getByIDSuccess,
     getProductInOrderByID,
     getProductInOrderByIDSuccess,

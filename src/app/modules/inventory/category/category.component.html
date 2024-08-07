@@ -1,6 +1,6 @@
 <div class="card m-3">
-    <c-data-table [action]="true" [exportBtn]="false" (edit)="customEdit($event)"
-                  [headers]="headersTable" [service]="categoryService" [showCreate]="true">
+    <c-data-table  [rowsPerPageOptions]="[10,25,50,100]" [action]="true" [exportBtn]="false" (create)="customCreate($event)" (edit)="customEdit($event)"
+                  [headers]="headersTable" [service]="categoryService" [showCreate]="true" [type]="'PARENT'">
     </c-data-table>
     <p-confirmDialog [autoZIndex]="true" [style]="{width: '30rem'}" appendTo="body" confirmTranslate/>
 </div>

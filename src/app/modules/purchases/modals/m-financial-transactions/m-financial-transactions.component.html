@@ -1,5 +1,5 @@
 <ng-template dialog-header>
-    Trasação financeira
+    Trasação Financeira <span class="font-bold">({{config.data?.type === 'EXPENSES' ? 'COMPRA' : 'VENDA'}})</span>
 </ng-template>
 <div formResponsive width="950px">
     <p-stepper [linear]="true" [(activeStep)]="stepActive">
@@ -10,7 +10,8 @@
                         <div class="col-8">
                             <div class="col-12 flex gap-3">
                                 <div class="align-items-center flex flex-auto gap-3">
-                                    <label class="block font-bold w-4">Fornecedor</label>
+                                    <label
+                                        class="block font-bold w-4">{{ config.data?.type === 'EXPENSES' ? 'Fornecedor' : 'Loja' }}</label>
                                     <div class="search-container-single px-0 py-0 shadow-none w-full">
                                         <i class="mdi mdi-magnify"></i>
                                         <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
@@ -24,8 +25,10 @@
                                                         [suggestions]="suggestionsSuppliers"></p-autoComplete>
                                     </div>
                                 </div>
-                                <p-button icon="mdi mdi-plus" class="mr-2" [outlined]="true" severity="success"
-                                          (onClick)="addFornecedor()"></p-button>
+                                @if (data?.type === 'EXPENSES') {
+                                    <p-button icon="mdi mdi-plus" class="mr-2" [outlined]="true" severity="success"
+                                              (onClick)="addFornecedor()"></p-button>
+                                }
                             </div>
                             <div class="col-12 pb-1">
                                 <div class="align-items-center flex flex-auto">
@@ -124,7 +127,8 @@
                             </ng-template>
                             <ng-template pTemplate="body" let-product>
                                 <tr>
-                                    <td class="custom-td" style="min-width: 220px">{{ product.productName | wrapText: 25 }}
+                                    <td class="custom-td"
+                                        style="min-width: 220px">{{ product.productName | wrapText: 25 }}
                                     </td>
                                     <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" }}</td>
                                     <td class="custom-td">
@@ -160,7 +164,8 @@
         <p-stepperPanel header="Conta a Pagar">
             <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
                          let-index="index">
-                <c-installments [config]="data" [totalProducts]="totalProducts" (confirmInstallment)="confirmInstallment($event)"></c-installments>
+                <c-installments [config]="data" [totalProducts]="totalProducts"
+                                (confirmInstallment)="confirmInstallment($event)"></c-installments>
             </ng-template>
         </p-stepperPanel>
     </p-stepper>
@@ -168,8 +173,8 @@
 </div>
 <ng-template dialog-footer>
     @if (this.stepActive === 1) {
-       <p-button label="Detalhes da transferência" severity="secondary" (onClick)="decreaseStepActive()"/>
-       <p-button label="Salvar Pagamento" (onClick)="savePayment()"/>
+        <p-button label="Detalhes da transferência" severity="secondary" (onClick)="decreaseStepActive()"/>
+        <p-button label="Salvar Pagamento" (onClick)="savePayment()"/>
     }
 
     <button pButton pRipple class="p-button-danger flex-1 p-button-outlined" label="Fechar" (click)="closingModal()"

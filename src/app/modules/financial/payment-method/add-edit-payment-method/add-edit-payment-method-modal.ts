@@ -48,7 +48,7 @@ export class AddEditPaymentMethodModal extends BaseModalStoreComponentDirective 
         this.form = new FormGroup({
             description: new FormControl<string>(data?.description, Validators.required),
             type: new FormControl<string>(data?.type, Validators.required),
-            enable: new FormControl<boolean>(data?.enable || false),
+            enabled: new FormControl<boolean>(data?.enabled || false),
             allowsChange: new FormControl<boolean>(data?.allowsChange || false),
             mandatorySendCfe: new FormControl<boolean>(data?.mandatorySendCfe || false),
             requestAgreementInformation: new FormControl<boolean>(data?.requestAgreementInformation || false),

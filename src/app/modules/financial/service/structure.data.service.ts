@@ -169,7 +169,7 @@ export class StructureDataService {
         const novo = {
             calculationType: params.calculationType,
             parentAccountStructureId: params.parentAccountStructureId,
-            position: params.position + 1
+            position: params.position
         };
         let a = removeNullProperties(novo)
         const request = [

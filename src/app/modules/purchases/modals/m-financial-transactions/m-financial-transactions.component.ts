@@ -22,6 +22,7 @@ import {cloneDeep} from "lodash";
 import {InstallmentsComponent} from "../../components/c-installsments/installments.component";
 import {BehaviorSubject} from "rxjs";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
+import {CommercesService} from "../../../shops/service/commerces.service";
 
 @Component({
     templateUrl: './m-financial-transactions.component.html',
@@ -61,6 +62,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                 private dialogService: DialogService,
                 public paymentMethodService: PaymentMethodService,
                 private dialogRegistryService: DialogRegistryService,
+                private commercesService: CommercesService,
                 private financeService: FinancialClasificationService,
                 private toastMessageService: ToastMessageService,
                 public stockTransferStore: Stock_TransferStore) {
@@ -82,9 +84,15 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.financeService.autocompleteSearch({
             filter: this.searchTextSuppliers,
         });
-        this.supplierService.autocomplete({
-            filter: this.searchTextClassifiers,
-        });
+        if (data?.type === 'EXPENSES') {
+            this.supplierService.autocomplete({
+                filter: this.searchTextClassifiers,
+            });
+        } else {
+            this.commercesService.autocomplete({
+                filter: this.searchTextClassifiers,
+            });
+        }
         this.initForm(data);
     }
 
@@ -174,7 +182,8 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     initForm(data: any) {
         this.form = new FormGroup({
             id: new FormControl(data?.id),
-            supplierId: new FormControl(data?.supplier, Validators.required),
+            supplierId: new FormControl(data?.supplier),
+            commerceId: new FormControl(data?.supplier),
             classifierId: new FormControl(data?.classifier, Validators.required),
             type: new FormControl({value: data?.type || 'EXPENSES', disabled: true}, Validators.required),
         });
@@ -183,7 +192,8 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                 ...data,
                 billsId: this.storeService.selectedEntity$()?.billId || null,
                 classifierId: this.form.get('classifierId')?.value.id,
-                supplierId: this.form.get('supplierId')?.value.id
+                supplierId: this.form.get('supplierId')?.value.id,
+                commerceId: this.form.get('supplierId')?.value.id
             };
         }
     }
@@ -192,12 +202,13 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     handleKeyboardEvent(event: KeyboardEvent) {
         switch (event.key) {
             case 'Enter':
-                if(this.suggestionsProducts.length > 0){
+                if (this.suggestionsProducts.length > 0) {
                     if (this.selectedItem !== undefined) {
                         const tempProduct = {
-                            ...this.selectedItem,
-                            amount: this.selectedItemAmount,
-                            valueToPaid: this.selectedItem.salePrice * this.selectedItemAmount
+                            productName: this.selectedItem.name,
+                            soldPerUnits: this.selectedItem.soldPerUnits,
+                            value: this.selectedItem.salePrice * this.selectedItemAmount,
+                            amount: this.selectedItemAmount
                         };
                         if (this.editing) {
                             this.storeFinancialTransactions.addFinancialTransactionProduct(
@@ -226,7 +237,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
 
     addProduct() {
         this.productService.openModalAddOrEdit();
-        this.openProductModal(MProductComponent, { data: { suppliers: [this.form.get('supplierId')?.value] } });
+        this.openProductModal(MProductComponent, {data: {suppliers: [this.form.get('supplierId')?.value]}});
     }
 
     openProductModal(component: any, params: any) {
@@ -244,7 +255,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.editing) {
             this.storeFinancialTransactions.addFinancialTransactionProduct(id, [tempProduct]).subscribe((response: any[]) => {
                 this.storeService.setListProductSelected(response);
-                this.storeService.loadAll({ lazy: { pageNumber: 0, pageSize: 50 } });
+                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
             });
         } else {
             this.addNewProduct(tempProduct);
@@ -259,6 +270,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             amount: tempProduct.amount
         }
     }
+
     addNewProduct(newProduct: any): void {
         this.products = [...this.products, newProduct];
     }
@@ -306,16 +318,30 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     searchSuppliers(event: AutoCompleteCompleteEvent) {
-        if (this.supplierService.autocomplete$()) {
-            this.suggestionsSuppliers = this.supplierService.autocomplete$()?.map((item: any) => item) ?? [];
+        if (this.form.get('type')?.value === 'EXPENSES') {
+            if (this.supplierService.autocomplete$()) {
+                this.suggestionsSuppliers = this.supplierService.autocomplete$()?.map((item: any) => item) ?? [];
+            }
+        } else {
+            if (this.commercesService.autocomplete$()) {
+                this.suggestionsSuppliers = this.commercesService.autocomplete$()?.map((item: any) => item) ?? [];
+            }
         }
+
     }
 
     searchClassifiers(event: { target: { value: string; } } | any) {
         this.searchTextSuppliers = event.target.value;
-        this.financeService.autocompleteSearch({
-            filter: this.searchTextSuppliers,
-        });
+        if (this.form.get('type')?.value === 'EXPENSES') {
+            this.financeService.autocompleteSearch({
+                filter: this.searchTextSuppliers,
+            });
+        } else {
+            this.commercesService.autocomplete({
+                filter: this.searchTextSuppliers,
+            });
+        }
+
     }
 
     searchFornecedor(event: { target: { value: string; } } | any) {
@@ -337,30 +363,31 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     override save() {
+        let send: any = {
+            classifierId: this.form.get('classifierId')?.value.id,
+            products: this.products.map((item: any) => ({
+                amount: item.amount,
+                productId: item.id,
+                productName: item.productName,
+                unitMeasurementId: item.unitMeasurementCode,
+                value: item.value,
+                weight: item.weight,
+            })),
+            type: this.form.get('type')?.value,
+        };
+
         if (this.editing) {
-            const send = {
-                classifierId: this.form.get('classifierId')?.value.id,
-                supplierId: this.form.get('supplierId')?.value.id,
-                type: this.form.get('type')?.value,
+            if (this.form.get('type')?.value !== 'EXPENSES') {
+                send.commerceId = this.form.get('commerceId')?.value.id;
             }
             this.reduceTotalPayments();
             this.storeFinancialTransactions.updateFinancialTransaction(send, this.form.get('id')?.value);
             this.stepActive++;
         } else {
-            const send = {
-                classifierId: this.form.get('classifierId')?.value.id,
-                products: this.products.map((item: any) => {
-                    return {
-                        amount: item.amount,
-                        productId: item.id,
-                        productName: item.productName,
-                        unitMeasurementId: item.unitMeasurementCode,
-                        value: item.value,
-                        weight: item.weight,
-                    }
-                }),
-                supplierId: this.form.get('supplierId')?.value.id,
-                type: this.form.get('type')?.value,
+            if (this.form.get('type')?.value === 'EXPENSES') {
+                send.supplierId = this.form.get('supplierId')?.value.id;
+            } else {
+                send.commerceId = this.form.get('supplierId')?.value.id;
             }
             this.storeFinancialTransactions.create({data: send});
         }

@@ -14,4 +14,8 @@ export class TablesService extends AbstractService<any> {
     changeStateTable(orderId:string, stateOrder: string){
         return this.httpClient.patch<any>(this.basePath + '/' + orderId, {state: stateOrder})
     }
+
+    allTableInUnion(unionTableId:string){
+        return this.httpClient.get<any>(this.basePath+`/union-table?unionTableId=${unionTableId}`)
+    }
 }

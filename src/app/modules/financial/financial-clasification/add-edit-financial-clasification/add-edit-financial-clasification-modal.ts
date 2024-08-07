@@ -36,7 +36,7 @@ export class AddEditFinancialClasificationModal extends BaseModalStoreComponentD
 
     stateOptions: any[] = [
         {label: 'A pagar', value: 'EXPENSES'},
-        {label: 'Renda', value: 'BILLINGS'}
+        {label: 'Renda', value: 'BILLING'}
     ];
 
     balanceAccountType: any[] = [

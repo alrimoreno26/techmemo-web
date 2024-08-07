@@ -120,7 +120,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
                         })
                         break;
                     case tableState.BUSY_WITH_UNION:
-                        this.router.navigate([`/comandas/table-union/${table.unionTableId}`]).then();
+                        this.router.navigate([`/comandas/table-union/${table.unionTableId}`], { state: { data: table } }).then();
                         break;
                     default:
                         this.router.navigate([`/comandas/table/${table.id}`]).then();

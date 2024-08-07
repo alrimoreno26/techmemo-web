@@ -34,6 +34,7 @@ import {MAddCommerceComponent} from "./components/m-add-commerce/m-add-commerce.
 import {InputSwitchModule} from "primeng/inputswitch";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {UserService} from "../../../security/user/services/user.service";
+import {AutoCompleteModule} from "primeng/autocomplete";
 
 @NgModule({
     declarations: [
@@ -71,6 +72,7 @@ import {UserService} from "../../../security/user/services/user.service";
         EcommerceDashboardModule,
         InputSwitchModule,
         SelectButtonModule,
+        AutoCompleteModule,
     ],
     providers: [
         CommercesService,

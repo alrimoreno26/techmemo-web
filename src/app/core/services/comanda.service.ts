@@ -59,6 +59,10 @@ export class OrdersService extends AbstractService<any> {
             this.client.get(this.basePath + '/' + queryParams);
     }
 
+    loadOrdersUnion(paths: string[], queryParams: any): Observable<any> {
+        return this.client.get(`${this.basePath}/${paths.join('/')}?unionTableId=${queryParams}`);
+    }
+
     unionTables(tables: string[]): Observable<any> {
         return this.httpClient.post<any>(`${buildURL('/v1')}/union-tables`, tables)
     }

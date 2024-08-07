@@ -35,7 +35,7 @@ export class ShopsListComponent extends BaseComponentDirective implements OnInit
             this.dialogService.open(MAddCommerceComponent,{
                 draggable: true,
                 width:'25vw',
-                height:'500px',
+                height:'550px',
                 resizable: false,
                 closeOnEscape: true,
                 closable: true,

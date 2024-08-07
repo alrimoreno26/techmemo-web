@@ -34,12 +34,12 @@ export const menuList: any[] = [
                 icon: 'mdi mdi-card-account-details-outline mdi-24px',
                 routerLink: ['inventory/proveedores']
             },
-            {
-                label: 'Transferência de estoque',
-                roles: [domainEnum.SUPPLIER],
-                icon: 'mdi mdi mdi-swap-horizontal-bold mdi-24px',
-                routerLink: ['inventory/transfer/estoque']
-            }
+            // {
+            //     label: 'Transferência de estoque',
+            //     roles: [domainEnum.SUPPLIER],
+            //     icon: 'mdi mdi mdi-swap-horizontal-bold mdi-24px',
+            //     routerLink: ['inventory/transfer/estoque']
+            // }
         ]
     },
     {separator: true},
@@ -49,10 +49,16 @@ export const menuList: any[] = [
         icon: 'mdi mdi-cash-check mdi-24px',
         items: [
             {
+                label: 'PDV',
+                roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
+                icon: 'mdi mdi-point-of-sale mdi-24px',
+                routerLink: ['vendas/historico']
+            },
+            {
                 label: 'Vendas',
                 roles: [domainEnum.POS,domainEnum.ORDER,domainEnum.PRODUCT],
-                icon: 'mdi mdi-cash-check mdi-24px',
-                routerLink: ['vendas/historico']
+                icon: 'mdi mdi-cash-plus mdi-24px',
+                routerLink: ['vendas/loja']
             }
         ]
     },
@@ -100,6 +106,12 @@ export const menuList: any[] = [
                 roles: [domainEnum.PRODUCT],
                 icon: 'mdi mdi-cash-multiple mdi-24px',
                 routerLink: ['compras/lista']
+            },
+            {
+                label: 'Transferência',
+                roles: [domainEnum.PRODUCT],
+                icon: 'mdi mdi-truck-delivery mdi-24px',
+                routerLink: ['transfer/lista']
             }
         ]
     },
@@ -116,16 +128,16 @@ export const menuList: any[] = [
                 routerLink: ['financial/financial-clasification']
             },
             {
-                label: 'DRE',
+                label: 'Balanço',
                 roles: [domainEnum.ALL],
                 icon: 'mdi mdi-cash-edit mdi-24px',
-                routerLink: ['financial/dre']
+                routerLink: ['financial/balances']
             },
             {
-                label: 'Estrutura DRE',
+                label: 'Estrutura Contábil',
                 roles: [domainEnum.ALL],
                 icon: 'mdi mdi-cash-check mdi-24px',
-                routerLink: ['financial/structure-dre']
+                routerLink: ['financial/structure-balances']
             },
             {
                 label: 'Meios de pagamento',

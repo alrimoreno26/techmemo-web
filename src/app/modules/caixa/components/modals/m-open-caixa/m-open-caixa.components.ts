@@ -59,6 +59,10 @@ export class MOpenCaixaComponents implements OnInit {
 
     openCaixa() {
         if (this.form.valid) {
+            const params = {
+                ...this.form.value,
+                value: this.form.get('value')?.value
+            }
             this.cashRegisterOperations.openCaixa(this.form.value)
         }
     }

@@ -11,10 +11,11 @@ import {
     selectedTotalElement,
     selectEntityLoaded, sentKitchen
 } from "../store/caixa.selectors";
-import {fromOrdersListActions} from "../store/caixa.actions";
+import {fromOrdersListActions, getByUnionID} from "../store/caixa.actions";
 import {CreateOrderTO, CreatePaymentTransactionTO} from "../../../core/models/orders";
 import {DeleteOrderProductDto, ProductLightDto} from "../../../core/models/products";
 import {BehaviorSubject, Observable} from "rxjs";
+import {TableUnion} from "../components/caixa/caixa.component";
 
 
 @Injectable({providedIn: 'platform'})
@@ -68,6 +69,10 @@ export class CaixaService extends BaseStoreServices<any> {
             }
         }));
         super.loadAll(data);
+    }
+
+    getByUnionId(path: string[], params: TableUnion): void {
+        this.store.dispatch(fromOrdersListActions.getByUnionID({path, params}));
     }
 
     getById(path: string[], id: any): void {

@@ -17,7 +17,7 @@ export class CommercesServices extends AbstractService<any> {
 
     override findAllPaginate(queryParams: any): Observable<LazyResultData<any>> {
         const params: HttpParams = new HttpParams({fromObject: queryParams});
-        return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}/filter?${params}`);
+        return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}/authenticated-user?${params}`);
     }
 
     override update(params: any, idProp?: string, queryParams?: any): Observable<any> {
@@ -27,5 +27,11 @@ export class CommercesServices extends AbstractService<any> {
 
     getById(id: string){
         return this.httpClient.get(`${this.basePath}/${id}`)
+    }
+
+    autocomplete(queryParams: any){
+        const params: HttpParams = new HttpParams({fromObject: queryParams});
+        return this.httpClient.get<LazyResultData<SupplierDTO>>(`${this.basePath}/authenticated-commerce/children?${params}&types=PARENT&types=SUBSIDIARY`);
+
     }
 }

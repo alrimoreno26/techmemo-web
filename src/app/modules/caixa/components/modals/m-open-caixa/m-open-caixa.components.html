@@ -28,7 +28,7 @@
                         [maxFractionDigits]="2" formControlName="value" id="unitPriceCombo" currency="BRL"
                         locale="pt-BR" mode="currency" placeholder="Dinheiro em caixa"></p-inputNumber>
                 </div>
-                @if(session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE'){
+                @if (session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
                     <div class="col-12 field mt-3">
                         <span class="p-float-label">
                             <p-dropdown

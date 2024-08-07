@@ -10,22 +10,36 @@ import {catchError, switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse, HttpParams} from "@angular/common/http";
 import {T} from "@fullcalendar/core/internal-common";
+import {LightsDTO} from "../../../core/models/utils";
 
 @Injectable({providedIn: 'platform'})
 export class FinancialClasificationService extends StoreComponentService<ClassifierDto> {
 
     autocomplete$: Signal<any | null> = this.selectSignal(state => state.autocomplete);
-
+    lightEntities$: Signal<LightsDTO[]> = this.selectSignal(state => state.lightEntities);
     override serverSide = true;
     override lazyLoadOnInit = false;
     override pageSize = 25;
 
     constructor(private services: FinancialClassifiersService) {
-        const defaultEntity: EntityState<ClassifierDto> & { autocomplete: any } =
-            {entities: [], total: 0, dialog: false, loaded: false, autocomplete: []};
+        const defaultEntity: EntityState<ClassifierDto> & { autocomplete: any, lightEntities: [] } =
+            {entities: [], total: 0, dialog: false, loaded: false, autocomplete: [], lightEntities: []};
         super(services, defaultEntity);
     }
 
+    loadLight(lazy: any) {
+        this.services.findAllPaginate(lazy).subscribe((response: any) => {
+            const temp = response.content.map((item: any) => {
+                return {
+                    code: item.code,
+                    id: item.id,
+                    name: item.name,
+                    visibleOnlyForStructures: item.visibleOnlyForStructures
+                }
+            })
+            this.patchState({lightEntities: temp});
+        });
+    }
 
 
     override loadAll = this.effect<any>((lazy$: Observable<{ lazy: LazyLoadData }>) => lazy$.pipe(

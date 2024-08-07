@@ -16,6 +16,12 @@ import {StoreTablesServices} from "../../services/store.tables.services";
 import {MComandaComponents} from "../modals/m-comanda/m-comanda.components";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 import {CashRegisterService} from "../../../shops/service/cash-register.service";
+import {OverlayPanel} from "primeng/overlaypanel";
+
+export interface TableUnion {
+    unionTableId: string;
+    tableId: string | null;
+}
 
 
 @Component({
@@ -57,6 +63,12 @@ export class CaixaComponent implements OnInit {
     activeRouteOrder: string;
     totalOrders = 0;
 
+    tableIdUnion:string;
+    tableUnion: TableUnion = {
+        tableId: '',
+        unionTableId: ''
+    };
+
     constructor(public notify: NotifyService,
                 private http: HttpClient,
                 private activatedRoute: Router,
@@ -64,7 +76,7 @@ export class CaixaComponent implements OnInit {
                 private productService: ProductService,
                 private toastMessageService: ToastMessageService,
                 public client: HttpClient,
-                private storeTablesServices: StoreTablesServices,
+                public storeTablesServices: StoreTablesServices,
                 private router: Router,
                 public cashService: CashRegisterService,
                 public service: CaixaService) {
@@ -110,6 +122,14 @@ export class CaixaComponent implements OnInit {
         effect(async () => {
             this.getOrders();
         }, {allowSignalWrites: true})
+        const navigation = this.router.getCurrentNavigation();
+        this.tableUnion = {
+            unionTableId: this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[1],
+            tableId: null
+        }
+        if (navigation && navigation.extras && navigation.extras.state) {
+            this.tableUnion.tableId = navigation.extras.state['data'].id;
+        }
     }
 
     ngOnInit(): void {
@@ -196,8 +216,12 @@ export class CaixaComponent implements OnInit {
         return product.paid;
     }
 
-    addNewOrderTable() {
+    addNewOrderTable(op: OverlayPanel, event: any) {
         this.service.openModalAddOrEdit();
+        if (this.activeRoute === 'table-union') {
+            this.storeTablesServices.allTableInUnion(this.tableUnion.unionTableId);
+            op.toggle(event);
+        }
         if (this.activeRoute === 'table') {
             this.dialogService.open(MComandaComponents, {
                 data: {
@@ -209,15 +233,31 @@ export class CaixaComponent implements OnInit {
         }
     }
 
+    selectedTableForOrder() {
+        const deep = cloneDeep(this.tableUnion);
+        deep.tableId= this.tableIdUnion;
+        this.dialogService.open(MComandaComponents, {
+            data: {
+                id: deep.tableId,
+                inside: true,
+                type: this.activeRoute,
+                tableUnion: deep
+            },
+            width: '350px',
+        })
+        console.log(deep)
+    }
+
     getOrders() {
         this.activeRouteOrder = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[1];
         this.activeRoute = this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[0];
+
         switch (this.activeRoute) {
             case 'table':
                 this.service.getById(['by-table'], {tableId: this.activeRouteOrder})
                 break;
             case 'table-union':
-                this.service.getById(['by-union-table'], {unionTableId: this.activeRouteOrder})
+                this.service.getByUnionId(['by-union-table'], this.tableUnion)
                 break;
             default:
                 this.service.getById([], this.activeRouteOrder)
@@ -235,7 +275,7 @@ export class CaixaComponent implements OnInit {
                 data: {
                     order: this.service.selectedEntity$()[this.activeOrder],
                     activeRouteOrder: this.activeRouteOrder,
-                    byRoute:this.activeRoute
+                    byRoute: this.activeRoute
                 },
                 modal: true,
                 style: {'width': '65vw'},
@@ -351,7 +391,7 @@ export class CaixaComponent implements OnInit {
 
     addElementComanda(event: ProductLightDto): void {
         const params = [
-            {id: event.id, amount: this.selectedItemAmount, additionals: [], weight:event.weight}
+            {id: event.id, amount: this.selectedItemAmount, additionals: [], weight: event.weight}
         ];
         this.service.addProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, params)
         this.resetAllValues();
@@ -437,7 +477,7 @@ export class CaixaComponent implements OnInit {
         return this.value === 'on';
     }
 
-    printCozinha(){
+    printCozinha() {
         this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder].id);
         //this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
     }

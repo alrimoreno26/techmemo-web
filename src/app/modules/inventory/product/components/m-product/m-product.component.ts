@@ -95,9 +95,9 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             data?.technicalSheet.products.forEach((p: any) => {
                 this.technicalSheetProducts.push({
                     amount: p.amount,
-                    id: p.product.id,
-                    name: p.product.name,
-                    unitMeasurementName: p.product.unitMeasurementName
+                    id: p.productId,
+                    name: p.productName,
+                    unitMeasurementName: p.unitMeasurementName
                 })
             })
         }
@@ -109,7 +109,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             code: new FormControl<string>(data?.code, [Validators.required]),
             costPrice: new FormControl<number>({
                 value: data?.costPrice,
-                disabled: this.typeProduct === productType.COMBO
+                disabled: false
             }, [Validators.required]),
             cst: new FormControl<number>(data?.cst, [Validators.required]),
             description: new FormControl<string>(data?.description),
@@ -120,7 +120,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             stockAmount: new FormControl<number>(data?.stockAmount),
             salePrice: new FormControl<number>({
                 value: data?.salePrice,
-                disabled: this.typeProduct === productType.COMBO
+                disabled: false
             }),
             showInMenu: new FormControl<boolean>(data?.showInMenu),
             soldPerUnits: new FormControl<boolean>(data?.soldPerUnits),
@@ -161,18 +161,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     supplier(id: string) {
         // @ts-ignore
         return this.supplierService.listEntities$().find(s => s.id === id);
-    }
-
-    onImageMouseOver(file: Image) {
-        this.buttonEl.toArray().forEach(el => {
-            el.nativeElement.id === file.name ? el.nativeElement.style.display = 'flex' : null;
-        })
-    }
-
-    onImageMouseLeave(file: Image) {
-        this.buttonEl.toArray().forEach(el => {
-            el.nativeElement.id === file.name ? el.nativeElement.style.display = 'none' : null;
-        })
     }
 
     removeImage(file: Image) {
@@ -216,7 +204,8 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     modifyValuesCombo() {
         if (this.selectedAdditional.length > 0) {
             const values = this.calculateTotalPrices();
-            this.form.get('salePrice')?.setValue(values.totalUnitPrice);
+            console.log(values)
+            this.form.get('salePrice')?.setValue(isNaN(values.totalUnitPrice) ? 0 : values.totalUnitPrice);
             this.form.get('costPrice')?.setValue(values.totalCostPrice);
         } else {
             if (this.selectedAdditional.length === 0) {

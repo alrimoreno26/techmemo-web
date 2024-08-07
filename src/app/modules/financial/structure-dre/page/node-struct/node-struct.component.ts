@@ -10,6 +10,7 @@ import {typeAccount} from "../../utils";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {FinancialClasificationService} from "../../../service/financial-clasification.service";
 import {ActivatedRoute} from "@angular/router";
+import {cloneDeep} from "lodash";
 
 @Component({
     selector: 'c-node-struct',
@@ -69,7 +70,9 @@ export class NodeStructComponent {
         const {value} = this.form;
         const {position} = this.data;
         const {equations, formulaType, conditionalEquations, ...data} = value
-        this.structureDataService.updateNode({...this.data, ...value});
+        const newData = cloneDeep(this.data);
+        value.position = newData.position;
+        this.structureDataService.updateNode({...newData, ...value});
         this.onUpdateNode.emit({data, position});
     }
 
@@ -83,7 +86,7 @@ export class NodeStructComponent {
         const {
             id, calculationType, baseForVA,
             prefix, suffix, visualize, equations,
-            conditionalEquations,
+            conditionalEquations, position,
             nullableIfNotHavePreviousYear
         } = data;
         this.form = new FormGroup<any>({
@@ -92,6 +95,7 @@ export class NodeStructComponent {
             suffix: new FormControl(suffix),
             classifierId: new FormControl(),
             visualize: new FormControl(visualize),
+            position: new FormControl(position),
             baseForVA: new FormControl(baseForVA),
             equations: new FormControl(equations),
             calculationType: new FormControl(calculationType),
@@ -145,11 +149,16 @@ export class NodeStructComponent {
     }
 
     addConta() {
+        let newPosition = this.data.position;
+        if (this.form.get('position')?.value !== newPosition) {
+            newPosition = this.form.get('position')?.value
+        }
+
         const accounts = [{
             calculationType: this.form.get('calculationType')?.value === null ? calculationTypeAccountStructure.NO_CALCULATIONS : this.form.get('calculationType')?.value,
             classifierId: this.form.get('classifierId')?.value.id,
             parentAccountStructureId: this.data.name !== 'DRE' ? this.data.accountsId : null,
-            position: this.nodeAll.children.length + 1,
+            position: this.nodeAll.children.length === 0 ? 0 : this.nodeAll.children.length + 1,
             sheet: !this.data.sheet,
         }];
         this.structureDataService.createAccounts(this.routeId, this.nodeAll, false, false, accounts);

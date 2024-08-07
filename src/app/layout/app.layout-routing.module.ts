@@ -11,7 +11,7 @@ const routes: Routes = [
             //{path: '', modals: AppLayoutComponent},
             {
                 path: 'painel',
-                data: {breadcrumb: 'Panéis Geral', roles: [domainEnum.PRODUCT]},
+                data: {breadcrumb: 'Painel Geral', roles: [domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/dashboard/dashboards.module').then(m => m.DashboardsModule)
             },
@@ -50,6 +50,12 @@ const routes: Routes = [
                 data: {breadcrumb: 'Compras', roles: [domainEnum.CONFIGURATION]},
                 canActivate: [canActivateControlGuard],
                 loadChildren: () => import('../modules/purchases/purchases.module').then(m => m.PurchasesModule)
+            },
+            {
+                path: 'transfer',
+                data: {breadcrumb: 'Transferencias de Compra', roles: [domainEnum.PRODUCT]},
+                canActivate: [canActivateControlGuard],
+                loadChildren: () => import('../modules/transfer/transfer.module').then(m => m.TransferModule)
             },
             {
                 path: 'financial',
