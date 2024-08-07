@@ -194,6 +194,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
      * @param $event {@link TableLazyLoadEvent}
      */
     loadCustomLazy($event: TableLazyLoadEvent): void {
+        debugger
         const {first, rows, globalFilter, sortField, sortOrder} = $event;
         if ($event?.filters) {
             // @ts-ignore
@@ -290,7 +291,7 @@ export class DataTableComponent implements OnInit, OnDestroy {
      */
     refreshContentData(dt: Table): void {
         this.service.serverSide ?
-            this.service.loadAll({page: 0, count: dt.rows, type: this.type}) :
+            this.service.loadAll({pageNumber: 0, pageSize: dt.rows, type: this.type}) :
             this.service.loadAll(undefined);
         this.input.nativeElement.value = '';
         dt.filters = {};
