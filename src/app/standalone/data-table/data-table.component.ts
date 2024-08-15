@@ -194,7 +194,6 @@ export class DataTableComponent implements OnInit, OnDestroy {
      * @param $event {@link TableLazyLoadEvent}
      */
     loadCustomLazy($event: TableLazyLoadEvent): void {
-        debugger
         const {first, rows, globalFilter, sortField, sortOrder} = $event;
         if ($event?.filters) {
             // @ts-ignore

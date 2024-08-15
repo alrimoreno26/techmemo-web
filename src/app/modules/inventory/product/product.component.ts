@@ -20,6 +20,8 @@ export class ProductComponent extends BaseComponentDirective {
     override modalContent = MProductComponent;
     override headersTable: HeadersTable[] = [
         {
+            header: '', field: 'logo', sort: true, class: 'text-center', visible: true
+        },{
             header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true
         },
         {

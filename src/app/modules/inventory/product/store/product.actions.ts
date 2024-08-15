@@ -30,6 +30,9 @@ export enum EntityActionTypes {
     LowStock = '[Product] Low Stock',
     LowStockSuccess = '[Product] Low Stock Success',
 
+    UploadImage = '[Product] Upload Image',
+    UploadImageSuccess = '[Product] Upload Image Complete',
+
     OpenAddOrEdit = '[Product] Open Add Or Edit Dialog',
 
 }
@@ -78,6 +81,8 @@ export const autocompleteSearch = createAction(EntityActionTypes.AutocompleteSea
 export const autocompleteSearchSuccess = createAction(EntityActionTypes.AutocompleteSearchSuccess, props<{
     data: LazyResultData<any>
 }>());
+export const uploadImage = createAction(EntityActionTypes.UploadImage, props<{ files: any, id: string }>());
+export const uploadImageSuccess = createAction(EntityActionTypes.UploadImageSuccess);
 
 export const openAddOrEdit = createAction(EntityActionTypes.OpenAddOrEdit);
 
@@ -98,6 +103,8 @@ export const fromProductListActions = {
     getByIDSuccess,
     autocompleteSearch,
     autocompleteSearchSuccess,
+    uploadImage,
+    uploadImageSuccess,
     lowStock,
     lowStockSuccess,
     openAddOrEdit

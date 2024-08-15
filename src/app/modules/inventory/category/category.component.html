@@ -1,6 +1,19 @@
 <div class="card m-3">
-    <c-data-table  [rowsPerPageOptions]="[10,25,50,100]" [action]="true" [exportBtn]="false" (create)="customCreate($event)" (edit)="customEdit($event)"
+    <c-data-table [rowsPerPageOptions]="[10,25,50,100]" [action]="true" [exportBtn]="false"
+                  (create)="customCreate($event)" (edit)="customEdit($event)"
                   [headers]="headersTable" [service]="categoryService" [showCreate]="true" [type]="'PARENT'">
+        <ng-template let-data tableRow="logo">
+            @if(data.logo){
+                <p-image
+                    [src]="'data:image/png;base64,' + data.logo"
+                    [preview]="true"
+                    width="50"/>
+            } @else {
+                <p-image
+                    [src]="'assets/layout/images/no-pictures.png'"
+                    width="50"/>
+            }
+        </ng-template>
     </c-data-table>
     <p-confirmDialog [autoZIndex]="true" [style]="{width: '30rem'}" appendTo="body" confirmTranslate/>
 </div>

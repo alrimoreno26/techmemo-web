@@ -55,7 +55,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
                 tapResponse({
                     next: (result) => {
                         this.patchState({billId: result.billId});
-                        this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                        this.loadAll({pageNumber: 0, pageSize: 50, type: data.type})
                     },
                     error: (err: HttpErrorResponse) => this.setError(err.error)
                 })
@@ -71,7 +71,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
                     return this.contasPagarService.saveInstallmentsBill(installments).pipe(
                         tapResponse({
                             next: (result) => {
-                                this.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
+                                this.loadAll({pageNumber: 0, pageSize: 50, type: data.type})
                             },
                             error: (err: HttpErrorResponse) => this.setError(err.error)
                         })
@@ -89,7 +89,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
                         selected.paymentInstallments = bills.paymentInstallments;
                         this.setSelected(selected);
                         this.patchState({selected: selected});
-                        this.loadAll({pageNumber: 0, pageSize: 50});
+                        this.loadAll({pageNumber: 0, pageSize: 50, type: data.type});
                         return selected; // retornamos el valor selected
                     })
                 );
@@ -153,6 +153,27 @@ export class StorePurchasesServices extends StoreComponentService<any> {
             this.setSelected(response);
             this.setListProductSelected(response.products);
             this.patchState({dialog: true, selected: response, billId: response.billId});
+        });
+    }
+
+    getValuesOfCompra(id: string) {
+        this.purchasesService.findOneById(id).pipe(
+            switchMap(response => {
+                if (response.billId !== null) {
+                    return this.storeContasPagarServices.getBillsByFinancialTransactions(response.billId).pipe(
+                        map(data => {
+                            response.paymentInstallments = data;
+                            return response;
+                        })
+                    );
+                } else {
+                    return of(response);
+                }
+            })
+        ).subscribe(response => {
+            this.setSelected(response);
+            this.setListProductSelected(response.products);
+            this.patchState({selected: response, billId: response.billId});
         });
     }
 

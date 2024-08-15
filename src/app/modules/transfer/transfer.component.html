@@ -4,8 +4,8 @@
             <p-table [value]="service.listEntities$()"
                      [scrollable]="true"
                      id="tableContas"
-                     rowGroupMode="subheader" dataKey="bigId"
-                     groupRowsBy="bigId"
+                     rowGroupMode="subheader" dataKey="id"
+                     groupRowsBy="id"
                      (onRowExpand)="onRowExpand($event)">
                 <ng-template pTemplate="header">
                     <tr>
@@ -50,55 +50,45 @@
                 <ng-template pTemplate="rowexpansion" let-installments>
                     <tr>
                         <td colspan="8">
-                            <p-table [value]="installments.paymentInstallments" dataKey="id">
+                            <p-table [value]="service.listProductSelected$() || []" dataKey="id">
+                                <ng-template pTemplate="caption">
+                                    <div class="flex align-items-center justify-content-between">
+                                        <h5 class="m-0">Lista de produtos adquiridos</h5>
+                                    </div>
+                                </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th>Code</th>
-                                        <th># Parcela</th>
-                                        <th>Data da Parcela</th>
-                                        <th>Doc Fornecedor</th>
-                                        <th>Fornecedor</th>
-                                        <th>Valor</th>
+                                        <th></th>
+                                        <th>Nome</th>
+                                        <th>Quantia</th>
+                                        <th>Preco Unitario</th>
+                                        <th>Valor Total</th>
                                         <th></th>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="body" let-bills let-rowIndex="rowIndex">
                                     <tr>
-                                        <td>{{ bills.code }}</td>
                                         <td>{{ rowIndex + 1 }}</td>
-                                        <td>{{ bills.expirationDate | date }}</td>
-                                        <td>{{ bills.supplierDocument | cpfCnpj }}</td>
-                                        <td> {{ bills.supplierName }} {{ bills.supplierLastName }}</td>
-                                        <td> {{ bills.value | currency }}</td>
+                                        <td>{{ bills.productName}}</td>
+                                        <td>{{ bills.amount | number }}</td>
+                                        <td>{{ bills.value | currency }}</td>
+                                        <td> {{ bills.totalValue | currency }}</td>
                                         <td>
-                                            <button class="p-button-rounded p-button-text"
-                                                    icon="mdi mdi-pencil mdi-24px"
-                                                    pButton
-                                                    [disabled]="bills.paid"
-                                                    type="button"></button>
                                             <button class="p-button-rounded p-button-text p-button-success"
-                                                    icon="mdi mdi-cash-check mdi-24px"
+                                                    icon="mdi mdi-check-circle-outline mdi-24px"
                                                     pButton
-                                                    [disabled]="bills.paid"
-
+                                                    (click)="approve(bills)"
                                                     type="button"></button>
                                             <button class="p-button-rounded p-button-text p-button-danger"
-                                                    icon="mdi mdi-delete mdi-24px"
-                                                    [disabled]="bills.paid"
+                                                    icon="mdi mdi-close-circle-outline mdi-24px"
                                                     pButton
                                                     type="button"></button>
-                                            @if (bills.paid) {
-                                                <button class="p-button-rounded p-button-text" (c
-                                                        icon="mdi mdi-eye mdi-24px"
-                                                        pButton
-                                                        type="button"></button>
-                                            }
                                         </td>
                                     </tr>
                                 </ng-template>
                                 <ng-template pTemplate="emptymessage">
                                     <tr>
-                                        <td colspan="8">Nao tem envios pendentes</td>
+                                        <td colspan="8">Nao tem productos</td>
                                     </tr>
                                 </ng-template>
                             </p-table>

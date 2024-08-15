@@ -39,6 +39,8 @@ import {MultiSelectModule} from "primeng/multiselect";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {TranslateModule} from "@ngx-translate/core";
 import {AutoCompleteModule} from "primeng/autocomplete";
+import {ImageModule} from "primeng/image";
+import {ProductsCards} from "../../../standalone/upload-image/upload-image.component";
 
 @NgModule({
     imports: [
@@ -70,6 +72,8 @@ import {AutoCompleteModule} from "primeng/autocomplete";
         ConfirmDialogModule,
         TranslateModule,
         AutoCompleteModule,
+        ImageModule,
+        ProductsCards,
     ],
     providers: [
         ConfirmServices,

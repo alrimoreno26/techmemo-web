@@ -48,7 +48,8 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
                     this.loadAll({
                         pageNumber: 0,
                         pageSize: 10,
-                        type: 'PARENT'})
+                        type: 'PARENT'
+                    })
                     this.patchState({raw: response.subCategories, dialog: true});
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)
@@ -64,7 +65,8 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
                     this.loadAll({
                         pageNumber: 0,
                         pageSize: 10,
-                        type: 'PARENT'})
+                        type: 'PARENT'
+                    })
                 },
                 error: (err: HttpErrorResponse) => this.setError(err)
             })
@@ -106,11 +108,16 @@ export class StoreCategoryService extends StoreComponentService<CategoryDto> {
         })
     }
 
+    uploadImageFiles(files: any) {
+        this.categoryService.uploadImage(files, this.selectedEntity$().id).subscribe((r: any) => {
+        })
+    }
+
     closeModal() {
         this.patchState({raw: undefined, dialog: false})
     }
 
-    emptySubCategories(){
+    emptySubCategories() {
         this.patchState({raw: undefined})
     }
 

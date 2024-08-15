@@ -17,6 +17,8 @@ import {MComandaComponents} from "../modals/m-comanda/m-comanda.components";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 import {CashRegisterService} from "../../../shops/service/cash-register.service";
 import {OverlayPanel} from "primeng/overlaypanel";
+import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
+import {StoreCategoryService} from "../../../inventory/category/services/store.category.service";
 
 export interface TableUnion {
     unionTableId: string;
@@ -54,6 +56,7 @@ export class CaixaComponent implements OnInit {
     value: string = 'off';
 
     activeOrder = 0;
+    modify = 0;
 
     dialogNameCliente = false;
     clientName = '';
@@ -63,24 +66,30 @@ export class CaixaComponent implements OnInit {
     activeRouteOrder: string;
     totalOrders = 0;
 
-    tableIdUnion:string;
+    tableIdUnion: string;
     tableUnion: TableUnion = {
         tableId: '',
         unionTableId: ''
     };
+
+    stateOptions: any[] = [];
+    selectedCategory: any = '';
 
     constructor(public notify: NotifyService,
                 private http: HttpClient,
                 private activatedRoute: Router,
                 private dialogService: DialogService,
                 private productService: ProductService,
+                public categoryService: StoreCategoryService,
                 private toastMessageService: ToastMessageService,
                 public client: HttpClient,
                 public storeTablesServices: StoreTablesServices,
                 private router: Router,
                 public cashService: CashRegisterService,
+                private fb: FormBuilder,
                 public service: CaixaService) {
         this.cashService.existsAnyWorking();
+        this.categoryService.loadAll({pageNumber: 0, pageSize: 50, type: 'PARENT'})
         this.notify.weightScale$.subscribe(weight => {
             if (weight !== "" && this.value === 'on') {
                 this.weightScale = parseFloat(weight)
@@ -91,8 +100,8 @@ export class CaixaComponent implements OnInit {
                 this.suggestions = this.productService.listEntities$() ?? []
             }
             if (this.service.selectedEntity$()) {
-
-                this.orders = this.service.selectedEntity$().filter((f: any) => (f.state !== 'CANCELLED' || f.state !== 'FINISHED'));
+                const temp = this.service.selectedEntity$().filter((f: any) => (f.state !== 'CANCELLED' || f.state !== 'FINISHED'));
+                this.orders = cloneDeep(temp)
                 this.comandaTotal();
                 //AQUI QUITE CONDICION  && x.valueToPaid !== 0
                 const allOrdersPaid = this.orders.every((x: any) => (x.valueToPaid === x.valuePaid));
@@ -122,6 +131,14 @@ export class CaixaComponent implements OnInit {
         effect(async () => {
             this.getOrders();
         }, {allowSignalWrites: true})
+        effect(async () => {
+            if (this.categoryService.listEntities$().length > 0) {
+                this.stateOptions.push({label: 'Todas', value: ''})
+                this.categoryService.listEntities$().map((cs: any) => {
+                    this.stateOptions.push({label: cs.name, value: cs.id, logo: cs.logo})
+                })
+            }
+        }, {allowSignalWrites: true})
         const navigation = this.router.getCurrentNavigation();
         this.tableUnion = {
             unionTableId: this.activatedRoute.routerState.snapshot.url.split('/').slice(-2)[1],
@@ -136,6 +153,10 @@ export class CaixaComponent implements OnInit {
         this.service.canFinalize$.subscribe((value: boolean) => {
             this.canFinalize$ = value;
         });
+    }
+
+    selectedCategoryItem(category: any) {
+        this.selectedCategory = category.value;
     }
 
     @HostListener('document:keydown', ['$event'])
@@ -235,7 +256,7 @@ export class CaixaComponent implements OnInit {
 
     selectedTableForOrder() {
         const deep = cloneDeep(this.tableUnion);
-        deep.tableId= this.tableIdUnion;
+        deep.tableId = this.tableIdUnion;
         this.dialogService.open(MComandaComponents, {
             data: {
                 id: deep.tableId,
@@ -402,6 +423,7 @@ export class CaixaComponent implements OnInit {
         this.productService.autocomplete({
             filter: this.searchText,
             type: 'SIMPLE',
+            parentCategoryId: this.selectedCategory,
             showEnables: true,
             showInMenu: true
         });
@@ -410,6 +432,9 @@ export class CaixaComponent implements OnInit {
 
     search(event: AutoCompleteCompleteEvent) {
         if (this.productService.autocomplete$()) {
+            if (this.productService.autocomplete$().length === 1) {
+                this.selectedItem = this.productService.autocomplete$()[0];
+            }
             this.suggestions = this.productService.autocomplete$()?.map((item: any) => item) ?? [];
         }
     }
@@ -468,6 +493,7 @@ export class CaixaComponent implements OnInit {
 
     resetAllValues() {
         this.itemFinded = undefined;
+        this.selectedCategory = '';
         this.selectedItem = null;
         this.weightScale = 0
         this.selectedItemAmount = 1
@@ -480,6 +506,14 @@ export class CaixaComponent implements OnInit {
     printCozinha() {
         this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder].id);
         //this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
+    }
+
+    onChangeAmount(product: any) {
+        console.log(product)
+        // this.orders.find(o => o.id === order.id).products.find((p: {
+        //     id: any;
+        // }) => p.id === product.id).amount = this.modify
+        // console.log(this.modify)
     }
 
     protected readonly isObject = isObject;

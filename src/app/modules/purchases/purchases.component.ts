@@ -7,6 +7,7 @@ import {SupplierService} from "../inventory/forncedores/services/supplier.servic
 import {formatDate} from "../../core/util";
 import {FinancialTransactionsEnum} from "../../core/enums/commerce";
 import {ToastMessageService} from "../../core/injects/toast-message.service";
+import {FinancialTransactionsServices} from "./services/financial-transactions.services";
 
 @Component({
     selector: 'c-purchases',
@@ -17,8 +18,12 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
     override modalContent = MFinancialTransactionsComponent;
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
     type: string = 'ALL';
+    visible = false;
 
-    constructor(public service: StorePurchasesServices, public supplierService: SupplierService, private toastMessageService: ToastMessageService,) {
+    constructor(public service: StorePurchasesServices,
+                public supplierService: SupplierService,
+                public storeFinancialTransactions: FinancialTransactionsServices,
+                private toastMessageService: ToastMessageService,) {
         super()
     }
 
@@ -50,12 +55,26 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
             this.service.getById(evt.id);
         } else {
             this.service.patchState({dialog: false});
-            this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
+            if (evt.state === 'PENDING_APPROVAL') {
+                this.visible = true;
+                this.service.getValuesOfCompra(evt.id)
+            } else {
+                this.service.patchState({dialog: false});
+                this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
+            }
         }
     }
 
-    customDelete(evt: any){
-        if(evt.state === 'TYPING'){
+    acceptCompra() {
+        let send = {
+            state: 'APPROVED'
+        }
+        this.visible = false;
+        this.storeFinancialTransactions.changeStateFinancialTransaction(send, this.service.selectedEntity$().id);
+    }
+
+    customDelete(evt: any) {
+        if (evt.state === 'TYPING') {
             this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
         }
     }

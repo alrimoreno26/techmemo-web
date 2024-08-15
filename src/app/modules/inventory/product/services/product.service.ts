@@ -97,4 +97,8 @@ export class ProductService extends BaseStoreServices<any> {
     override update(data: any) {
         this.store.dispatch(fromProductListActions.updateProduct({entity: data}));
     }
+
+    uploadImageFiles(files: any) {
+        this.store.dispatch(fromProductListActions.uploadImage({files, id: this.selectedEntity$().id}));
+    }
 }

@@ -15,6 +15,7 @@ export class CategoryServices extends AbstractService<CategoryDto> {
     constructor(private httpClient: HttpClient) {
         super(httpClient, buildURL('/v1/categories'));
     }
+
     subCategory(data: LazyLoadData): Observable<LazyResultData<CategoryDto>> {
         const params = map(data, (e, k) => (e !== undefined) ? k + '=' + e : null).filter(f => f).join('&');
         return this.httpClient.get<LazyResultData<CategoryDto>>(
@@ -22,11 +23,17 @@ export class CategoryServices extends AbstractService<CategoryDto> {
         );
     }
 
-    addSubCategory(id: string,param:any){
-        return this.httpClient.post<any>(`${this.basePath}/${id}/sub-categories`,param)
+    addSubCategory(id: string, param: any) {
+        return this.httpClient.post<any>(`${this.basePath}/${id}/sub-categories`, param)
     }
 
     updateSubCategory(id: string, params?: any) {
         return this.httpClient.patch<any>(this.basePath + '/' + id, params)
+    }
+
+    uploadImage(files: any, id: any) {
+        const formData = new FormData();
+        formData.append('logo', files[0])
+        return this.httpClient.post<any>(this.basePath + '/' + id + "/upload", formData)
     }
 }

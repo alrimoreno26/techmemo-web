@@ -168,7 +168,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     closingModal() {
         this.ref.close()
         this.storeService.resetState();
-        this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+        this.storeService.loadAll({pageNumber: 0, pageSize: 50, type: this.form.get('type')?.value});
     }
 
     set products(products: any[]) {
@@ -188,13 +188,12 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             type: new FormControl({value: data?.type || 'EXPENSES', disabled: true}, Validators.required),
         });
         if (this.editing) {
-            this.data = {
-                ...data,
-                billsId: this.storeService.selectedEntity$()?.billId || null,
-                classifierId: this.form.get('classifierId')?.value.id,
-                supplierId: this.form.get('supplierId')?.value.id,
-                commerceId: this.form.get('supplierId')?.value.id
-            };
+            this.data = cloneDeep(data);
+            this.data.billsId = this.storeService.selectedEntity$()?.billId || null;
+            this.data.classifierId = this.form.get('classifierId')?.value.id;
+            this.data.supplierId = this.form.get('supplierId')?.value.id;
+            this.data.commerceId = this.form.get('supplierId')?.value.i;
+            console.log(this.data)
         }
     }
 
@@ -216,7 +215,11 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                                 [tempProduct])
                                 .subscribe((response) => {
                                     this.storeService.setListProductSelected(response)
-                                    this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                                    this.storeService.loadAll({
+                                        pageNumber: 0,
+                                        pageSize: 50,
+                                        type: this.form.get('type')?.value
+                                    });
                                 });
                         } else {
                             this.products = [...this.products, tempProduct];
@@ -255,7 +258,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.editing) {
             this.storeFinancialTransactions.addFinancialTransactionProduct(id, [tempProduct]).subscribe((response: any[]) => {
                 this.storeService.setListProductSelected(response);
-                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                this.storeService.loadAll({pageNumber: 0, pageSize: 50, type: this.form.get('type')?.value});
             });
         } else {
             this.addNewProduct(tempProduct);
@@ -282,7 +285,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                 const updatedProducts = [...this.products];
                 updatedProducts.splice(index, 1);
                 this.products = updatedProducts;
-                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                this.storeService.loadAll({pageNumber: 0, pageSize: 50, type: this.form.get('type')?.value});
             })
         } else {
             if (index !== -1) {
@@ -378,16 +381,16 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
 
         if (this.editing) {
             if (this.form.get('type')?.value !== 'EXPENSES') {
-                send.commerceId = this.form.get('commerceId')?.value.id;
+                send.commerceId = this.form.get('commerceId')?.value?.id;
             }
             this.reduceTotalPayments();
             this.storeFinancialTransactions.updateFinancialTransaction(send, this.form.get('id')?.value);
             this.stepActive++;
         } else {
             if (this.form.get('type')?.value === 'EXPENSES') {
-                send.supplierId = this.form.get('supplierId')?.value.id;
+                send.supplierId = this.form.get('supplierId')?.value?.id;
             } else {
-                send.commerceId = this.form.get('supplierId')?.value.id;
+                send.commerceId = this.form.get('supplierId')?.value?.id;
             }
             this.storeFinancialTransactions.create({data: send});
         }
@@ -398,8 +401,11 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.child.paymentInstallments.length === 0) {
             this.toastMessageService.showMessage("error", 'ERROR', 'Deve cadastrar pelo menos 1 parcela')
         } else {
-            const send = {
+            let send = {
                 state: 'APPROVED'
+            }
+            if (this.form.get('type')?.value === 'BILLING') {
+                send.state = 'PENDING_APPROVAL';
             }
             this.storeFinancialTransactions.changeStateFinancialTransaction(send, this.form.get('id')?.value);
         }

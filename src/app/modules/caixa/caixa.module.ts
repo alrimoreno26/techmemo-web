@@ -71,6 +71,9 @@ import {UserEffects} from "../security/user/store/user.effects";
 import {RoleEffects} from "../security/roles/store/role.effects";
 import {MExtractionMoneyComponents} from "./components/modals/m-extraction-money/m-extraction-money.components";
 import {StepsModule} from "primeng/steps";
+import {ChipModule} from "primeng/chip";
+import {CarouselModule} from "primeng/carousel";
+import {ImageModule} from "primeng/image";
 
 @NgModule({
     imports: [
@@ -119,6 +122,9 @@ import {StepsModule} from "primeng/steps";
         InputGroupModule,
         InputGroupAddonModule,
         StepsModule,
+        ChipModule,
+        CarouselModule,
+        ImageModule,
     ],
     declarations: [
         CaixaComponent,

@@ -20,4 +20,9 @@ export class PurchasesService extends AbstractService<any> {
     deleteAllInstallmentsByFinancialTransactions(id: any): Observable<any> {
         return this.httpClient.delete<any>(buildURL(`/v1/bills/${id}/installments`));
     }
+
+    patchProductsOrder(id: any, params: any) {
+        return this.httpClient.patch<any>(buildURL(`financial-transaction-products/${id}`), params)
+    }
+
 }

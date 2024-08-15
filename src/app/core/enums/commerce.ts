@@ -18,6 +18,7 @@ export enum FinancialTransactionsEnum {
     TYPING = 'TYPING',
     PENDING_APPROVAL = 'PENDING_APPROVAL',
     APPROVED = 'APPROVED',
+    SENT = 'SENT',
     RECEIVED = 'RECEIVED',
     CANCELED = 'CANCELED'
 }

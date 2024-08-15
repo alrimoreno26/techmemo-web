@@ -9,6 +9,7 @@ import {SupplierService} from "../../../inventory/forncedores/services/supplier.
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 import {HeadersTable} from "../../../../standalone/data-table/models";
 import {FinancialTransactionsEnum} from "../../../../core/enums/commerce";
+import {FinancialTransactionsServices} from "../../../purchases/services/financial-transactions.services";
 
 @Component({
     selector: 'c-vendas-directas',
@@ -21,7 +22,10 @@ export class VendasDirectasComponent extends BaseComponentDirective implements O
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
     type: string = 'ALL';
 
-    constructor(public service: StorePurchasesServices, public supplierService: SupplierService, private toastMessageService: ToastMessageService) {
+    constructor(public service: StorePurchasesServices,
+                public supplierService: SupplierService,
+                public storeFinancialTransactions: FinancialTransactionsServices,
+                private toastMessageService: ToastMessageService) {
         super()
     }
 
@@ -96,7 +100,15 @@ export class VendasDirectasComponent extends BaseComponentDirective implements O
                 endDate: formatDate(this.rangeDates[1])
             })
         }
+    }
 
+    despachar(evt: any) {
+        let send = {
+            state: 'SENT',
+            type: 'BILLING'
+        }
+        console.log(evt)
+        this.storeFinancialTransactions.changeStateFinancialTransaction(send, evt.id);
     }
 
     protected readonly FinancialTransactionsEnum = FinancialTransactionsEnum;

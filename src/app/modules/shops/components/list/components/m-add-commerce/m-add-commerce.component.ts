@@ -103,17 +103,17 @@ export class MAddCommerceComponent extends BaseModalStoreComponentDirective impl
 
     onChangeCommerceType(event: any) {
         switch (event.value) {
-            case CommerceTypeEnum.SUBSIDIARY:
-                this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE) ?? []);
-                this.constructGroupedDropdown();
-                break
-            case CommerceTypeEnum.PARENT:
-                this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE) ?? []);
-                this.constructGroupedDropdown();
-                break
-            case CommerceTypeEnum.INDUSTRY:
-                this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.FACTORY_ADMINISTRATOR) ?? []);
-                break
+            // case CommerceTypeEnum.SUBSIDIARY:
+            //     this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE) ?? []);
+            //     this.constructGroupedDropdown();
+            //     break
+            // case CommerceTypeEnum.PARENT:
+            //     this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.ADMINISTRATOR_STORE) ?? []);
+            //     this.constructGroupedDropdown();
+            //     break
+            // case CommerceTypeEnum.INDUSTRY:
+            //     this.listUser = (this.userService.listEntities$()?.filter((u: any) => u.role?.operationArea === operationAreaRoleEnum.FACTORY_ADMINISTRATOR) ?? []);
+            //     break
         }
     }
 

@@ -42,7 +42,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     searchText: string;
     selectedItem: any;
 
-    constructor(private productService: ProductService,
+    constructor(public productService: ProductService,
                 private dialogService: DialogService,
                 public unitService: UnidadeService,
                 public categoryService: StoreCategoryService,
