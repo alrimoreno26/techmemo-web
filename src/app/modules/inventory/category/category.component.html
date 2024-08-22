@@ -5,7 +5,7 @@
         <ng-template let-data tableRow="logo">
             @if(data.logo){
                 <p-image
-                    [src]="'data:image/png;base64,' + data.logo"
+                    [src]="'data:image/'+data.logo.ext+';base64,' + data.logo.content"
                     [preview]="true"
                     width="50"/>
             } @else {

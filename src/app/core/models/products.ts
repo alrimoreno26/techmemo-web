@@ -49,6 +49,8 @@ export interface LightProductTO {
 
 export interface ProductDto {
     barCode: string,
+    allowsFlavors?:boolean,
+    allowsAdditional?:boolean,
     category: CategoryDto,
     cfop: string,
     code: string,

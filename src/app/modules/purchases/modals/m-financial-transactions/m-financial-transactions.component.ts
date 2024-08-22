@@ -247,7 +247,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.storeFinancialTransactions.openModalAddOrEdit();
         this.dialogService.open(component, params).onClose.subscribe((data: any) => {
             let tempProduct;
-            if (component === MNewProductComponent) {
+            if (component === MNewProductComponent && data) {
                 tempProduct = this.createProduct(data.data);
             }
             this.updateOrAddProduct(this.form.get('id')?.value, tempProduct);

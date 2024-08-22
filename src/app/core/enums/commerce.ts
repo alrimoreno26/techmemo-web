@@ -70,3 +70,11 @@ export enum calculationTypeAccountStructure {
     EQUATIONS = 'EQUATIONS',
     CONDITIONAL = 'CONDITIONAL'
 }
+
+
+export const flavorsEmun: any[] = [
+    {name: 'morango', salePrice:0},
+    {name: 'uva', salePrice:0},
+    {name: 'chocolate', salePrice:0},
+    {name: 'fresa', salePrice:0},
+]

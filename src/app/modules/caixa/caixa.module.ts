@@ -74,6 +74,8 @@ import {StepsModule} from "primeng/steps";
 import {ChipModule} from "primeng/chip";
 import {CarouselModule} from "primeng/carousel";
 import {ImageModule} from "primeng/image";
+import {MFlavorsProductsComponents} from "./components/modals/m-flavors/flavors-products.components";
+import {MDescriptionsComponent} from "./components/modals/m-show-description/m-descriptions.component";
 
 @NgModule({
     imports: [
@@ -139,7 +141,9 @@ import {ImageModule} from "primeng/image";
         AdditionalComponents,
         MOpenCaixaComponents,
         MCloseCaixaComponents,
-        MExtractionMoneyComponents
+        MExtractionMoneyComponents,
+        MFlavorsProductsComponents,
+        MDescriptionsComponent
     ],
     providers: [
         PaymentMethodService,

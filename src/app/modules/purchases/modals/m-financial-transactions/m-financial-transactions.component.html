@@ -130,7 +130,7 @@
                                     <td class="custom-td"
                                         style="min-width: 220px">{{ product.productName | wrapText: 25 }}
                                     </td>
-                                    <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" }}</td>
+                                    <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : product.unitMeasurementCode ? " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" : '' }}</td>
                                     <td class="custom-td">
                                         {{ product.amount }}
                                     </td>

@@ -114,6 +114,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             cst: new FormControl<number>(data?.cst, [Validators.required]),
             description: new FormControl<string>(data?.description),
             enabled: new FormControl<boolean>(data?.enabled),
+            allowsFlavors: new FormControl<boolean>(data?.allowsFlavors),
             name: new FormControl<string>(data?.name, [Validators.required]),
             ncm: new FormControl<number>(data?.ncm, [Validators.required]),
             quantityStockAlert: new FormControl<number>(data?.quantityStockAlert),

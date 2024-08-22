@@ -92,10 +92,10 @@
                             ]">
                         <ng-template let-product pTemplate="item">
                             <div [ngClass]="{'shadow-5': selectedCategory === product.value}"
-                                 class="border-1 surface-border border-round m-2 p-3 flex text-center"
+                                 class="cursor-pointer border-1 surface-border border-round m-2 p-3 flex justify-content-center"
                                  (click)="selectedCategoryItem(product)">
                                 <div class="mb-1 font-medium text-center">
-                                    {{ product.label }}
+                                    {{ product.label | wrapText: 10 }}
                                 </div>
                             </div>
                         </ng-template>
@@ -160,7 +160,7 @@
             </div>
             <div *ngIf="service.selectedEntity$() !== undefined">
                 <div class="comanda_list">
-                    <p-tabView [(activeIndex)]="activeOrder" (onChange)="refresListProduct()" [scrollable]="true"
+                    <p-tabView [(activeIndex)]="activeOrder" (onChange)="refresListProduct()"
                                *ngIf="isArray(service.selectedEntity$()) ">
                         <p-tabPanel *ngFor="let tab of orders"
                                     [header]="getTitleComanda(tab)">
@@ -190,6 +190,10 @@
                                                       [disabled]="product.allowsAdditional === false || pagamento || product.amount === product.amountPaid"
                                                       icon="mdi mdi-magnify"
                                                       (onClick)="lookAdditional(product)">
+                                            </p-button>
+                                            <p-button styleClass="border-round-3xl severity_info small"
+                                                      icon="mdi mdi-playlist-edit"
+                                                      (onClick)="lookDescription(product)">
                                             </p-button>
                                         </td>
                                         <td class="custom-td"
@@ -268,7 +272,7 @@
                                         <div class="relative mb-3">
                                             @if (selectedItem.logo) {
                                                 <img
-                                                    [src]="'data:image/svg;base64,' + selectedItem.logo"
+                                                    [src]="'data:image/'+selectedItem.logo.ext+';base64,' + selectedItem.logo.content"
                                                     class="w-full"/>
                                             } @else {
                                                 <img src="assets/layout/images/no-pictures.png" class="w-full"/>
@@ -281,7 +285,23 @@
                                         </div>
                                         <span
                                             class="text-primary text-xl font-bold">{{ selectedItem.salePrice | currency }}
-                                            {{ selectedItem.soldPerUnits ? "Unit" : " / " + selectedItem.unitMeasurementName + "(" + selectedItem.unitMeasurementCode + ")" }}</span>
+                                            {{ selectedItem.soldPerUnits ? "Unit" : selectedItem.unitMeasurementCode ? " / " + selectedItem.unitMeasurementName + "(" + selectedItem.unitMeasurementCode + ")" : '' }}</span>
+                                    </div>
+                                    <div class="shadow-2 p-2 mt-4 surface-card border-round">
+                                        <div class="dish-observation-form">
+                                            <div class="dish-observation-form__header">
+                                                <label tabindex="0" class="dish-observation-form__label" for="observations-form">
+                                                    Algum comentário?
+                                                </label>
+                                                <span class="dish-observation-form__counter">{{ selectedDescription.length }} / 140</span>
+                                            </div>
+                                            <textarea maxlength="140" tabindex="0" id="observations-form"
+                                                      rows="5" cols="55"
+                                                      [(ngModel)]="selectedDescription"
+                                                      class="dish-observation-form__textarea"
+                                                      pInputTextarea
+                                                      placeholder="Ex: tirar primero chocolate e depois morango"></textarea>
+                                        </div>
                                     </div>
                                 </div>
                             </ng-template>

@@ -19,6 +19,8 @@ import {CashRegisterService} from "../../../shops/service/cash-register.service"
 import {OverlayPanel} from "primeng/overlaypanel";
 import {FormArray, FormBuilder, FormGroup} from "@angular/forms";
 import {StoreCategoryService} from "../../../inventory/category/services/store.category.service";
+import {MFlavorsProductsComponents} from "../modals/m-flavors/flavors-products.components";
+import {MDescriptionsComponent} from "../modals/m-show-description/m-descriptions.component";
 
 export interface TableUnion {
     unionTableId: string;
@@ -43,6 +45,7 @@ export class CaixaComponent implements OnInit {
     itemFinded: any;
 
     selectedItem: any;
+    selectedDescription: string = '';
     selectedItemAmount: number = 1;
 
     suggestions: any[] = [];
@@ -133,7 +136,7 @@ export class CaixaComponent implements OnInit {
         }, {allowSignalWrites: true})
         effect(async () => {
             if (this.categoryService.listEntities$().length > 0) {
-                this.stateOptions.push({label: 'Todas', value: ''})
+                this.stateOptions.push({label: 'TODAS', value: ''})
                 this.categoryService.listEntities$().map((cs: any) => {
                     this.stateOptions.push({label: cs.name, value: cs.id, logo: cs.logo})
                 })
@@ -180,7 +183,7 @@ export class CaixaComponent implements OnInit {
                 break;
             case 'Enter':
                 if (this.selectedItem !== undefined) {
-                    if (this.selectedItem.allowsAdditional) {
+                    if (this.selectedItem.allowsAdditional || this.selectedItem.allowsFlavors) {
                         this.service.openCustomDialog('additional', true);
                         this.dialogService.open(AdditionalComponents, {
                             data: {
@@ -409,10 +412,22 @@ export class CaixaComponent implements OnInit {
             resizable: false
         })
     }
+    lookDescription(product: any) {
+        this.service.openCustomDialog('description', true);
+        this.dialogService.open(MDescriptionsComponent, {
+            data: {
+                product: product,
+            },
+            modal: true,
+            style: {'width': '34vw', 'height': '21vw'},
+            draggable: false,
+            resizable: false
+        })
+    }
 
     addElementComanda(event: ProductLightDto): void {
         const params = [
-            {id: event.id, amount: this.selectedItemAmount, additionals: [], weight: event.weight}
+            {id: event.id, amount: this.selectedItemAmount, additionals: [], weight: event.weight, description: this.selectedDescription}
         ];
         this.service.addProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, params)
         this.resetAllValues();
@@ -432,9 +447,9 @@ export class CaixaComponent implements OnInit {
 
     search(event: AutoCompleteCompleteEvent) {
         if (this.productService.autocomplete$()) {
-            if (this.productService.autocomplete$().length === 1) {
-                this.selectedItem = this.productService.autocomplete$()[0];
-            }
+            // if (this.productService.autocomplete$().length === 1) {
+            //     this.selectedItem = this.productService.autocomplete$()[0];
+            // }
             this.suggestions = this.productService.autocomplete$()?.map((item: any) => item) ?? [];
         }
     }
@@ -505,15 +520,12 @@ export class CaixaComponent implements OnInit {
 
     printCozinha() {
         this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder].id);
-        //this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
+        this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
     }
 
     onChangeAmount(product: any) {
         console.log(product)
-        // this.orders.find(o => o.id === order.id).products.find((p: {
-        //     id: any;
-        // }) => p.id === product.id).amount = this.modify
-        // console.log(this.modify)
+        this.service.updateProductsOrders(product.id,this.service.selectedEntity$()[this.activeOrder].id, [{amount: Number(product.amount)}]);
     }
 
     protected readonly isObject = isObject;
