@@ -9,6 +9,7 @@ import {
 import {domainEnum, operationAreaRoleEnum, permissionAuthorityTOEnum} from "../../../../../core/enums/role";
 import {productType} from "../../../../../core/enums/product";
 import {SelectItemGroup} from "primeng/api";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-role-modal',
@@ -63,8 +64,9 @@ export class RoleModalComponent extends BaseModalComponentDirective implements O
     ];
 
 
-    constructor(private roleService: RoleService) {
+    constructor(private roleService: RoleService, private dialogRegistryService: DialogRegistryService) {
         super(roleService);
+        this.dialogRegistryService.addDialog(this.ref);
     }
 
     ngOnInit(): void {

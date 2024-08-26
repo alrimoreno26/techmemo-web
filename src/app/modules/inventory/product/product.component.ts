@@ -21,7 +21,7 @@ export class ProductComponent extends BaseComponentDirective {
     override headersTable: HeadersTable[] = [
         {
             header: '', field: 'logo', sort: true, class: 'text-center', visible: true
-        },{
+        }, {
             header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true
         },
         {
@@ -39,7 +39,7 @@ export class ProductComponent extends BaseComponentDirective {
             width: 140
         },
         {
-            header: 'Preço', field: 'costPrice', pipe: 'currency',
+            header: 'Custo Medio', field: 'costPrice', pipe: 'currency',
             sort: true, class: 'text-center', visible: true, width: 150
         },
         {
@@ -47,8 +47,8 @@ export class ProductComponent extends BaseComponentDirective {
             class: 'text-center', visible: true
         },
         {
-            header: 'Valor do estoque', sort: true, field: 'stockMoney',
-            class: 'text-center', visible: true
+            header: 'Valor do estoque', sort: true, field: 'totalStockValue',
+            class: 'text-center', visible: true, pipe: 'currency'
         },
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];

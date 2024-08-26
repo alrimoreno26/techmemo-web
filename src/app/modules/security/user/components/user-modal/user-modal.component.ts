@@ -12,6 +12,7 @@ import {SessionServices} from "../../../../../core/injects/session.services";
 import {operationAreaRoleEnum} from "../../../../../core/enums/role";
 import {CommercesService} from "../../../../shops/service/commerces.service";
 import {RoleService} from "../../../roles/services/role.service";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-domains-modal',
@@ -22,8 +23,9 @@ export class UserModalComponent extends BaseModalComponentDirective implements O
 
     roleList: Role[] = [];
 
-    constructor(public userService: UserService, public session: SessionServices, private commerce: CommercesService, private roles: RoleService) {
+    constructor(public userService: UserService, public session: SessionServices, private commerce: CommercesService, private roles: RoleService, private dialogRegistryService: DialogRegistryService) {
         super(userService);
+        this.dialogRegistryService.addDialog(this.ref);
         this.roles.loadAll()
     }
 

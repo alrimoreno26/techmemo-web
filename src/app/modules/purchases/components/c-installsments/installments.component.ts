@@ -200,7 +200,7 @@ export class InstallmentsComponent implements OnInit {
             const bills = {
                 classifierId: this.form.get('classifierId')?.value,
                 description: this.form.get('description')?.value,
-                type: this.form.get('type')?.value,
+                type: this.config?.classifierId.type,
                 financialTransactionId: this.config?.id,
                 monthlyPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value,
                 consecutiveDaysPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value ? null : this.consecutiveDaysPaymentInstallments,

@@ -269,13 +269,13 @@
                             <ng-template [ngIf]="isObject(selectedItem)" [ngIfElse]="blank">
                                 <div class="p-2">
                                     <div class="shadow-2 p-2 surface-card border-round">
-                                        <div class="relative mb-3">
+                                        <div class="flex justify-content-around mb-3 relative">
                                             @if (selectedItem.logo) {
                                                 <img
                                                     [src]="'data:image/'+selectedItem.logo.ext+';base64,' + selectedItem.logo.content"
-                                                    class="w-full"/>
+                                                    width="285"/>
                                             } @else {
-                                                <img src="assets/layout/images/no-pictures.png" class="w-full"/>
+                                                <img src="assets/layout/images/no-pictures.png" width="285"/>
                                             }
 
                                         </div>
@@ -306,7 +306,7 @@
                                 </div>
                             </ng-template>
                             <ng-template #blank>
-                                <img [src]="'assets/images/search.svg'" alt="diamond-layout"/>
+                                <img [src]="'assets/images/search.svg'" alt="techmemo-image"/>
                             </ng-template>
                         </div>
                     </div>

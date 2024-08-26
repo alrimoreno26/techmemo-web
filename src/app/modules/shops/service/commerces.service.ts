@@ -7,6 +7,7 @@ import {switchMap} from "rxjs/operators";
 import {tapResponse} from "@ngrx/component-store";
 import {HttpErrorResponse} from "@angular/common/http";
 import {CommerceDto} from "../../../core/models/commerce";
+import {Router} from "@angular/router";
 
 @Injectable({providedIn: 'root'})
 export class CommercesService extends StoreComponentService<any> {
@@ -17,6 +18,7 @@ export class CommercesService extends StoreComponentService<any> {
     autocomplete$: Signal<any | null> = this.selectSignal(state => state.autocomplete);
 
     constructor(private services: CommercesServices,
+                private router: Router,
                 private sessionService: SessionServices,) {
         const defaultEntity: EntityState<any> & { changed: any, autocomplete: [] } =
             {entities: [], total: 0, dialog: false, loaded: false, changed: false, autocomplete: []};
@@ -66,6 +68,7 @@ export class CommercesService extends StoreComponentService<any> {
             this.sessionService.setTenantId(response.id);
             this.sessionService.setCurrentStore(response);
             this.patchState({changed: true});
+            this.router.navigate(['/painel']).then();
         })
     }
 

@@ -151,7 +151,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             id: item.id,
             productName: item.productName,
             soldPerUnits: item.unitMeasurementCode === null,
-            value: item.value,
+            value: item.costPrice,
             amount: item.amount
         }
     }
@@ -206,7 +206,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                         const tempProduct = {
                             productName: this.selectedItem.name,
                             soldPerUnits: this.selectedItem.soldPerUnits,
-                            value: this.selectedItem.salePrice * this.selectedItemAmount,
+                            value: this.selectedItem.costPrice,
                             amount: this.selectedItemAmount
                         };
                         if (this.editing) {
@@ -350,7 +350,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     searchFornecedor(event: { target: { value: string; } } | any) {
         this.searchTextClassifiers = event.target.value;
         this.supplierService.autocomplete({
-            filter: this.searchTextClassifiers,
+            filter: this.searchTextClassifiers
         });
     }
 
@@ -358,6 +358,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.searchTextProducts = event.target.value;
         this.productService.autocomplete({
             filter: this.searchTextProducts,
+            supplierId: this.form.get('supplierId')?.value?.id || ''
         });
     }
 
@@ -403,9 +404,6 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         } else {
             let send = {
                 state: 'APPROVED'
-            }
-            if (this.form.get('type')?.value === 'BILLING') {
-                send.state = 'PENDING_APPROVAL';
             }
             this.storeFinancialTransactions.changeStateFinancialTransaction(send, this.form.get('id')?.value);
         }

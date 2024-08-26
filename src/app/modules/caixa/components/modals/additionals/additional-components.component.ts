@@ -47,7 +47,6 @@ export class AdditionalComponents implements OnInit, OnChanges {
                 private dialogRegistryService: DialogRegistryService) {
         this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
-            console.log(service.dialogAdditional$())
             if (!service.dialogAdditional$()) {
                 this.ref.close();
             }

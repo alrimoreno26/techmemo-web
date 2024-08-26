@@ -107,12 +107,12 @@ export const menuList: any[] = [
                 icon: 'mdi mdi-cash-multiple mdi-24px',
                 routerLink: ['compras/lista']
             },
-            {
-                label: 'Transferência',
-                roles: [domainEnum.PRODUCT],
-                icon: 'mdi mdi-truck-delivery mdi-24px',
-                routerLink: ['transfer/lista']
-            }
+            // {
+            //     label: 'Transferência',
+            //     roles: [domainEnum.PRODUCT],
+            //     icon: 'mdi mdi-truck-delivery mdi-24px',
+            //     routerLink: ['transfer/lista']
+            // }
         ]
     },
     {separator: true},

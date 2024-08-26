@@ -50,6 +50,7 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     ));
 
     createInstallmentsByFinancialTransactions(data: any) {
+        debugger
         if (data.originalPaymentInstallments === undefined) {
             this.purchasesService.createInstallmentsByFinancialTransactions(data).pipe(
                 tapResponse({

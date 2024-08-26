@@ -14,6 +14,7 @@ import {CategoryDto} from "../../../../../core/models";
 import {MFornecedoresComponent} from "../../../forncedores/components/m-fornecedores/m-fornecedores.component";
 import {DialogService} from "primeng/dynamicdialog";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 interface Image {
     name: string;
@@ -46,8 +47,10 @@ export class MProductComponent extends BaseModalComponentDirective implements On
                 private dialogService: DialogService,
                 public unitService: UnidadeService,
                 public categoryService: StoreCategoryService,
+                private dialogRegistryService: DialogRegistryService,
                 public supplierService: SupplierService) {
         super(productService);
+        this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
             if (this.service.selectedEntity$() !== undefined) {
                 this.selectedEntity = this.service.selectedEntity$();
@@ -69,7 +72,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         this.initForm(data);
     }
 
-    close(){
+    close() {
         this.ref.close()
     }
 
@@ -231,7 +234,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     }
 
     getValueMultiselect(item: any) {
-        if(item === undefined)
+        if (item === undefined)
             return []
         return item;
     }
