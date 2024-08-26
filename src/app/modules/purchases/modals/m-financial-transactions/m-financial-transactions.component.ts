@@ -148,7 +148,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
 
     mapItemToProduct(item: any): any {
         return {
-            id: item.id,
+            id: item.productId,
             productName: item.productName,
             soldPerUnits: item.unitMeasurementCode === null,
             value: item.costPrice,
@@ -203,8 +203,10 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             case 'Enter':
                 if (this.suggestionsProducts.length > 0) {
                     if (this.selectedItem !== undefined) {
+                        debugger
                         const tempProduct = {
                             productName: this.selectedItem.name,
+                            id: this.selectedItem.id,
                             soldPerUnits: this.selectedItem.soldPerUnits,
                             value: this.selectedItem.costPrice,
                             amount: this.selectedItemAmount
@@ -367,6 +369,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     override save() {
+        debugger
         let send: any = {
             classifierId: this.form.get('classifierId')?.value.id,
             products: this.products.map((item: any) => ({

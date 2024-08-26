@@ -39,7 +39,7 @@ export class ProductComponent extends BaseComponentDirective {
             width: 140
         },
         {
-            header: 'Custo Medio', field: 'costPrice', pipe: 'currency',
+            header: 'Custo Medio', field: 'avgCostPrice', pipe: 'currency',
             sort: true, class: 'text-center', visible: true, width: 150
         },
         {

@@ -64,6 +64,32 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
+        label: 'Compras',
+        icon: 'mdi mdi-cash-multiple mdi-24px',
+        roles: [domainEnum.PRODUCT],
+        items: [
+            {
+                label: 'Contas a Pagar',
+                roles: [domainEnum.PRODUCT],
+                icon: 'mdi mdi-cash-clock mdi-24px',
+                routerLink: ['compras/contas-pagar']
+            },
+            {
+                label: 'Compras',
+                roles: [domainEnum.PRODUCT],
+                icon: 'mdi mdi-cash-multiple mdi-24px',
+                routerLink: ['compras/lista']
+            },
+            // {
+            //     label: 'Transferência',
+            //     roles: [domainEnum.PRODUCT],
+            //     icon: 'mdi mdi-truck-delivery mdi-24px',
+            //     routerLink: ['transfer/lista']
+            // }
+        ]
+    },
+    {separator: true},
+    {
         label: 'Cozinha',
         icon: 'mdi mdi-chef-hat mdi-24px',
         roles: [domainEnum.KITCHEN,domainEnum.ALL],
@@ -87,32 +113,6 @@ export const menuList: any[] = [
                 roles: [domainEnum.PRODUCT],
                 routerLink: ['loja/configuration']
             }
-        ]
-    },
-    {separator: true},
-    {
-        label: 'Compras',
-        icon: 'mdi mdi-cash-multiple mdi-24px',
-        roles: [domainEnum.PRODUCT],
-        items: [
-            {
-                label: 'Contas a Pagar',
-                roles: [domainEnum.PRODUCT],
-                icon: 'mdi mdi-cash-clock mdi-24px',
-                routerLink: ['compras/contas-pagar']
-            },
-            {
-                label: 'Compras',
-                roles: [domainEnum.PRODUCT],
-                icon: 'mdi mdi-cash-multiple mdi-24px',
-                routerLink: ['compras/lista']
-            },
-            // {
-            //     label: 'Transferência',
-            //     roles: [domainEnum.PRODUCT],
-            //     icon: 'mdi mdi-truck-delivery mdi-24px',
-            //     routerLink: ['transfer/lista']
-            // }
         ]
     },
     {separator: true},
