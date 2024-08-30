@@ -20,12 +20,13 @@ export class StorePurchasesServices extends StoreComponentService<any> {
 
     billId$: Signal<any> = this.selectSignal(state => state.billId);
     listProductSelected$: Signal<any> = this.selectSignal(state => state.listProductSelected);
+    details$: Signal<any> = this.selectSignal(state => state.details);
 
     constructor(private purchasesService: PurchasesService,
                 private storeContasPagarServices: StoreContasPagarServices,
                 private contasPagarService: ContasPagarService) {
-        const defaultEntity: EntityState<any> & { billId?: any, listProductSelected: any[] } =
-            {entities: [], total: 0, dialog: false, loaded: false, listProductSelected: []};
+        const defaultEntity: EntityState<any> & { billId?: any, listProductSelected: any[], details: any } =
+            {entities: [], total: 0, dialog: false, loaded: false, listProductSelected: [], details: null};
         super(purchasesService, defaultEntity);
     }
 
@@ -50,7 +51,6 @@ export class StorePurchasesServices extends StoreComponentService<any> {
     ));
 
     createInstallmentsByFinancialTransactions(data: any) {
-        debugger
         if (data.originalPaymentInstallments === undefined) {
             this.purchasesService.createInstallmentsByFinancialTransactions(data).pipe(
                 tapResponse({
@@ -172,9 +172,9 @@ export class StorePurchasesServices extends StoreComponentService<any> {
                 }
             })
         ).subscribe(response => {
-            this.setSelected(response);
+            //this.setSelected(response);
             this.setListProductSelected(response.products);
-            this.patchState({selected: response, billId: response.billId});
+            this.patchState({selected: response, billId: response.billId, details: response});
         });
     }
 

@@ -21,24 +21,28 @@
                     <div class="flex align-items-center">
                         <p-radioButton name="todas" value="{{FinancialTransactionsEnum.TYPING}}" [(ngModel)]="type"
                                        inputId="all"
+                                       id="all"
                                        (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">{{ 'TYPING' | translate }}</label>
                     </div>
                     <div class="flex align-items-center">
                         <p-radioButton name="abertas" value="{{FinancialTransactionsEnum.PENDING_APPROVAL}}"
                                        [(ngModel)]="type" inputId="abertas"
+                                       id="abertas"
                                        (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">{{ 'PENDING_APPROVAL' | translate }}</label>
                     </div>
                     <div class="flex align-items-center">
                         <p-radioButton name="quitadas" value="{{FinancialTransactionsEnum.APPROVED}}" [(ngModel)]="type"
                                        inputId="quitadas"
+                                       id="quitadas"
                                        (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">{{ 'APPROVED' | translate }}</label>
                     </div>
                     <div class="flex align-items-center">
                         <p-radioButton name="provisao" value="{{FinancialTransactionsEnum.RECEIVED}}" [(ngModel)]="type"
                                        inputId="provisao"
+                                       id="provisao"
                                        (onClick)="changeFilterType()"></p-radioButton>
                         <label class="ml-2">{{ 'RECEIVED' | translate }}</label>
                     </div>
@@ -52,90 +56,101 @@
             </p-panel>
         </div>
     </div>
-    <c-data-table [action]="true" [exportBtn]="false" (edit)="customEdit($event)" (create)="customCrear($event)"
+    <c-data-table [action]="false" [exportBtn]="false" (edit)="customEdit($event)" (create)="customCrear($event)"
                   (delete)="customDelete($event)"
                   [headers]="headersTable" [service]="service" [showCreate]="true" [type]="'EXPENSES'">
         <ng-template let-data tableRow="state">
             <p-badge [value]="data.state | translate" [severity]="data.state | severity"></p-badge>
         </ng-template>
+        <ng-template let-data tableRow="action">
+            @if (data.state === 'APPROVED') {
+                <button pButton icon="mdi mdi-24px mdi-eye-circle-outline" type="button"
+                        class="p-button-text p-button-rounded"
+                        (click)="showCompra(data)"
+                        [hidden]="true"
+                ></button>
+            }
+            @if (data.state !== 'APPROVED') {
+                <button (click)="customEdit(data)" class="p-button-rounded p-button-text"
+                        icon="mdi mdi-pencil mdi-24px"
+                        pButton
+                        type="button"></button>
+                <button (click)="customDelete(data)" class="p-button-rounded p-button-text p-button-danger"
+                        icon="mdi mdi-delete mdi-24px"
+                        pButton
+                        type="button"></button>
+            }
+        </ng-template>
     </c-data-table>
-<!--    <p-sidebar [(visible)]="visible" position="right" [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'"-->
-<!--               styleClass="w-full sm:w-30rem">-->
-<!--        <ng-template pTemplate="header">-->
-<!--            <div class="flex align-items-center gap-2">-->
-<!--                <h5 class="font-bold mb-0">-->
-<!--                    Informações da Compra-->
-<!--                </h5>-->
-<!--            </div>-->
-<!--        </ng-template>-->
-<!--        @if (service.selectedEntity$()) {-->
-<!--            <div class="surface-section mb-3 border-bottom-1 surface-border">-->
-<!--                <ul class="list-none p-0 m-0">-->
-<!--                    <li class="flex align-items-center gap-4 py-2 px-2 border-top-1 surface-border flex-wrap">-->
-<!--                        <div class="text-500 w-6 md:w-6 font-medium">Criado</div>-->
-<!--                        <div-->
-<!--                            class="text-900 w-full md:w-4 md:flex-order-0 flex-order-1">{{ service.selectedEntity$().created | date }}-->
-<!--                        </div>-->
-<!--                    </li>-->
-<!--                    <li class="flex align-items-center gap-4 py-2 px-2 border-top-1 surface-border flex-wrap">-->
-<!--                        <div class="text-500 w-6 md:w-6 font-medium">Quantidade de produtos</div>-->
-<!--                        <div-->
-<!--                            class="text-900 w-full md:w-2 md:flex-order-0 flex-order-1">{{ service.selectedEntity$().amountProducts | number }}-->
-<!--                        </div>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--                <p-table [value]="service.selectedEntity$().products || []">-->
-<!--                    <ng-template pTemplate="header">-->
-<!--                        <tr>-->
-<!--                            <th>Nome</th>-->
-<!--                            <th>Quantia</th>-->
-<!--                            <th>Valor</th>-->
-<!--                            <th>Total</th>-->
-<!--                        </tr>-->
-<!--                    </ng-template>-->
-<!--                    <ng-template pTemplate="body" let-extract>-->
-<!--                        <tr>-->
-<!--                            <td>{{ extract.productName}}</td>-->
-<!--                            <td>{{ extract.amount | number }}</td>-->
-<!--                            <td>{{ extract.value | currency }}</td>-->
-<!--                            <td>{{ extract.totalValue | currency }}</td>-->
-<!--                        </tr>-->
-<!--                    </ng-template>-->
-<!--                </p-table>-->
-<!--            </div>-->
-<!--            <div class="surface-section mb-3 border-bottom-1 surface-border">-->
-<!--                <ul class="list-none p-0 m-0">-->
-<!--                    <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">-->
-<!--                        <div class="text-500 w-6 md:w-4 font-medium">Cantidad de Parcelas</div>-->
-<!--                        <div-->
-<!--                            class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ service.selectedEntity$().paymentInstallments.amountPaymentInstallments }}-->
-<!--                        </div>-->
-<!--                    </li>-->
-<!--                </ul>-->
-<!--                <p-table [value]="service.selectedEntity$().paymentInstallments.paymentInstallments || []">-->
-<!--                    <ng-template pTemplate="header">-->
-<!--                        <tr>-->
-<!--                            <th>Fecha Expiracion</th>-->
-<!--                            <th>Valor</th>-->
-<!--                        </tr>-->
-<!--                    </ng-template>-->
-<!--                    <ng-template pTemplate="body" let-extract>-->
-<!--                        <tr>-->
-<!--                            <td>{{ extract.expirationDate | date}}</td>-->
-<!--                            <td>{{ extract.value | currency }}</td>-->
-<!--                        </tr>-->
-<!--                    </ng-template>-->
-<!--                </p-table>-->
-<!--            </div>-->
-<!--&lt;!&ndash;            paymentInstallments&ndash;&gt;-->
-<!--        }-->
-<!--        <ng-template pTemplate="footer">-->
-<!--            <div class="flex align-items-center gap-2">-->
-<!--                <button pButton pRipple class="p-button-primary flex-1 border-round"-->
-<!--                        label="Efectivar Compra"-->
-<!--                        (click)="acceptCompra()"-->
-<!--                        icon="mdi mdi-truck-check mdi-24px"></button>-->
-<!--            </div>-->
-<!--        </ng-template>-->
-<!--    </p-sidebar>-->
+    <p-sidebar [(visible)]="visible" position="right" [transitionOptions]="'.3s cubic-bezier(0, 0, 0.2, 1)'"
+               styleClass="w-full sm:w-30rem">
+        <ng-template pTemplate="header">
+            <div class="flex align-items-center gap-2">
+                <h5 class="font-bold mb-0">
+                    Informações da Compra
+                </h5>
+            </div>
+        </ng-template>
+        @if (service.details$()) {
+            <div class="surface-section mb-3 border-bottom-1 surface-border">
+                <ul class="list-none p-0 m-0">
+                    <li class="flex align-items-center gap-4 py-2 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-6 font-medium">Criado</div>
+                        <div
+                            class="text-900 w-full md:w-4 md:flex-order-0 flex-order-1">{{ service.details$().created | date }}
+                        </div>
+                    </li>
+                    <li class="flex align-items-center gap-4 py-2 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-6 font-medium">Quantidade de produtos</div>
+                        <div
+                            class="text-900 w-full md:w-2 md:flex-order-0 flex-order-1">{{ service.details$().amountProducts | number }}
+                        </div>
+                    </li>
+                </ul>
+                <p-table [value]="service.details$().products || []">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Nome</th>
+                            <th>Quantia</th>
+                            <th>Valor</th>
+                            <th>Total</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-extract>
+                        <tr>
+                            <td>{{ extract.productName }}</td>
+                            <td>{{ extract.amount | number }}</td>
+                            <td>{{ extract.value | currency }}</td>
+                            <td>{{ extract.totalValue | currency }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <div class="surface-section mb-3 border-bottom-1 surface-border">
+                <ul class="list-none p-0 m-0">
+                    <li class="flex align-items-center py-2 px-2 border-top-1 surface-border flex-wrap">
+                        <div class="text-500 w-6 md:w-4 font-medium">Cantidad de Parcelas</div>
+                        <div
+                            class="text-900 w-full md:w-8 md:flex-order-0 flex-order-1">{{ service.details$().paymentInstallments.amountPaymentInstallments }}
+                        </div>
+                    </li>
+                </ul>
+                <p-table [value]="service.details$().paymentInstallments.paymentInstallments || []">
+                    <ng-template pTemplate="header">
+                        <tr>
+                            <th>Fecha Expiracion</th>
+                            <th>Valor</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-extract>
+                        <tr>
+                            <td>{{ extract.expirationDate | date }}</td>
+                            <td>{{ extract.value | currency }}</td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+            <!--            paymentInstallments-->
+        }
+    </p-sidebar>
 </div>

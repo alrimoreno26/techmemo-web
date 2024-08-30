@@ -319,9 +319,19 @@
                                         <p-inputNumber placeholder="Valor en Kg"
                                                        formControlName="valuePerUnits"></p-inputNumber>
                                     </div>
+                                    @if (form.controls['soldPerUnits'].value) {
+                                        <div class="px-3 py-1">
+                                            <p class="mb-0 align-items-center block flex font-bold justify-content-between py-1 text-900">
+                                                <span class="w-10">Quantidade Embalagem</span>
+                                                <p-inputNumber placeholder="Quantidade Embalagem"
+                                                               formControlName="quantityInPackaging"></p-inputNumber>
+                                            </p>
+                                        </div>
+                                    }
 
                                 </div>
                             </div>
+
                             <div class="border-1 surface-border border-round">
                                 <span
                                     class="text-900 font-bold border-bottom-1 surface-border px-3 py-1 flex align-items-center"

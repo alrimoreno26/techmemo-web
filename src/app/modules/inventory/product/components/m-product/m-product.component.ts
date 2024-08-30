@@ -121,6 +121,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             name: new FormControl<string>(data?.name, [Validators.required]),
             ncm: new FormControl<number>(data?.ncm, [Validators.required]),
             quantityStockAlert: new FormControl<number>(data?.quantityStockAlert),
+            quantityInPackaging: new FormControl<number>(data?.quantityInPackaging === null ? 1 : data?.quantityInPackaging),
             stockAmount: new FormControl<number>(data?.stockAmount),
             salePrice: new FormControl<number>({
                 value: data?.salePrice,

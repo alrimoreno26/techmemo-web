@@ -5,9 +5,9 @@ import {SpinnerService} from '../../injects/spinner.services';
     selector: 'c-spinner',
     template: `
         <p-blockUI [blocked]="spinnerService.block" styleClass="spinner">
-            <ng-template [ngIf]="spinnerService.block">
+            @if (spinnerService.block) {
                 <img src="../assets/images/tube-spinner.svg" width="150" height="150" alt="logo">
-            </ng-template>
+            }
         </p-blockUI>
     `,
     styles: [`::ng-deep .spinner {

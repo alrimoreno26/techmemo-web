@@ -1,4 +1,4 @@
-import {SocketClientState, WebSocketServices} from "./injects/webSocket.services";
+import {WebSocketServices} from "./injects/webSocket.services";
 import {MessageService} from "primeng/api";
 import {BlockUIModule} from "primeng/blockui";
 import {CommonModule, registerLocaleData} from "@angular/common";
@@ -16,7 +16,6 @@ import {TokenInterceptor} from "./interceptors/token.interceptor";
 import {CommercesServices} from "./services/commerces.services";
 import {LayoutService} from "../layout/service/app.layout.service";
 import {InactivityService} from "./injects/inactive.services";
-import {switchMap, tap, timer} from "rxjs";
 
 registerLocaleData(localePt, 'pt');
 export function inactivityServiceFactory(inactivityService: InactivityService): () => Promise<any> {

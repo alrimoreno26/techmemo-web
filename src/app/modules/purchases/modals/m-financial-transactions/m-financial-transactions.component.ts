@@ -143,7 +143,26 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     handleListProductSelected(listProductSelected: any[]): void {
-        this.products = listProductSelected.map(item => this.mapItemToProduct(item)) ?? [];
+        const groupedProducts = listProductSelected.reduce((acc, item) => {
+            if (item.productId === null) {
+                acc[`null_${Math.random()}`] = { ...item, amount: item.amount || 0 }; // Genera una clave única para cada producto con id null
+            } else {
+                if (!acc[item.productId]) {
+                    acc[item.productId] = { ...item, amount: 0 };
+                }
+                acc[item.productId].amount += item.amount;
+            }
+            return acc;
+        }, {});
+
+        this.products = Object.values(groupedProducts).map(item => this.mapItemToProduct(item)) ?? [];
+    }
+
+    onProductChange() {
+        setTimeout(() => {
+            this.reduceTotalPayments();
+        }, 100);
+
     }
 
     mapItemToProduct(item: any): any {
@@ -151,7 +170,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             id: item.productId,
             productName: item.productName,
             soldPerUnits: item.unitMeasurementCode === null,
-            value: item.costPrice,
+            value: item.value,
             amount: item.amount
         }
     }
@@ -208,7 +227,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                             productName: this.selectedItem.name,
                             id: this.selectedItem.id,
                             soldPerUnits: this.selectedItem.soldPerUnits,
-                            value: this.selectedItem.costPrice,
+                            value: this.selectedItem.avgCostPrice,
                             amount: this.selectedItemAmount
                         };
                         if (this.editing) {
@@ -224,7 +243,17 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                                     });
                                 });
                         } else {
-                            this.products = [...this.products, tempProduct];
+                            // Verificar si el producto ya existe en el array
+                            const existingProductIndex = this.products.findIndex(product => product.id === tempProduct.id);
+
+                            if (existingProductIndex !== -1) {
+                                // Si el producto ya existe, aumentar la cantidad
+                                this.products[existingProductIndex].amount += tempProduct.amount;
+                            } else {
+                                // Si el producto no existe, agregarlo al array
+                                this.products = [...this.products, tempProduct];
+                            }
+
                         }
                         this.selectedItem = undefined;
                         this.selectedItemAmount = 1;
@@ -249,10 +278,14 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.storeFinancialTransactions.openModalAddOrEdit();
         this.dialogService.open(component, params).onClose.subscribe((data: any) => {
             let tempProduct;
+            debugger
             if (component === MNewProductComponent && data) {
                 tempProduct = this.createProduct(data.data);
             }
-            this.updateOrAddProduct(this.form.get('id')?.value, tempProduct);
+            if (data) {
+                this.updateOrAddProduct(this.form.get('id')?.value, tempProduct);
+            }
+
         });
     }
 
@@ -365,15 +398,15 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     reduceTotalPayments() {
-        this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.value * curr.amount), 0)
+        console.log(this.products)
+        this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.value * Number(curr.amount)), 0)
     }
 
     override save() {
-        debugger
         let send: any = {
             classifierId: this.form.get('classifierId')?.value.id,
             products: this.products.map((item: any) => ({
-                amount: item.amount,
+                amount: Number(item.amount),
                 productId: item.id,
                 productName: item.productName,
                 unitMeasurementId: item.unitMeasurementCode,
