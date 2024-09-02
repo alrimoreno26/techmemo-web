@@ -1,6 +1,6 @@
 <ng-template dialog-header>Criar categoria</ng-template>
 <form [formGroup]="form">
-    <div formResponsive width="650px">
+    <div formResponsive width="750px">
         <div class="grid grid-nogutter flex-wrap gap-3 p-fluid">
             <div class="col-12 lg:col-12">
                 <div class="grid formgrid">
@@ -9,7 +9,7 @@
                     </div>
                     <div class="col-12 lg:col-6 field">
                         <p class="align-items-center block flex font-bold justify-content-end gap-3 surface-border text-900">
-                            <span>Classificação financeira</span>
+                            <span>Class financeira</span>
                             <p-dropdown
                                 [options]="financialClasificationService.lightEntities$()"
                                 appendTo="body"
@@ -21,10 +21,14 @@
                             </p-dropdown>
                         </p>
                     </div>
-                    <div class="col-12 field mb-0">
+                    <div class="col-12 lg:col-6 field mb-0">
                         <span class="block text-900 font-bold">Descrição</span>
                         <p-editor [style]="{'height':'200px'}" formControlName="description" class="mb-0"
                                   styleClass="mb-0"></p-editor>
+                    </div>
+                    <div class="col-12 lg:col-6 field mb-0 flex align-items-center flex-column justify-content-start">
+                        <span class="block text-900 font-bold">Images</span>
+                            <c-upload-image [service]="storeCategoryService"/>
                     </div>
                 </div>
             </div>
@@ -60,13 +64,13 @@
         </ng-template>
         <ng-template pTemplate="body" let-subgrupo>
             <tr>
-                <td>{{subgrupo.name}}</td>
+                <td>{{ subgrupo.name }}</td>
                 <td><p [innerHTML]="subgrupo.description | sanitizeHtml"></p></td>
                 <td>
-                    <button (click)="editItem(subgrupo)"  class="p-button-rounded p-button-text" icon="mdi mdi-pencil"
+                    <button (click)="editItem(subgrupo)" class="p-button-rounded p-button-text" icon="mdi mdi-pencil"
                             pButton
                             type="button"></button>
-                    <button (click)="deleteItem(subgrupo)"  class="p-button-rounded p-button-text p-button-danger"
+                    <button (click)="deleteItem(subgrupo)" class="p-button-rounded p-button-text p-button-danger"
                             icon="mdi mdi-trash-can-outline"
                             pButton
                             type="button"></button>
@@ -95,7 +99,8 @@
         </form>
     </ng-template>
     <ng-template pTemplate="footer">
-        <button pButton pRipple label="Cancel" icon="mdi pi-fw mdi-trash-can-outline" class="p-button-danger flex-1 p-button-outlined"
+        <button pButton pRipple label="Cancel" icon="mdi pi-fw mdi-trash-can-outline"
+                class="p-button-danger flex-1 p-button-outlined"
                 (click)="hideDialog()"></button>
         <button pButton pRipple label="Salvar" class="p-button-primary flex-1 border-round"
                 (click)="saveFields()"></button>

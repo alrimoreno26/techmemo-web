@@ -7,6 +7,7 @@ import {
 } from "../../../../../standalone/data-table/directives/base.modal.store.component.directive";
 import {FinancialClasificationService} from "../../../../financial/service/financial-clasification.service";
 import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
+import {UploadEvent} from "primeng/fileupload";
 
 @Component({
     templateUrl: './m-category.component.html',
@@ -33,6 +34,7 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
         this.dialogRegistryService.addDialog(this.ref);
         this.financialClasificationService.loadLight({pageNumber: 0, pageSize: 1000})
         effect(() => {
+            console.log(storeCategoryService.selectedEntity$())
             if (this.storeCategoryService.subCategory$()) {
                 this.showCategories = true
                 this.categories = this.storeCategoryService.subCategory$();
@@ -86,7 +88,6 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
         }
     }
 
-
     override save(): void {
         const value: any = this.form.value;
         if (!this.config.data) {
@@ -135,4 +136,6 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
         })
         this.storeCategoryService.updateSubCategory(this.config.data.id, params)
     }
+
+    protected readonly event = event;
 }

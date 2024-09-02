@@ -83,9 +83,9 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
                 }
 
             }
-            if (this.caixas.listEntities$().length > 0) {
-                this.caixasList = this.caixas.listEntities$().filter((c: any) => c.enabled);
-            }
+
+            this.caixasList = this.caixas.listEntities$().filter((c: any) => c.enabled);
+
 
         });
 
@@ -181,6 +181,7 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         })
 
         this.cashRegisterOperations.opened$.subscribe((opened) => {
+            console.log(opened)
             if (opened) {
                 this.caixas.loadAll({lazy: {pageNumber: 0, pageSize: 50}})
             }
@@ -242,8 +243,8 @@ export class EcommerceDashboardComponent implements OnInit, OnDestroy {
         this.historicalCashOperations = [];
     }
 
-    seeExtractions(op: OverlayPanel, event: any){
-        const params={
+    seeExtractions(op: OverlayPanel, event: any) {
+        const params = {
             startDate: formatDate(this.rangeDates[0]),
             cashRegisterId: this.caixaId
         }

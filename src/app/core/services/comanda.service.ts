@@ -7,7 +7,6 @@ import {Observable} from "rxjs";
 import {map} from "lodash";
 import {CreatePaymentTransactionTO} from "../models/orders";
 import {DeleteOrderProductDto} from "../models/products";
-import {updateProductsOrders} from "../../modules/caixa/store/caixa.actions";
 
 @Injectable({
     providedIn: 'root'

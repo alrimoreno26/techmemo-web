@@ -7,6 +7,11 @@ import {SupplierService} from "../inventory/forncedores/services/supplier.servic
 import {formatDate} from "../../core/util";
 import {FinancialTransactionsEnum} from "../../core/enums/commerce";
 import {ToastMessageService} from "../../core/injects/toast-message.service";
+import {FinancialTransactionsServices} from "./services/financial-transactions.services";
+import {takeUntil} from "rxjs";
+import {confirmDialog} from "../../core/rx/confirm";
+import {BaseStoreServices} from "../../standalone/data-table/class/base.store.services";
+import {ConfirmServices} from "../../core/injects/confirm.services";
 
 @Component({
     selector: 'c-purchases',
@@ -17,8 +22,13 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
     override modalContent = MFinancialTransactionsComponent;
     rangeDates: Date[] = [new Date(), new Date(new Date().getFullYear(), new Date().getMonth(), 31)];
     type: string = 'ALL';
+    visible = false;
 
-    constructor(public service: StorePurchasesServices, public supplierService: SupplierService, private toastMessageService: ToastMessageService,) {
+    constructor(public service: StorePurchasesServices,
+                public supplierService: SupplierService,
+                private confirmationService: ConfirmServices,
+                public storeFinancialTransactions: FinancialTransactionsServices,
+                private toastMessageService: ToastMessageService,) {
         super()
     }
 
@@ -47,16 +57,42 @@ export class PurchasesComponent extends BaseComponentDirective implements OnInit
 
     customEdit(evt: any): void {
         if (evt.state === 'TYPING') {
+            this.service.openModalAddOrEdit()
+            this.dialogService.open(MFinancialTransactionsComponent, {
+                data: {type: 'EXPENSES'}
+            })
             this.service.getById(evt.id);
         } else {
             this.service.patchState({dialog: false});
-            this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
+            if (evt.state === 'PENDING_APPROVAL') {
+                this.visible = true;
+                this.service.getValuesOfCompra(evt.id)
+            } else {
+                this.service.patchState({dialog: false});
+                this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
+            }
         }
     }
 
-    customDelete(evt: any){
-        if(evt.state === 'TYPING'){
+    showCompra(evt: any): void {
+        this.visible = true;
+        this.service.getValuesOfCompra(evt.id)
+    }
+
+    customDelete(evt: any) {
+        if (evt.state === 'APPROVED') {
             this.toastMessageService.showMessage("info", 'Informação', 'Esta compra já foi processada')
+        } else {
+            this.confirmationService.deleteConfirm().pipe(
+                takeUntil(this.ngUnsubscribe),
+                confirmDialog(
+                    () => {
+                        if (this.service) {
+                            this.service.delete({id: evt.id});
+                        }
+                    }
+                )
+            ).subscribe();
         }
     }
 

@@ -52,5 +52,14 @@
         <ng-template let-data tableRow="state">
             <p-badge [value]="data.state | translate" [severity]="data.state | severity"></p-badge>
         </ng-template>
+        <ng-template let-data tableRow="action">
+            @if(data.state === 'APPROVED'){
+                <button pButton icon="mdi mdi-truck-delivery mdi-24px" type="button" class="p-button-text p-button-rounded p-button-success"
+                        (click)="despachar(data)"
+                        pTooltip="Despachar" tooltipPosition="top" [hidden]="true"
+                ></button>
+            }
+
+        </ng-template>
     </c-data-table>
 </div>

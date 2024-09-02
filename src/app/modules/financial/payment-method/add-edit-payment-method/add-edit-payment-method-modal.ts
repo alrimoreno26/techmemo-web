@@ -11,6 +11,7 @@ import {PaginatorModule} from "primeng/paginator";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {InputTextModule} from "primeng/inputtext";
 import {InputSwitchModule} from "primeng/inputswitch";
+import {DialogRegistryService} from "../../../../core/injects/dialog.registry.services";
 
 @Component({
     standalone: true,
@@ -31,8 +32,9 @@ import {InputSwitchModule} from "primeng/inputswitch";
 export class AddEditPaymentMethodModal extends BaseModalStoreComponentDirective implements OnInit {
 
     listPaymentMethod: any[] = [];
-    constructor(public servicePaymentMethodService: PaymentMethodService) {
+    constructor(public servicePaymentMethodService: PaymentMethodService, private dialogRegistryService: DialogRegistryService) {
         super(servicePaymentMethodService);
+        this.dialogRegistryService.addDialog(this.ref);
     }
 
     ngOnInit() {

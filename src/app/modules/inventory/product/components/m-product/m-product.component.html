@@ -113,11 +113,13 @@
                                         </ng-template>
                                     </p-table>
                                 </div>
-                                <div class="col-12 field">
+                                <div class="col-12 lg:col-6 field">
                                     <h5>Descrição</h5>
                                     <p-editor formControlName="description" [style]="{'height':'200px'}"></p-editor>
                                 </div>
-
+                                <div class="col-12 lg:col-6 field">
+                                    <c-upload-image [service]="productService"/>
+                                </div>
                             </div>
                         </div>
                         <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
@@ -266,39 +268,7 @@
                                     <p-editor formControlName="description" [style]="{'height':'200px'}"></p-editor>
                                 </div>
                                 <div class="col-12 lg:col-6 field">
-                                    <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                        <span>Images</span>
-                                    </p>
-                                    <!--                            <p-fileUpload #fileUploader name="demo[]" url="./upload.php" (onUpload)="onUpload($event)"-->
-                                    <!--                                          [customUpload]="true" [multiple]="true" (onSelect)="onUpload($event)"-->
-                                    <!--                                          accept="image/*" [showUploadButton]="true" [showCancelButton]="false"-->
-                                    <!--                                          [auto]="true">-->
-                                    <!--                                <ng-template pTemplate="content">-->
-                                    <!--                                    <div class="h-6rem overflow-y-auto py-3 border-round" style="cursor: copy"-->
-                                    <!--                                         (click)="fileUploader.advancedFileInput.nativeElement.click()">-->
-                                    <!--                                        <div *ngIf="!product.images.length"-->
-                                    <!--                                             class="flex flex-column w-full h-full justify-content-center align-items-center">-->
-                                    <!--                                            <i class="pi pi-file text-4xl text-primary"></i>-->
-                                    <!--                                            <span-->
-                                    <!--                                                class="block font-semibold text-900 text-lg mt-3">Drop or select images</span>-->
-                                    <!--                                        </div>-->
-                                    <!--                                        <div class="flex flex-wrap gap-3 border-round" *ngIf="product.images.length">-->
-                                    <!--                                            <div *ngFor="let file of product.images; let i = index;"-->
-                                    <!--                                                 class="h-full relative w-7rem h-7rem border-3 border-transparent border-round hover:bg-primary transition-duration-100 cursor-auto"-->
-                                    <!--                                                 (mouseenter)="onImageMouseOver(file)"-->
-                                    <!--                                                 (mouseleave)="onImageMouseLeave(file)" style="padding: 1px;">-->
-                                    <!--                                                <img [src]="file.objectURL" class="w-full h-full border-round shadow-2"-->
-                                    <!--                                                     [alt]="file.name">-->
-                                    <!--                                                <button [id]="file.name" #buttonEl pButton pRipple type="button"-->
-                                    <!--                                                        icon="pi pi-times"-->
-                                    <!--                                                        class="p-button-rounded p-button-primary text-sm absolute justify-content-center align-items-center cursor-pointer w-2rem h-2rem"-->
-                                    <!--                                                        style="top: -10px; right: -10px; display: none;"-->
-                                    <!--                                                        (click)="$event.stopPropagation(); removeImage(file)"></button>-->
-                                    <!--                                            </div>-->
-                                    <!--                                        </div>-->
-                                    <!--                                    </div>-->
-                                    <!--                                </ng-template>-->
-                                    <!--                            </p-fileUpload>-->
+                                    <c-upload-image [service]="productService"/>
                                 </div>
 
                             </div>
@@ -325,6 +295,12 @@
                                 </p>
                             </div>
                             <div class="border-1 surface-border border-round">
+                                <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                    <span>Adiciona Sabores</span>
+                                    <p-inputSwitch class="flex" formControlName="allowsFlavors"></p-inputSwitch>
+                                </p>
+                            </div>
+                            <div class="border-1 surface-border border-round">
                                 <p class=" mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
                                     <span>Vendido por unidades</span>
                                     <p-inputSwitch class="flex" formControlName="soldPerUnits"></p-inputSwitch>
@@ -343,9 +319,19 @@
                                         <p-inputNumber placeholder="Valor en Kg"
                                                        formControlName="valuePerUnits"></p-inputNumber>
                                     </div>
+                                    @if (form.controls['soldPerUnits'].value) {
+                                        <div class="px-3 py-1">
+                                            <p class="mb-0 align-items-center block flex font-bold justify-content-between py-1 text-900">
+                                                <span class="w-10">Quantidade Embalagem</span>
+                                                <p-inputNumber placeholder="Quantidade Embalagem"
+                                                               formControlName="quantityInPackaging"></p-inputNumber>
+                                            </p>
+                                        </div>
+                                    }
 
                                 </div>
                             </div>
+
                             <div class="border-1 surface-border border-round">
                                 <span
                                     class="text-900 font-bold border-bottom-1 surface-border px-3 py-1 flex align-items-center"

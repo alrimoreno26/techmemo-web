@@ -4,10 +4,10 @@
             <i class="mdi mdi-chevron-left"></i>
         </a>
         <img class="horizontal-logo" [routerLink]="['/']" [src]="'assets/layout/images/logo-'+ logo + '.svg'"
-             alt="diamond-layout"/>
+             alt="techmemo-image"/>
         <span class="topbar-separator"></span>
         <app-breadcrumb></app-breadcrumb>
-        <img class="mobile-logo" [src]="'assets/layout/images/logo-'+ logo + '.svg'" alt="diamond-layout"/>
+        <img class="mobile-logo" [src]="'assets/layout/images/logo-'+ logo + '.svg'" alt="techmemo-image"/>
     </div>
 
     <div class="layout-topbar-menu-section"
@@ -27,7 +27,7 @@
             <li class="profile-item static sm:relative">
                 <a tabindex="0" pStyleClass="@next" enterClass="hidden" enterActiveClass="scalein" leaveToClass="hidden"
                    leaveActiveClass="fadeout" [hideOnOutsideClick]="true">
-                    <img src="../../../../assets/images/user-profile.png" alt="diamond-layout"
+                    <img src="../../../../assets/images/user-profile.png" alt="techmemo-image"
                          class="profile-image"/>
                     <span class="profile-name">{{ session.userLogged.name }}</span>
                 </a>

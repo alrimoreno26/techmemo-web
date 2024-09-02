@@ -51,7 +51,7 @@ export class InstallmentsComponent implements OnInit {
         this.paymentMethodService.loadLight()
         effect(() => {
             if (this.storeService.selectedEntity$() !== undefined) {
-                this.paymentInstallments = this.storeService.selectedEntity$().paymentInstallments.paymentInstallments ?? [];
+                this.paymentInstallments = this.storeService.selectedEntity$()?.paymentInstallments?.paymentInstallments ?? [];
                 this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate + 'T00:00') : this.rangeDates = new Date();
                 this.qParcelas = this.paymentInstallments.length === 0 ? 1 : this.paymentInstallments.length;
                 this.reduceTotalPaymentsInstall();
@@ -60,7 +60,7 @@ export class InstallmentsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-
+        console.log(this.config)
         this.form = new FormGroup({
             classifierId: new FormControl<string>(this.config?.classifierId, Validators.required),
             description: new FormControl<string>(this.config?.paymentInstallments?.description),
@@ -69,7 +69,7 @@ export class InstallmentsComponent implements OnInit {
             provision: new FormControl<boolean>(this.config?.paymentInstallments?.provision || false, Validators.required),
             purchaseCode: new FormControl<string>({value: this.config?.code, disabled: true}),
             purchaseValue: new FormControl<string>({value: this.totalProducts, disabled: true}),
-            supplierId: new FormControl<string>(this.config?.supplierId, Validators.required)
+            supplierId: new FormControl<string>(this.config?.supplierId)
         });
         this.paymentInstallments = this.config?.paymentInstallments?.paymentInstallments ?? [];
         this.paymentInstallments.length > 0 ? this.rangeDates = new Date(this.paymentInstallments[0].expirationDate + 'T00:00') : this.rangeDates = new Date();
@@ -131,6 +131,7 @@ export class InstallmentsComponent implements OnInit {
         }
         this.storeService.addSingleInstallment({
             billId: this.config?.billId,
+            type: this.config?.type,
             installments: [parcela]
         }).subscribe((data) => {
             console.log(data)
@@ -199,6 +200,7 @@ export class InstallmentsComponent implements OnInit {
             const bills = {
                 classifierId: this.form.get('classifierId')?.value,
                 description: this.form.get('description')?.value,
+                type: this.config?.type,
                 financialTransactionId: this.config?.id,
                 monthlyPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value,
                 consecutiveDaysPaymentInstallments: this.form.get('monthlyPaymentInstallments')?.value ? null : this.consecutiveDaysPaymentInstallments,

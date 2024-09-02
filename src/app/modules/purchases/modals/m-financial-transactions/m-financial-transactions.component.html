@@ -1,5 +1,5 @@
 <ng-template dialog-header>
-    Trasação Financeira <span class="font-bold">({{config.data?.type === 'EXPENSES' ? 'COMPRA' : 'VENDA'}})</span>
+    Trasação Financeira <span class="font-bold">({{ config.data?.type === 'EXPENSES' ? 'COMPRA' : 'VENDA' }})</span>
 </ng-template>
 <div formResponsive width="950px">
     <p-stepper [linear]="true" [(activeStep)]="stepActive">
@@ -125,17 +125,27 @@
                                     <th class="custom-th font-bold">Ações</th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="body" let-product>
+                            <ng-template pTemplate="body" let-product let-editing="editing">
                                 <tr>
                                     <td class="custom-td"
                                         style="min-width: 220px">{{ product.productName | wrapText: 25 }}
                                     </td>
-                                    <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" }}</td>
-                                    <td class="custom-td">
-                                        {{ product.amount }}
+                                    <td class="custom-td"> {{ product.soldPerUnits ? "Unit" : product.unitMeasurementCode ? " / " + product.unitMeasurementName + "(" + product.unitMeasurementCode + ")" : '-' }}</td>
+                                    <td class="custom-td" [pEditableColumn]="product.amount" pEditableColumnField="amount">
+                                        <p-cellEditor>
+                                            <ng-template pTemplate="input">
+                                                <input
+                                                    pInputText type="text"
+                                                    (ngModelChange)="onProductChange()"
+                                                    [(ngModel)]="product.amount" />
+                                            </ng-template>
+                                            <ng-template pTemplate="output">
+                                                {{ product.amount }}
+                                            </ng-template>
+                                        </p-cellEditor>
                                     </td>
-                                    <td class="custom-td">{{ product.value| currency }}</td>
-                                    <td class="custom-td">{{ (product.value * product.amount)| currency }}</td>
+                                    <td class="custom-td">{{ product.value| currency: 'BRL' : 'symbol' : '1.2' }}</td>
+                                    <td class="custom-td">{{ (product.value * product.amount)| currency: 'BRL' : 'symbol' : '1.2' }}</td>
                                     <td>
                                         <p-button styleClass="border-round-3xl severity_danger small"
                                                   (onClick)="deleteProduct(product.id)"

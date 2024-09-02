@@ -143,12 +143,31 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     handleListProductSelected(listProductSelected: any[]): void {
-        this.products = listProductSelected.map(item => this.mapItemToProduct(item)) ?? [];
+        const groupedProducts = listProductSelected.reduce((acc, item) => {
+            if (item.productId === null) {
+                acc[`null_${Math.random()}`] = { ...item, amount: item.amount || 0 }; // Genera una clave única para cada producto con id null
+            } else {
+                if (!acc[item.productId]) {
+                    acc[item.productId] = { ...item, amount: 0 };
+                }
+                acc[item.productId].amount += item.amount;
+            }
+            return acc;
+        }, {});
+
+        this.products = Object.values(groupedProducts).map(item => this.mapItemToProduct(item)) ?? [];
+    }
+
+    onProductChange() {
+        setTimeout(() => {
+            this.reduceTotalPayments();
+        }, 100);
+
     }
 
     mapItemToProduct(item: any): any {
         return {
-            id: item.id,
+            id: item.productId,
             productName: item.productName,
             soldPerUnits: item.unitMeasurementCode === null,
             value: item.value,
@@ -168,7 +187,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     closingModal() {
         this.ref.close()
         this.storeService.resetState();
-        this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+        this.storeService.loadAll({pageNumber: 0, pageSize: 50, type: this.form.get('type')?.value});
     }
 
     set products(products: any[]) {
@@ -188,13 +207,12 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             type: new FormControl({value: data?.type || 'EXPENSES', disabled: true}, Validators.required),
         });
         if (this.editing) {
-            this.data = {
-                ...data,
-                billsId: this.storeService.selectedEntity$()?.billId || null,
-                classifierId: this.form.get('classifierId')?.value.id,
-                supplierId: this.form.get('supplierId')?.value.id,
-                commerceId: this.form.get('supplierId')?.value.id
-            };
+            this.data = cloneDeep(data);
+            this.data.billsId = this.storeService.selectedEntity$()?.billId || null;
+            this.data.classifierId = this.form.get('classifierId')?.value.id;
+            this.data.supplierId = this.form.get('supplierId')?.value.id;
+            this.data.commerceId = this.form.get('supplierId')?.value.i;
+            console.log(this.data)
         }
     }
 
@@ -204,10 +222,12 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             case 'Enter':
                 if (this.suggestionsProducts.length > 0) {
                     if (this.selectedItem !== undefined) {
+                        debugger
                         const tempProduct = {
                             productName: this.selectedItem.name,
+                            id: this.selectedItem.id,
                             soldPerUnits: this.selectedItem.soldPerUnits,
-                            value: this.selectedItem.salePrice * this.selectedItemAmount,
+                            value: this.selectedItem.avgCostPrice,
                             amount: this.selectedItemAmount
                         };
                         if (this.editing) {
@@ -216,10 +236,24 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                                 [tempProduct])
                                 .subscribe((response) => {
                                     this.storeService.setListProductSelected(response)
-                                    this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                                    this.storeService.loadAll({
+                                        pageNumber: 0,
+                                        pageSize: 50,
+                                        type: this.form.get('type')?.value
+                                    });
                                 });
                         } else {
-                            this.products = [...this.products, tempProduct];
+                            // Verificar si el producto ya existe en el array
+                            const existingProductIndex = this.products.findIndex(product => product.id === tempProduct.id);
+
+                            if (existingProductIndex !== -1) {
+                                // Si el producto ya existe, aumentar la cantidad
+                                this.products[existingProductIndex].amount += tempProduct.amount;
+                            } else {
+                                // Si el producto no existe, agregarlo al array
+                                this.products = [...this.products, tempProduct];
+                            }
+
                         }
                         this.selectedItem = undefined;
                         this.selectedItemAmount = 1;
@@ -244,10 +278,14 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.storeFinancialTransactions.openModalAddOrEdit();
         this.dialogService.open(component, params).onClose.subscribe((data: any) => {
             let tempProduct;
-            if (component === MNewProductComponent) {
+            debugger
+            if (component === MNewProductComponent && data) {
                 tempProduct = this.createProduct(data.data);
             }
-            this.updateOrAddProduct(this.form.get('id')?.value, tempProduct);
+            if (data) {
+                this.updateOrAddProduct(this.form.get('id')?.value, tempProduct);
+            }
+
         });
     }
 
@@ -255,7 +293,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.editing) {
             this.storeFinancialTransactions.addFinancialTransactionProduct(id, [tempProduct]).subscribe((response: any[]) => {
                 this.storeService.setListProductSelected(response);
-                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                this.storeService.loadAll({pageNumber: 0, pageSize: 50, type: this.form.get('type')?.value});
             });
         } else {
             this.addNewProduct(tempProduct);
@@ -282,7 +320,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                 const updatedProducts = [...this.products];
                 updatedProducts.splice(index, 1);
                 this.products = updatedProducts;
-                this.storeService.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                this.storeService.loadAll({pageNumber: 0, pageSize: 50, type: this.form.get('type')?.value});
             })
         } else {
             if (index !== -1) {
@@ -347,7 +385,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     searchFornecedor(event: { target: { value: string; } } | any) {
         this.searchTextClassifiers = event.target.value;
         this.supplierService.autocomplete({
-            filter: this.searchTextClassifiers,
+            filter: this.searchTextClassifiers
         });
     }
 
@@ -355,18 +393,20 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.searchTextProducts = event.target.value;
         this.productService.autocomplete({
             filter: this.searchTextProducts,
+            supplierId: this.form.get('supplierId')?.value?.id || ''
         });
     }
 
     reduceTotalPayments() {
-        this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.value * curr.amount), 0)
+        console.log(this.products)
+        this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.value * Number(curr.amount)), 0)
     }
 
     override save() {
         let send: any = {
             classifierId: this.form.get('classifierId')?.value.id,
             products: this.products.map((item: any) => ({
-                amount: item.amount,
+                amount: Number(item.amount),
                 productId: item.id,
                 productName: item.productName,
                 unitMeasurementId: item.unitMeasurementCode,
@@ -378,16 +418,16 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
 
         if (this.editing) {
             if (this.form.get('type')?.value !== 'EXPENSES') {
-                send.commerceId = this.form.get('commerceId')?.value.id;
+                send.commerceId = this.form.get('commerceId')?.value?.id;
             }
             this.reduceTotalPayments();
             this.storeFinancialTransactions.updateFinancialTransaction(send, this.form.get('id')?.value);
             this.stepActive++;
         } else {
             if (this.form.get('type')?.value === 'EXPENSES') {
-                send.supplierId = this.form.get('supplierId')?.value.id;
+                send.supplierId = this.form.get('supplierId')?.value?.id;
             } else {
-                send.commerceId = this.form.get('supplierId')?.value.id;
+                send.commerceId = this.form.get('supplierId')?.value?.id;
             }
             this.storeFinancialTransactions.create({data: send});
         }
@@ -398,7 +438,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         if (this.child.paymentInstallments.length === 0) {
             this.toastMessageService.showMessage("error", 'ERROR', 'Deve cadastrar pelo menos 1 parcela')
         } else {
-            const send = {
+            let send = {
                 state: 'APPROVED'
             }
             this.storeFinancialTransactions.changeStateFinancialTransaction(send, this.form.get('id')?.value);

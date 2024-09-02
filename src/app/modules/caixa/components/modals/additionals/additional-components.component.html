@@ -11,14 +11,68 @@
     <div class="flex">
         <div class="flex-1">
             <p-tabView>
-                <p-tabPanel class="p-1" header="Adicional">
-                    <div class="flex">
-                        <p-table #dt1 [value]="additionals.content" sortField="categoryName" sortMode="single"
-                                 [scrollable]="true" scrollHeight="400px"
-                                 rowGroupMode="subheader"
-                                 selectionMode="single"
+                @if (product.allowsAdditional) {
+                    <p-tabPanel class="p-1" header="Adicional">
+                        <div class="flex">
+                            <p-table #dt1 [value]="additionals.content" sortField="categoryName" sortMode="single"
+                                     [scrollable]="true" scrollHeight="400px"
+                                     rowGroupMode="subheader"
+                                     selectionMode="single"
+                                     [styleClass]="'p-datatable-sm'"
+                                     groupRowsBy="categoryName" [tableStyle]="{'min-width': '30rem'}">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th>Descrição do Producto</th>
+                                        <th>Valor</th>
+                                        <th></th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="groupheader" let-additionals>
+                                    <tr pRowGroupHeader>
+                                        <td class="bg-blue-50" colspan="3">
+                                            <span class="font-bold">{{ additionals.categoryName }}</span>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
+                                    <tr (click)="addElement($event,item)">
+                                        <td>
+                                            {{ item.name }}
+                                        </td>
+                                        <td>
+                                            {{ item.salePrice | currency }}
+                                        </td>
+                                        <td>
+                                            <div class="p-inputgroup h-2rem">
+                                                <button type="button" pButton icon="mdi mdi-plus"
+                                                        (click)="addElementClick($event,item)"
+                                                        class="p-button-success p-button-sm"></button>
+                                                <button type="button" pButton icon="mdi mdi-minus"
+                                                        (click)="removeElementbyId($event,item)"
+                                                        class="p-button-danger"></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </div>
+                    </p-tabPanel>
+                    <p-tabPanel header="Combinaciones">
+                        <p-table #dt2 [value]="combos.content" sortField="categoryName" sortMode="single"
+                                 [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader"
                                  [styleClass]="'p-datatable-sm'"
+                                 [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
                                  groupRowsBy="categoryName" [tableStyle]="{'min-width': '30rem'}">
+                            <ng-template pTemplate="caption">
+                                <div class="flex">
+                                    <span class="p-input-icon-left">
+                                        <i class="pi pi-search"></i>
+                                        <input pInputText type="text"
+                                               (input)="dt1.filterGlobal($event.target, 'contains')"
+                                               placeholder="Producto"/>
+                                    </span>
+                                </div>
+                            </ng-template>
                             <ng-template pTemplate="header">
                                 <tr>
                                     <th>Descrição do Producto</th>
@@ -26,10 +80,10 @@
                                     <th></th>
                                 </tr>
                             </ng-template>
-                            <ng-template pTemplate="groupheader" let-additionals>
+                            <ng-template pTemplate="groupheader" let-combos>
                                 <tr pRowGroupHeader>
                                     <td class="bg-blue-50" colspan="3">
-                                        <span class="font-bold">{{ additionals.categoryName }}</span>
+                                        <span class="font-bold">{{ combos.categoryName }}</span>
                                     </td>
                                 </tr>
                             </ng-template>
@@ -54,60 +108,40 @@
                                 </tr>
                             </ng-template>
                         </p-table>
-                    </div>
-                </p-tabPanel>
-                <p-tabPanel header="Combinaciones">
-                    <p-table #dt2 [value]="combos.content" sortField="categoryName" sortMode="single"
-                             [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader"
-                             [styleClass]="'p-datatable-sm'"
-                             [globalFilterFields]="['name', 'country.name', 'representative.name', 'status']"
-                             groupRowsBy="categoryName" [tableStyle]="{'min-width': '30rem'}">
-                        <ng-template pTemplate="caption">
-                            <div class="flex">
-                                    <span class="p-input-icon-left">
-                                        <i class="pi pi-search"></i>
-                                        <input pInputText type="text"
-                                               (input)="dt1.filterGlobal($event.target, 'contains')"
-                                               placeholder="Producto"/>
-                                    </span>
-                            </div>
-                        </ng-template>
-                        <ng-template pTemplate="header">
-                            <tr>
-                                <th>Descrição do Producto</th>
-                                <th>Valor</th>
-                                <th></th>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="groupheader" let-combos>
-                            <tr pRowGroupHeader>
-                                <td class="bg-blue-50" colspan="3">
-                                    <span class="font-bold">{{ combos.categoryName }}</span>
-                                </td>
-                            </tr>
-                        </ng-template>
-                        <ng-template pTemplate="body" let-item let-rowIndex="rowIndex">
-                            <tr (click)="addElement($event,item)">
-                                <td>
-                                    {{ item.name }}
-                                </td>
-                                <td>
-                                    {{ item.salePrice | currency }}
-                                </td>
-                                <td>
-                                    <div class="p-inputgroup h-2rem">
-                                        <button type="button" pButton icon="mdi mdi-plus"
-                                                (click)="addElementClick($event,item)"
-                                                class="p-button-success p-button-sm"></button>
-                                        <button type="button" pButton icon="mdi mdi-minus"
-                                                (click)="removeElementbyId($event,item)"
-                                                class="p-button-danger"></button>
-                                    </div>
-                                </td>
-                            </tr>
-                        </ng-template>
-                    </p-table>
-                </p-tabPanel>
+                    </p-tabPanel>
+                }
+                @if (product.allowsFlavors) {
+                    <p-tabPanel header="Sabores">
+                        <p-table #dt2 [value]="flavorsEmun" sortMode="single"
+                                 [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader"
+                                 [styleClass]="'p-datatable-sm'"
+                                 [tableStyle]="{'min-width': '30rem'}">
+                            <ng-template pTemplate="header">
+                                <tr>
+                                    <th>Descrição do Producto</th>
+                                    <th></th>
+                                </tr>
+                            </ng-template>
+                            <ng-template pTemplate="body" let-flavors let-rowIndex="rowIndex">
+                                <tr (click)="addElementClick($event,flavors,true)">
+                                    <td>
+                                        {{ flavors.name }}
+                                    </td>
+                                    <td>
+                                        <div class="p-inputgroup h-2rem">
+                                            <button type="button" pButton icon="mdi mdi-plus"
+                                                    (click)="addElementClick($event,flavors, true)"
+                                                    class="p-button-success p-button-sm"></button>
+                                            <button type="button" pButton icon="mdi mdi-minus"
+                                                    (click)="removeElementbyId($event,flavors,true)"
+                                                    class="p-button-danger"></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </ng-template>
+                        </p-table>
+                    </p-tabPanel>
+                }
             </p-tabView>
         </div>
         <div class="bg-yellow-100 flex flex-1 flex-column p-2">

@@ -71,6 +71,11 @@ import {UserEffects} from "../security/user/store/user.effects";
 import {RoleEffects} from "../security/roles/store/role.effects";
 import {MExtractionMoneyComponents} from "./components/modals/m-extraction-money/m-extraction-money.components";
 import {StepsModule} from "primeng/steps";
+import {ChipModule} from "primeng/chip";
+import {CarouselModule} from "primeng/carousel";
+import {ImageModule} from "primeng/image";
+import {MFlavorsProductsComponents} from "./components/modals/m-flavors/flavors-products.components";
+import {MDescriptionsComponent} from "./components/modals/m-show-description/m-descriptions.component";
 
 @NgModule({
     imports: [
@@ -119,6 +124,9 @@ import {StepsModule} from "primeng/steps";
         InputGroupModule,
         InputGroupAddonModule,
         StepsModule,
+        ChipModule,
+        CarouselModule,
+        ImageModule,
     ],
     declarations: [
         CaixaComponent,
@@ -133,7 +141,9 @@ import {StepsModule} from "primeng/steps";
         AdditionalComponents,
         MOpenCaixaComponents,
         MCloseCaixaComponents,
-        MExtractionMoneyComponents
+        MExtractionMoneyComponents,
+        MFlavorsProductsComponents,
+        MDescriptionsComponent
     ],
     providers: [
         PaymentMethodService,

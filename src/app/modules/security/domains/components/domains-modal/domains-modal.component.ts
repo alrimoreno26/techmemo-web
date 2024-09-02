@@ -8,6 +8,7 @@ import {
 import {cpf} from "../../../../../core/validators/cpf.validator";
 import {DomainsService} from "../../services/domains.service";
 import {domainArray} from "../../../../../core/enums/role";
+import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 
 @Component({
     selector: 'm-domains-modal',
@@ -16,8 +17,9 @@ import {domainArray} from "../../../../../core/enums/role";
 })
 export class DomainsModalComponent extends BaseModalComponentDirective implements OnInit {
 
-    constructor(public domainsService: DomainsService) {
+    constructor(public domainsService: DomainsService, private dialogRegistryService: DialogRegistryService) {
         super(domainsService);
+        this.dialogRegistryService.addDialog(this.ref);
     }
 
     ngOnInit(): void {

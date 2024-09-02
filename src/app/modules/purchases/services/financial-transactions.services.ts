@@ -32,7 +32,7 @@ export class FinancialTransactionsServices extends StoreComponentService<any> {
             if (params.state !== undefined && params.state === 'APPROVED') {
                 this.setSelected(null);
                 this.storePurchasesServices.patchState({dialog: false, selected: null});
-                this.storePurchasesServices.loadAll({lazy: {pageNumber: 0, pageSize: 50}});
+                this.storePurchasesServices.loadAll({lazy: {pageNumber: 0, pageSize: 50, type: params.type}});
             }
         })
     }

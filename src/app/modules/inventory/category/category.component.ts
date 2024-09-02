@@ -16,6 +16,7 @@ export class CategoryComponent extends BaseComponentDirective {
     override modalContent = MCategoryComponent;
 
     override headersTable: HeadersTable[] = [
+        {header: '', field: 'logo', sort: true, class: 'text-center', visible: true},
         {header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true},
         {
             header: 'Descrição',

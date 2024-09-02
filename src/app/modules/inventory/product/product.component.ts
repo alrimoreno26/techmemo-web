@@ -10,6 +10,7 @@ import * as XLSX from "xlsx";
 import {CategoryDto} from "../../../core/models";
 import {HttpClient} from "@angular/common/http";
 import {ProductDto} from "../../../core/models/products";
+import {removeNullProperties} from "../../../core/util";
 
 @Component({
     selector: 'c-product',
@@ -20,6 +21,8 @@ export class ProductComponent extends BaseComponentDirective {
     override modalContent = MProductComponent;
     override headersTable: HeadersTable[] = [
         {
+            header: '', field: 'logo', sort: true, class: 'text-center', visible: true
+        }, {
             header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true
         },
         {
@@ -37,7 +40,7 @@ export class ProductComponent extends BaseComponentDirective {
             width: 140
         },
         {
-            header: 'Preço', field: 'costPrice', pipe: 'currency',
+            header: 'Custo Medio', field: 'avgCostPrice', pipe: 'currency',
             sort: true, class: 'text-center', visible: true, width: 150
         },
         {
@@ -45,8 +48,8 @@ export class ProductComponent extends BaseComponentDirective {
             class: 'text-center', visible: true
         },
         {
-            header: 'Valor do estoque', sort: true, field: 'stockMoney',
-            class: 'text-center', visible: true
+            header: 'Valor do estoque', sort: true, field: 'totalStockValue',
+            class: 'text-center', visible: true, pipe: 'currency'
         },
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
     ];
@@ -67,11 +70,13 @@ export class ProductComponent extends BaseComponentDirective {
                 private translateService: TranslateService,
                 private http: HttpClient) {
         super();
+
     }
 
     openAditional() {
-        this.productService.openModalAddOrEdit();
-        this.dialogService.open(this.modalContent, {data: {type: productType.ADDITIONAL}});
+        // this.productService.openModalAddOrEdit();
+        // this.dialogService.open(this.modalContent, {data: {type: productType.ADDITIONAL}});
+        this.importProducts();
     }
 
     openCombo() {
@@ -88,24 +93,24 @@ export class ProductComponent extends BaseComponentDirective {
     }
 
     importProducts() {
-        const workbook = 'assets/products.xlsx';
+        const workbook = 'assets/base_factory.xlsx';
         // Obtiene la primera hoja del archivo (puedes ajustar esto según tu caso)
         return this.http.get(workbook, {responseType: 'arraybuffer'})
             .subscribe(
                 (data) => {
                     const send = this.processExcelData(data);
-                    console.log(send)
                     let index = 0;
-                    // const intervalId = setInterval(() => {
-                    //     if (index < send.length) {
-                    //         this.productService.create(send[index]);
-                    //         console.log("¡La función se ejecutó después de 5000 milisegundos (5 segundos)!");
-                    //         index++;
-                    //     } else {
-                    //         clearInterval(intervalId);
-                    //         console.log("Todos los datos han sido insertados.");
-                    //     }
-                    // }, 200); // 5000 milisegundos = 5 segundos
+                    console.log(send)
+                    const intervalId = setInterval(() => {
+                        if (index < send.length) {
+                            this.productService.create(send[index]);
+                            console.log("¡La función se ejecutó después de 5000 milisegundos (5 segundos)!");
+                            index++;
+                        } else {
+                            clearInterval(intervalId);
+                            console.log("Todos los datos han sido insertados.");
+                        }
+                    }, 200); // 5000 milisegundos = 5 segundos
                 },
                 (error) => {
                     console.error('Error loading Excel file:', error);
@@ -125,14 +130,28 @@ export class ProductComponent extends BaseComponentDirective {
             if (row[0] !== undefined) {
                 const p: any = {
                     name: row[0],
-                    categoryId: row[1],
-                    costPrice: row[2],
-                    salePrice: row[3],
-                    cfop: row[5] === undefined ? 1 : row[5],
-                    ncm: row[6] === undefined ? 1 : row[6],
-                    cst: row[6] === undefined ? 1 : row[7],
-                    type: 'ADDITIONAL',
+                    factoryProduct: true,
+                    type: row[2],
+                    categoryId: row[3],
+                    costPrice: row[4],
+                    avgCostPrice: row[4],
+                    salePrice: row[5],
+                    cfop: row[7] === undefined ? 1 : row[7],
+                    ncm: row[8] === undefined ? 1 : row[8],
+                    cst: row[9] === undefined ? 1 : row[9],
+                    code: row[10] === undefined ? 1 : row[10],
+                    allowsAdditional: row[11].toLowerCase() === 'Sim'.toLowerCase(),
+                    soldPerUnits: row[12].toLowerCase() === 'Unitário'.toLowerCase(),
+                    enabled: row[13].toLowerCase() === 'Sim'.toLowerCase(),
+                    showInMenu: row[14].toLowerCase() === 'Sim'.toLowerCase(),
+                    stockAmount: row[15],
+                    quantityStockAlert: row[16],
+                    quantityInPackaging: row[17]
                 }
+                if(row[12].toLowerCase() === 'KG'.toLowerCase()){
+                    p.unitMeasurementId = '3da95e8e-0c43-4d4e-9f20-fe216976e454'
+                }
+
                 products.push(p)
             }
 

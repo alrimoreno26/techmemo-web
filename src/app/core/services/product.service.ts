@@ -32,4 +32,10 @@ export class ProductService extends AbstractService<any> {
         return this.httpClient.get<LazyResultData<any>>(`${this.basePath}?${params}`,{context: silentIt()});
     }
 
+    uploadImage(files: any, id: any) {
+        const formData = new FormData();
+        formData.append('logo', files[0])
+        return this.httpClient.post<any>(this.basePath + '/' + id + "/upload", formData)
+    }
+
 }

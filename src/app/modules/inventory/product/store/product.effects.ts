@@ -32,6 +32,19 @@ export class ProductEffects {
         )
     );
 
+    uploadImage$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(fromProductListActions.uploadImage),
+            switchMap(({files, id}) =>
+                this.service.uploadImage(files, id).pipe(
+                    map((data) => fromProductListActions.uploadImageSuccess(),
+                        catchError(error => of(fromProductListActions.ProductListFailRequest({error})))
+                    )
+                )
+            )
+        )
+    );
+
     loadProductAdditional$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromProductListActions.loadProductAdditional),

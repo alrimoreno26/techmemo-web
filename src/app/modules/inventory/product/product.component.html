@@ -2,6 +2,18 @@
     <c-data-table [class]="'p-datable-sm'" [action]="true" [exportBtn]="false" [itemsSplit]="itemsSplit" (edit)="customEdit($event)"
                   [rowsPerPageOptions]="[15,25,50,100]"
                   [headers]="headersTable" [service]="productService" [showCreate]="true">
+        <ng-template let-data tableRow="logo">
+            @if(data.logo){
+                <p-image
+                    [src]="'data:image/'+data.logo.ext+';base64,' + data.logo.content"
+                    [preview]="true"
+                    width="50"/>
+            } @else {
+                <p-image
+                    [src]="'assets/layout/images/no-pictures.png'"
+                    width="50"/>
+            }
+        </ng-template>
         <ng-template let-data let-i="rowIndex" tableRow="type">
             <p-badge [severity]="data.type | severity" value="{{data.type | translate}}"/>
         </ng-template>

@@ -1,5 +1,5 @@
 {
-    "transfer-APPROVED": "En Transito",
+    "transfer-SENT": "En Transito",
     "app": {
         "unknown_error_text": "Erro desconhecido",
         "generic_error_text_title": "Erro",
@@ -139,6 +139,7 @@
     "OTHERS": "Outros pagamento",
     "TYPING": "Em preparação",
     "PENDING_APPROVAL": "Aprovação pendente",
+    "SENT": "Enviado",
     "APPROVED": "Aprovado",
     "CANCELED": "Cancelado",
     "EXPENSES": "Gasto",

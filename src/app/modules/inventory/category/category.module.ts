@@ -20,6 +20,11 @@ import {DividerModule} from "primeng/divider";
 import {DialogModule} from "primeng/dialog";
 import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {FinancialClasificationService} from "../../financial/service/financial-clasification.service";
+import {FileUploadModule} from "primeng/fileupload";
+import {BadgeModule} from "primeng/badge";
+import {TranslateModule} from "@ngx-translate/core";
+import {ImageModule} from "primeng/image";
+import {ProductsCards} from "../../../standalone/upload-image/upload-image.component";
 
 
 @NgModule({
@@ -38,6 +43,11 @@ import {FinancialClasificationService} from "../../financial/service/financial-c
         DividerModule,
         DialogModule,
         ConfirmDialogModule,
+        FileUploadModule,
+        BadgeModule,
+        TranslateModule,
+        ImageModule,
+        ProductsCards,
     ],
     providers:[
         FinancialClasificationService,

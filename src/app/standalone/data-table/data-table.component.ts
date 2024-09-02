@@ -194,11 +194,10 @@ export class DataTableComponent implements OnInit, OnDestroy {
      * @param $event {@link TableLazyLoadEvent}
      */
     loadCustomLazy($event: TableLazyLoadEvent): void {
-        debugger
         const {first, rows, globalFilter, sortField, sortOrder} = $event;
         if ($event?.filters) {
             // @ts-ignore
-            let value = Object.keys($event.filters).length > 0 ? $event?.filters?.type[0]?.value : '';
+            let value = Object.keys($event.filters).length > 0 ? $event?.filters?.type[0]?.value : globalFilter;
             this.service.loadAll({
                 pageNumber: first as number / (rows as number),
                 pageSize: rows ? rows : 25,
