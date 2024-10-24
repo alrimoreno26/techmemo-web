@@ -11,7 +11,7 @@ import {MAddCommerceComponent} from "./components/m-add-commerce/m-add-commerce.
 })
 export class ShopsListComponent extends BaseComponentDirective implements OnInit {
 
-    collapseCompaniesListData: boolean = false;
+    collapseCompaniesListData: boolean = true;
     optionsTabsVisible: boolean = false;
     isMobile: boolean = false;
     displayCompaniesListData: boolean = false;

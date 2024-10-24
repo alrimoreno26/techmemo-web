@@ -61,6 +61,12 @@
 			//margin: 1rem 0;
 			height: 100%;
 
+            &:hover .companies-menu {
+                display: block;
+                opacity: 1;
+                right: 0;
+            }
+
 			.p-listbox-item{
 				border-top: 1px solid #eee;
 				padding: 0;
@@ -93,17 +99,61 @@
 				color: #424242;
 			}
 
-			/*.p-listbox-item.p-highlight {
-				border-right: 3px solid var(--primary-theme-color);
-				color: var(--primary-theme-color);
-				font-weight: 500;
-
-				&:focus {
-					box-shadow: none !important;
-				}
-			}*/
+              .p-listbox-item > .company-item .companies-menu {
+                display: none;
+                position: absolute;
+                background-color: #f9f9f9;
+                width: 80px;
+                box-shadow: -2px 0px 6px 0px rgba(0, 0, 0, 0.2);
+                z-index: 1;
+                opacity: 0;
+                transition: opacity 0.3s ease-in-out, right 0.3s ease-in-out;
+                top: 0;
+                right: -180px;
+            }
 		}
+        .companies-menu {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            width: 80px;
+            box-shadow: -2px 0px 6px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out, right 0.3s ease-in-out;
+            top: 0;
+            right: -180px;
+        }
 
+        .companies-menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        .companies-menu ul li {
+            display: flex;
+            align-items: center;
+            padding: 6px 10px;
+            cursor: pointer;
+            height: 62px;
+            width: 40px;
+        }
+
+        .companies-menu ul li:hover {
+            background-color: #f1f1f1;
+        }
+
+        .companies-menu ul li {
+            color: #666876;
+            background-color: #f9f9f9;
+        }
+
+        .companies-menu ul li:hover {
+            color: #FFFFFF;
+            background-color: var(--primary-theme-color) !important;
+        }
 		p-paginator {
 			.p-paginator {
 				padding: 0 !important;

@@ -115,7 +115,10 @@ export class CaixaComponent implements OnInit {
                 if (this.oneClosed) {
                     this.pagamento = true;
                 }
-
+                if (this.orders.every((x: any) => (x.state === 'CANCELLED'))) {
+                    this.service.setSelected(null);
+                    this.router.navigate(['/comandas'])
+                }
                 if (this.orders.every((x: any) => (x.state === 'FINISHED'))) {
                     this.service.setSelected(null);
                     this.router.navigate(['/comandas'])
@@ -269,7 +272,6 @@ export class CaixaComponent implements OnInit {
             },
             width: '350px',
         })
-        console.log(deep)
     }
 
     getOrders() {
@@ -290,6 +292,16 @@ export class CaixaComponent implements OnInit {
 
     refreshOrders() {
         this.getOrders();
+    }
+
+    cancelOrders(){
+        switch (this.activeRoute) {
+            case 'table':
+                break;
+            case 'order':
+                this.service.changeFieldStateOrders(this.activeRouteOrder, {state: 'CANCELLED'})
+                break;
+        }
     }
 
     transferOrders() {
@@ -322,8 +334,8 @@ export class CaixaComponent implements OnInit {
     }
 
     comandaTotal(): void {
-        this.totalOrders = this.orders?.reduce((sumaTotal: any, item: any) =>
-                sumaTotal + (item.valueToPaid - item.valuePaid),
+        this.totalOrders = this.service.selectedEntity$()[this.activeOrder].products.reduce((sumaTotal: any, item: any) =>
+                sumaTotal + (item.valueToPaid - item.amountPaid),
             0
         ) || 0;
     }
