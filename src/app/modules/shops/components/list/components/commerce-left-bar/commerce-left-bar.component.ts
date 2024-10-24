@@ -10,11 +10,11 @@ import {
     ViewChild,
     AfterViewInit,
     ChangeDetectorRef,
-    effect
+    effect, input
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { Listbox } from 'primeng/listbox';
-import { ConfirmEventType, ConfirmationService, MessageService, TreeNode } from 'primeng/api';
+import {ConfirmEventType, ConfirmationService, MessageService, TreeNode, TooltipOptions} from 'primeng/api';
 import { Subject } from 'rxjs';
 import { PaginatorState } from 'primeng/paginator';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
@@ -67,6 +67,9 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 	companiesTotal: number = 0;
 	companiesPageFilterData: any;
 
+    tooltipCompanyOptions: TooltipOptions;
+    collapseCompaniesListData = input<boolean>(false);
+
 	private colorMap: Map<string, string> = new Map<string, string>();
 
 	skeletonCompaniesItemsArray = Array(10).fill(0);
@@ -80,7 +83,6 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 	isSandboxMode: boolean = false;
 
 	@Input() addOrganizationCompany: boolean = false;
-	@Input() collapseCompaniesListData: boolean = false;
 
 	@Output() updateMenuEmit = new EventEmitter<[any, boolean]>();
 	@Output() updateAddCompanyEmit = new EventEmitter<boolean>();
@@ -128,6 +130,11 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
             if(this.commercesService.selectedEntity$()){
                 this.selectedCompanyData = this.commercesService.selectedEntity$();
             }
+            this.tooltipCompanyOptions = {
+                tooltipEvent: 'hover',
+                tooltipPosition: 'right',
+                disabled: !this.collapseCompaniesListData(),
+            };
         });
 
 		if(!this.companiesPageData) {
@@ -144,9 +151,6 @@ export class CommerceLeftBarComponent implements OnInit, OnDestroy, AfterViewIni
 			}
 		}
 
-		if(changes['collapseCompaniesListData']) {
-			this.collapseCompaniesListData = changes['collapseCompaniesListData'].currentValue;
-		}
 	}
 
 	ngOnInit(): void {

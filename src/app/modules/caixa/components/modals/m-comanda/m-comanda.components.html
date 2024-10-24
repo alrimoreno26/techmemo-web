@@ -17,6 +17,7 @@
 </div>
 <ng-template dialog-footer>
     <button pButton pRipple class="p-button-primary flex-1 border-round" label="Criar"
+            [disabled]="!clientName"
             (click)="criarComanda()"
             icon="mdi mdi-check"></button>
 </ng-template>
