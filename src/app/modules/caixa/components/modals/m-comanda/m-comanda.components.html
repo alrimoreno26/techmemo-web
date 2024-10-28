@@ -1,5 +1,21 @@
 <ng-template dialog-header><span class="p-dialog-title">Comenzar pedido</span></ng-template>
 <div class="grid">
+    @if(this.config.data.type === 'BALCONY'){
+        <div class="col-12 field pb-0">
+            <p-inputGroup>
+                <p-inputGroupAddon>B</p-inputGroupAddon>
+                <input class="w-full" type="text" [(ngModel)]="balconyCode" pInputText placeholder="Codigo do Balcon"/>
+            </p-inputGroup>
+        </div>
+    }
+    @if(this.config.data.type === 'ORDER'){
+        <div class="col-12 field pb-0">
+            <p-inputGroup>
+                <p-inputGroupAddon>C</p-inputGroupAddon>
+                <input class="w-full" type="text" [(ngModel)]="balconyCode" pInputText placeholder="Codigo da Comanda"/>
+            </p-inputGroup>
+        </div>
+    }
     <div class="col-12 field pb-0">
         <input class="w-full" type="text" [(ngModel)]="clientName" pInputText placeholder="Nome do Cliente"/>
     </div>

@@ -213,6 +213,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 disabled: true
             }, Validators.required),
             quantityTables: new FormControl<number>(this.selectedStore?.amountTables),
+            amountOrders: new FormControl<number>(this.selectedStore?.amountOrders),
         })
     }
 
@@ -329,6 +330,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             id: this.commercesService.selectedEntity$().id,
             name: this.form.get('name')?.value,
             amountTables: this.form.get('quantityTables')?.value,
+            amountOrders: this.form.get('amountOrders')?.value,
             hasOnlineCommerce: this.form.get('hasOnlineCommerce')?.value,
             enable: this.form.get('hasOnlineCommerce')?.value,
             address: {
@@ -414,7 +416,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
 
     getDataBanks(bank: any, type: 'IMAGE' | 'NAME') {
         const select = BrazilActiveBanks.find(x => x.COMPE === bank.bank);
-        if(type === 'NAME'){
+        if (type === 'NAME') {
             return select.ShortName
         } else {
             return select.Icon

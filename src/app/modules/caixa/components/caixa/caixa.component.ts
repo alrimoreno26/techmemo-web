@@ -138,6 +138,7 @@ export class CaixaComponent implements OnInit {
             this.getOrders();
         }, {allowSignalWrites: true})
         effect(async () => {
+            this.stateOptions = [];
             if (this.categoryService.listEntities$().length > 0) {
                 this.stateOptions.push({label: 'TODAS', value: ''})
                 this.categoryService.listEntities$().map((cs: any) => {
@@ -253,6 +254,7 @@ export class CaixaComponent implements OnInit {
             this.dialogService.open(MComandaComponents, {
                 data: {
                     id: this.activeRouteOrder,
+                    type: 'TABLE',
                     inside: true
                 },
                 width: '350px',
@@ -294,7 +296,7 @@ export class CaixaComponent implements OnInit {
         this.getOrders();
     }
 
-    cancelOrders(){
+    cancelOrders() {
         switch (this.activeRoute) {
             case 'table':
                 break;
@@ -424,6 +426,7 @@ export class CaixaComponent implements OnInit {
             resizable: false
         })
     }
+
     lookDescription(product: any) {
         this.service.openCustomDialog('description', true);
         this.dialogService.open(MDescriptionsComponent, {
@@ -439,7 +442,13 @@ export class CaixaComponent implements OnInit {
 
     addElementComanda(event: ProductLightDto): void {
         const params = [
-            {id: event.id, amount: this.selectedItemAmount, additionals: [], weight: event.weight, description: this.selectedDescription}
+            {
+                id: event.id,
+                amount: this.selectedItemAmount,
+                additionals: [],
+                weight: event.weight,
+                description: this.selectedDescription
+            }
         ];
         this.service.addProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, params)
         this.resetAllValues();
@@ -532,12 +541,12 @@ export class CaixaComponent implements OnInit {
 
     printCozinha() {
         this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder].id);
-        this.client.post('http://localhost:8020/api/notifications/print',{data:[{test:"metodo print"}]}).subscribe()
+        this.client.post('http://localhost:8020/api/notifications/print', {data: [{test: "metodo print"}]}).subscribe()
     }
 
     onChangeAmount(product: any) {
         console.log(product)
-        this.service.updateProductsOrders(product.id,this.service.selectedEntity$()[this.activeOrder].id, [{amount: Number(product.amount)}]);
+        this.service.updateProductsOrders(product.id, this.service.selectedEntity$()[this.activeOrder].id, [{amount: Number(product.amount)}]);
     }
 
     protected readonly isObject = isObject;

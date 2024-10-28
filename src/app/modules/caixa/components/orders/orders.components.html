@@ -28,14 +28,19 @@
                                                                                style="color: red">{{ busy }}</span></p>
                 </div>
                 <div class="p-toolbar-group-end">
-                    <button (click)="loadComanda()" pButton icon="mdi mdi-list-box-outline" class="mr-2"
+                    <button (click)="loadComanda('BALCONY')" pButton icon="mdi mdi-balcony" class="mr-2"
                             [disabled]="!caixaOpened"
-                            [pTooltip]="'Mostrar Comandas'"></button>
+                            label="Balcon">
+                    </button>
+                    <button (click)="loadComanda('ORDER')" pButton icon="mdi mdi-list-box-outline" class="mr-2"
+                            [disabled]="!caixaOpened"
+                            label="Comandas" style="font-size: 16px !important;">
+                    </button>
                     <button (click)="loadMesas()" pButton icon="mdi mdi-table-furniture mdi-18px" class="mr-2"
                             [disabled]="!caixaOpened"
-                            [pTooltip]="'Mostrar Mesas'"></button>
+                            label="Mesas"></button>
                     <button [disabled]="table_union.length === 0" (click)="juntarMesas()" pButton
-                            icon="mdi mdi-vector-union mdi-18px" class="mr-2" [pTooltip]="'Juntar Mesas'"></button>
+                            icon="mdi mdi-vector-union mdi-18px" label="Juntar Mesas" class="mr-2"></button>
                     @if(caixaOpened){
                         <p-divider layout="vertical"></p-divider>
                         <p-button [pTooltip]="'Retirada de dinheiro'" tooltipPosition="bottom" styleClass="px-4"
@@ -58,7 +63,7 @@
         <ng-template [ngIf]="!isTable" [ngIfElse]="tables">
             <div class="col-12 lg:col-3 p-2 cursor-pointer"
                  (click)="openOrder(item)"
-                 *ngFor="let item of service.listEntities$(); let i=index">
+                 *ngFor="let item of getListTypeEntitys() let i=index">
                 <p-panel #pnl>
                     <ng-template pTemplate="header">
                         <div class="flex align-items-center w-full  justify-content-between gap-2">
@@ -90,16 +95,19 @@
                     </div>
                 </p-panel>
             </div>
-            <div class="col-12 lg:col-3 p-2">
-                <div class="w-full h-full flex" (click)="addNewComanda()">
-                    <p-button pRipple label="Nova Comanda"
-                              icon="pi pi-plus text-3xl font-semibold"
-                              class="p-element text-3xl p-ripple py-3 justify-content-center font-semibold w-full border-round p-button p-component"
-                    >
-                    </p-button>
-                </div>
-            </div>
+            @if(typeComanda !== 'ORDER'){
+                <div class="col-12 lg:col-3 p-2">
+                    <div class="w-full h-full flex" (click)="addNewComanda()">
+                        <button pRipple label="Nova Comanda"
+                                pButton
+                                icon="mdi mdi-plus mdi-48px font-semibold"
+                                class="p-element text-3xl p-ripple py-3 justify-content-center font-semibold w-full border-round p-button p-component custom-button">
 
+                        </button>
+
+                    </div>
+                </div>
+            }
         </ng-template>
         <ng-template #tables>
             <div *ngFor="let raw of tableService.auth$()" class="group-container"
