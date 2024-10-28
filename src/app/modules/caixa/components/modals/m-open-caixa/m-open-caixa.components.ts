@@ -42,7 +42,9 @@ export class MOpenCaixaComponents implements OnInit {
                 }
             })
             this.userService.userBasic$.subscribe(user => {
-                this.listUser = user.filter((u: any) => u.operationArea === operationAreaRoleEnum.POINT_OF_SALE) ?? [];
+                this.listUser = user;
+                //TODO CUANDO TERMINEN TESTES PONER DE NOVO
+                //this.listUser = user.filter((u: any) => u.operationArea === operationAreaRoleEnum.POINT_OF_SALE) ?? [];
             })
             this.listCaixas = this.cashRegisterService.listEntities$().filter((x:any)=> x.enabled) ?? [];
 

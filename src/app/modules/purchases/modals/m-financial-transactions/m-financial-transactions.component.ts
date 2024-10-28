@@ -222,7 +222,6 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
             case 'Enter':
                 if (this.suggestionsProducts.length > 0) {
                     if (this.selectedItem !== undefined) {
-                        debugger
                         const tempProduct = {
                             productName: this.selectedItem.name,
                             id: this.selectedItem.id,
@@ -278,7 +277,6 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.storeFinancialTransactions.openModalAddOrEdit();
         this.dialogService.open(component, params).onClose.subscribe((data: any) => {
             let tempProduct;
-            debugger
             if (component === MNewProductComponent && data) {
                 tempProduct = this.createProduct(data.data);
             }

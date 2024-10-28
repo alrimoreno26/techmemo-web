@@ -19,6 +19,7 @@ export interface CreateOrderTO {
     clientDocument: string,
     clientName: string,
     tableId?: string
+    type?: string
     byRoute?: string
     tableUnion?: any
 }

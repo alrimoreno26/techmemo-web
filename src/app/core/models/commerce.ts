@@ -4,6 +4,7 @@ import {AddressDTO} from "./supplier";
 export interface CommerceDto {
     address?: AddressDTO
     amountTables?: number
+    amountOrders?: number
     cnpj?: string
     config?: CommerceConfigDto
     created?: string

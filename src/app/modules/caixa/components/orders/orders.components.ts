@@ -30,6 +30,8 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     busy: number;
 
     fromTable: any;
+    typeComanda: string
+    listComanda: any[];
 
     caixaOpened: any;
     actualStore: any;
@@ -49,7 +51,6 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterService.existsAnyWorking();
         this.actualStore = this.session.getCurrentStore().id;
         effect(() => {
-
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
                     let tableId = tableService.listEntities$()?.find(f => f.number.toString() === this.service.selectedEntity$()[0].tableNumber)?.id;
@@ -60,28 +61,59 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
             }
             if (tableService.listEntities$()) {
-                this.table_union= [];
+                this.table_union = [];
                 this.free = tableService.listEntities$()?.filter(f => f.state === tableState.FREE).length || 0;
                 this.busy = tableService.listEntities$()?.filter(f => f.state === tableState.BUSY || f.state === tableState.BUSY_WITH_UNION).length || 0;
             }
+            const amountOrders = this.session.getCurrentStore().amountOrders;
+
+            this.listComanda = Array.from({length: amountOrders}, (_, index) => {
+                const numeriCode = (Number(1000) + Number(index + 1))
+                const generatedCode = "C" + numeriCode;
+
+                // Busca si el código existe en el array de pedidos existentes
+                const existingOrder = this.service.listEntities$()?.find(order => order.type === 'ORDER' && order.code === numeriCode.toString());
+
+                // Si existe, toma los valores del pedido existente; si no, usa valores por defecto
+                return {
+                    id: existingOrder ? existingOrder.id : index + 1,
+                    clientName: existingOrder ? existingOrder.clientName : null,
+                    valueToPaid: existingOrder ? existingOrder.valueToPaid : 0,
+                    created: existingOrder ? existingOrder.created : "",
+                    code: generatedCode,
+                    name: `Order ${index + 1}`,
+                    state: existingOrder ? existingOrder.state : 'open'
+                };
+            });
         });
 
     }
 
+    getListTypeEntitys() {
+        if (this.typeComanda === 'ORDER') {
+            return this.listComanda
+        } else {
+            return this.service.listEntities$()?.filter(f => f.type === this.typeComanda) || [];
+        }
+    }
+
+    //TODO CUANDO TERMINEN TESTES HABILITAR
     ngOnInit() {
         this.cashRegisterService.opened$.subscribe((opened) => {
-            if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
-                this.caixaOpened = true
-            } else if (opened)
-                this.caixaOpened = opened;
+            console.log(opened)
+            // if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+            //     this.caixaOpened = true
+            // } else if (opened)
+            this.caixaOpened = opened;
         })
-        this.cashRegisterOperations.opened$.subscribe((opened) => {
-            if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
-                this.caixaOpened = true
-            } else if (opened) {
-                this.caixaOpened = opened;
-            }
-        })
+        // this.cashRegisterOperations.opened$.subscribe((opened) => {
+        //     console.log(opened)
+        //     // if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
+        //     //     this.caixaOpened = true
+        //     // } else if (opened)
+        //     this.caixaOpened = opened;
+        //
+        // })
         this.session.actualStore$.subscribe((store) => {
             if (store.id !== this.actualStore) {
                 this.actualStore = store.id;
@@ -91,8 +123,9 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         })
     }
 
-    loadComanda() {
+    loadComanda(type: string = '') {
         this.isTable = false;
+        this.typeComanda = type;
         this.service.loadAll({pageNumber: 0, pageSize: 50, states: ['ACTIVE', 'IN_PAYMENT', 'PAID', 'CLOSED']})
     }
 
@@ -106,21 +139,22 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         if (event.target.classList.contains('p-checkbox-box') || event.target.classList.contains('p-checkbox-icon')) {
             event.stopPropagation();
         } else {
-            if(!this.caixaOpened){
+            if (!this.caixaOpened) {
                 this.toastMessageService.showMessage("warn", 'INFO', 'Caixa fechado')
                 return;
-            } else{
+            } else {
                 switch (table.state) {
                     case tableState.FREE:
+                        this.typeComanda = 'TABLE';
                         this.fromTable = table.id;
                         this.service.openModalAddOrEdit();
                         this.dialogService.open(MComandaComponents, {
-                            data: {id: table.id},
+                            data: {id: table.id, type: this.typeComanda},
                             width: '350px',
                         })
                         break;
                     case tableState.BUSY_WITH_UNION:
-                        this.router.navigate([`/comandas/table-union/${table.unionTableId}`], { state: { data: table } }).then();
+                        this.router.navigate([`/comandas/table-union/${table.unionTableId}`], {state: {data: table}}).then();
                         break;
                     default:
                         this.router.navigate([`/comandas/table/${table.id}`]).then();
@@ -131,18 +165,28 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
 
                 }
             }
-
-
         }
-
     }
 
-    openOrder(item: any) {
+    navigateToOrder(item: any) {
         if (this.session.onlyPosManageItem() && item.state === 'CLOSED') {
             this.toastMessageService.showMessage("warn", 'INFO', 'Essa mesa já fechou a conta e vem fazendo pagamentos')
         } else {
             this.service.getById([], item.id)
             this.router.navigate([`/comandas/order/${item.id}`]).then();
+        }
+    }
+
+    openOrder(item: any) {
+        if (this.typeComanda === 'ORDER') {
+            const exist = this.service.listEntities$()?.find(f => f.type === this.typeComanda && f.code === item.code.split('C')[1]);
+            if (exist) {
+                this.navigateToOrder(exist);
+            } else {
+                this.addNewComanda(item)
+            }
+        } else {
+            this.navigateToOrder(item);
         }
 
     }
@@ -155,11 +199,11 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.service.joinTables(this.table_union);
     }
 
-    addNewComanda() {
+    addNewComanda(item: any = null) {
         this.service.openModalAddOrEdit();
         this.fromTable = null;
         this.dialogService.open(MComandaComponents, {
-            data: null,
+            data: {type: this.typeComanda, item: item},
             width: '350px',
         })
     }
@@ -177,6 +221,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
             data: null,
         });
     }
+
     extractionCaixa() {
         this.cashRegisterExtractionsService.openModalAddOrEdit();
         this.dialogService.open(MExtractionMoneyComponents, {
@@ -193,13 +238,21 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     }
 
     getTitleComanda(item: any): string {
+        const clientInfo = item.clientName ? ` - ${item.clientName}` : '';
+
+        if (this.typeComanda === 'BALCONY') {
+            return `Pedido #${item.code}${clientInfo}`;
+        }
+
+        if (this.typeComanda === 'ORDER') {
+            return `Comanda #${item.code}${clientInfo}`;
+        }
+
         if (item.tableNumber) {
-            return `Mesa numero: ${item.tableNumber}`
+            return `Mesa numero: ${item.tableNumber}`;
         }
-        if (item.clientName) {
-            return `Order do: ${item.clientName}`
-        }
-        return `Pedido #: ${item.code}`
+
+        return item.clientName ? `Order do: ${item.clientName}` : `Pedido #: ${item.code}`;
     }
 
     protected readonly tableState = tableState;
