@@ -48,13 +48,13 @@
                                   icon="mdi mdi-cash-minus mdi-24px" severity="danger" [outlined]="true">
                         </p-button>
                     }
-                    @if(caixaOpened && session.userLogged.role.operationArea !== 'ADMINISTRATOR_STORE'){
-                        <p-divider layout="vertical"></p-divider>
-                        <p-button [pTooltip]="'Fechar Caixa'" tooltipPosition="bottom" styleClass="px-4"
-                                  (click)="closeCaixa()"
-                                  icon="mdi mdi-power mdi-24px" severity="danger" [outlined]="true">
-                        </p-button>
-                    }
+<!--                    @if(caixaOpened && session.userLogged.role.operationArea !== 'ADMINISTRATOR_STORE'){-->
+<!--                        <p-divider layout="vertical"></p-divider>-->
+<!--                        <p-button [pTooltip]="'Fechar Caixa'" tooltipPosition="bottom" styleClass="px-4"-->
+<!--                                  (click)="closeCaixa()"-->
+<!--                                  icon="mdi mdi-power mdi-24px" severity="danger" [outlined]="true">-->
+<!--                        </p-button>-->
+<!--                    }-->
 
                 </div>
             </p-toolbar>

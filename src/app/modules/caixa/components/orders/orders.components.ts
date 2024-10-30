@@ -101,10 +101,12 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
     ngOnInit() {
         this.cashRegisterService.opened$.subscribe((opened) => {
             console.log(opened)
+            opened === null ? this.caixaOpened = true : this.caixaOpened = opened;
+
             // if (this.session.userLogged.role.operationArea === 'ADMINISTRATOR_STORE') {
             //     this.caixaOpened = true
             // } else if (opened)
-            this.caixaOpened = opened;
+            //this.caixaOpened = true;
         })
         // this.cashRegisterOperations.opened$.subscribe((opened) => {
         //     console.log(opened)
