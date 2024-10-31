@@ -134,12 +134,12 @@ export class KeypadComponents implements OnInit {
 
         this.initPagamento()
         this.formPagamento.get('paymentValue')?.valueChanges.subscribe((value: any) => {
-            if (this.selectedPaymentMethod.allowsChange) {
-                this.formPagamento.get('paidChange')?.setValue(Number(this.amountPaid - value));
+            if (this.selectedPaymentMethod.allowsChange && ((value - this.amountPaid) > 0)) {
+                this.formPagamento.get('paidChange')?.setValue(Number(value - this.amountPaid));
             }
-            if (value > this.formPagamento.get('amountPaid')?.value) {
-                this.formPagamento.get('paymentValue')?.setValue(this.formPagamento.get('amountPaid')?.value);
-            }
+            // if (value > this.formPagamento.get('amountPaid')?.value) {
+            //     this.formPagamento.get('paymentValue')?.setValue(this.formPagamento.get('amountPaid')?.value);
+            // }
         });
         this.formPagamento.get('amountPaid')?.valueChanges.subscribe((value: any) => {
             if (value === 0) {
