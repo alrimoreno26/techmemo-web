@@ -26,6 +26,7 @@ export class StoreVendasServices extends StoreComponentService<OrdersTO> {
     }
 
     getDetails(order: any) {
+        console.log(order)
         this.tableService.loadOrders([], order.id).subscribe((response: any) => {
             this.patchState({raw: response})
             this.showSidebar = true;
@@ -33,11 +34,13 @@ export class StoreVendasServices extends StoreComponentService<OrdersTO> {
     }
 
     getDeletedProductsFromOrder(order: any) {
+        console.log(order)
         const params = {
             orderId: order.id,
             pageNumber: 0,
             pageSize: 100
         }
+        console.log(params)
         this.tableService.loadDeletedProductsFromOrder(params).subscribe((response: any) => {
             this.patchState({canceled: response.content})
             console.log(response)

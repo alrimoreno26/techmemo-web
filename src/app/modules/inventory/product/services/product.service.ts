@@ -14,6 +14,7 @@ import {UnidadeService} from "../../../configuracion/unidade/services/unidade.se
 import {SupplierService} from "../../forncedores/services/supplier.service";
 import {StoreCategoryService} from "../../category/services/store.category.service";
 import {ProductsCreateDto} from "../../../../core/models/products";
+import {BehaviorSubject, distinctUntilChanged} from "rxjs";
 
 @Injectable({providedIn: 'platform'})
 export class ProductService extends BaseStoreServices<any> {
@@ -23,6 +24,8 @@ export class ProductService extends BaseStoreServices<any> {
     override pageSize = 15;
 
     additionals$: Signal<any>;
+    private autocompleteSearchSubject = new BehaviorSubject<any[]>([]);
+    autocompleteSearch$ = this.autocompleteSearchSubject.asObservable();
     autocomplete$: Signal<any>;
     temporalCreated$: Signal<any>;
 
@@ -43,6 +46,11 @@ export class ProductService extends BaseStoreServices<any> {
         this.additionals$ = this.store.selectSignal(getAdditional);
         this.autocomplete$ = this.store.selectSignal(getAutocomplete);
         this.temporalCreated$ = this.store.selectSignal(temporalCreated);
+    }
+
+    updateAutocomplete(data: any[]) {
+        console.log(data)
+        this.autocompleteSearchSubject.next(data);
     }
 
     autocomplete(data: Partial<any>): void {

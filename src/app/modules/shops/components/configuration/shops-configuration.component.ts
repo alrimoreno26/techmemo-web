@@ -331,6 +331,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
             name: this.form.get('name')?.value,
             amountTables: this.form.get('quantityTables')?.value,
             amountOrders: this.form.get('amountOrders')?.value,
+            orderCodePrefix: this.form.get('orderCodePrefix')?.value,
             hasOnlineCommerce: this.form.get('hasOnlineCommerce')?.value,
             enable: this.form.get('hasOnlineCommerce')?.value,
             address: {

@@ -10,7 +10,7 @@ import {silentIt} from "../interceptors/spinner.interceptor";
 @Injectable({
     providedIn: 'root'
 })
-export class ProductService extends AbstractService<any> {
+export class ProductServices extends AbstractService<any> {
 
     constructor(private httpClient: HttpClient) {
         super(httpClient,  buildURL('/v1/products'));

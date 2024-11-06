@@ -2,8 +2,9 @@ import {Injectable} from "@angular/core";
 import {Actions, createEffect, ofType} from "@ngrx/effects";
 import {fromProductListActions, loadProductAdditional} from "./product.actions";
 import {catchError, map, switchMap} from "rxjs/operators";
-import {of} from "rxjs";
-import {ProductService} from "../../../../core/services/product.service";
+import {of, tap} from "rxjs";
+import {ProductServices} from "../../../../core/services/product-services.service";
+import {ProductService} from "../services/product.service";
 
 @Injectable()
 export class ProductEffects {
@@ -31,6 +32,19 @@ export class ProductEffects {
             )
         )
     );
+
+    autocompleteSearchSuccess$ = createEffect(() =>
+            this.actions$.pipe(
+                ofType(fromProductListActions.autocompleteSearchSuccess), // Escucha la acción
+                tap(({data}) => {
+                    console.log(data.content);
+                    // Actualiza el BehaviorSubject en el servicio
+                    this.productService.updateAutocomplete(data.content);
+                })
+            ),
+        {dispatch: false} // No despacha una nueva acción
+    );
+
 
     uploadImage$ = createEffect(() =>
         this.actions$.pipe(
@@ -104,6 +118,7 @@ export class ProductEffects {
     );
 
     constructor(private actions$: Actions,
-                private service: ProductService) {
+                private productService: ProductService,
+                private service: ProductServices) {
     }
 }

@@ -73,25 +73,22 @@
                                                                    inputId="stacked"></p-inputNumber>
                                                 </div>
                                             </div>
-                                            <div class="col-10">
-                                                <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="block font-bold">Quantidade de comandas</label>
-                                                    <p-inputNumber formControlName="amountOrders" [showButtons]="true"
-                                                                   inputId="stacked"></p-inputNumber>
+                                            <p-fieldset legend="Comandas">
+                                                <div class="col-10">
+                                                    <div class="align-items-center flex flex-auto gap-3">
+                                                        <label class="block font-bold">Quantidade</label>
+                                                        <p-inputNumber formControlName="amountOrders" [showButtons]="true"
+                                                                       inputId="stacked"></p-inputNumber>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="block font-bold">Tienda ativa</label>
-                                                    <p-inputSwitch formControlName="enable"></p-inputSwitch>
+                                                <div class="col-10">
+                                                    <div class="align-items-center flex flex-auto gap-3">
+                                                        <label class="block font-bold w-10rem">Codigo Inicial</label>
+                                                        <p-inputNumber formControlName="orderCodePrefix" [showButtons]="true"
+                                                                       inputId="stacked"></p-inputNumber>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div class="col-6">
-                                                <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="block font-bold">Quer vender online</label>
-                                                    <p-inputSwitch formControlName="hasOnlineCommerce"></p-inputSwitch>
-                                                </div>
-                                            </div>
+                                            </p-fieldset>
 
                                         </div>
                                     </div>
@@ -160,6 +157,18 @@
                                                     </div>
                                                 </div>
 
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">Tienda ativa</label>
+                                                    <p-inputSwitch formControlName="enable"></p-inputSwitch>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="align-items-center flex flex-auto gap-3">
+                                                    <label class="block font-bold">Quer vender online</label>
+                                                    <p-inputSwitch formControlName="hasOnlineCommerce"></p-inputSwitch>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

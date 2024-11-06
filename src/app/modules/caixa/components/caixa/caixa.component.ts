@@ -160,6 +160,14 @@ export class CaixaComponent implements OnInit {
         this.service.canFinalize$.subscribe((value: boolean) => {
             this.canFinalize$ = value;
         });
+        this.productService.autocompleteSearch$.subscribe(data => {
+            // Actualiza las sugerencias basándote en el valor de autocomplete
+            this.suggestions = data.map((item: any) => item);
+            // Lógica para seleccionar automáticamente un solo elemento
+            if (data.length === 1) {
+                this.selectedItem = data[0];
+            }
+        });
     }
 
     selectedCategoryItem(category: any) {
@@ -459,6 +467,8 @@ export class CaixaComponent implements OnInit {
         this.productService.autocomplete({
             filter: this.searchText,
             type: 'SIMPLE',
+            pageNumber: 0,
+            pageSize: 100,
             parentCategoryId: this.selectedCategory,
             showEnables: true,
             showInMenu: true
@@ -467,12 +477,7 @@ export class CaixaComponent implements OnInit {
 
 
     search(event: AutoCompleteCompleteEvent) {
-        if (this.productService.autocomplete$()) {
-            // if (this.productService.autocomplete$().length === 1) {
-            //     this.selectedItem = this.productService.autocomplete$()[0];
-            // }
-            this.suggestions = this.productService.autocomplete$()?.map((item: any) => item) ?? [];
-        }
+
     }
 
     confirmWeight() {
