@@ -107,8 +107,8 @@ export class CaixaService extends BaseStoreServices<any> {
         this.store.dispatch(fromOrdersListActions.updateProductsOrders({id, orderId, params}));
     }
 
-    deleteProductsOrders(id: string, entity: DeleteOrderProductDto) {
-        this.store.dispatch(fromOrdersListActions.deleteProductsOrders({id, entity}));
+    deleteProductsOrders(id: string, entity: DeleteOrderProductDto, urlParams: any) {
+        this.store.dispatch(fromOrdersListActions.deleteProductsOrders({id, entity, urlParams}));
     }
 
     override setSelected(data: any) {

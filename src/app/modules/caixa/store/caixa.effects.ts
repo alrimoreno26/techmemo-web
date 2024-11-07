@@ -255,9 +255,18 @@ export class CaixaEffects {
     deleteProductsOrders$ = createEffect(() =>
         this.actions$.pipe(
             ofType(fromOrdersListActions.deleteProductsOrders),
-            switchMap(({id, entity}) =>
+            switchMap(({id, entity,urlParams}) =>
                 this.service.deleteProductsOrders(id, entity).pipe(
-                    map((data) => fromOrdersListActions.deleteProductsOrdersSuccess({productId: entity.productIds})),
+                    switchMap((response) => {
+                        return of(
+                            fromOrdersListActions.deleteProductsOrdersSuccess({productId: entity.productIds}),
+                            urlParams.route === 'table' ? fromOrdersListActions.getByID({
+                                path: ['by-table'],
+                                id: {tableId: urlParams.activeRouteOrder}
+                            }) : fromOrdersListActions.getByID({path: [], id: urlParams.sourceOrderId})
+                        )
+                    }),
+                    //map((data) => fromOrdersListActions.deleteProductsOrdersSuccess({productId: entity.productIds})),
                     catchError(error => of(fromOrdersListActions.OrdersListFailRequest({error})))
                 )
             )

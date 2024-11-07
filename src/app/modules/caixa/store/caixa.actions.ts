@@ -98,7 +98,7 @@ export const addProductsOrdersSuccess = createAction(EntityActionTypes.AddProduc
 export const updateProductsOrders = createAction(EntityActionTypes.UpdateProductsOrders, props<{ id: string, orderId: string,params:any[] }>());
 export const updateProductsOrdersSuccess = createAction(EntityActionTypes.UpdateProductsOrdersSuccess, props<{ entity: any }>());
 
-export const deleteProductsOrders = createAction(EntityActionTypes.DeleteProductsOrders, props<{ id: string, entity:DeleteOrderProductDto }>());
+export const deleteProductsOrders = createAction(EntityActionTypes.DeleteProductsOrders, props<{ id: string, entity:DeleteOrderProductDto, urlParams:any }>());
 export const deleteProductsOrdersSuccess = createAction(EntityActionTypes.DeleteProductsOrdersSuccess, props<{ productId:string[] }>());
 
 export const updateOrders = createAction(EntityActionTypes.UpdateOrders, props<{ entity: OrdersTO }>());

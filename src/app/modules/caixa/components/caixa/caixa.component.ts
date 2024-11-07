@@ -394,7 +394,14 @@ export class CaixaComponent implements OnInit {
                     description: data.data.description,
                     productIds: [pedido.id]
                 }
-                this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
+                this.service.deleteProductsOrders(
+                    this.service.selectedEntity$()[this.activeOrder].id,
+                    deleteTO,
+                    {
+                        order: this.service.selectedEntity$()[this.activeOrder],
+                        activeRouteOrder: this.activeRouteOrder,
+                        byRoute: this.activeRoute
+                    })
             }
         })
     }
@@ -413,7 +420,14 @@ export class CaixaComponent implements OnInit {
                         return obj.id
                     }),
                 }
-                this.service.deleteProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, deleteTO)
+                this.service.deleteProductsOrders(
+                    this.service.selectedEntity$()[this.activeOrder].id,
+                    deleteTO,
+                    {
+                        order: this.service.selectedEntity$()[this.activeOrder],
+                        activeRouteOrder: this.activeRouteOrder,
+                        byRoute: this.activeRoute
+                    })
             }
         })
     }
