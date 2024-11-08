@@ -345,7 +345,7 @@ export class CaixaComponent implements OnInit {
 
     comandaTotal(): void {
         this.totalOrders = this.service.selectedEntity$()[this.activeOrder].products.reduce((sumaTotal: any, item: any) =>
-                sumaTotal + (item.valueToPaid - item.amountPaid),
+                sumaTotal + (item.valueToPaid),
             0
         ) || 0;
     }
