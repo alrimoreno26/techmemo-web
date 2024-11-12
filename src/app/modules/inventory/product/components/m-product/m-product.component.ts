@@ -54,7 +54,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         effect(() => {
             if (this.service.selectedEntity$() !== undefined) {
                 this.selectedEntity = this.service.selectedEntity$();
-                // this.form.reset()
+                this.form.reset()
                 this.initForm(this.selectedEntity);
             }
 
