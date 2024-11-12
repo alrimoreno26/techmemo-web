@@ -74,8 +74,8 @@ export class ProductComponent extends BaseComponentDirective {
     }
 
     openAditional() {
-        // this.productService.openModalAddOrEdit();
-        // this.dialogService.open(this.modalContent, {data: {type: productType.ADDITIONAL}});
+        this.productService.openModalAddOrEdit();
+        this.dialogService.open(this.modalContent, {data: {type: productType.ADDITIONAL}});
         // this.importProducts();
     }
 

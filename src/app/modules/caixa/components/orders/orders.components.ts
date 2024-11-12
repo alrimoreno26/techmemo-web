@@ -51,6 +51,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterService.existsAnyWorking();
         this.actualStore = this.session.getCurrentStore().id;
         effect(() => {
+            console.log(tableService.auth$())
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
                     let tableId = tableService.listEntities$()?.find(f => f.number.toString() === this.service.selectedEntity$()[0].tableNumber)?.id;
