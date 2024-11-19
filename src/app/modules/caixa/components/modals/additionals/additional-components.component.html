@@ -19,7 +19,18 @@
                                      rowGroupMode="subheader"
                                      selectionMode="single"
                                      [styleClass]="'p-datatable-sm'"
+                                     [globalFilterFields]="['name']"
                                      groupRowsBy="categoryName" [tableStyle]="{'min-width': '30rem'}">
+                                <ng-template pTemplate="caption">
+                                    <div class="flex w-full">
+                                            <input
+                                                class="w-full"
+                                                pInputText
+                                                type="text"
+                                                (input)="filtersTable($event, dt1)"
+                                                placeholder="Pesquisar" />
+                                    </div>
+                                </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
                                         <th>Descrição do Producto</th>

@@ -10,6 +10,7 @@ import {CaixaService} from "../../../services/caixa.service";
 import {ActionsSubject} from "@ngrx/store";
 import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
 import {flavorsEmun} from "../../../../../core/enums/commerce";
+import {Table} from "primeng/table";
 
 @Component({
     selector: 'm-additional',
@@ -25,12 +26,12 @@ export class AdditionalComponents implements OnInit, OnChanges {
     combos: LazyResultData<any> = {content: [], page: {totalElements: 0, totalPages: 0, number: 0, size: 0}};
     additionalsParams = {
         pageNumber: 0,
-        pageSize: 20,
+        pageSize: 1000,
         type: 'ADDITIONAL'
     }
     comboParams = {
         pageNumber: 0,
-        pageSize: 20,
+        pageSize: 1000,
         type: 'COMBO'
     }
     activeIndex = 0;
@@ -79,6 +80,11 @@ export class AdditionalComponents implements OnInit, OnChanges {
         })
     }
 
+    filtersTable(event: { target: { value: string; } } | any, dt: Table): void {
+        const {value} = event.target;
+        //this.search = event.target.value;
+        dt.filterGlobal(value, 'contains');
+    }
     @HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
         switch (event.key) {
