@@ -26,14 +26,14 @@ export class ProductComponent extends BaseComponentDirective {
             header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true
         },
         {
-            header: 'Code', field: 'code',
+            header: 'Código do Produto', field: 'code',
             sort: true, class: 'text-center', visible: true
         },
         {
-            header: 'Classificação',
+            header: 'Tipo',
             field: 'type',
             filter: true,
-            filterValue: [productType.ADDITIONAL, productType.COMBO, productType.SIMPLE],
+            filterValue: [productType.ALL, productType.ADDITIONAL, productType.COMBO, productType.SIMPLE, ],
             sort: false,
             class: 'text-center',
             visible: true,

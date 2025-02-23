@@ -12,7 +12,7 @@ export class MAddPrintersComponent implements OnInit {
 
     form: FormGroup
     areaType: any[] = [
-        {label: 'Cocina', value: 'KITCHEN'},
+        {label: 'Cozinha', value: 'KITCHEN'},
         {label: 'Caixa', value: 'POS'}
     ];
 

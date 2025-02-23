@@ -12,12 +12,12 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
-        label: 'Inventário',
+        label: 'Produtos',
         icon: 'mdi mdi-alpha-i-box-outline mdi-24px',
         roles: [domainEnum.PRODUCT],
         items: [
             {
-                label: 'Productos',
+                label: 'Produtos',
                 roles: [domainEnum.PRODUCT],
                 icon: 'mdi mdi-list-box-outline mdi-24px',
                 routerLink: ['inventory/product']
@@ -29,17 +29,17 @@ export const menuList: any[] = [
                 routerLink: ['inventory/category']
             },
             {
-                label: 'Proveedores',
+                label: 'Fornecedores',
                 roles: [domainEnum.SUPPLIER,domainEnum.PRODUCT],
                 icon: 'mdi mdi-card-account-details-outline mdi-24px',
                 routerLink: ['inventory/proveedores']
             },
-            // {
-            //     label: 'Transferência de estoque',
-            //     roles: [domainEnum.SUPPLIER],
-            //     icon: 'mdi mdi mdi-swap-horizontal-bold mdi-24px',
-            //     routerLink: ['inventory/transfer/estoque']
-            // }
+             {
+                 label: 'Transferência de estoque',
+                 roles: [domainEnum.SUPPLIER],
+                 icon: 'mdi mdi mdi-swap-horizontal-bold mdi-24px',
+                routerLink: ['inventory/transfer/estoque']
+             }
         ]
     },
     {separator: true},

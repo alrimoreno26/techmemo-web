@@ -41,6 +41,9 @@ import {TranslateModule} from "@ngx-translate/core";
 import {AutoCompleteModule} from "primeng/autocomplete";
 import {ImageModule} from "primeng/image";
 import {ProductsCards} from "../../../standalone/upload-image/upload-image.component";
+import {TooltipModule} from "primeng/tooltip";
+import {IconFieldModule} from "primeng/iconfield";
+import {InputIconModule} from "primeng/inputicon";
 
 @NgModule({
     imports: [
@@ -74,6 +77,9 @@ import {ProductsCards} from "../../../standalone/upload-image/upload-image.compo
         AutoCompleteModule,
         ImageModule,
         ProductsCards,
+        TooltipModule,
+        IconFieldModule,
+        InputIconModule,
     ],
     providers: [
         ConfirmServices,

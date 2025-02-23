@@ -179,7 +179,7 @@ export class ShopsConfigurationComponent extends BaseComponentDirective implemen
                 value: 'devices',
                 items: [
                     {
-                        label: 'Impresoras',
+                        label: 'Impressora',
                         value: 'printers',
                         icon: 'mdi mdi-printer-pos-cog-outline mdi-24px',
                     },

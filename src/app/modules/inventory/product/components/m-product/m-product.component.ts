@@ -15,6 +15,10 @@ import {MFornecedoresComponent} from "../../../forncedores/components/m-forneced
 import {DialogService} from "primeng/dynamicdialog";
 import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
 import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
+import {takeUntil} from "rxjs";
+import {confirmDialog} from "../../../../../core/rx/confirm";
+import {ConfirmServices} from "../../../../../core/injects/confirm.services";
+import {Table} from "primeng/table";
 
 interface Image {
     name: string;
@@ -48,6 +52,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
                 public unitService: UnidadeService,
                 public categoryService: StoreCategoryService,
                 private dialogRegistryService: DialogRegistryService,
+                private confirmationService: ConfirmServices,
                 public supplierService: SupplierService) {
         super(productService);
         this.dialogRegistryService.addDialog(this.ref);
@@ -70,6 +75,11 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     ngOnInit(): void {
         const {data} = this.config;
         this.initForm(data);
+    }
+
+    filtersTable(event: { target: { value: string; } } | any, dt: Table): void {
+        const {value} = event.target;
+        dt.filterGlobal(value, 'contains');
     }
 
     close() {
@@ -109,11 +119,11 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             barCode: new FormControl<string>(data?.barCode),
             categoryId: new FormControl<string>(data?.category?.id, [Validators.required]),
             cfop: new FormControl<string>(data?.cfop, Validators.required),
-            code: new FormControl<string>(data?.code, [Validators.required]),
+            code: new FormControl<string>(data?.code),
             costPrice: new FormControl<number>({
                 value: data?.costPrice,
                 disabled: false
-            }, [Validators.required]),
+            }),
             cst: new FormControl<number>(data?.cst, [Validators.required]),
             description: new FormControl<string>(data?.description),
             enabled: new FormControl<boolean>(data?.enabled),
@@ -126,7 +136,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             salePrice: new FormControl<number>({
                 value: data?.salePrice,
                 disabled: false
-            }),
+            }, [Validators.required]),
             showInMenu: new FormControl<boolean>(data?.showInMenu),
             soldPerUnits: new FormControl<boolean>(data?.soldPerUnits),
             supplierIds: new FormControl<string[]>(suppliers),
@@ -163,6 +173,15 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         this.selectedItem = null;
     }
 
+    removeAdditional(item: any) {
+        const index = this.technicalSheetProducts.findIndex(
+            product => product.id === item.id
+        );
+        if (index > -1) {
+            this.technicalSheetProducts.splice(index, 1);
+        }
+    }
+
     supplier(id: string) {
         // @ts-ignore
         return this.supplierService.listEntities$().find(s => s.id === id);
@@ -173,29 +192,41 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     }
 
     override save(): void {
-        const value: any = this.form.value;
-        let additionalProducts: any[] = [];
-        if (this.typeProduct === productType.COMBO) {
-            this.selectedAdditional.forEach((ad: any) => {
-                additionalProducts.push({
-                    id: ad.id,
-                    amount: ad.amount
-                })
-            })
-        }
+
+        const value = this.form.value;
+        const costPrice = this.form.get('costPrice')?.value;
+        const salePrice = this.form.get('salePrice')?.value;
+
+        const additionalProducts =
+            this.typeProduct === productType.COMBO
+                ? this.selectedAdditional.map((ad: any) => ({id: ad.id, amount: ad.amount}))
+                : [];
 
         const send = {
             ...value,
             additionalProducts,
-            costPrice: this.form.get('costPrice')?.value,
-            salePrice: this.form.get('salePrice')?.value,
+            costPrice,
+            salePrice,
             type: this.typeProduct,
             technicalSheetProducts: this.typeProduct === productType.SIMPLE ? this.technicalSheetProducts : [],
-        }
+        };
 
-        Object.keys(this.selectedEntity).length === 0 ?
-            this.service.create(send) :
-            this.service.update({id: this.config.data.id, ...send});
+        const executeServiceCall = () =>
+            Object.keys(this.selectedEntity).length === 0
+                ? this.service.create(send)
+                : this.service.update({id: this.config.data.id, ...send});
+
+        if (!costPrice) {
+            this.confirmationService
+                .confirm('security.user.messages.confirmation', 'security.products.confirm')
+                .pipe(
+                    takeUntil(this.ngUnsubscribe),
+                    confirmDialog(() => executeServiceCall())
+                )
+                .subscribe();
+        } else {
+            executeServiceCall();
+        }
     }
 
     rowActions(evt: any) {

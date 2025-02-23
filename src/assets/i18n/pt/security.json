@@ -130,6 +130,9 @@
                 "zip": "CEP",
                 "neighborhood": "Barrio"
             }
+        },
+        "products": {
+            "confirm": "Deseja seguir sem colocar o custo"
         }
     }
 }

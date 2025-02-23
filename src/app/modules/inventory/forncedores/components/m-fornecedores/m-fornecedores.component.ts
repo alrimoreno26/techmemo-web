@@ -94,7 +94,7 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
                 street: [{value: data?.address?.street, disabled: true}, Validators.required],
                 uf: [{value: data?.address?.uf, disabled: true}, Validators.required],
             }),
-            document: new FormControl<string>(data?.document, Validators.required),
+            document: new FormControl<string>(data?.document),
             lastName: new FormControl<string>(data?.lastName, Validators.required),
             name: new FormControl<string>({
                 value: data?.name,

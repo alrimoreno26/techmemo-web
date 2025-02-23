@@ -51,7 +51,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="block font-bold w-3">Razon Social</label>
+                                                    <label class="block font-bold w-3">Razão Social</label>
                                                     <input class="w-full" pInputText type="text"
                                                            formControlName="socialReason"
                                                            placeholder="Razon Social">
@@ -59,7 +59,7 @@
                                             </div>
                                             <div class="col-12">
                                                 <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="flex w-3 block font-bold">Nome Loja</label>
+                                                    <label class="flex w-3 block font-bold">Nome Fantasia</label>
                                                     <input pStyleClass="w-full" formControlName="name" class="w-full"
                                                            type="text"
                                                            pInputText/>
@@ -136,7 +136,7 @@
                                                         <input pStyleClass="w-full" class="w-full" pInputText
                                                                type="text"
                                                                formControlName="neighborhood"
-                                                               placeholder="Barrio">
+                                                               placeholder="Bairro">
                                                     </div>
                                                     <div class="field pb-0 mb-0 col-12">
                                                         <div class="grid">
@@ -160,7 +160,7 @@
                                             </div>
                                             <div class="col-6">
                                                 <div class="align-items-center flex flex-auto gap-3">
-                                                    <label class="block font-bold">Tienda ativa</label>
+                                                    <label class="block font-bold">Loja Ativa</label>
                                                     <p-inputSwitch formControlName="enable"></p-inputSwitch>
                                                 </div>
                                             </div>
@@ -223,7 +223,7 @@
                                             <hr/>
                                             <div class="row pt-2">
                                                 <div class="col-12">
-                                                    <h5 class="mb-1">BANNER DE PORTADA</h5>
+                                                    <h5 class="mb-1">Imagen Perfil</h5>
                                                     <p class="p_text_banner_de_portada">
                                                         Nosso sistema oferece um banner padrão para sua loja. Para
                                                         personalizá-lo,
@@ -316,7 +316,7 @@
                         <ng-template [ngIf]="selectedItems=== 'caixa'">
                             <div class="top">
                                 <div class="flex justify-content-between">
-                                    <h4 class="text-center">Configurações das impresoras</h4>
+                                    <h4 class="text-center">Configurações dos Caixas</h4>
                                     <p-button label="Nova"
                                               (onClick)="addEditPrintersCashRegister(null,'POS')"></p-button>
                                 </div>
@@ -330,7 +330,7 @@
                                                              [height]="150"/>
                                                     </ng-template>
                                                     <div class="align-items-center flex flex-auto gap-3">
-                                                        <label class="block font-bold">Activa</label>
+                                                        <label class="block font-bold">Ativa</label>
                                                         <p-inputSwitch
                                                             [(ngModel)]="cash.enabled"
                                                             (onChange)="patchCaixaEnable($event,cash)"
@@ -341,7 +341,7 @@
                                                         <div class="flex justify-content-center gap-3">
                                                             <button pButton pRipple
                                                                     class="p-button-danger p-button-outlined"
-                                                                    [pTooltip]="'Elminar'"
+                                                                    [pTooltip]="'Eliminar'"
                                                                     (click)="deleteCashRegister(cash.id)"
                                                                     icon="mdi mdi-close"></button>
                                                             <button pButton pRipple

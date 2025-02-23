@@ -1,10 +1,13 @@
 <ng-template dialog-header>
     <ng-container [ngSwitch]="typeProduct">
         <ng-container *ngSwitchCase="productType.COMBO">
-            Criar combinação
+            Criar combo
+        </ng-container>
+        <ng-container *ngSwitchCase="productType.ADDITIONAL">
+            Criar Adicionais
         </ng-container>
         <ng-container *ngSwitchDefault>
-            Criar producto
+            Criar Produto
         </ng-container>
     </ng-container>
 </ng-template>
@@ -14,7 +17,7 @@
             <p-tabPanel>
                 <ng-template pTemplate="header">
                     <i class="pi pi-shopping-bag mr-2"></i>
-                    <span>Producto</span>
+                    <span>Produto</span>
                 </ng-template>
                 <div class="grid p-fluid">
                     <ng-template [ngIf]="typeProduct !== productType.SIMPLE">
@@ -35,7 +38,7 @@
                                 </div>
 
                                 <div class="col-12 lg:col-4 field">
-                                    <p-inputNumber placeholder="Preço Costo"
+                                    <p-inputNumber placeholder="Valor de Custo"
                                                    [maxFractionDigits]="2" currency="BRL" formControlName="costPrice"
                                                    formFieldValidation
                                                    id="costPriceCombo" locale="pt-BR" mode="currency"></p-inputNumber>
@@ -47,7 +50,7 @@
                                                    formControlName="salePrice" formFieldValidation></p-inputNumber>
                                 </div>
                                 <div class="col-12 lg:col-4 field">
-                                    <input pInputText type="text" placeholder="Product Code"
+                                    <input pInputText type="text" placeholder="Código do Produto"
                                            formControlName="code" formFieldValidation>
                                 </div>
                                 <div class="col-12 lg:col-4 field">
@@ -66,10 +69,11 @@
                                     <p-divider layout="horizontal"></p-divider>
                                 </div>
                                 <div class="col-12 field" *ngIf="typeProduct === productType.COMBO">
-                                    <h4>Listagem de Productos</h4>
-                                    <p-table [value]="products"
+                                    <h4>Listagem de Produtos</h4>
+                                    <p-table #dt2 [value]="products"
                                              [paginator]="true"
                                              [rows]="10"
+                                             [globalFilterFields]="['code', 'name']"
                                              currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
                                              [rowsPerPageOptions]="[5, 10, 20]"
                                              [(selection)]="selectedAdditional"
@@ -77,6 +81,20 @@
                                              (onRowUnselect)="rowActions($event)"
                                              (onHeaderCheckboxToggle)="rowActions($event)"
                                              dataKey="id">
+                                        <ng-template pTemplate="caption">
+                                            <div class="flex">
+                                                <p-iconField iconPosition="left" class="ml-auto">
+                                                    <p-inputIcon>
+                                                        <i class="pi pi-search"></i>
+                                                    </p-inputIcon>
+                                                    <input
+                                                        pInputText
+                                                        type="text"
+                                                        (input)="filtersTable($event, dt2)"
+                                                        placeholder="Pesquisar por codigo o nome" />
+                                                </p-iconField>
+                                            </div>
+                                        </ng-template>
                                         <ng-template pTemplate="header">
                                             <tr>
                                                 <th style="width: 4rem">
@@ -85,7 +103,7 @@
                                                 <th>Code</th>
                                                 <th>Name</th>
                                                 <th>Preço</th>
-                                                <th>Quantity</th>
+                                                <th>Quantidade</th>
                                             </tr>
                                         </ng-template>
                                         <ng-template pTemplate="body" let-product let-editing="editing">
@@ -139,7 +157,7 @@
                                                     placeholder="Selecione a unidade"></p-dropdown>
                                     </p>
                                     <div class="px-3 py-1">
-                                        <p-inputNumber placeholder="Valor en Kg"
+                                        <p-inputNumber placeholder="ValoreKg"
                                                        formControlName="valuePerUnits"></p-inputNumber>
                                     </div>
 
@@ -153,14 +171,14 @@
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                    <span class="w-10">Alert Inventory</span>
+                                    <span class="w-10">Alerta de Estoque</span>
                                     <p-inputNumber formControlName="quantityStockAlert"></p-inputNumber>
                                 </p>
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <span
                                     class="text-900 font-bold border-bottom-1 surface-border px-3 py-1 flex align-items-center"
-                                    style="height: 45px">Category</span>
+                                    style="height: 45px">Categoria</span>
                                 <div class="px-3 py-1">
                                     <p-dropdown [options]="categoryService.subCategory$()"
                                                 formControlName="categoryId"
@@ -171,7 +189,7 @@
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <span
-                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Provedor</span>
+                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Fornecedor</span>
                                 <div class="flex align-items-center">
                                     <div class="px-3 flex-1 py-1">
                                         <p-multiSelect [options]="supplierService.listEntities$()"
@@ -180,10 +198,10 @@
                                                        appendTo="body"
                                                        optionLabel="document"
                                                        optionValue="id"
-                                                       placeholder="Selecione um provedor">
+                                                       placeholder="Selecione um Fornecedor">
                                             <ng-template let-value pTemplate="selectedItems">
                                                 <ng-template [ngIf]="getValueMultiselect(value)">
-                                                    <span>Selecione um provedor</span>
+                                                    <span>Selecione um Fornecedor</span>
                                                 </ng-template>
                                                 <ng-template [ngIf]="getValueMultiselect(value)">
 
@@ -232,19 +250,19 @@
                                 </div>
 
                                 <div class="col-12 lg:col-4 field">
-                                    <p-inputNumber placeholder="Preço Costo"
+                                    <p-inputNumber placeholder="Valor de Custo"
                                                    [maxFractionDigits]="2" currency="BRL" formControlName="costPrice"
                                                    formFieldValidation
                                                    id="costPrice" locale="pt-BR" mode="currency"></p-inputNumber>
                                 </div>
                                 <div class="col-12 lg:col-4 field">
-                                    <p-inputNumber placeholder="Precio Venda"
+                                    <p-inputNumber placeholder="Valor de Venda"
                                                    [maxFractionDigits]="2" currency="BRL"
                                                    id="salePrice" locale="pt-BR" mode="currency"
                                                    formControlName="salePrice" formFieldValidation></p-inputNumber>
                                 </div>
                                 <div class="col-12 lg:col-4 field">
-                                    <input pInputText type="text" placeholder="Product Code"
+                                    <input pInputText type="text" placeholder="Código do Produto"
                                            formControlName="code" formFieldValidation>
                                 </div>
                                 <div class="col-12 lg:col-4 field">
@@ -296,7 +314,7 @@
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <p class="align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                    <span>Adiciona Sabores</span>
+                                    <span>Adicionar Sabores</span>
                                     <p-inputSwitch class="flex" formControlName="allowsFlavors"></p-inputSwitch>
                                 </p>
                             </div>
@@ -316,7 +334,7 @@
                                                     placeholder="Selecione a unidade"></p-dropdown>
                                     </p>
                                     <div class="px-3 py-1">
-                                        <p-inputNumber placeholder="Valor en Kg"
+                                        <p-inputNumber placeholder="Valor em Kg"
                                                        formControlName="valuePerUnits"></p-inputNumber>
                                     </div>
                                     @if (form.controls['soldPerUnits'].value) {
@@ -352,13 +370,13 @@
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <p class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                    <span class="w-10">Alerta de inventário</span>
+                                    <span class="w-10">Alerta de Estoque</span>
                                     <p-inputNumber formControlName="quantityStockAlert"></p-inputNumber>
                                 </p>
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <span
-                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Provedor</span>
+                                    class="text-900 font-bold block border-bottom-1 surface-border px-3 py-1">Fornecedor</span>
                                 <div class="flex align-items-center">
                                     <div class="px-3 flex-1 py-1">
                                         <p-multiSelect [options]="supplierService.listEntities$()"
@@ -367,10 +385,10 @@
                                                        appendTo="body"
                                                        optionLabel="document"
                                                        optionValue="id"
-                                                       placeholder="Selecione um provedor">
+                                                       placeholder="Selecione um Fornecedor">
                                             <ng-template let-value pTemplate="selectedItems">
                                                 <ng-template [ngIf]="getValueMultiselect(value)">
-                                                    <span>Selecione um provedor</span>
+                                                    <span>Selecione um Fornecedor</span>
                                                 </ng-template>
                                                 <ng-template [ngIf]="getValueMultiselect(value)">
 
@@ -446,9 +464,10 @@
                                  dataKey="id">
                             <ng-template pTemplate="header">
                                 <tr>
-                                    <th>Name</th>
+                                    <th>Item Adicional</th>
                                     <th>Unidade</th>
-                                    <th>Quantity</th>
+                                    <th>Quantidade</th>
+                                    <th></th>
                                 </tr>
                             </ng-template>
                             <ng-template pTemplate="body" let-product let-editing="editing">
@@ -466,6 +485,13 @@
                                                 {{ product.amount }}
                                             </ng-template>
                                         </p-cellEditor>
+                                    </td>
+                                    <td>
+                                        <button pButton type="button" icon="mdi mdi-18px mdi-trash-can-outline"
+                                                class="p-button-text p-button-outlined text-danger"
+                                                (click)="removeAdditional(product)"
+                                                pTooltip="{{'balance.structure.tooltip.removeNodeCalc' | translate}}" tooltipPosition="top"
+                                        ></button>
                                     </td>
                                 </tr>
                             </ng-template>

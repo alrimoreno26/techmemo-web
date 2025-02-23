@@ -51,12 +51,13 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
         this.cashRegisterService.existsAnyWorking();
         this.actualStore = this.session.getCurrentStore().id;
         effect(() => {
-            console.log(tableService.auth$())
             if (this.service.orderCreate$()) {
                 if (this.service.selectedEntity$()[0].tableNumber !== null) {
                     let tableId = tableService.listEntities$()?.find(f => f.number.toString() === this.service.selectedEntity$()[0].tableNumber)?.id;
+                    localStorage.setItem('navigate', JSON.stringify({ rute: 'table', id: tableId }));
                     this.router.navigate([`/comandas/table/${tableId}`]).then();
                 } else {
+                    localStorage.setItem('navigate', JSON.stringify({ rute: 'order', id: this.service.selectedEntity$()[0].id }));
                     this.router.navigate([`/comandas/order/${this.service.selectedEntity$()[0].id}`]).then();
                 }
 
@@ -157,9 +158,11 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
                         })
                         break;
                     case tableState.BUSY_WITH_UNION:
+                        localStorage.setItem('navigate', JSON.stringify({ rute: 'table-union', id: table.unionTableId }));
                         this.router.navigate([`/comandas/table-union/${table.unionTableId}`], {state: {data: table}}).then();
                         break;
                     default:
+                        localStorage.setItem('navigate', JSON.stringify({ rute: 'table', id: table.id }));
                         this.router.navigate([`/comandas/table/${table.id}`]).then();
                 }
                 if (table.state === tableState.FREE) {
@@ -176,6 +179,7 @@ export class OrdersComponents extends BaseComponentDirective implements OnInit {
             this.toastMessageService.showMessage("warn", 'INFO', 'Essa mesa já fechou a conta e vem fazendo pagamentos')
         } else {
             this.service.getById([], item.id)
+            localStorage.setItem('navigate', JSON.stringify({ rute: 'order', id: item.id }));
             this.router.navigate([`/comandas/order/${item.id}`]).then();
         }
     }

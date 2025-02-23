@@ -1,4 +1,4 @@
-<span class="block text-900 font-bold">Images</span>
+<span class="block text-900 font-bold">Imagem do Produto</span>
 @if (service.selectedEntity$() && service.selectedEntity$().logo) {
     <p-image
         [src]="'data:image/{{service.selectedEntity$().logo.ext}};base64,' + service.selectedEntity$().logo.content"
