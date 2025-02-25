@@ -194,31 +194,27 @@ export class DataTableComponent implements OnInit, OnDestroy {
      * @param $event {@link TableLazyLoadEvent}
      */
     loadCustomLazy($event: TableLazyLoadEvent): void {
-        const {first, rows, globalFilter, sortField, sortOrder} = $event;
-        if ($event?.filters) {
-            // @ts-ignore
-            let value = Object.keys($event.filters).length > 0 ? $event?.filters?.type[0]?.value : globalFilter;
-            this.service.loadAll({
-                pageNumber: first as number / (rows as number),
-                pageSize: rows ? rows : 25,
-                filter: globalFilter ? globalFilter as string : '',
-                type: value ? value : this.type,
-                sort: sortField as string,
-                direction: sortField ? sortOrder === 1 ? 'ASC' : 'DESC' : sortField,
-                first
-            });
-        } else {
-            this.service.loadAll({
-                pageNumber: first as number / (rows as number),
-                pageSize: rows ? rows : 25,
-                filter: globalFilter ? globalFilter as string : '',
-                sort: sortField as string,
-                type: this.type,
-                direction: sortField ? sortOrder === 1 ? 'ASC' : 'DESC' : sortField,
-                first
-            });
-        }
 
+        const { first, rows, globalFilter, sortField, sortOrder, filters } = $event;
+        const pageSize = rows || 25;
+        const pageNumber = (first as number) / (rows as number);
+        const filterStr = globalFilter || '';
+        const direction = sortField ? (sortOrder === 1 ? 'ASC' : 'DESC') : '';
+
+        const computedType = $event.filters && Object.keys($event.filters).length > 0
+            // @ts-ignore
+            ? ($event?.filters && $event?.filters?.type[0]?.value === 'ALL' ? '' : $event?.filters?.type[0]?.value) || this.type
+            : this.type;
+
+        this.service.loadAll({
+            pageNumber,
+            pageSize,
+            filter: filterStr,
+            type: computedType,
+            sort: sortField as string,
+            direction,
+            first
+        });
     }
 
     /**

@@ -44,6 +44,7 @@ import {ProductsCards} from "../../../standalone/upload-image/upload-image.compo
 import {TooltipModule} from "primeng/tooltip";
 import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
+import {RadioButtonModule} from "primeng/radiobutton";
 
 @NgModule({
     imports: [
@@ -80,6 +81,7 @@ import {InputIconModule} from "primeng/inputicon";
         TooltipModule,
         IconFieldModule,
         InputIconModule,
+        RadioButtonModule,
     ],
     providers: [
         ConfirmServices,

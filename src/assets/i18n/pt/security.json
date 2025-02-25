@@ -133,6 +133,9 @@
         },
         "products": {
             "confirm": "Deseja seguir sem colocar o custo"
+        },
+        "financial": {
+            "confirm": "Tem certeza que deseja sair do sim salvar dados"
         }
     }
 }

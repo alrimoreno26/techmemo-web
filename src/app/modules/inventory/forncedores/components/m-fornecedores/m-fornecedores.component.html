@@ -25,6 +25,7 @@
                                 <i class="icon-spinner mdi mdi-loading text-primary" *ngIf="searchingCNPJ"></i>
                                <p-inputMask id="cnpj"
                                             formControlName="document"
+                                            [autoClear]="false"
                                             placeholder="CNPJ" mask="99.999.999/9999-99" (keyup)="verifyCNPJ($event)">
                                                     </p-inputMask>
                             </span>
@@ -61,6 +62,21 @@
                         </div>
                         <div class="col-12">
                             <h4>Listagem de Productos</h4>
+                        </div>
+                        <div class="col-12 pb-0 pt-0">
+                            <div class="search-container px-0 py-3 shadow-none w-full gap-3">
+                                <i class="mdi mdi-magnify"></i>
+                                <p-autoComplete class="w-full" styleClass="w-full" appFocus #input
+                                                (completeMethod)="searchListProducts($event)"
+                                                inputStyleClass="w-full"
+                                                placeholder="Pesquise producto por nome ou código de barras"
+                                                (input)="searchProduct($event)"
+                                                field="name"
+                                                [(ngModel)]="selectedItem" [ngModelOptions]="{standalone: true}"
+                                                [suggestions]="suggestionsProducts"></p-autoComplete>
+                            </div>
+                        </div>
+                        <div class="col-12">
                             <div class="h-20rem overflow-auto">
                                 <p-dataView #dv [value]="products">
                                     <ng-template let-product pTemplate="listItem">
@@ -78,7 +94,8 @@
                                                         <div class="flex align-items-center gap-3">
                                                     <span class="flex align-items-center gap-2">
                                                         <i class="pi pi-tag"></i>
-                                                         <p-badge [severity]="item.type | severity" value="{{item.type | translate}}"/>
+                                                         <p-badge [severity]="item.type | severity"
+                                                                  value="{{item.type | translate}}"/>
                                                     </span>
                                                         </div>
                                                     </div>

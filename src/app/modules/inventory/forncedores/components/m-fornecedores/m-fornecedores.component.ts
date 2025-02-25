@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, effect, OnInit} from "@angular/core";
+import {ChangeDetectorRef, Component, effect, HostListener, OnDestroy, OnInit} from "@angular/core";
 import {
     BaseModalComponentDirective
 } from "../../../../../standalone/data-table/directives/base.modal.component.directive";
@@ -12,12 +12,14 @@ import {cellPhone} from "../../../../../core/validators/cell.validator";
 import {onlyDigits} from "../../../../../core/util";
 import {cloneDeep} from "lodash";
 import {DialogRegistryService} from "../../../../../core/injects/dialog.registry.services";
+import {AutoCompleteCompleteEvent} from "primeng/autocomplete";
+import {ProductService} from "../../../product/services/product.service";
 
 @Component({
     templateUrl: './m-fornecedores.component.html',
     styleUrls: ['./m-fornecedores.component.scss']
 })
-export class MFornecedoresComponent extends BaseModalComponentDirective implements OnInit {
+export class MFornecedoresComponent extends BaseModalComponentDirective implements OnInit, OnDestroy {
 
     protected subscriptions: Subscription[] = [];
     fornecedorTypes: any[] = [
@@ -29,16 +31,21 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
     searchingCNPJ: boolean = false;
     searchingCEP: boolean = false;
 
-    products = []
+    products: any = []
 
     supplier: SupplierDTO;
+
+    selectedItem: any;
+    searchTextProducts = '';
+    suggestionsProducts: any[] = [];
 
     constructor(public fornecedoresservice: SupplierService,
                 private cepValidateService: CepValidateService,
                 private cdRef: ChangeDetectorRef,
                 private dialogRegistryService: DialogRegistryService,
+                private productService: ProductService,
                 private fb: FormBuilder,
-                private cnpjService: CNPJService,) {
+                private cnpjService: CNPJService) {
         super(fornecedoresservice);
         this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
@@ -56,6 +63,10 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
     ngOnInit(): void {
         const {data} = this.config;
         this.initForm(data);
+    }
+
+    override ngOnDestroy() {
+        this.service.setSelected(null);
     }
 
     initForm(data: any): void {
@@ -175,6 +186,50 @@ export class MFornecedoresComponent extends BaseModalComponentDirective implemen
     fillCNPJInformation(cnpjInformation: any) {
         this.form.get('lastName')?.patchValue(cnpjInformation.nome_fantasia);
         this.form.get('name')?.patchValue(cnpjInformation.razao_social);
+    }
+
+    searchListProducts(event: AutoCompleteCompleteEvent) {
+        if (this.productService.autocomplete$()) {
+            this.suggestionsProducts = this.productService.autocomplete$()?.map((item: any) => item) ?? [];
+        }
+    }
+
+    @HostListener('document:keydown', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) {
+        switch (event.key) {
+            case 'Enter':
+                if (this.suggestionsProducts.length > 0) {
+                    if (this.selectedItem !== undefined) {
+                        const tempProduct = {
+                            name: this.selectedItem.name,
+                            id: this.selectedItem.id,
+                            soldPerUnits: this.selectedItem.soldPerUnits,
+                            type: this.selectedItem.type,
+                            price: this.selectedItem.salePrice,
+                            amount: 1
+                        };
+
+                        const existingProductIndex = this.products.findIndex((product: any) => product.id === tempProduct.id);
+
+                        if (existingProductIndex !== -1) {
+
+                        } else {
+                            // Si el producto no existe, agregarlo al array
+                            this.products = [...this.products, tempProduct];
+                        }
+                        this.selectedItem = undefined;
+                    }
+                }
+                break;
+        }
+    }
+
+    searchProduct(event: { target: { value: string; } } | any) {
+        this.searchTextProducts = event.target.value;
+        this.productService.autocomplete({
+            filter: this.searchTextProducts,
+            supplierId: ''
+        });
     }
 
     override save(): void {

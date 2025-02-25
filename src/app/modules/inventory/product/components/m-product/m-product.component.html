@@ -143,24 +143,23 @@
                         <div class="flex-1 w-full lg:w-3 xl:w-4 flex flex-column row-gap-3">
                             <div class="border-1 surface-border border-round mt-3">
                                 <p class=" mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                    <span>Vendido por unidades</span>
-                                    <p-inputSwitch class="flex" formControlName="soldPerUnits"></p-inputSwitch>
+                                    <span>Unidade de Medida</span>
                                 </p>
                                 <div class="px-3 py-1">
-                                    <p *ngIf="!form.controls['soldPerUnits'].value"
-                                       class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                        <span>Unidade</span>
-                                        <p-dropdown [options]="unitService.listEntities$()"
-                                                    formControlName="unitMeasurementId"
-                                                    optionValue="id"
-                                                    optionLabel="name"
-                                                    placeholder="Selecione a unidade"></p-dropdown>
+                                    <p class="mb-0 align-items-center block flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                        <span>Unitario</span>
+                                        <p-inputSwitch class="flex" formControlName="soldPerUnits"></p-inputSwitch>
                                     </p>
-                                    <div class="px-3 py-1">
-                                        <p-inputNumber placeholder="ValoreKg"
-                                                       formControlName="valuePerUnits"></p-inputNumber>
-                                    </div>
-
+                                    <p *ngFor="let item of unitService.listEntities$(); let i = index;" class="mb-0 align-items-center block flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                        <span>{{ item.name }}</span>
+                                        <p-radioButton
+                                            name="unidadeMedida"
+                                            formControlName="unitMeasurementId"
+                                            [inputId]="'unit-radio-' + i"
+                                            [value]="item.id"
+                                            [disabled]="!form.controls['soldPerUnits'].value"
+                                        ></p-radioButton>
+                                    </p>
                                 </div>
                             </div>
                             <div class="border-1 surface-border border-round">
@@ -320,23 +319,28 @@
                             </div>
                             <div class="border-1 surface-border border-round">
                                 <p class=" mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                    <span>Vendido por unidades</span>
-                                    <p-inputSwitch class="flex" formControlName="soldPerUnits"></p-inputSwitch>
+                                    <span>Unidade de medida</span>
                                 </p>
                                 <div class="px-3 py-1">
-                                    <p *ngIf="!form.controls['soldPerUnits'].value"
-                                       class="mb-0 align-items-center block border-bottom-1 flex font-bold justify-content-between px-3 py-1 surface-border text-900">
-                                        <span>Unidade</span>
-                                        <p-dropdown [options]="unitService.listEntities$()"
-                                                    formControlName="unitMeasurementId"
-                                                    optionValue="id"
-                                                    optionLabel="name"
-                                                    placeholder="Selecione a unidade"></p-dropdown>
+                                    <p class="mb-0 align-items-center block flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                        <span>Unitario</span>
+                                        <p-inputSwitch class="flex" formControlName="soldPerUnits"></p-inputSwitch>
                                     </p>
-                                    <div class="px-3 py-1">
-                                        <p-inputNumber placeholder="Valor em Kg"
-                                                       formControlName="valuePerUnits"></p-inputNumber>
-                                    </div>
+                                    <p *ngFor="let item of unitService.listEntities$(); let i = index;" class="mb-0 align-items-center block flex font-bold justify-content-between px-3 py-1 surface-border text-900">
+                                        <span>{{ item.name }}</span>
+                                        <p-radioButton
+                                            name="unidadeMedida"
+                                            formControlName="unitMeasurementId"
+                                            [inputId]="'unit-radio-' + i"
+                                            [value]="item.id"
+                                            [disabled]="!form.controls['soldPerUnits'].value"
+                                        ></p-radioButton>
+                                    </p>
+
+<!--                                    <div class="px-3 py-1">-->
+<!--                                        <p-inputNumber placeholder="Valor em Kg"-->
+<!--                                                       formControlName="valuePerUnits"></p-inputNumber>-->
+<!--                                    </div>-->
                                     @if (form.controls['soldPerUnits'].value) {
                                         <div class="px-3 py-1">
                                             <p class="mb-0 align-items-center block flex font-bold justify-content-between py-1 text-900">

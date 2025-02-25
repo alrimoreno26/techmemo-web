@@ -72,6 +72,7 @@ export const fornecedoresReducer = createReducer<State>(
         return {...state, error};
     }),
     on(fromSupplierListActions.openAddOrEdit, (state) => {
+        console.log(state)
         return {...state, dialog: true};
     })
 );
