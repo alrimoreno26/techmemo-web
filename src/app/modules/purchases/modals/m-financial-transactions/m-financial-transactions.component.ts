@@ -167,7 +167,6 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         setTimeout(() => {
             this.reduceTotalPayments();
         }, 100);
-
     }
 
     mapItemToProduct(item: any): any {

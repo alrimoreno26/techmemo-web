@@ -117,12 +117,12 @@
                             <p-button styleClass="border-round-3xl severity_danger small"
                                       (click)="removePayment(pagamento)"
                                       icon="mdi mdi-close"></p-button>
-                            <p-button styleClass="border-round-3xl severity_info small"
-                                      [disabled]="pagamento.products.length === 0"
-                                      (onClick)="showProductsPagamento(pagamento.products)"
-                                      icon="mdi mdi-magnify"
-                            >
-                            </p-button>
+<!--                            <p-button styleClass="border-round-3xl severity_info small"-->
+<!--                                      [disabled]="pagamento.products.length === 0"-->
+<!--                                      (onClick)="showProductsPagamento(pagamento.products)"-->
+<!--                                      icon="mdi mdi-magnify"-->
+<!--                            >-->
+<!--                            </p-button>-->
                         </td>
                         <td>{{ pagamento.method }}</td>
                         <td>{{ pagamento.receita |currency }}</td>

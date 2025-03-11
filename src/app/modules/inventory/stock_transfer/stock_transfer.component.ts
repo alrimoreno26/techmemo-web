@@ -15,22 +15,24 @@ export class Stock_TransferComponent extends BaseComponentDirective implements O
     override modalContent = MStock_TransferComponent;
     override headersTable: HeadersTable[] = [
         {
-            header: 'Nome', field: 'name', sort: true, class: 'text-center', visible: true
+            header: 'Criado', field: 'created', sort: true, class: 'text-center',
+            pipe: 'date',
+            visible: true
         },
         {
-            header: 'Code', field: 'code',
+            header: 'Local de origem', field: 'sourceCommerceName',
             sort: true, class: 'text-center', visible: true, width: 210
         },
         {
-            header: 'Classificação', field: 'type', filter: true,
+            header: 'Local de destino', field: 'destinationCommerceName', filter: true,
             sort: false, class: 'text-center', visible: true, width: 210
         },
         {
-            header: 'Preço', field: 'costPrice', pipe: 'currency',
-            sort: true, class: 'text-center', visible: true, width: 210
+            header: 'Quantidade de produtos', field: 'countProducts',
+            class: 'text-center', visible: true, width: 210
         },
         {
-            header: 'CFOP', sort: true, field: 'cfop',
+            header: 'Total em dinheiro', field: 'totalPrice', pipe:'currency',
             class: 'text-center', visible: true
         },
         {header: 'Ações', field: 'action', class: 'text-center', visible: true, export: false}
@@ -45,7 +47,7 @@ export class Stock_TransferComponent extends BaseComponentDirective implements O
 
     ngOnInit() {
 
-        this.dialogService.open(MStock_TransferComponent,{})
+        //this.dialogService.open(MStock_TransferComponent,{})
     }
 
 }
