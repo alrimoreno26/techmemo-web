@@ -29,6 +29,14 @@ import {ConfirmDialogModule} from "primeng/confirmdialog";
 import {CalendarModule} from "primeng/calendar";
 import {BadgeModule} from "primeng/badge";
 import {TranslateModule} from "@ngx-translate/core";
+import {AutoCompleteModule} from "primeng/autocomplete";
+import {ProductService} from "../product/services/product.service";
+import {reducerProduct} from "../product/store/product.reducers";
+import {reducerUnitsMeasurements} from "../../configuracion/unidade/store/unidade.reducers";
+import {ProductEffects} from "../product/store/product.effects";
+import {UnidadeEffects} from "../../configuracion/unidade/store/unidade.effects";
+import {UnidadeService} from "../../configuracion/unidade/services/unidade.service";
+import {StoreCategoryService} from "../category/services/store.category.service";
 
 
 @NgModule({
@@ -38,7 +46,9 @@ import {TranslateModule} from "@ngx-translate/core";
         DataTableModule,
         StoreDevtoolsModule.instrument({}),
         StoreModule.forFeature('fornecedores', reducerFornecedores),
-        EffectsModule.forFeature([FornecedoresEffects]),
+        StoreModule.forFeature('product', reducerProduct),
+        StoreModule.forFeature('unitsMeasurements', reducerUnitsMeasurements),
+        EffectsModule.forFeature([FornecedoresEffects,ProductEffects, UnidadeEffects]),
         InputTextModule,
         PaginatorModule,
         EditorModule,
@@ -55,11 +65,15 @@ import {TranslateModule} from "@ngx-translate/core";
         CalendarModule,
         BadgeModule,
         TranslateModule,
+        AutoCompleteModule,
     ],
     providers:[
         SupplierService,
         ConfirmServices,
         ConfirmationService,
+        ProductService,
+        UnidadeService,
+        StoreCategoryService,
     ],
     declarations: [
         FornecedoresBaseComponent,

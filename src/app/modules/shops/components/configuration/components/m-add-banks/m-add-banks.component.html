@@ -16,13 +16,13 @@
                         optionValue="COMPE"
                         [appendTo]="'body'"
                         filterBy="ShortName"
+                        filter="true"
                         [style]="{'width': '100%'}"
                         (onChange)="onChangeBank($event)"
                     >
                         <ng-template let-bank pTemplate="item">
                             <div class="flex bank-item">
-                                <img src="assets/images/banks/{{bank.Icon}}" width="16"/>
-                                <div class="pl-2">{{ bank.ShortName }}</div>
+                                <div class="pl-2">{{bank.COMPE}}-{{ bank.ShortName }}</div>
                             </div>
                         </ng-template>
                     </p-dropdown>

@@ -6,7 +6,7 @@
                       [disabled]="activeRouteOrder.clientDocument !== ''"
                       styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                 <i class="mdi mdi-account-plus text-5xl"></i>
-                <span class="text-xl">(F6) <br> CPF</span>
+                <span class="text-xl">CPF</span>
             </p-button>
             <p-button
                 (onClick)="doPagamento()"
@@ -14,15 +14,14 @@
                 class="flex-1"
                 styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
                 <i class="mdi mdi-credit-card text-5xl"></i>
-                <span class="text-xl">(F7) <br> Pagamento</span>
+                <span class="text-xl">Pagamento</span>
             </p-button>
             <p-button
                 (onClick)="voltarAtras()"
-                [disabled]="!disableAllFields || tableOrderClosed"
                 class="flex-1"
-                styleClass="w-full p-button-danger p-button-outlined flex-1 flex-column flex justify-content-center">
-                <i class="mdi mdi-close-circle-outline text-5xl"></i>
-                <span class="text-xl">Fechar Pagamento</span>
+                styleClass="w-full p-button-outlined flex-1 flex-column flex justify-content-center">
+                <i class="mdi  mdi-cash-lock-open text-5xl"></i>
+                <span class="text-xl">Abrir conta</span>
             </p-button>
         </div>
         <div class="flex py-3">
@@ -117,12 +116,12 @@
                             <p-button styleClass="border-round-3xl severity_danger small"
                                       (click)="removePayment(pagamento)"
                                       icon="mdi mdi-close"></p-button>
-                            <p-button styleClass="border-round-3xl severity_info small"
-                                      [disabled]="pagamento.products.length === 0"
-                                      (onClick)="showProductsPagamento(pagamento.products)"
-                                      icon="mdi mdi-magnify"
-                            >
-                            </p-button>
+<!--                            <p-button styleClass="border-round-3xl severity_info small"-->
+<!--                                      [disabled]="pagamento.products.length === 0"-->
+<!--                                      (onClick)="showProductsPagamento(pagamento.products)"-->
+<!--                                      icon="mdi mdi-magnify"-->
+<!--                            >-->
+<!--                            </p-button>-->
                         </td>
                         <td>{{ pagamento.method }}</td>
                         <td>{{ pagamento.receita |currency }}</td>

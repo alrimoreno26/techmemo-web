@@ -36,6 +36,7 @@ import {CalendarModule} from "primeng/calendar";
 import {Stock_TransferStore} from "./store/stock_transfer.store";
 import {ProductService} from "../product/services/product.service";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import {StockTransferService} from "../../../core/services/stock-transfer.service";
 
 @NgModule({
     imports: [
@@ -69,7 +70,7 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     providers: [
         ConfirmServices,
         ConfirmationService,
-        ProductService,
+        StockTransferService,
         Stock_TransferStore
     ],
     declarations: [Stock_TransferBaseComponent, Stock_TransferComponent,MStock_TransferComponent]

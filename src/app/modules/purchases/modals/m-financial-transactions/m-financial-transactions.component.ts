@@ -20,9 +20,11 @@ import {MNewProductComponent} from "../m-new-product/m-new-product.component";
 import {MProductComponent} from "../../../inventory/product/components/m-product/m-product.component";
 import {cloneDeep} from "lodash";
 import {InstallmentsComponent} from "../../components/c-installsments/installments.component";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, takeUntil} from "rxjs";
 import {ToastMessageService} from "../../../../core/injects/toast-message.service";
 import {CommercesService} from "../../../shops/service/commerces.service";
+import {confirmDialog} from "../../../../core/rx/confirm";
+import {ConfirmServices} from "../../../../core/injects/confirm.services";
 
 @Component({
     templateUrl: './m-financial-transactions.component.html',
@@ -65,6 +67,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
                 private commercesService: CommercesService,
                 private financeService: FinancialClasificationService,
                 private toastMessageService: ToastMessageService,
+                private confirmationService: ConfirmServices,
                 public stockTransferStore: Stock_TransferStore) {
         super(storeService);
         this.dialogRegistryService.addDialog(this.ref);
@@ -82,6 +85,8 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     ngOnInit(): void {
         const {data} = this.config;
         this.financeService.autocompleteSearch({
+            pageNumber: 0,
+            pageSize: 1000,
             filter: this.searchTextSuppliers,
         });
         if (data?.type === 'EXPENSES') {
@@ -145,10 +150,10 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     handleListProductSelected(listProductSelected: any[]): void {
         const groupedProducts = listProductSelected.reduce((acc, item) => {
             if (item.productId === null) {
-                acc[`null_${Math.random()}`] = { ...item, amount: item.amount || 0 }; // Genera una clave única para cada producto con id null
+                acc[`null_${Math.random()}`] = {...item, amount: item.amount || 0}; // Genera una clave única para cada producto con id null
             } else {
                 if (!acc[item.productId]) {
-                    acc[item.productId] = { ...item, amount: 0 };
+                    acc[item.productId] = {...item, amount: 0};
                 }
                 acc[item.productId].amount += item.amount;
             }
@@ -162,7 +167,6 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         setTimeout(() => {
             this.reduceTotalPayments();
         }, 100);
-
     }
 
     mapItemToProduct(item: any): any {
@@ -184,10 +188,25 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
         this.storeService.resetState();
     }
 
-    closingModal() {
-        this.ref.close()
-        this.storeService.resetState();
-        this.storeService.loadAll({pageNumber: 0, pageSize: 50, type: this.form.get('type')?.value});
+    closingModal(): void {
+        const type = this.form.get('type')?.value;
+        const executeClose = () => {
+            this.ref.close();
+            this.storeService.resetState();
+            this.storeService.loadAll({ pageNumber: 0, pageSize: 50, type });
+        };
+
+        if (this.form.dirty || this.products.length > 0) {
+            this.confirmationService
+                .confirm('security.user.messages.confirmation', 'security.financial.confirm')
+                .pipe(
+                    takeUntil(this.ngUnsubscribe),
+                    confirmDialog(executeClose)
+                )
+                .subscribe();
+        } else {
+            executeClose();
+        }
     }
 
     set products(products: any[]) {
@@ -367,6 +386,7 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     searchClassifiers(event: { target: { value: string; } } | any) {
+        debugger
         this.searchTextSuppliers = event.target.value;
         if (this.form.get('type')?.value === 'EXPENSES') {
             this.financeService.autocompleteSearch({
@@ -396,7 +416,6 @@ export class MFinancialTransactionsComponent extends BaseModalStoreComponentDire
     }
 
     reduceTotalPayments() {
-        console.log(this.products)
         this.totalProducts = this.products.reduce((acc, curr) => acc + (curr.value * Number(curr.amount)), 0)
     }
 

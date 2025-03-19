@@ -42,6 +42,7 @@ export const menuList: any[] = [
              }
         ]
     },
+
     {separator: true},
     {
         label: 'Vendas',

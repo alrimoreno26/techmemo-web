@@ -175,13 +175,20 @@
                                             class="custom-td">
                                             <p-cellEditor>
                                                 <ng-template pTemplate="input">
-                                                    <input
-                                                        pInputText
-                                                        type="text"
-                                                        class="w-5"
-                                                        [(ngModel)]="product.amount"
-                                                        (ngModelChange)="onChangeAmount(product)"
-                                                        required/>
+                                                    <div class="p-inputgroup h-2rem">
+                                                        <button type="button" pButton icon="mdi mdi-plus"
+                                                                class="p-button-success p-button-sm"></button>
+                                                        <input
+                                                            pInputText
+                                                            type="text"
+                                                            class="w-5"
+                                                            [(ngModel)]="product.amount"
+                                                            (ngModelChange)="onChangeAmount(product)"
+                                                            required/>
+                                                        <button type="button" pButton icon="mdi mdi-minus"
+                                                                class="p-button-danger"></button>
+                                                    </div>
+
                                                 </ng-template>
                                                 <ng-template pTemplate="output">
                                                     {{ product.amount }}
