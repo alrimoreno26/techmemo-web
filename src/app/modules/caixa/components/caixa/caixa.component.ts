@@ -112,9 +112,7 @@ export class CaixaComponent implements OnInit {
                 if (allOrdersPaid) {
                     this.service.setFinalizeValue(true);
                 }
-                if (this.oneClosed) {
-                    this.pagamento = true;
-                }
+                this.pagamento = this.oneClosed;
                 if (this.orders.every((x: any) => (x.state === 'CANCELLED'))) {
                     this.service.setSelected(null);
                     this.router.navigate(['/comandas'])
@@ -309,7 +307,16 @@ export class CaixaComponent implements OnInit {
             case 'table':
                 break;
             case 'order':
-                this.service.changeFieldStateOrders(this.activeRouteOrder, {state: 'CANCELLED'})
+                this.dialogService.open(MCancelProductsComponents, {
+                    modal: true,
+                    style: {'width': '22vw'},
+                    draggable: false,
+                    resizable: false
+                }).onClose.subscribe((data) => {
+                    if (data.cancel) {
+                        this.service.changeFieldStateOrders(this.activeRouteOrder, {state: 'CANCELLED'})
+                    }
+                })
                 break;
         }
     }
@@ -370,7 +377,7 @@ export class CaixaComponent implements OnInit {
             case 'table':
                 this.storeTablesServices.changeStateTable(this.activeRouteOrder, 'CLOSED')
                 break;
-            case 'table-union':
+            case 'table-union':''
 
                 break;
             default:
@@ -511,7 +518,18 @@ export class CaixaComponent implements OnInit {
     }
 
     goBack(data: any) {
-        this.pagamento = false
+        switch (this.activeRoute) {
+            case 'table':
+                this.storeTablesServices.changeStateTable(this.activeRouteOrder, 'ACTIVE')
+                this.pagamento = false
+                break;
+            case 'table-union':
+
+                break;
+            default:
+                this.service.changeFieldStateOrders(this.activeRouteOrder, {state: "ACTIVE"})
+        }
+
     }
 
     closeModalCancellation(evt: any) {
