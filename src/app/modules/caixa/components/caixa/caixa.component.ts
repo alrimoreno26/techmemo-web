@@ -162,9 +162,9 @@ export class CaixaComponent implements OnInit {
             // Actualiza las sugerencias basándote en el valor de autocomplete
             this.suggestions = data.map((item: any) => item);
             // Lógica para seleccionar automáticamente un solo elemento
-            if (data.length === 1) {
-                this.selectedItem = data[0];
-            }
+            // if (data.length === 1) {
+            //     this.selectedItem = data[0];
+            // }
         });
     }
 

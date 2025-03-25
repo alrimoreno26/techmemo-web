@@ -89,7 +89,7 @@ export class AbstractService<T> {
     }
 
     /**
-     * Delete element by Id
+     * Delete element by Idhost
      * @param id number | string
      * @return An Observable<T>
      */

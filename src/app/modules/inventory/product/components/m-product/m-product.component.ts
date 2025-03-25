@@ -57,7 +57,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         super(productService);
         this.dialogRegistryService.addDialog(this.ref);
         effect(() => {
-            if (this.service.selectedEntity$() !== undefined) {
+            if (this.productService.selectedEntity$() !== undefined) {
                 this.selectedEntity = this.service.selectedEntity$();
                 this.form.reset()
                 this.initForm(this.selectedEntity);
@@ -70,6 +70,12 @@ export class MProductComponent extends BaseModalComponentDirective implements On
 
 
         })
+        effect(() => {
+            if (this.productService.selectedEntity$() !== undefined) {
+                this.selectedEntity = this.service.selectedEntity$();
+                this.initForm(this.selectedEntity);
+            }
+        });
     }
 
     ngOnInit(): void {
