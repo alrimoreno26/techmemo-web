@@ -172,7 +172,8 @@ export class CaixaComponent implements OnInit {
         this.selectedCategory = category.value;
     }
 
-    @HostListener('document:keydown', ['$event'])
+    @
+        HostListener('document:keydown', ['$event'])
     handleKeyboardEvent(event: KeyboardEvent) {
         switch (event.key) {
             case 'F5':
