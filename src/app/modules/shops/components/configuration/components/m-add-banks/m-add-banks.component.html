@@ -52,29 +52,25 @@
                 <div class="form-label">
                     {{ "addBankAccountModal.agencyLabel" | translate }}
                 </div>
-                <p-inputMask
+                <p-inputNumber
                     id="bankBranch"
                     formControlName="agency"
-                    mask="{{agencyNumberMask}}"
                     class="w-full"
                     [style]="{'width':'100%'}"
-                    (keyup)="verifyBankCount()"
                 >
-                </p-inputMask>
+                </p-inputNumber>
             </div>
             <div class="accountNumber  pb-3">
                 <div class="form-label">
                     {{ "addBankAccountModal.accountNumberLabel" | translate }}
                 </div>
-                <p-inputMask
+                <p-inputNumber
                     id="accountNumber"
                     formControlName="accountNumber"
-                    mask="{{accountNumberMask}}"
                     class="w-full"
                     [style]="{'width':'100%'}"
-                    (keyup)="verifyBankCount()"
                 >
-                </p-inputMask>
+                </p-inputNumber>
             </div>
             <div class="accountNumber pb-3">
                 <div class="form-label">

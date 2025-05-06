@@ -46,6 +46,7 @@ import {PaginatorModule} from "primeng/paginator";
 import {SelectButtonModule} from "primeng/selectbutton";
 import {StepperModule} from "primeng/stepper";
 import {ToolbarModule} from "primeng/toolbar";
+import {StockTransferService} from "../../../../core/services/stock-transfer.service";
 
 @NgModule({
     declarations: [
@@ -90,6 +91,7 @@ import {ToolbarModule} from "primeng/toolbar";
         StoreContasPagarServices,
         StorePurchasesServices,
         Stock_TransferStore,
+        StockTransferService,
         PaymentMethodService,
         SupplierService,
         ProductService,

@@ -12,7 +12,7 @@
         <div class="flex-1">
             <p-tabView>
                 @if (product.allowsAdditional) {
-                    <p-tabPanel class="p-1" header="Adicional">
+                    <p-tabPanel class="p-1" header="ADICIONAIS">
                         <div class="flex">
                             <p-table #dt1 [value]="additionals.content" sortField="categoryName" sortMode="single"
                                      [scrollable]="true" scrollHeight="400px"
@@ -33,7 +33,7 @@
                                 </ng-template>
                                 <ng-template pTemplate="header">
                                     <tr>
-                                        <th>Descrição do Producto</th>
+                                        <th>Descrição do produto</th>
                                         <th>Valor</th>
                                         <th></th>
                                     </tr>
@@ -68,7 +68,7 @@
                             </p-table>
                         </div>
                     </p-tabPanel>
-                    <p-tabPanel header="Combinaciones">
+                    <p-tabPanel header="COMBOS">
                         <p-table #dt2 [value]="combos.content" sortField="categoryName" sortMode="single"
                                  [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader"
                                  [styleClass]="'p-datatable-sm'"
@@ -122,7 +122,7 @@
                     </p-tabPanel>
                 }
                 @if (product.allowsFlavors) {
-                    <p-tabPanel header="Sabores">
+                    <p-tabPanel header="SABORES">
                         <p-table #dt2 [value]="flavorsEmun" sortMode="single"
                                  [scrollable]="true" scrollHeight="400px" rowGroupMode="subheader"
                                  [styleClass]="'p-datatable-sm'"

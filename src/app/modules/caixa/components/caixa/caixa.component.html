@@ -125,9 +125,34 @@
                 <div class="comanda_list">
                     <p-tabView [(activeIndex)]="activeOrder" (onChange)="refresListProduct()"
                                *ngIf="isArray(service.selectedEntity$()) ">
+                        <p-tabPanel [header]="'Total'">
+                            <p-table [value]="orders || []">
+                                <ng-template pTemplate="header">
+                                    <tr>
+                                        <th class="custom-th font-bold">Nome do cliente</th>
+                                        <th class="custom-th font-bold">Quantia de produtos</th>
+                                        <th class="custom-th font-bold">Valor Pagado</th>
+                                        <th class="custom-th font-bold">Preço Total</th>
+                                    </tr>
+                                </ng-template>
+                                <ng-template pTemplate="body" let-clients >
+                                    <tr>
+                                        <td class="custom-td" style="text-align: center">{{ getComanda(clients) | wrapText: 25 }}
+                                        </td>
+                                        <td class="custom-td">{{ clients.products.length }}
+                                        </td>
+                                        <td class="custom-td">{{ clients.valuePaid | currency: 'BR' }}
+                                        </td>
+                                        <td class="custom-td">{{ clients.valueToPaid | currency: 'BR' }}
+                                        </td>
+                                    </tr>
+                                </ng-template>
+                            </p-table>
+                        </p-tabPanel>
                         <p-tabPanel *ngFor="let tab of orders"
                                     [header]="getTitleComanda(tab)">
                             <p-table [value]="tab.products || []" [scrollable]="true"
+                                     (onEditComplete)="onCellEditComplete($event)"
                                      [styleClass]="'p-datatable-sm'">
                                 <ng-template pTemplate="caption">
                                     <div class="flex align-items-center justify-content-between">
@@ -177,6 +202,7 @@
                                                 <ng-template pTemplate="input">
                                                     <div class="p-inputgroup h-2rem">
                                                         <button type="button" pButton icon="mdi mdi-plus"
+                                                                (click)="addElementClick(product, '+')"
                                                                 class="p-button-success p-button-sm"></button>
                                                         <input
                                                             pInputText
@@ -186,6 +212,7 @@
                                                             (ngModelChange)="onChangeAmount(product)"
                                                             required/>
                                                         <button type="button" pButton icon="mdi mdi-minus"
+                                                                (click)="addElementClick(product, '-')"
                                                                 class="p-button-danger"></button>
                                                     </div>
 
@@ -208,9 +235,9 @@
                     </p-tabView>
                 </div>
                 <div class="mt-20 gray-color flex flex-column m-3" *ngIf="service.selectedEntity$() !== null">
-                    <div class="flex align-items-center justify-content-between">
-                        <h6 class="text-2xl text-gray-600 m-0">Sub-Total Order:</h6>
-                        <h6 class="text-3xl text-primary m-0">{{ (service.selectedEntity$()[activeOrder]?.valueToPaid - service.selectedEntity$()[activeOrder]?.valuePaid) | currency: 'BRL' : 'symbol' : '1.2' }}</h6>
+                    <div *ngIf="this.activeOrder > 0" class="flex align-items-center justify-content-between">
+                        <h6 class="text-2xl text-gray-600 m-0">Sub-Total do {{getTitleOrder()}}:</h6>
+                        <h6 class="text-3xl text-primary m-0">{{ (service.selectedEntity$()[activeOrder -1]?.valueToPaid - service.selectedEntity$()[activeOrder - 1]?.valuePaid) | currency: 'BRL' : 'symbol' : '1.2' }}</h6>
                     </div>
                     <div class="flex align-items-center justify-content-between">
                         <h6 class="text-3xl text-gray-600 m-0">Total ({{ service.selectedEntity$().length }})
@@ -288,16 +315,55 @@
                                 </div>
                             </ng-template>
                             <ng-template #blank>
-                                <h3 class="text-center">Categorias</h3>
-                                @for (product of stateOptions; track product.id) {
-                                    <div [ngClass]="{'shadow-5': selectedCategory === product.value}"
-                                         class="cursor-pointer border-1 surface-border border-round m-2 p-3 flex justify-content-center"
-                                         (click)="selectedCategoryItem(product)">
-                                        <div class="mb-1 font-medium text-center">
-                                            {{ product.label | wrapText: 10 }}
+                                <div class="flex flex-column">
+                                    <div class="flex align-items-center">
+                                        <div class="cursor-pointer " (click)="clearSelected()" pTooltip="Atras" tooltipPosition="bottom" *ngIf="selectedCategory !== ''">
+                                            <i class="mdi mdi mdi-arrow-left text-4xl"></i>
+                                        </div>
+                                        <div class="flex flex-1 justify-content-center">
+                                            <h3 class="text-center mb-0">
+                                                {{ selectedCategory === '' ? 'Categorías' : selectedCategory.label }}
+                                            </h3>
                                         </div>
                                     </div>
-                                }
+
+                                    <ng-container *ngIf="selectedCategory === ''; else showOtherItems">
+                                        @for (product of stateOptions; track product.id) {
+                                            <div [ngClass]="{'shadow-5': selectedCategory === product.value}"
+                                                 class="cursor-pointer border-1 surface-border border-round m-2 p-3 flex justify-content-center"
+                                                 (click)="selectedCategoryItem(product)">
+                                                <div class="mb-1 font-medium text-center">
+                                                    {{ product.label | wrapText: 10 }}
+                                                </div>
+                                            </div>
+                                        }
+                                    </ng-container>
+
+                                    <ng-template #showOtherItems>
+                                        <!-- Por ejemplo: -->
+                                        <div class="grid">
+                                            <div *ngFor="let product of suggestions" class="col-12 md:col-6 lg:col-4">
+                                                <div class="cursor-pointer shadow-3 surface-card border-round p-2" (click)="selectedProduct(product)">
+                                                    <div class="relative mb-3">
+                                                        <img
+                                                            [src]="product.logo || './assets/images/commerce/logo_default.svg'"
+                                                            alt="{{ product.name }}"
+                                                            class="w-full border-round"
+                                                        />
+                                                    </div>
+                                                    <div pTooltip="{{product.name}}" tooltipPosition="bottom"
+                                                         class="text-900 font-medium text-lg mb-2">{{ product.name | wrapText: 12 }}
+                                                    </div>
+                                                    <div class="text-primary font-semibold text-xl">
+                                                        R$ {{ product.salePrice | number:'1.2-2' }}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </div>
+
+
                             </ng-template>
                         </div>
                     </div>

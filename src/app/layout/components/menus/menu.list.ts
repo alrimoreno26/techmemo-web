@@ -98,6 +98,13 @@ export const menuList: any[] = [
     },
     {separator: true},
     {
+        label: 'Clientes',
+        icon: 'mdi mdi-account-group mdi-24px',
+        roles: [domainEnum.ALL],
+        routerLink: ['clients'],
+    },
+    {separator: true},
+    {
         label: 'Loja',
         icon: 'mdi mdi-office-building-outline mdi-24px',
         roles: [domainEnum.CONFIGURATION,domainEnum.PRODUCT],

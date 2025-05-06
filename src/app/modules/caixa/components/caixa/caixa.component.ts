@@ -63,6 +63,7 @@ export class CaixaComponent implements OnInit {
 
     dialogNameCliente = false;
     clientName = '';
+    editedProduct = null;
 
     canFinalize$: boolean;
     activeRoute: string;
@@ -168,8 +169,25 @@ export class CaixaComponent implements OnInit {
         });
     }
 
+    clearSelected() {
+        this.selectedCategory = '';
+    }
+
+    selectedProduct(product: any) {
+        this.selectedItem = product;
+    }
+
     selectedCategoryItem(category: any) {
-        this.selectedCategory = category.value;
+        this.selectedCategory = category;
+        this.productService.autocomplete({
+            filter: this.searchText,
+            type: 'SIMPLE',
+            pageNumber: 0,
+            pageSize: 100,
+            parentCategoryId: this.selectedCategory.value,
+            showEnables: true,
+            showInMenu: true
+        });
     }
 
     @
@@ -193,45 +211,48 @@ export class CaixaComponent implements OnInit {
                 this.closeOrders();
                 break;
             case 'Enter':
-                if (this.selectedItem !== undefined) {
-                    if (this.selectedItem.allowsAdditional || this.selectedItem.allowsFlavors) {
-                        this.service.openCustomDialog('additional', true);
-                        this.dialogService.open(AdditionalComponents, {
-                            data: {
-                                product: this.selectedItem,
-                                activeOrder: this.activeOrder,
-                                created: true,
-                                amount: this.selectedItemAmount,
-                            },
-                            modal: true,
-                            style: {'width': '65vw', 'height': '70vw'},
-                            draggable: false,
-                            resizable: false
-                        }).onClose.subscribe(() => {
-                            this.resetAllValues();
-                        })
-                    } else {
-                        if (this.selectedItem.soldPerUnits) {
-                            this.addElementComanda({count: 1, ...this.selectedItem});
-                        } else {
-                            this.visible = true;
-                        }
-                    }
-                } else {
-                    if (this.pagamento) {
-                        const url = `http://127.0.0.1:8020/api/notifications/print`;
-                        const headers = new HttpHeaders({
-                            'Content-Type': 'application/json',
-                        });
-                        this.http.post(url, {data: this.ordersProducts}, {headers}).subscribe();
-                    }
-                }
+                this.addProductToOrder();
                 break;
 
         }
 
     }
 
+    addProductToOrder() {
+        if (this.selectedItem !== undefined) {
+            if (this.selectedItem.allowsAdditional || this.selectedItem.allowsFlavors) {
+                this.service.openCustomDialog('additional', true);
+                this.dialogService.open(AdditionalComponents, {
+                    data: {
+                        product: this.selectedItem,
+                        activeOrder: this.activeOrder - 1,
+                        created: true,
+                        amount: this.selectedItemAmount,
+                    },
+                    modal: true,
+                    style: {'width': '65vw', 'height': '70vw'},
+                    draggable: false,
+                    resizable: false
+                }).onClose.subscribe(() => {
+                    this.resetAllValues();
+                })
+            } else {
+                if (this.selectedItem.soldPerUnits) {
+                    this.addElementComanda({count: 1, ...this.selectedItem});
+                } else {
+                    this.visible = true;
+                }
+            }
+        } else {
+            if (this.pagamento) {
+                const url = `http://127.0.0.1:8020/api/notifications/print`;
+                const headers = new HttpHeaders({
+                    'Content-Type': 'application/json',
+                });
+                this.http.post(url, {data: this.ordersProducts}, {headers}).subscribe();
+            }
+        }
+    }
 
     finalizeOrder() {
         switch (this.activeRoute) {
@@ -323,11 +344,11 @@ export class CaixaComponent implements OnInit {
     }
 
     transferOrders() {
-        if (this.service.selectedEntity$()[this.activeOrder].products.length > 0) {
+        if (this.service.selectedEntity$()[this.activeOrder - 1].products.length > 0) {
             this.service.openCustomDialog('transfer', true);
             this.dialogService.open(MTransferComponents, {
                 data: {
-                    order: this.service.selectedEntity$()[this.activeOrder],
+                    order: this.service.selectedEntity$()[this.activeOrder - 1],
                     activeRouteOrder: this.activeRouteOrder,
                     byRoute: this.activeRoute
                 },
@@ -352,10 +373,10 @@ export class CaixaComponent implements OnInit {
     }
 
     comandaTotal(): void {
-        this.totalOrders = this.service.selectedEntity$()[this.activeOrder].products.reduce((sumaTotal: any, item: any) =>
+        this.totalOrders = this.service.selectedEntity$().reduce((sumaTotal: any, item: any) =>
                 sumaTotal + (item.valueToPaid),
-            0
-        ) || 0;
+             0
+        )
     }
 
     comandaAllTotal(): number {
@@ -378,7 +399,8 @@ export class CaixaComponent implements OnInit {
             case 'table':
                 this.storeTablesServices.changeStateTable(this.activeRouteOrder, 'CLOSED')
                 break;
-            case 'table-union':''
+            case 'table-union':
+                ''
 
                 break;
             default:
@@ -403,10 +425,10 @@ export class CaixaComponent implements OnInit {
                     productIds: [pedido.id]
                 }
                 this.service.deleteProductsOrders(
-                    this.service.selectedEntity$()[this.activeOrder].id,
+                    this.service.selectedEntity$()[this.activeOrder - 1].id,
                     deleteTO,
                     {
-                        order: this.service.selectedEntity$()[this.activeOrder],
+                        order: this.service.selectedEntity$()[this.activeOrder - 1],
                         activeRouteOrder: this.activeRouteOrder,
                         byRoute: this.activeRoute
                     })
@@ -424,15 +446,15 @@ export class CaixaComponent implements OnInit {
             if (data.cancel) {
                 const deleteTO: DeleteOrderProductDto = {
                     description: data.data.description,
-                    productIds: this.service.selectedEntity$()[this.activeOrder].products.map((obj: any) => {
+                    productIds: this.service.selectedEntity$()[this.activeOrder - 1].products.map((obj: any) => {
                         return obj.id
                     }),
                 }
                 this.service.deleteProductsOrders(
-                    this.service.selectedEntity$()[this.activeOrder].id,
+                    this.service.selectedEntity$()[this.activeOrder - 1].id,
                     deleteTO,
                     {
-                        order: this.service.selectedEntity$()[this.activeOrder],
+                        order: this.service.selectedEntity$()[this.activeOrder - 1],
                         activeRouteOrder: this.activeRouteOrder,
                         byRoute: this.activeRoute
                     })
@@ -447,7 +469,7 @@ export class CaixaComponent implements OnInit {
                 product: product,
                 amount: product.amount,
                 created: false,
-                activeOrder: this.activeOrder,
+                activeOrder: this.activeOrder - 1,
                 additionalSelected: product.additionals
             },
             modal: true,
@@ -480,7 +502,7 @@ export class CaixaComponent implements OnInit {
                 description: this.selectedDescription
             }
         ];
-        this.service.addProductsOrders(this.service.selectedEntity$()[this.activeOrder].id, params)
+        this.service.addProductsOrders(this.service.selectedEntity$()[this.activeOrder - 1].id, params)
         this.resetAllValues();
     }
 
@@ -491,7 +513,7 @@ export class CaixaComponent implements OnInit {
             type: 'SIMPLE',
             pageNumber: 0,
             pageSize: 100,
-            parentCategoryId: this.selectedCategory,
+            parentCategoryId: this.selectedCategory.value,
             showEnables: true,
             showInMenu: true
         });
@@ -544,7 +566,7 @@ export class CaixaComponent implements OnInit {
     }
 
     refresListProduct() {
-        this.service.loadNewListProduct(this.activeOrder);
+        this.service.loadNewListProduct(this.activeOrder - 1);
     }
 
     confirmNameClient() {
@@ -565,6 +587,15 @@ export class CaixaComponent implements OnInit {
         return `Pedido #: ${item.code}`
     }
 
+    getComanda(item: any): string {
+        return item.clientName || item.tableNumber || item.code || ''; // Devolver lo primero disponible
+    }
+
+    getTitleOrder() {
+        const item = this.service.selectedEntity$()[this.activeOrder - 1];
+        return item.clientName || item.tableNumber || item.code || ''; // Devolver lo primero disponible
+    }
+
     resetAllValues() {
         this.itemFinded = undefined;
         this.selectedCategory = '';
@@ -578,13 +609,31 @@ export class CaixaComponent implements OnInit {
     }
 
     printCozinha() {
-        this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder].id);
+        this.service.sentOrdersKitchen(this.service.selectedEntity$()[this.activeOrder - 1].id);
         this.client.post('http://localhost:8020/api/notifications/print', {data: [{test: "metodo print"}]}).subscribe()
     }
 
     onChangeAmount(product: any) {
-        console.log(product)
-        this.service.updateProductsOrders(product.id, this.service.selectedEntity$()[this.activeOrder].id, [{amount: Number(product.amount)}]);
+        this.service.updateProductsOrders(product.id, this.service.selectedEntity$()[this.activeOrder - 1].id, [{amount: Number(product.amount)}]);
+    }
+
+    addElementClick(product: any, action: '+' | '-') {
+        if (action === '+') {
+            product.amount = (product.amount || 1) + 1;
+        } else if (action === '-') {
+            if (!product.amount || product.amount <= 1) {
+                product.amount = 1;
+            } else {
+                product.amount -= 1;
+            }
+        }
+        this.editedProduct = product;
+        // // Opcional, si necesitas hacer algo después del cambio
+    }
+
+    onCellEditComplete(event: any) {
+        this.onChangeAmount(this.editedProduct);
+        this.editedProduct = null;
     }
 
     protected readonly isObject = isObject;

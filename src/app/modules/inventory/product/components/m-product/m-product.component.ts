@@ -59,7 +59,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
         effect(() => {
             if (this.productService.selectedEntity$() !== undefined) {
                 this.selectedEntity = this.service.selectedEntity$();
-                this.form.reset()
                 this.initForm(this.selectedEntity);
             }
 
@@ -67,8 +66,6 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             if (this.selectedEntity?.additionalProducts?.length > 0) {
                 this.fillSelected(this.selectedEntity)
             }
-
-
         })
         effect(() => {
             if (this.productService.selectedEntity$() !== undefined) {
@@ -81,7 +78,20 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     ngOnInit(): void {
         const {data} = this.config;
         this.initForm(data);
+        this.form.get('soldPerUnits')?.valueChanges.subscribe((value: boolean) => {
+            const unitControl = this.form.get('unitMeasurementId');
+
+            if (!unitControl) return;
+
+            if (value) {
+                unitControl.disable();
+                unitControl.patchValue(null); // o '' si prefieres string vacío
+            } else {
+                unitControl.enable();
+            }
+        });
     }
+
 
     filtersTable(event: { target: { value: string; } } | any, dt: Table): void {
         const {value} = event.target;
@@ -93,6 +103,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     }
 
     fillSelected(data: any): any {
+        console.log(data)
         this.selectedAdditional = []
         this.products.forEach((p: any) => {
             let search = data.additionalProducts.find((ap: any) => ap.id === p.id)
@@ -146,7 +157,10 @@ export class MProductComponent extends BaseModalComponentDirective implements On
             showInMenu: new FormControl<boolean>(data?.showInMenu),
             soldPerUnits: new FormControl<boolean>(data?.soldPerUnits),
             supplierIds: new FormControl<string[]>(suppliers),
-            unitMeasurementId: new FormControl<string>(data?.unitMeasurement?.id),
+            unitMeasurementId: new FormControl<string>({
+                value: data?.unitMeasurement?.id,
+                disabled: data?.soldPerUnits ?? false
+            }),
             valuePerUnits: new FormControl<number>(data?.valuePerUnits),
         });
     }
@@ -194,7 +208,7 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     }
 
     removeImage(file: Image) {
-        //this.product.images = this.product.images.filter(i => i !== file);
+        // Method intentionally left empty as image removal is handled elsewhere
     }
 
     override save(): void {
@@ -244,37 +258,35 @@ export class MProductComponent extends BaseModalComponentDirective implements On
     }
 
     modifyValuesCombo() {
-        if (this.selectedAdditional.length > 0) {
+        if (this.selectedAdditional && this.selectedAdditional.length > 0) {
             const values = this.calculateTotalPrices();
-            console.log(values)
             this.form.get('salePrice')?.setValue(isNaN(values.totalUnitPrice) ? 0 : values.totalUnitPrice);
-            this.form.get('costPrice')?.setValue(values.totalCostPrice);
+            this.form.get('costPrice')?.setValue(isNaN(values.totalCostPrice) ? 0 : values.totalCostPrice);
         } else {
-            if (this.selectedAdditional.length === 0) {
-                this.form.get('salePrice')?.setValue(0);
-                this.form.get('unitPrice')?.setValue(0);
-            }
+            // Reset prices if no items are selected
+            this.form.get('salePrice')?.setValue(0);
+            this.form.get('costPrice')?.setValue(0);
         }
-
     }
 
     calculateTotalPrices(): { totalUnitPrice: number; totalCostPrice: number } {
-
         let totalUnitPrice = 0;
         let totalCostPrice = 0;
 
         this.selectedAdditional.forEach(item => {
-            totalUnitPrice += Number(item.amount) * item.salePrice;
+            totalUnitPrice += Number(item.amount || 1) * (item.salePrice || 0);
+            totalCostPrice += Number(item.amount || 1) * (item.costPrice || 0);
         });
 
-        totalCostPrice = this.selectedAdditional.reduce((acc, item) => acc + item.costPrice, 0);
         return {totalUnitPrice, totalCostPrice};
     }
 
     getValueMultiselect(item: any) {
-        if (item === undefined)
-            return []
-        return item;
+        // Check if the item is undefined, null, or an empty array
+        if (!item || (Array.isArray(item) && item.length === 0)) {
+            return false;
+        }
+        return true;
     }
 
     addFornecedor() {

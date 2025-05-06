@@ -45,6 +45,7 @@ import {TooltipModule} from "primeng/tooltip";
 import {IconFieldModule} from "primeng/iconfield";
 import {InputIconModule} from "primeng/inputicon";
 import {RadioButtonModule} from "primeng/radiobutton";
+import {FloatLabelModule} from "primeng/floatlabel";
 
 @NgModule({
     imports: [
@@ -82,6 +83,7 @@ import {RadioButtonModule} from "primeng/radiobutton";
         IconFieldModule,
         InputIconModule,
         RadioButtonModule,
+        FloatLabelModule,
     ],
     providers: [
         ConfirmServices,
