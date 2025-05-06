@@ -59,7 +59,7 @@ export class MCategoryComponent extends BaseModalStoreComponentDirective impleme
         }
         this.form = new FormGroup({
             name: new FormControl<string>(data?.name, Validators.required),
-            classifier: new FormControl<string>(data?.classifier),
+            classifier: new FormControl<string>(data?.classifier, Validators.required),
             description: new FormControl<string>(data?.description),
         });
         this.formSub = new FormGroup({

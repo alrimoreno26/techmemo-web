@@ -22,6 +22,12 @@ const routes: Routes = [
                 loadChildren: () => import('../modules/kitchen/kitchen.module').then(m => m.KitchenModule)
             },
             {
+                path: 'clients',
+                data: {breadcrumb: 'Clientes', roles: [domainEnum.ALL]},
+                canActivate: [canActivateControlGuard],
+                loadChildren: () => import('../modules/clientes/clientes.module').then(m => m.ClientesModule)
+            },
+            {
                 path: 'inventory',
                 data: {breadcrumb: 'Inventário', roles: [domainEnum.PRODUCT]},
                 canActivate: [canActivateControlGuard],

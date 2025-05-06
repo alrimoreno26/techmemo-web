@@ -5,7 +5,7 @@ export interface CommerceDto {
     address?: AddressDTO
     amountTables?: number
     amountOrders?: number
-    orderCodePrefix?: number
+    initValueOrderCode?: number
     cnpj?: string
     config?: CommerceConfigDto
     created?: string
